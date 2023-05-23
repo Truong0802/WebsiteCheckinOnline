@@ -1,0 +1,9 @@
+#extr-page #header
+{
+    height: 80px;
+}
+
+#extr-page #header #logo img {
+    width: 245px;
+}
+
