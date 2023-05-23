@@ -28,7 +28,7 @@
                         <h1 class="txt-color-red login-header-big">Cổng thông tin sinh viên</h1>
                         <div class="hero">
                             <div class="pull-left login-desc-box-l">
-                                <h4 class="paragraph-header">Kênh thông tin dành cho sinh viên. </h4>
+                                <!-- <h4 class="paragraph-header">Kênh thông tin dành cho sinh viên. </h4> -->
                                 <div class="login-app-icons">
                                     <style>
                                         .btn-info
