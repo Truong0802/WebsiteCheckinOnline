@@ -254,7 +254,7 @@
                         <?php
                             $stt=0;
                         ?>
-                        @foreach($getallclass as $key)
+                        @foreach($getallsubject as $key)
 
                         <tbody>
                             <tr>
@@ -294,7 +294,7 @@
             </div>
 
             {{-- Phân trang dùng laravel --}}
-            {{ $getallclass->appends(request()->all())->links('pagination::bootstrap-4') }}
+            {{ $getallsubject->appends(request()->all())->links('pagination::bootstrap-4') }}
 
             {{-- <div class="text-center">
                 <div class="pagination">
