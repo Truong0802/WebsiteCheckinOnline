@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="<?php echo asset('/css/index.css')?>">
     <link rel="stylesheet" href="<?php echo asset('/fonts/fontawesome-free-6.2.1-web/fontawesome-free-6.2.1-web/css/all.css')?>">
     <link href="<?php echo asset('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css')?>" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/jpg" href="{{asset('/img/logo/hutech-favicon.jpg')}}" width="50%" />
     <title>Trang chủ</title>
 </head>
 <body>
