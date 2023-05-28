@@ -251,3 +251,17 @@ ul
     margin: 1px;
     border-radius: 2px;
 }
+
+table thead tr .buoi-hoc,
+table thead tr .DCC,
+table thead tr .DKT
+{
+    background: #5f99f0;
+}
+
+table thead tr .buoi-hoc a,
+table thead tr .DCC a,
+table thead tr .DKT a
+{
+    color: #ffffff;
+}
