@@ -332,25 +332,33 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    @if($allstudentlist->Diem14 != null)
-                                        <td>$allstudentlist->Diem14</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    <td></td>
-                                    @if($allstudentlist->Diem16 != null)
-                                        <td>$allstudentlist->Diem16</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-
                                     <?php
-                                        $diemqt = DB::table('ket_qua')->where('MaKQSV',$allstudentlist->MaKQSV)->first();
+                                        $checkall = DB::table('danh_sach_sinh_vien')->where('MSSV',$studentname->MSSV)->whereNotNull('MaBuoi')->distinct()->count('MaBuoi');
                                     ?>
-                                    @if($diemqt->DiemQT != null)
-                                        <td><?php echo $diemqt->DiemQT ?></td>
+                                    @if($checkall < 9)
+                                    <td></td>
+                                    <td></td>
                                     @else
+                                        @if($allstudentlist->Diem14 != null)
+                                            <td>$allstudentlist->Diem14</td>
+                                        @else
+                                            <td></td>
+                                        @endif
                                         <td></td>
+                                        @if($allstudentlist->Diem16 != null)
+                                            <td>$allstudentlist->Diem16</td>
+                                        @else
+                                            <td></td>
+                                        @endif
+
+                                        <?php
+                                            $diemqt = DB::table('ket_qua')->where('MaKQSV',$allstudentlist->MaKQSV)->first();
+                                        ?>
+                                        @if($diemqt->DiemQT != null)
+                                            <td><?php echo $diemqt->DiemQT ?></td>
+                                        @else
+                                            <td></td>
+                                        @endif
                                     @endif
                                 </tr>
                             </tbody>
@@ -360,6 +368,7 @@
                     </div>
                 </div>
             </div>
+            {{ $getinfoclass->appends(request()->all())->links('pagination::bootstrap-4') }}
             {{-- <div class="text-center">
                 <div class="pagination">
                     <ul class="pagination-list">

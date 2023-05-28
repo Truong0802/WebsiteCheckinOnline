@@ -76,7 +76,7 @@ class TeacherController extends Controller
         {
             if(session()->exists('teacherid')){
                 if($request->lop){
-                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->distinct()->get();
+                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->distinct()->paginate(20);
                     // dd($classlist);
                     return view('Teacher/student-list',['getinfoclass' => $classlist] );
                 }
