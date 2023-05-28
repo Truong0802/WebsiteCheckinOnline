@@ -1,144 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo asset('/css/index.css') ?>">
-    <link rel="stylesheet" href="<?php echo asset('/css/class-list.css')?>">
-    <link rel="stylesheet" href="<?php echo asset('/fonts/fontawesome-free-6.2.1-web/fontawesome-free-6.2.1-web/css/all.css') ?>">
-    <link rel="stylesheet" href="<?php echo asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css') ?>">
-    <link href="<?php echo asset('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css')?>" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <title>Danh sách sinh viên</title>
-</head>
-<body>
-    <aside id="left-panel">
-        <div class="login-info">
-            <span class="ng-star-inserted">
-                <a>
-                    <img alt="" class="online" src="/assets/img/avatar.png">
-                    <span>Hồ Phú Tài</span>
-                    <i class="fa fa-angle-down"></i>
-                </a>
-            </span>
-        </div>
-        <nav>
-            <ul>
-                <li>
-                    <a title="Trang chủ" href="">
-                        <i class="fa fa-lg fa-fw fa-home"></i>
-                        <span class="menu-item-parent">Trang chủ</span>
-                    </a>
-                </li>
-                <li>
-                    <a title="Hồ sơ cá nhân" href="">
-                        <i class="fa fa-lg fa-fw fa-user"></i>
-                        <span class="menu-item-parent">Hồ sơ cá nhân</span>
-                    </a>
-                </li>
-                <li class="open">
-                    <a href="" title="Học tập">
-                        <i class="fa fa-lg fa-fw fa-book"></i>
-                        <span class="menu-item-parent">Học tập </span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-minus-square-o"></em>
-                        </b>
-                    </a>
-                </li>
-                <li>
-                    <a title="Xác nhận online" href="#/sinhvien/xac-nhan-sinh-vien">
-                        <i class="fa fa-lg fa-fw fa-calendar-o"></i>
-                        <span class="menu-item-parent">Xác nhận online</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="" title="Đánh giá rèn luyện">
-                        <i class="fa fa-lg fa-fw fa-balance-scale"></i>
-                        <span class="menu-item-parent">Đánh giá rèn luyện</span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-plus-square-o"></em>
-                        </b>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="">Điểm cá nhân</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="" title="Khảo sát">
-                        <i class="fa fa-lg fa-fw fa-calendar-check-o"></i>
-                        <span class="menu-item-parent">Khảo sát</span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-plus-square-o"></em>
-                        </b>
-                    </a>
-                    <ul>
-                        <li>
-                            <a title="Hoạt động giảng dạy" href="">Hoạt động giảng dạy</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="">
-                        <i class="fa fa-lg fa-fw fa-bar-chart-o"></i>
-                        <span class="menu-item-parent">Hoạt động sinh viên</span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-plus-square-o"></em>
-                        </b>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="">Hồ sơ SINH VIÊN 5 TỐT</a>
-                        </li>
-                        <li class="">
-                            <a href="">Ghi nhận tham gia hoạt động</a>
-                        </li>
-                        <li>
-                            <a href="">Tài liệu, Thông tin hoạt động</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="">
-                        <i class="fa fa-lg fa-fw fa-cog"></i>
-                        <span class="menu-item-parent"> Cài đặt tài khoản </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" title="Khác">
-                        <i class="fa fa-lg fa-fw fa-bars"></i>
-                        <span class="menu-item-parent">Khác</span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-plus-square-o"></em>
-                        </b>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href=>COVID Khai báo y tế </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a title="Hỗ trợ" href="">
-                        <i class="fa fa-lg fa-fw fa-phone"></i>
-                        <span class="menu-item-parent">Hỗ trợ</span>
-                    </a>
-                </li>
-                <li>
-                    <a  href="/logout"  title="Đăng xuất" href="">
-                        <i class="fa fa-arrow-circle-left hit"></i>
-                        <span class="menu-item-parent">Đăng xuất</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <span class="minifyme">
-            <i class="fa fa-arrow-circle-left hit"></i>
-        </span>
-    </aside>
+@extends('layouts.master-teacher')
 
-    <div id="main" role="main">
+@section('content')
         <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">
@@ -232,28 +94,27 @@
                     <div class="table">
                         <table>
                             <thead>
-
                                 <tr>
                                     <td>STT</td>
                                     <td>Mã SV</td>
                                     <td>Họ tên</td>
                                     <td>Tên lớp</td>
-                                    <td>1</td>
-                                    <td>2</td>
-                                    <td>3</td>
-                                    <td>4</td>
-                                    <td>5</td>
-                                    <td>6</td>
-                                    <td>7</td>
-                                    <td>8</td>
-                                    <td>9</td>
+                                    <td class="buoi-hoc"><a href="">1</a></td>
+                                    <td class="buoi-hoc"><a href="">2</a></td>
+                                    <td class="buoi-hoc"><a href="">3</a></td>
+                                    <td class="buoi-hoc"><a href="">4</a></td>
+                                    <td class="buoi-hoc"><a href="">5</a></td>
+                                    <td class="buoi-hoc"><a href="">6</a></td>
+                                    <td class="buoi-hoc"><a href="">7</a></td>
+                                    <td class="buoi-hoc"><a href="">8</a></td>
+                                    <td class="buoi-hoc"><a href="">9</a></td>
                                     <td>10</td>
                                     <td>11</td>
                                     <td>12</td>
                                     <td>13</td>
-                                    <td>14</td>
+                                    <td class="DCC"><a href="">14</a></td>
                                     <td>15</td>
-                                    <td>16</td>
+                                    <td class="DKT"><a href="">16</a></td>
                                     <td>ĐQT</td>
                                 </tr>
                             </thead>
@@ -359,7 +220,6 @@
                                         @else
                                             <td></td>
                                         @endif
-
                                     @endif
                                 </tr>
                             </tbody>
@@ -379,8 +239,8 @@
                     </ul>
                     <input type="hidden" name="limitstart" value="0">
                 </div>
-            </div> --}}
+            </div>
         </div>
-    </div>
-</body>
-</html>
+@stop
+
+
