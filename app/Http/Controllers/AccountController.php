@@ -72,6 +72,7 @@ class AccountController extends Controller
         session()->forget('name');
         session()->forget('ChucVu');
         session()->forget('malop');
+        session()->forget('mon-hoc');
         return redirect()->to('/');
     }
 

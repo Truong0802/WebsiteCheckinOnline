@@ -36,7 +36,7 @@
         <nav>
             <ul>
                 <li>
-                    <a title="Trang chủ" href="">
+                    <a title="Trang chủ" href="/trang-chu">
                         <i class="fa fa-lg fa-fw fa-home"></i>
                         <span class="menu-item-parent">Trang chủ</span>
                     </a>

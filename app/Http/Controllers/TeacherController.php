@@ -87,5 +87,22 @@ class TeacherController extends Controller
             }
 
         }
-
+        public function timkiemsinhvien(Request $request){
+            if(session()->exists('teacherid')){
+                $studentname = DB::table('sinh_vien')->where('HoTenSV','like',$request->studentname)->first();
+                $studentid = $request->mssv;
+                $searchlist = DB::table('danh_sach_sinh_vien')
+                ->when($studentname, function ($query) use ($studentname) {
+                    return $query->where('MSSV', $studentname->MSSV)->distinct();
+                })
+                ->When($studentid, function($query) use ($studentid){
+                    return $query->where('MSSV',$studentid)->distinct();
+                })->paginate(10);
+                return view('Teacher/student-list',['getinfoclass' =>  $searchlist] );
+            }
+        }
+        public function removetimkiemsv()
+        {
+            return redirect()->back();
+        }
 }

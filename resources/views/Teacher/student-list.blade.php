@@ -27,39 +27,40 @@
             </div>
 
             <div class="container">
-                <form>
+                <form action='/tim-kiem-sinh-vien' method='get'>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Họ tên:</label>
-                                <input type="text" class="form-control" id="student-name">
+                                <input type="text" class="form-control" id="student-name" name="studentname">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-id">MSSV:</label>
-                                <input type="text" class="form-control" id="student-id">
+                                <input type="text" class="form-control" id="student-id" name="mssv">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-serial">STT:</label>
                                 <input type="text" class="form-control" id="student-serial">
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <br>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="class-name">Tên lớp:</label>
-                                <input type="text" class="form-control" id="class-name">
+                                <input type="text" class="form-control" id="class-name" name="classname">
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <br>
-                    <button type="button" class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
-                    <button type="button" class="btn btn-primary" onclick="removeFilterData()">Xóa tất cả bộ lọc</button>
+                    <button type="submit" class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
+                    <a type="button" href="/xoa-tim-kiem-sv" class="btn btn-primary" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
+                    @csrf
                 </form>
             </div>
 

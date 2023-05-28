@@ -36,3 +36,7 @@ Route::get('/danh-sach-sinh-vien',[TeacherController::class,'danhsachsinhvien'])
 Route::get('/tim-kiem',[TeacherController::class,'timkiem']);
 //
 Route::get('/xoa-tim-kiem',[TeacherController::class,'removetimkiem']);
+//Tìm kiếm trong danh sách sinh viên
+Route::get('/tim-kiem-sinh-vien',[TeacherController::class,'timkiemsinhvien']);
+//
+Route::get('/xoa-tim-kiem-sv',[TeacherController::class,'removetimkiemsv']);
