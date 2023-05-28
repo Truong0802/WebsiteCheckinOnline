@@ -82,7 +82,7 @@
                         ?>
                         <?php
 
-                        $studentname = DB::table('sinh_vien')->where('MSSV',$key->MSSV)->distinct()->first();
+                            $studentname = DB::table('sinh_vien')->where('MSSV',$key->MSSV)->distinct()->first();
                         ?>
                     @endforeach
                         <?php
@@ -99,15 +99,72 @@
                                     <td>Mã SV</td>
                                     <td>Họ tên</td>
                                     <td>Tên lớp</td>
-                                    <td class="buoi-hoc"><a href="">1</a></td>
-                                    <td class="buoi-hoc"><a href="">2</a></td>
-                                    <td class="buoi-hoc"><a href="">3</a></td>
-                                    <td class="buoi-hoc"><a href="">4</a></td>
-                                    <td class="buoi-hoc"><a href="">5</a></td>
-                                    <td class="buoi-hoc"><a href="">6</a></td>
-                                    <td class="buoi-hoc"><a href="">7</a></td>
-                                    <td class="buoi-hoc"><a href="">8</a></td>
-                                    <td class="buoi-hoc"><a href="">9</a></td>
+                                    <?php
+                                        $teacherid = session()->get('teacherid');
+                                        $check1 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',1)->first();
+                                        $check2 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',2)->first();
+                                        $check3 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',3)->first();
+                                        $check4 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',4)->first();
+                                        $check5 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',5)->first();
+                                        $check6 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',6)->first();
+                                        $check7 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',7)->first();
+                                        $check8 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',8)->first();
+                                        $check9 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',9)->first();
+                                    ?>
+{{-- Buoi1--}}
+                                    @if($check1 == null)
+                                        <td class="buoi-hoc"><a href="">1</a></td>
+                                    @else
+                                        <td>1</td>
+                                    @endif
+{{-- Buoi2 --}}
+                                    @if($check2 == null)
+                                        <td class="buoi-hoc"><a href="">2</a></td>
+                                    @else
+                                        <td>2</td>
+                                    @endif
+{{-- Buoi3 --}}
+                                    @if($check3)
+                                        <td>3</td>
+                                    @else
+                                        <td class="buoi-hoc"><a href="">3</a></td>
+                                    @endif
+{{-- Buoi4 --}}
+                                    @if($check4)
+                                        <td>4</td>
+                                    @else
+                                        <td class="buoi-hoc"><a href="#">4</a></td>
+                                    @endif
+{{-- Buoi5 --}}
+                                    @if($check5)
+                                        <td>5</td>
+                                    @else
+                                        <td>5</td>
+                                    @endif
+{{-- Buoi6 --}}
+                                    @if($check6)
+                                        <td>6</td>
+                                    @else
+                                        <td class="buoi-hoc"><a href="#">6</a></td>
+                                    @endif
+{{-- Buoi7 --}}
+                                    @if($check7)
+                                        <td>7</td>
+                                    @else
+                                        <td class="buoi-hoc"><a href="">7</a></td>
+                                    @endif
+{{-- Buoi8 --}}
+                                    @if($check8)
+                                        <td>8</td>
+                                    @else
+                                        <td class="buoi-hoc"><a href="">8</a></td>
+                                    @endif
+{{-- Buoi9 --}}
+                                    @if($check9)
+                                        <td>9</td>
+                                    @else
+                                        <td class="buoi-hoc"><a href="">9</a></td>
+                                    @endif
                                     <td>10</td>
                                     <td>11</td>
                                     <td>12</td>
