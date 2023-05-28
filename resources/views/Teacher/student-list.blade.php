@@ -218,13 +218,17 @@
                         <?php
                             $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
                         ?>
+                        <?php
 
+                        $studentname = DB::table('sinh_vien')->where('MSSV',$key->MSSV)->distinct()->first();
+                        ?>
+                    @endforeach
                         <?php
                             echo $classname->TenMH;
                         ?>
                     <strong> <?php echo $classname->MaMH ?> </strong> - (Nhóm <?php echo $classname->NhomMH ?>) - Số tín chỉ: <?php echo $classname->STC ?></span>
                     <br><br>
-                    @endforeach
+
                     <div class="table">
                         <table>
                             <thead>
@@ -254,25 +258,31 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
                                 <?php
                                     $stt =0;
                                 ?>
+
+
                                 @foreach($getinfoclass as $allstudentlist)
-                                <tr>
-                                    <td>
-                                    <?php
-                                        $stt+=1;
-                                        echo $stt;
-                                    ?>
-                                    </td>
-                                    <td>{{$allstudentlist->MSSV}}</td>
+
                                     <td>
                                         <?php
-                                            $studentname = DB::table('sinh_vien')->where('MSSV',$allstudentlist->MSSV)->first();
+                                            $stt+=1;
+                                            echo $stt;
+                                        ?>
+                                    </td>
+
+                                    <td>{{$studentname->MSSV}}</td>
+                                    <td>
+                                        <?php
+
                                             echo $studentname->HoTenSV;
                                         ?>
                                     </td>
                                     <td><?php echo $studentname->MaLop ?></td>
+
+
                                     @if($allstudentlist->MaBuoi == 1)
                                         <td>x</td>
                                     @else
@@ -345,380 +355,12 @@
                                 </tr>
                             </tbody>
                             @endforeach
-                            {{-- <tbody>
-                                <tr>
-                                    <td>2</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
 
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>3</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>4</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>5</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>6</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>7</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>8</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>9</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>10</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>11</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>12</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>13</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>14</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>15</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody> --}}
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="text-center">
+            {{-- <div class="text-center">
                 <div class="pagination">
                     <ul class="pagination-list">
                         <li class="hidden-phone current"><a title="1" href="" class="pagenav">1</a></li>
@@ -727,7 +369,7 @@
                     </ul>
                     <input type="hidden" name="limitstart" value="0">
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </body>
