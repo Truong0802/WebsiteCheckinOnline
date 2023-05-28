@@ -63,10 +63,14 @@ class TeacherController extends Controller
             return redirect()->to('/danh-sach-lop');
         }
 
-        public function danhsachsinhvien()
+        public function danhsachsinhvien(Request $request)
         {
+            if($request->lop){
+                $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->distinct()->get();
+                return view('Teacher/student-list',['getinfoclass' => $classlist] );
+            }
 
-            return view('Teacher/student-list');
+
         }
 
 }

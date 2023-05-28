@@ -209,25 +209,40 @@
                     }
                 </style>
                 <div class="class-list">
-                    <span><strong>HỌC PHẦN:</strong> Lập trình ứng dụng với Java <strong> (CMP3025) </strong> - Nhóm 2 - Số tín chỉ: 3</span>
+                    @foreach($getinfoclass as $key)
+                    <span><strong>HỌC PHẦN:</strong>
+
+                        {{-- Lập trình ứng dụng với Java  --}}
+
+
+                        <?php
+                            $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
+                        ?>
+
+                        <?php
+                            echo $classname->TenMH;
+                        ?>
+                    <strong> <?php echo $classname->MaMH ?> </strong> - (Nhóm <?php echo $classname->NhomMH ?>) - Số tín chỉ: <?php echo $classname->STC ?></span>
                     <br><br>
+                    @endforeach
                     <div class="table">
                         <table>
                             <thead>
+
                                 <tr>
                                     <td>STT</td>
                                     <td>Mã SV</td>
                                     <td>Họ tên</td>
                                     <td>Tên lớp</td>
-                                    <td>01</td>
-                                    <td>02</td>
-                                    <td>03</td>
-                                    <td>04</td>
-                                    <td>05</td>
-                                    <td>06</td>
-                                    <td>07</td>
-                                    <td>08</td>
-                                    <td>09</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>4</td>
+                                    <td>5</td>
+                                    <td>6</td>
+                                    <td>7</td>
+                                    <td>8</td>
+                                    <td>9</td>
                                     <td>10</td>
                                     <td>11</td>
                                     <td>12</td>
@@ -235,37 +250,102 @@
                                     <td>14</td>
                                     <td>15</td>
                                     <td>16</td>
-                                    <td>ĐCC</td>
                                     <td>ĐQT</td>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                    $stt =0;
+                                ?>
+                                @foreach($getinfoclass as $allstudentlist)
                                 <tr>
-                                    <td>1</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
+                                    <td>
+                                    <?php
+                                        $stt+=1;
+                                        echo $stt;
+                                    ?>
+                                    </td>
+                                    <td>{{$allstudentlist->MSSV}}</td>
+                                    <td>
+                                        <?php
+                                            $studentname = DB::table('sinh_vien')->where('MSSV',$allstudentlist->MSSV)->first();
+                                            echo $studentname->HoTenSV;
+                                        ?>
+                                    </td>
+                                    <td><?php echo $studentname->MaLop ?></td>
+                                    @if($allstudentlist->MaBuoi == 1)
+                                        <td>x</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                    @if($allstudentlist->MaBuoi == 2)
                                     <td>x</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                    @if($allstudentlist->MaBuoi == 3)
                                     <td>x</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                    @if($allstudentlist->MaBuoi == 4)
+                                    <td>x</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                    @if($allstudentlist->MaBuoi == 5)
+                                    <td>x</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                    @if($allstudentlist->MaBuoi == 6)
+                                    <td>x</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                    @if($allstudentlist->MaBuoi == 7)
+                                    <td>x</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                    @if($allstudentlist->MaBuoi == 8)
+                                    <td>x</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                    @if($allstudentlist->MaBuoi == 9)
+                                    <td>x</td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    @if($allstudentlist->Diem14 != null)
+                                        <td>$allstudentlist->Diem14</td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    @if($allstudentlist->Diem16 != null)
+                                        <td>$allstudentlist->Diem16</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+
+                                    <?php
+                                        $diemqt = DB::table('ket_qua')->where('MaKQSV',$allstudentlist->MaKQSV)->first();
+                                    ?>
+                                    @if($diemqt->DiemQT != null)
+                                        <td><?php echo $diemqt->DiemQT ?></td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                 </tr>
                             </tbody>
-                            <tbody>
+                            @endforeach
+                            {{-- <tbody>
                                 <tr>
                                     <td>2</td>
                                     <td>2011060957</td>
@@ -633,7 +713,7 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                            </tbody>
+                            </tbody> --}}
                         </table>
                     </div>
                 </div>
