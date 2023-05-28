@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,3 +38,6 @@ Route::get('/danh-sach-sinh-vien',[TeacherController::class,'danhsachsinhvien'])
 Route::get('/tim-kiem',[TeacherController::class,'timkiem']);
 //
 Route::get('/xoa-tim-kiem',[TeacherController::class,'removetimkiem']);
+//trang hỗ trợ
+Route::get('/ho-tro', [ContactController::class,'contact']);
+
