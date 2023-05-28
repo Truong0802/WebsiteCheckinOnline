@@ -101,15 +101,15 @@
                                     <td>Tên lớp</td>
                                     <?php
                                         $teacherid = session()->get('teacherid');
-                                        $check1 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',1)->first();
-                                        $check2 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',2)->first();
-                                        $check3 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',3)->first();
-                                        $check4 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',4)->first();
-                                        $check5 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',5)->first();
-                                        $check6 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',6)->first();
-                                        $check7 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',7)->first();
-                                        $check8 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',8)->first();
-                                        $check9 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaBuoi',9)->first();
+                                        $check1 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',1)->first();
+                                        $check2 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',2)->first();
+                                        $check3 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',3)->first();
+                                        $check4 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',4)->first();
+                                        $check5 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',5)->first();
+                                        $check6 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',6)->first();
+                                        $check7 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',7)->first();
+                                        $check8 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',8)->first();
+                                        $check9 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',9)->first();
                                     ?>
 {{-- Buoi1--}}
                                     @if($check1 == null)
