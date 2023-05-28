@@ -621,7 +621,11 @@
             },
             "time": "2023-05-12T15:47:07+00:00",
             "type": "library",
+<<<<<<< HEAD
             "installation-source": "dist",
+=======
+            "installation-source": "source",
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
             "autoload": {
                 "psr-4": {
                     "Firebase\\JWT\\": "src"
@@ -774,7 +778,11 @@
                     "dev-main": "2.x-dev"
                 }
             },
+<<<<<<< HEAD
             "installation-source": "dist",
+=======
+            "installation-source": "source",
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
             "autoload": {
                 "files": [
                     "src/aliases.php"
@@ -824,7 +832,11 @@
             },
             "time": "2023-05-16T01:08:12+00:00",
             "type": "library",
+<<<<<<< HEAD
             "installation-source": "dist",
+=======
+            "installation-source": "source",
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
             "autoload": {
                 "files": [
                     "autoload.php"
@@ -885,7 +897,11 @@
             },
             "time": "2023-05-11T21:58:18+00:00",
             "type": "library",
+<<<<<<< HEAD
             "installation-source": "dist",
+=======
+            "installation-source": "source",
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
             "autoload": {
                 "psr-4": {
                     "Google\\Auth\\": "src"
@@ -3171,7 +3187,11 @@
             },
             "time": "2022-06-14T06:56:20+00:00",
             "type": "library",
+<<<<<<< HEAD
             "installation-source": "dist",
+=======
+            "installation-source": "source",
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
             "autoload": {
                 "psr-4": {
                     "ParagonIE\\ConstantTime\\": "src/"
@@ -3244,7 +3264,11 @@
             },
             "time": "2020-10-15T08:29:30+00:00",
             "type": "library",
+<<<<<<< HEAD
             "installation-source": "dist",
+=======
+            "installation-source": "source",
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -3497,7 +3521,11 @@
             },
             "time": "2023-03-05T17:13:09+00:00",
             "type": "library",
+<<<<<<< HEAD
             "installation-source": "dist",
+=======
+            "installation-source": "source",
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
             "autoload": {
                 "files": [
                     "phpseclib/bootstrap.php"
@@ -4042,7 +4070,11 @@
                     "dev-master": "1.0.x-dev"
                 }
             },
+<<<<<<< HEAD
             "installation-source": "dist",
+=======
+            "installation-source": "source",
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
             "autoload": {
                 "psr-4": {
                     "Psr\\Cache\\": "src/"

@@ -1,7 +1,10 @@
 <?php
     use Carbon\Carbon;
 ?>
+<<<<<<< HEAD
 
+=======
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
 @extends('layouts.master-student')
 
 @section('content')
@@ -113,11 +116,17 @@
 
                                             <tr>
                                                 <th colspan="4" class="bagroud">
+<<<<<<< HEAD
                                                 <strong>
                                                     <?php
                                                         echo $daysOfWeek[$dayOfWeek].', '.$dateparse->format('d/m').'/'.$dateparse->format('Y');
                                                     ?>
                                                 </strong>
+=======
+                                                <?php
+                                                    echo $daysOfWeek[$dayOfWeek].', '.$dateparse->format('d-m').'-'.$dateparse->format('Y');
+                                                ?>
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
 
                                                 </th>
                                             </tr>
@@ -181,7 +190,7 @@
                                                         echo '<a href='.'/danh-sach-lop?'.'lop='.$subjectlist->MaTTMH.' >'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</a>';
                                                     }
                                                     else{
-                                                        echo '<p>'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</p>';
+                                                        echo '<Strong >'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</Strong>';
                                                     }
 
                                                 ?>
@@ -195,11 +204,13 @@
 
                                                     </p>
                                                 </td>
-                                                <td class=" pt-4">
+
                                                     @if(session()->exists('teacherid'))
-                                                        <a href="/buoi?num={{$subjectlist->MaBuoi}}">ĐIỂM DANH</a>
+                                                        <td class=" pt-4"><a href="/buoi?num={{$subjectlist->MaBuoi}}">ĐIỂM DANH</a></td>
+                                                    @else
+                                                        <td class=" pt-4"></td>
                                                     @endif
-                                                </td>
+
                                             </tr>
 
 
