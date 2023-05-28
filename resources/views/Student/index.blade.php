@@ -1,6 +1,10 @@
 <?php
     use Carbon\Carbon;
 ?>
+<<<<<<< HEAD
+
+=======
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
 @extends('layouts.master-student')
 
 @section('content')
@@ -35,21 +39,19 @@
                                     $nextweek1 = $startOfWeek;
                                     $nextweek2 = $endOfWeek;
                         ?>
-                        <div class="row">
-                            <div class="col-xs-2 text-left">
-
+                        <div class="doi-tuan">
+                            <div class="text-left">
                                 <button class="btn btn-primary ">
                                     <i aria-hidden="true" class="fa fa-chevron-left"></i>
                                 </button>
                             </div>
                             <div class="col-xs-8 text-center">
-
                                 <label class="text-filter"> Từ ngày
                                     <strong><?php echo $startOfWeek->format('d-m').'-'.$startOfWeek->format('Y'); ?>
                                     </strong> đến <strong><?php echo $endOfWeek->format('d-m').'-'.$endOfWeek->format('Y'); ?></strong>
                                 </label>
                             </div>
-                            <div class="col-xs-2 text-right">
+                            <div class="text-right">
                                 <a href="" type="button" class="btn btn-primary ">
                                     <i aria-hidden="true" class="fa fa-chevron-right"></i>
                                 </a>
@@ -102,21 +104,29 @@
                                                 $dayOfWeek = $dateparse->format('l');
                                                 $daysOfWeek = [
                                                                 'Sunday' => 'Chủ nhật',
-                                                                'Monday' => 'Thứ hai',
-                                                                'Tuesday' => 'Thứ ba',
-                                                                'Wednesday' => 'Thứ tư',
-                                                                'Thursday' => 'Thứ năm',
-                                                                'Friday' => 'Thứ sáu',
-                                                                'Saturday' => 'Thứ bảy'
+                                                                'Monday' => 'Thứ 2',
+                                                                'Tuesday' => 'Thứ 3',
+                                                                'Wednesday' => 'Thứ 4',
+                                                                'Thursday' => 'Thứ 5',
+                                                                'Friday' => 'Thứ 6',
+                                                                'Saturday' => 'Thứ 7'
                                                             ];
 
                                             ?>
 
                                             <tr>
                                                 <th colspan="4" class="bagroud">
+<<<<<<< HEAD
+                                                <strong>
+                                                    <?php
+                                                        echo $daysOfWeek[$dayOfWeek].', '.$dateparse->format('d/m').'/'.$dateparse->format('Y');
+                                                    ?>
+                                                </strong>
+=======
                                                 <?php
                                                     echo $daysOfWeek[$dayOfWeek].', '.$dateparse->format('d-m').'-'.$dateparse->format('Y');
                                                 ?>
+>>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
 
                                                 </th>
                                             </tr>

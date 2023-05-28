@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,7 +38,13 @@ Route::get('/danh-sach-sinh-vien',[TeacherController::class,'danhsachsinhvien'])
 Route::get('/tim-kiem',[TeacherController::class,'timkiem']);
 //
 Route::get('/xoa-tim-kiem',[TeacherController::class,'removetimkiem']);
+<<<<<<< HEAD
 //Tìm kiếm trong danh sách sinh viên
 Route::get('/tim-kiem-sinh-vien',[TeacherController::class,'timkiemsinhvien']);
 //
 Route::get('/xoa-tim-kiem-sv',[TeacherController::class,'removetimkiemsv']);
+=======
+//trang hỗ trợ
+Route::get('/ho-tro', [ContactController::class,'contact']);
+
+>>>>>>> b41e5b5a2ba97e0063f4eacd0e53503ee3cf89c7

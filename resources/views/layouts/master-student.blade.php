@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="<?php echo asset('/css/index.css')?>">
     <link rel="stylesheet" href="<?php echo asset('/fonts/fontawesome-free-6.2.1-web/fontawesome-free-6.2.1-web/css/all.css')?>">
     <link href="<?php echo asset('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css')?>" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?php echo asset('/css/class-list.css')?>">
+    <!-- <link rel="stylesheet" href="<?php echo asset('/css/class-list.css')?>"> -->
     <link rel="shortcut icon" type="image/jpg" href="{{asset('/img/logo/hutech-favicon.jpg')}}" width="50%" />
     <title>Trang chủ</title>
 </head>
@@ -36,7 +36,7 @@
         <nav>
             <ul>
                 <li>
-                    <a title="Trang chủ" href="">
+                    <a title="Trang chủ" href="/trang-chu">
                         <i class="fa fa-lg fa-fw fa-home"></i>
                         <span class="menu-item-parent">Trang chủ</span>
                     </a>
@@ -63,7 +63,7 @@
                     </a>
                 </li>
                 <li>
-                    <a title="Hỗ trợ" href="">
+                    <a title="Hỗ trợ" href="/ho-tro">
                         <i class="fa fa-lg fa-fw fa-phone"></i>
                         <span class="menu-item-parent">Hỗ trợ</span>
                     </a>
