@@ -113,13 +113,13 @@
                                     ?>
 {{-- Buoi1--}}
                                     @if($check1 == null)
-                                        <td class="buoi-hoc"><a href="">1</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=1">1</a></td>
                                     @else
                                         <td>1</td>
                                     @endif
 {{-- Buoi2 --}}
                                     @if($check2 == null)
-                                        <td class="buoi-hoc"><a href="">2</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=2">2</a></td>
                                     @else
                                         <td>2</td>
                                     @endif
@@ -127,43 +127,43 @@
                                     @if($check3)
                                         <td>3</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="">3</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=3">3</a></td>
                                     @endif
 {{-- Buoi4 --}}
                                     @if($check4)
                                         <td>4</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="#">4</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=4">4</a></td>
                                     @endif
 {{-- Buoi5 --}}
                                     @if($check5)
                                         <td>5</td>
                                     @else
-                                        <td>5</td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=5">5</a></td>
                                     @endif
 {{-- Buoi6 --}}
                                     @if($check6)
                                         <td>6</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="#">6</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=6">6</a></td>
                                     @endif
 {{-- Buoi7 --}}
                                     @if($check7)
                                         <td>7</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="">7</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=7">7</a></td>
                                     @endif
 {{-- Buoi8 --}}
                                     @if($check8)
                                         <td>8</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="">8</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=8">8</a></td>
                                     @endif
 {{-- Buoi9 --}}
                                     @if($check9)
                                         <td>9</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="">9</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=9">9</a></td>
                                     @endif
                                     <td>10</td>
                                     <td>11</td>

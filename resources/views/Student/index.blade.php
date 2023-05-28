@@ -1,3 +1,6 @@
+<?php
+    use Carbon\Carbon;
+?>
 @extends('layouts.master-student')
 
 @section('content')
@@ -112,7 +115,7 @@
                                             <tr>
                                                 <th colspan="4" class="bagroud">
                                                 <?php
-                                                    echo $daysOfWeek[$dayOfWeek].','.$dateparse->format('d-m').'-'.$dateparse->format('Y');
+                                                    echo $daysOfWeek[$dayOfWeek].', '.$dateparse->format('d-m').'-'.$dateparse->format('Y');
                                                 ?>
 
                                                 </th>
@@ -177,7 +180,7 @@
                                                         echo '<a href='.'/danh-sach-lop?'.'lop='.$subjectlist->MaTTMH.' >'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</a>';
                                                     }
                                                     else{
-                                                        echo '<p>'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</p>';
+                                                        echo '<Strong >'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</Strong>';
                                                     }
 
                                                 ?>
@@ -191,11 +194,13 @@
 
                                                     </p>
                                                 </td>
-                                                <td class=" pt-4">
+
                                                     @if(session()->exists('teacherid'))
-                                                        <a href="/buoi?num={{$subjectlist->MaBuoi}}">ĐIỂM DANH</a>
+                                                        <td class=" pt-4"><a href="/buoi?num={{$subjectlist->MaBuoi}}">ĐIỂM DANH</a></td>
+                                                    @else
+                                                        <td class=" pt-4"></td>
                                                     @endif
-                                                </td>
+
                                             </tr>
 
 
