@@ -82,10 +82,7 @@
                             $listid = $key->MaDanhSach;
                             $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
                         ?>
-                        <?php
 
-                            $studentname = DB::table('sinh_vien')->where('MSSV',$key->MSSV)->distinct()->first();
-                        ?>
                     @endforeach
                         <?php
                             echo $classname->TenMH;
@@ -176,12 +173,12 @@
                                     $stt =0;
                                 ?>
                                 @foreach($getinfoclass as $allstudentlist)
+                                <?php
+                                    // dd($getinfoclass);
+
+                                    $studentname = DB::table('sinh_vien')->where('MSSV',$allstudentlist->MSSV)->first();
+                                ?>
                                 <tr>
-
-
-
-
-
                                     <td>
                                         <?php
                                             $stt+=1;
@@ -198,47 +195,48 @@
                                     </td>
                                     <td><?php echo $studentname->MaLop ?></td>
 
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',1)->exists())
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',1)->exists())
+
                                         <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',2)->exists())
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',2)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',3)->exists())
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',3)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',4)->exists())
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',4)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',5)->exists())
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',5)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',6)->exists())
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',6)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',7)->exists())
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',7)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',8)->exists())
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',8)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',9)->exists())
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',9)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
