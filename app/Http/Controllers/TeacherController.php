@@ -116,14 +116,18 @@ class TeacherController extends Controller
                 //test dữ liệu trả về
                     // dd($request->lop);
                     // dd($request->buoi);
+
                 //Tạo mã QR
+                //tạo session lưu thời gian sau khi parse từ Carbo để đối chiếu so sánh với quyền học sinh lúc bấm
             }
             elseif(session()->get('studentid'))
             {
                 //test dữ liệu trả về
                     // dd($request->lop);
                     // dd($request->buoi);
+                //Ràng buộc thời gian sử dụng để được insert không được vượt thời gian lúc bấm (session ở quyền giảng viên) là 3p
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
+
                 return redirect()->to('/trang-chu');
             }
         }
