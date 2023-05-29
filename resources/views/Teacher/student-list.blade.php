@@ -79,6 +79,7 @@
 
 
                         <?php
+                            $listid = $key->MaDanhSach;
                             $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
                         ?>
                         <?php
@@ -102,66 +103,59 @@
                                     <td>Tên lớp</td>
                                     <?php
                                         $teacherid = session()->get('teacherid');
-                                        $check1 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',1)->first();
-                                        $check2 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',2)->first();
-                                        $check3 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',3)->first();
-                                        $check4 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',4)->first();
-                                        $check5 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',5)->first();
-                                        $check6 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',6)->first();
-                                        $check7 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',7)->first();
-                                        $check8 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',8)->first();
-                                        $check9 = DB::table('danh_sach_sinh_vien')->where('MSGV',$teacherid)->where('MaTTMH',$classname->MaTTMH)->where('MaBuoi',9)->first();
+                                        // $check = DB::table('diem_danh')->where('MaDanhSach','like','%'.$listid.'%')->where('MaBuoi',1)->exists();
                                     ?>
 {{-- Buoi1--}}
-                                    @if($check1 == null)
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=1">1</a></td>
-                                    @else
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',1)->exists())
                                         <td>1</td>
+                                    @else
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=1">1</a></td>
                                     @endif
 {{-- Buoi2 --}}
-                                    @if($check2 == null)
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=2">2</a></td>
-                                    @else
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',2)->exists())
+
                                         <td>2</td>
+                                    @else
+                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=2">2</a></td>
                                     @endif
 {{-- Buoi3 --}}
-                                    @if($check3)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',3)->exists())
                                         <td>3</td>
                                     @else
                                         <td class="buoi-hoc"><a href="/diem-danh?buoi=3">3</a></td>
                                     @endif
 {{-- Buoi4 --}}
-                                    @if($check4)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',4)->exists())
                                         <td>4</td>
                                     @else
                                         <td class="buoi-hoc"><a href="/diem-danh?buoi=4">4</a></td>
                                     @endif
 {{-- Buoi5 --}}
-                                    @if($check5)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',5)->exists())
                                         <td>5</td>
                                     @else
                                         <td class="buoi-hoc"><a href="/diem-danh?buoi=5">5</a></td>
                                     @endif
 {{-- Buoi6 --}}
-                                    @if($check6)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',6)->exists())
                                         <td>6</td>
                                     @else
                                         <td class="buoi-hoc"><a href="/diem-danh?buoi=6">6</a></td>
                                     @endif
 {{-- Buoi7 --}}
-                                    @if($check7)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',7)->exists())
                                         <td>7</td>
                                     @else
                                         <td class="buoi-hoc"><a href="/diem-danh?buoi=7">7</a></td>
                                     @endif
 {{-- Buoi8 --}}
-                                    @if($check8)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',8)->exists())
                                         <td>8</td>
                                     @else
                                         <td class="buoi-hoc"><a href="/diem-danh?buoi=8">8</a></td>
                                     @endif
 {{-- Buoi9 --}}
-                                    @if($check9)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',9)->exists())
                                         <td>9</td>
                                     @else
                                         <td class="buoi-hoc"><a href="/diem-danh?buoi=9">9</a></td>
@@ -174,16 +168,19 @@
                                     <td>15</td>
                                     <td class="DKT"><a href="">16</a></td>
                                     <td>ĐQT</td>
+
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
                                 <?php
                                     $stt =0;
                                 ?>
-
-
                                 @foreach($getinfoclass as $allstudentlist)
+                                <tr>
+
+
+
+
 
                                     <td>
                                         <?php
@@ -201,48 +198,47 @@
                                     </td>
                                     <td><?php echo $studentname->MaLop ?></td>
 
-
-                                    @if($allstudentlist->MaBuoi == 1)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',1)->exists())
                                         <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if($allstudentlist->MaBuoi == 2)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',2)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if($allstudentlist->MaBuoi == 3)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',3)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if($allstudentlist->MaBuoi == 4)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',4)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if($allstudentlist->MaBuoi == 5)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',5)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if($allstudentlist->MaBuoi == 6)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',6)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if($allstudentlist->MaBuoi == 7)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',7)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if($allstudentlist->MaBuoi == 8)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',8)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
                                     @endif
-                                    @if($allstudentlist->MaBuoi == 9)
+                                    @if(DB::table('diem_danh')->where('MaDanhSach',$listid)->where('MaBuoi',9)->exists())
                                     <td>x</td>
                                     @else
                                         <td></td>
@@ -251,13 +247,8 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <?php
-                                        $checkall = DB::table('danh_sach_sinh_vien')->where('MSSV',$studentname->MSSV)->whereNotNull('MaBuoi')->distinct()->count('MaBuoi');
-                                    ?>
-                                    @if($checkall < 9)
-                                    <td></td>
-                                    <td></td>
-                                    @else
+
+                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',9)->exists())
                                         @if($allstudentlist->Diem14 != null)
                                             <td>$allstudentlist->Diem14</td>
                                         @else
@@ -274,14 +265,23 @@
                                             $diemqt = DB::table('ket_qua')->where('MaKQSV',$allstudentlist->MaKQSV)->first();
                                         ?>
                                         @if($diemqt->DiemQT != null)
-                                            <td><?php echo $diemqt->DiemQT ?></td>
+                                            <td>
+                                                <?php echo $diemqt->DiemQT ?>
+                                            </td>
                                         @else
                                             <td></td>
                                         @endif
+
+                                    @else
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     @endif
+
                                 </tr>
+                                @endforeach
                             </tbody>
-                            @endforeach
+
 
                         </table>
                     </div>
@@ -297,7 +297,7 @@
                     </ul>
                     <input type="hidden" name="limitstart" value="0">
                 </div>
-            </div>
+            </div> --}}
         </div>
 @stop
 
