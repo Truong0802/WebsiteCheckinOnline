@@ -106,56 +106,56 @@
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',1)->exists())
                                         <td>1</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=1">1</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=1">1</a></td>
                                     @endif
 {{-- Buoi2 --}}
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',2)->exists())
 
                                         <td>2</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=2">2</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=2">2</a></td>
                                     @endif
 {{-- Buoi3 --}}
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',3)->exists())
                                         <td>3</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=3">3</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=3">3</a></td>
                                     @endif
 {{-- Buoi4 --}}
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',4)->exists())
                                         <td>4</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=4">4</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=4">4</a></td>
                                     @endif
 {{-- Buoi5 --}}
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',5)->exists())
                                         <td>5</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=5">5</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=5">5</a></td>
                                     @endif
 {{-- Buoi6 --}}
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',6)->exists())
                                         <td>6</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=6">6</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=6">6</a></td>
                                     @endif
 {{-- Buoi7 --}}
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',7)->exists())
                                         <td>7</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=7">7</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=7">7</a></td>
                                     @endif
 {{-- Buoi8 --}}
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',8)->exists())
                                         <td>8</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=8">8</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=8">8</a></td>
                                     @endif
 {{-- Buoi9 --}}
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',9)->exists())
                                         <td>9</td>
                                     @else
-                                        <td class="buoi-hoc"><a href="/diem-danh?buoi=9">9</a></td>
+                                        <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=9">9</a></td>
                                     @endif
                                     <td>10</td>
                                     <td>11</td>

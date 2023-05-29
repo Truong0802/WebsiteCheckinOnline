@@ -106,4 +106,25 @@ class TeacherController extends Controller
         {
             return redirect()->back();
         }
+
+        //
+
+        public function DiemDanh(Request $request)
+        {
+            if(session()->get('teacherid'))
+            {
+                //test dữ liệu trả về
+                    // dd($request->lop);
+                    // dd($request->buoi);
+                //Tạo mã QR
+            }
+            elseif(session()->get('studentid'))
+            {
+                //test dữ liệu trả về
+                    // dd($request->lop);
+                    // dd($request->buoi);
+                //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
+                return redirect()->to('/trang-chu');
+            }
+        }
 }

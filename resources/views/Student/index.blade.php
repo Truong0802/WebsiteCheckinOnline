@@ -1,10 +1,6 @@
 <?php
     use Carbon\Carbon;
 ?>
-<<<<<<< HEAD
-
-=======
->>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
 @extends('layouts.master-student')
 
 @section('content')
@@ -116,17 +112,11 @@
 
                                             <tr>
                                                 <th colspan="4" class="bagroud">
-<<<<<<< HEAD
                                                 <strong>
                                                     <?php
                                                         echo $daysOfWeek[$dayOfWeek].', '.$dateparse->format('d/m').'/'.$dateparse->format('Y');
                                                     ?>
                                                 </strong>
-=======
-                                                <?php
-                                                    echo $daysOfWeek[$dayOfWeek].', '.$dateparse->format('d-m').'-'.$dateparse->format('Y');
-                                                ?>
->>>>>>> f318c43f3165efb7a1d5c403b4ae506fa9d8f004
 
                                                 </th>
                                             </tr>
