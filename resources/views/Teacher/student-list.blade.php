@@ -253,10 +253,15 @@
                                             <td></td>
                                         @endif
                                         <td></td>
+
                                         @if($allstudentlist->Diem16 != null)
                                             <td>$allstudentlist->Diem16</td>
                                         @else
-                                            <td></td>
+                                            @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
+                      {{-- Nhập điểm --}}       <td><input type="number"></td>  --}}
+                                            @else
+                                                <td></td>
+                                            @endif
                                         @endif
 
                                         <?php
