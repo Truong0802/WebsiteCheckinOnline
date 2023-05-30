@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SinhVienController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +46,9 @@ Route::get('/tim-kiem-sinh-vien',[TeacherController::class,'timkiemsinhvien']);
 Route::get('/xoa-tim-kiem-sv',[TeacherController::class,'removetimkiemsv']);
 //Điểm danh
 Route::get('/diem-danh',[TeacherController::class,'DiemDanh']);
+
+//Hỗ trợ
+Route::get('/ho-tro', [ContactController::class, 'contact']);
+
+//Trang admin 
+Route::get('/admin', [SinhVienController::class, 'admin']);

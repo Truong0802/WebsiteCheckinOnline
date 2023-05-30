@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class SinhVienController extends Controller
 {
-   
-}
+    public function admin()
+    {
+        return view('admin/student-add');
+    }
+}   
