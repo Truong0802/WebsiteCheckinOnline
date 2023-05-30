@@ -54,3 +54,5 @@ Route::get('/ho-tro', [ContactController::class, 'contact']);
 Route::get('/admin', [SinhVienController::class, 'admin']);
 // Chọn option
 Route::post('/option-row-14', [TeacherController::class,'ChiaDiem']);
+//nĐiểm cột 16
+Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
