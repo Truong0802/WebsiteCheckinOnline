@@ -188,6 +188,10 @@
                                     <?php
                                         $stt =0;
                                     ?>
+                            <form action="/nhap-diem" method="post">
+                                @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
+                                    <button type="submit" class="btn btn-primary" >Xác nhận điểm</button>
+                                @endif
                                     @foreach($getinfoclass as $allstudentlist)
                                     <?php
                                         // dd($getinfoclass);
@@ -292,7 +296,7 @@
                                             {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
                                                 @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
                                                     {{-- Nhập điểm --}}
-                                                    <td class="score-input"><input type="text"></td>
+                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" >{{session()->push('row16',$allstudentlist->MaDanhSach)}}</td>
                                                 @else
                                                     <td></td>
                                                 @endif
@@ -318,7 +322,8 @@
                                     @endif
                                 </tr>
                                 @endforeach
-
+                                @csrf
+                            </form>
                             </tbody>
 
 

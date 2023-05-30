@@ -289,4 +289,39 @@ class TeacherController extends Controller
 
 
         }
+
+        public function DiemCot16(Request $request)
+        {
+            // dd($request->row16);
+            $limit = count($request->row16);
+
+            $listid = [];
+            $listid =session()->get('row16');
+
+            $i =0;
+
+            foreach($listid as $key)
+            {
+                if($i < $limit)
+                {
+                    $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
+                    $MaKQSV = $findrow14->MSSV.$findrow14->MaTTMH.$findrow14->MaHK;
+                    // dd($MaKQSV);
+                    $row16UpDate = DB::table('danh_sach_sinh_vien')
+                        ->where('MaDanhSach',$findrow14->MaDanhSach)
+                        ->update(['Diem16' => round($request->row16[$i], 2)]);
+
+                //Tính ra điểm Qúa trình
+                    $result = $findrow14->Diem14 + $request->row16[$i];
+                    $DQT = DB::table('ket_qua')
+                    ->where('MaKQSV',$MaKQSV)
+                    ->update(['DiemQT' => $result]);
+                    $i++;
+                }
+
+
+            }
+            session()->forget('row16');// Sau khi xử lý xóa session
+            return redirect('/danh-sach-sinh-vien?lop='.$findrow14->MaTTMH);
+        }
 }

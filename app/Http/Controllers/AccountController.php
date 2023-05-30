@@ -76,6 +76,7 @@ class AccountController extends Controller
         session()->forget('malop');
         session()->forget('mon-hoc');
         session()->forget('countdown'); //Log out là xóa luôn thời gian đếm a.k.a hủy thời hạn điểm danh
+        session()->forget('row16');
         return redirect()->to('/');
     }
 
