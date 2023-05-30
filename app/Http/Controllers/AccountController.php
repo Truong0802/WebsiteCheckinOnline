@@ -27,7 +27,7 @@ class AccountController extends Controller
 
                 return redirect()->to('/trang-chu');
             }
-            
+
         }
         else{
             return view('Account.login');
@@ -75,6 +75,7 @@ class AccountController extends Controller
         session()->forget('ChucVu');
         session()->forget('malop');
         session()->forget('mon-hoc');
+        session()->forget('countdown'); //Log out là xóa luôn thời gian đếm a.k.a hủy thời hạn điểm danh
         return redirect()->to('/');
     }
 
