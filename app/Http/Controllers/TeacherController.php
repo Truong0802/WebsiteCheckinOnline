@@ -312,7 +312,7 @@ class TeacherController extends Controller
                         ->update(['Diem16' => round($request->row16[$i], 2)]);
 
                 //Tính ra điểm Qúa trình
-                    $result = $findrow14->Diem14 + $request->row16[$i];
+                    $result = $findrow14->Diem14 + round($request->row16[$i], 2);
                     $DQT = DB::table('ket_qua')
                     ->where('MaKQSV',$MaKQSV)
                     ->update(['DiemQT' => $result]);
