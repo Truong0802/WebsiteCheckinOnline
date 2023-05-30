@@ -1,16 +1,16 @@
-/* table 
+/* table
 {
     border-collapse: separate;
     text-indent: initial;
     border-spacing: 2px;
 }
 
-table .smart-form 
+table .smart-form
 {
     position: static;
 }
 
-.smart-form 
+.smart-form
 {
     margin: 0;
     outline: 0;
@@ -18,9 +18,9 @@ table .smart-form
     position: relative;
 }
 
-.smart-form *, 
-.smart-form :after, 
-.smart-form :before 
+.smart-form *,
+.smart-form :after,
+.smart-form :before
 {
     margin: 0;
     padding: 0;
@@ -28,21 +28,21 @@ table .smart-form
     -moz-box-sizing: content-box;
 }
 
-thead 
+thead
 {
     display: table-header-group;
     vertical-align: middle;
     border-color: inherit;
 }
 
-tr 
+tr
 {
     display: table-row;
     vertical-align: inherit;
     border-color: inherit;
 }
 
-tbody 
+tbody
 {
     display: table-row-group;
     vertical-align: middle;
@@ -55,7 +55,7 @@ tbody
     line-height: 1.2;
 }
 
-.badge 
+.badge
 {
     display: inline-block;
     min-width: 10px;
@@ -72,12 +72,12 @@ tbody
     border-radius: 10px;
 }
 
-.smart-form .badge 
+.smart-form .badge
 {
     padding: 3px 7px;
 }
 
-.bg-color-greenLight 
+.bg-color-greenLight
 {
     background-color: #71843f!important;
 } */
@@ -97,7 +97,7 @@ tbody
 {
     position: relative;
     display: grid;
-    min-height: 500px;
+    /* min-height: 500px; */
     background: var(--white);
     padding: 20px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
@@ -115,7 +115,7 @@ thead tr td
     text-align: center;
 }
 
-tbody tr td 
+tbody tr td
 {
     text-align: center;
 }
@@ -141,8 +141,8 @@ tbody tr td
     padding: 8px;
 }
 
-.detail table tbody tr, 
-.detail table tbody td 
+.detail table tbody tr,
+.detail table tbody td
 {
     border: 1px solid #ddd;
     padding: 8px;
@@ -156,7 +156,7 @@ tbody tr td
 .detail .class-list table tr
 {
     color: var(--black1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);    
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .detail .class-list table tbody tr:hover
@@ -171,22 +171,22 @@ tbody tr td
 }
 
 .detail .class-list table tr td:last-child
-{   
+{
     text-align: center;
 }
 
-.container 
+.container
 {
     margin-left: 10px;
 }
 
-.text-center 
+.text-center
 {
     text-align: center;
     align-items: center;
 }
 
-.pagination 
+.pagination
 {
     display: inline-block;
     padding-left: 0;
@@ -195,14 +195,14 @@ tbody tr td
     border-radius: 4px;
 }
 
-.pagination .pagination-list, 
-.pagination ol 
+.pagination .pagination-list,
+.pagination ol
 {
     margin-top: 0;
     margin-bottom: 10px;
 }
 
-ul 
+ul
 {
     list-style: none;
     margin: 0;
@@ -216,7 +216,7 @@ ul
     padding-inline-start: 40px;
 }
 
-.pagination-list li.current 
+.pagination-list li.current
 {
     background: #0d6efd;
     padding: 5px;
@@ -246,7 +246,7 @@ ul
     text-decoration: none;
 }
 
-.pagination-list li 
+.pagination-list li
 {
     border: 1px solid #e1e1e1;
     display: inline-block;

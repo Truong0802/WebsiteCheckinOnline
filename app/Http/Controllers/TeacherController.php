@@ -72,17 +72,22 @@ class TeacherController extends Controller
         {
             return redirect()->to('/danh-sach-lop');
         }
-
+//
         public function danhsachsinhvien(Request $request)
         {
             if(session()->exists('teacherid')){
                 if($request->lop){
                     $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->distinct()->paginate(20);
-                    if($classlist)
+
+                    $datatemp = [];
+                    foreach($classlist as $checkData)
+                    {
+                        $datatemp = $checkData;
+                    }
+                    if($datatemp != null)
                     {
                         return view('Teacher/student-list',['getinfoclass' => $classlist] );
                     }
-
                     else
                     {
                         return redirect()->to('/trang-chu');

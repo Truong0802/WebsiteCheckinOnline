@@ -242,7 +242,6 @@
                                         @endif
                                         @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',9)->exists())
                                         <td>x</td>
-<<<<<<< HEAD
                                         @else
                                             <td></td>
                                         @endif
@@ -263,7 +262,7 @@
                                                 <td>$allstudentlist->Diem16</td>
                                             @else
                                                 @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
-                        {{-- Nhập điểm --}}       <td><input type="number"></td>  --}}
+                        {{-- Nhập điểm --}}       <td><input type="number"></td>
                                                 @else
                                                     <td></td>
                                                 @endif
@@ -276,99 +275,11 @@
                                                 <td>
                                                     <?php echo $diemqt->DiemQT ?>
                                                 </td>
-=======
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',2)->exists())
-                                    <td>x</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',3)->exists())
-                                    <td>x</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',4)->exists())
-                                    <td>x</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',5)->exists())
-                                    <td>x</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',6)->exists())
-                                    <td>x</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',7)->exists())
-                                    <td>x</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',8)->exists())
-                                    <td>x</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',9)->exists())
-                                    <td>x</td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    <style>
-                                        .detail .class-list table tr .score-input
-                                        {
-                                            padding: 0;
-                                        }
-
-                                        .table tbody tr td input
-                                        {
-                                            padding: 10px;
-                                            width: 35px;
-                                            border: none;
-                                        }
-                                    </style>
-                                    <td class="score-input"><input type="text"></td>
-                                    <td class="score-input"><input type="text"></td>
-                                    <td class="score-input"><input type="text"></td>
-                                    <td class="score-input"><input type="text"></td>
-
-                                    @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',9)->exists())
-                                        <!-- diem 14 -->
-                                        @if($allstudentlist->Diem14 != null)
-                                            <td>$allstudentlist->Diem14</td>
-                                        @else
-                                            <td></td>
-                                        @endif
-                                            <td></td>
-
-                                        <!-- diem 16 -->
-                                        @if($allstudentlist->Diem16 != null)
-                                            <td>$allstudentlist->Diem16</td>
-                                        @else
-                                            @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
-                                                <!-- Nhập điểm      -->
-                                                <td class="score-input"><input type="number"></td>
->>>>>>> 34cf6f2005b379cc02d237abbb89070355009028
                                             @else
                                                 <td></td>
                                             @endif
 
-                                        @else
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        @endif
-<<<<<<< HEAD
 
-                                    </tr>
-
-=======
                                     @else
                                         <td></td>
                                         <td></td>
@@ -376,7 +287,6 @@
                                         <td></td>
                                     @endif
                                 </tr>
->>>>>>> 34cf6f2005b379cc02d237abbb89070355009028
                                 @endforeach
 
                             </tbody>
