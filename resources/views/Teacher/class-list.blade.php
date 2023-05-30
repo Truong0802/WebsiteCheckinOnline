@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            @if(session()->get('ChucVu') == 'QL')
+
             <div class="container">
                 <form action='/tim-kiem' method='get'>
                     <div class="row">
@@ -71,13 +71,14 @@
                                 <input type="text" class="form-control" id="subject-name" name="subjectname">
                             </div>
                         </div>
-
+                        @if(session()->get('ChucVu') == 'QL' && session()->get('ChucVu') == 'AM')
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="lecturer-name">Tên giảng viên:</label>
                                 <input type="text" class="form-control" id="lecturer-name" name="lecturename">
                             </div>
                         </div>
+                        @endif
 
                     </div>
                     <br>
@@ -86,7 +87,7 @@
                     @csrf
                 </form>
             </div>
-            @endif
+
 
             <div class="col-md-12 detail">
                 <div class="class-list">

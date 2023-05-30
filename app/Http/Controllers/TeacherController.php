@@ -35,7 +35,36 @@ class TeacherController extends Controller
 
         public function timkiem(Request $request)
         {
-            if(session()->exists('teacherid')){
+            if(session()->exists('teacherid') && session()->get('ChucVu') != 'QL'){
+                $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
+                $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
+                $coursename = DB::table('khoa_hoc')->where('KhoaHoc', $request->coursename)->first();
+                $courselist = DB::table('khoa_hoc')->where('KhoaHoc', $request->courselist)->first();
+
+                    $allsubject = DB::table('lich_giang_day')->where('MSGV',session()->get('teacherid'))->where('MaNgay','like','1%')
+                    ->when($teacherid, function ($query) use ($teacherid) {
+                        return $query->where('MSGV', $teacherid->MSGV)->distinct();
+                    })
+                    ->when($subjectname, function ($query) use ($subjectname) {
+                        return $query->where('MaTTMH', $subjectname->MaTTMH)->distinct();
+                    })
+                    ->when($coursename, function ($query) use ($coursename) {
+                        $class = DB::table('lop')->where('KhoaHoc', $coursename->KhoaHoc)->first();
+                        return $query->where('MaLop', $class->MaLop)->distinct();
+                    })
+                    ->when($courselist, function ($query) use ($courselist) {
+                        $findclass = DB::table('lop')->where('KhoaHoc', $courselist->KhoaHoc)->first();
+                        return $query->where('MaLop', $findclass->MaLop);
+                    })
+                    ->when(!$teacherid && !$subjectname && !$coursename && !$courselist, function ($query) use ($request) {
+                        return $query->where('MaLop', $request->classname)->distinct();
+                    })
+                    ->paginate(5);
+
+                return view('Teacher/class-list', ['getallsubject' => $allsubject]);
+            }
+            elseif(session()->exists('teacherid') && session()->get('ChucVu') != 'GV')
+            {
                 $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
                 $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
                 $coursename = DB::table('khoa_hoc')->where('KhoaHoc', $request->coursename)->first();
@@ -61,7 +90,7 @@ class TeacherController extends Controller
                     })
                     ->paginate(5);
 
-                return view('Teacher/class-list', ['getallclass' => $allsubject]);
+                return view('Teacher/class-list', ['getallsubject' => $allsubject]);
             }
             else{
                 return redirect()->to('/');
