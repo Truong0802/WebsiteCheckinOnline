@@ -228,7 +228,58 @@ class TeacherController extends Controller
                         ->update(['Diem14' => $latestpoint]);
                     }
                 }
-                return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH)->withInput();
+                return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
+            }
+            elseif($request->input('divide3'))
+            {
+                $option2 = $request->input('divide3');
+                $findlop = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like', $option2.'%')->distinct()->first();
+                $listUpToRow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like', $option2.'%')->distinct()->get();
+                // dd($listUpToRow14);
+                foreach($listUpToRow14 as $resultCheck)
+                {
+
+                    $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
+
+
+
+                    if($countChecked  >= 7)
+                    {
+                        $input = $countChecked; // Tổng số buổi đã điểm danh
+                        $divide = $input%3;
+                        if($divide == 0) // nếu số buổi đi là 3 hoặc 6 hoặc 9
+                        {
+                            $result = $input/3;
+
+                        }
+                        else{
+                            $afterDivide = $input-$divide; //Tách buổi %3 ra khỏi phần thừa
+
+
+                            if($afterDivide %3 == 0)
+                            {
+                                $result = $afterDivide/3; //Điểm theo tiêu chuẩn 3 3 3
+
+                                if($divide %2 == 0) //Nếu thừa 2 buổi thì cộng 2 buổi đó chỉ bằng 0.5
+                                {
+                                    $temp=0.5;
+                                }
+                                else{ //Nếu chỉ thừa ra 1 buổi thì điểm cộng thêm == 0
+                                    $temp = 0;
+                                }
+                                $result = $result + $temp;
+
+                            }
+
+
+                        }
+
+                        $row14UpDate = DB::table('danh_sach_sinh_vien')
+                        ->where('MSSV',$resultCheck->MSSV)
+                        ->update(['Diem14' => $result]);
+                    }
+                }
+                return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
             }
 
 

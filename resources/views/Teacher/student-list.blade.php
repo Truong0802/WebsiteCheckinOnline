@@ -73,10 +73,15 @@
             @endforeach
             <br><br>
             <div class="container">
-                <strong>Lựa chọn cách tính điểm chuyên cần</strong>
+                <strong>Hãy lựa chọn cách tính điểm chuyên cần</strong>
                     <form action="/option-row-14" method="post">
                         <input type="radio" name="divideall" value="{{$listid}}">
-                        <label>Chia đều</label>
+                        <label>Chia đều 9 buổi 3 điểm</label>
+
+                        <input type="radio" name="divide3" value="{{$listid}}">
+                        <label>Chia lấy 3 buổi 1 điểm</label>
+
+                        <br>
                         <button type="submit" class="btn btn-primary" >Chọn</button>
                     @csrf
                     </form>
