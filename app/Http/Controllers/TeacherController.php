@@ -99,7 +99,7 @@ class TeacherController extends Controller
 
         public function removetimkiem()
         {
-            return redirect()->to('/danh-sach-lop');
+            return redirect()->to('/trang-chu');
         }
 //
         public function danhsachsinhvien(Request $request)
@@ -130,20 +130,23 @@ class TeacherController extends Controller
             }
 
         }
-        public function timkiemsinhvien(Request $request){
-            if(session()->exists('teacherid')){
-                $studentname = DB::table('sinh_vien')->where('HoTenSV','like',$request->studentname)->first();
-                $studentid = $request->mssv;
+        public function timkiemsinhvien(Request $request)
+        {
+            if (session()->has('teacherid')) {
                 $searchlist = DB::table('danh_sach_sinh_vien')
-                ->when($studentname, function ($query) use ($studentname) {
-                    return $query->where('MSSV', $studentname->MSSV)->distinct();
+                ->when($request->studentname, function ($query) use ($request) {
+                    return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
+                        ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
                 })
-                ->When($studentid, function($query) use ($studentid){
-                    return $query->where('MSSV',$studentid)->distinct();
-                })->paginate(10);
-                return view('Teacher/student-list',['getinfoclass' =>  $searchlist] );
+                ->when($request->mssv, function ($query) use ($request) {
+                    return $query->where('danh_sach_sinh_vien.MSSV', $request->mssv);
+                })
+                ->paginate(10);
+
+                return view('Teacher/student-list', ['getinfoclass' => $searchlist]);
             }
         }
+
         public function removetimkiemsv()
         {
             return redirect()->back();
