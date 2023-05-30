@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
+use Carbon\Carbon;
 
 class TeacherController extends Controller
 {
@@ -77,9 +78,16 @@ class TeacherController extends Controller
             if(session()->exists('teacherid')){
                 if($request->lop){
                     $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->distinct()->paginate(20);
+                    if($classlist)
+                    {
+                        return view('Teacher/student-list',['getinfoclass' => $classlist] );
+                    }
 
+                    else
+                    {
+                        return redirect()->to('/trang-chu');
+                    }
 
-                    return view('Teacher/student-list',['getinfoclass' => $classlist] );
                 }
 
             }
@@ -119,14 +127,28 @@ class TeacherController extends Controller
 
                 //Tạo mã QR
                 //tạo session lưu thời gian sau khi parse từ Carbo để đối chiếu so sánh với quyền học sinh lúc bấm
+                $timestart = Carbon::now();
+                session()->put('countdown',$timestart);
             }
             elseif(session()->get('studentid'))
             {
+
                 //test dữ liệu trả về
                     // dd($request->lop);
                     // dd($request->buoi);
                 //Ràng buộc thời gian sử dụng để được insert không được vượt thời gian lúc bấm (session ở quyền giảng viên) là 3p
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
+                $findlistidofstudent = DB::table('danh_sach_sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                $timecheckin = Carbon::now();
+                $diff = $timecheckin->diff(session()->get('countdown'));
+                // dd($diff->i);
+                if( $diff->i <= 3){
+                    $studentchecked = DB::table('diem_danh')->insert([
+                        'MaDanhSach' => $findlistidofstudent->MaDanhSach,
+                        'MaBuoi' => $request->buoi,
+                        'NgayDiemDanh' => $timecheckin,
+                    ]);
+                }
 
                 return redirect()->to('/trang-chu');
             }

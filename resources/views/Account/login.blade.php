@@ -109,7 +109,6 @@
                                             </label>
                                         </section>
                                         <section>
-                                            <label class="label">Loại tài khoản</label>
                                             <style>
                                                 .select-form
                                                 {

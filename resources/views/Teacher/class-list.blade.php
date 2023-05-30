@@ -1,5 +1,5 @@
 @extends('layouts.master-teacher')
-
+<title>Danh sách lớp</title>
 @section('content')
         <div id="ribbon">
             <span class="ribbon-button-alignment">

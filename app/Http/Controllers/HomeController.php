@@ -44,9 +44,18 @@ class HomeController extends Controller
 
                 //$allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaTTMH',$request->MonHoc)->distinct()->get();
                 // $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->distinct()->get();
+
                     $teacherid = session()->get('teacherid');
-                    $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->distinct()->paginate(5);
-                return view('Teacher/class-list',['getallsubject' => $allsubject]);
+                    $findsubjectid = DB::table('lich_giang_day')->where('MSGV',$teacherid)->distinct()->first();
+                    $firstsubjectid = substr($findsubjectid->MaNgay,0,1);
+                    // dd($firstsubjectid);
+                    if($firstsubjectid == '1')
+                    {
+                        $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaNgay','like',$firstsubjectid.'%')->distinct()->paginate(5);
+                        return view('Teacher/class-list',['getallsubject' => $allsubject]);
+                    }
+
+
             }
             else{
                 return redirect()->to('/');
