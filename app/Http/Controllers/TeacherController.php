@@ -118,11 +118,11 @@ class TeacherController extends Controller
                     {
                         $datatemp = $checkData;
                     }
-                    if($datatemp != null)
+                    if($datatemp != null) //Nếu lớp có danh sách
                     {
                         return view('Teacher/student-list',['getinfoclass' => $classlist] );
                     }
-                    else
+                    else //Nếu lớp chưa có danh sách
                     {
                         return redirect()->to('/trang-chu');
                     }
