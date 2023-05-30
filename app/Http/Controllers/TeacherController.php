@@ -281,6 +281,11 @@ class TeacherController extends Controller
                 }
                 return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
             }
+            else //Nếu không chọn gì trong các option tính điểm
+            {
+                return redirect()->back()->withInput();
+
+            }
 
 
         }
