@@ -84,5 +84,7 @@
     <div id="main" role="main">
         @yield('content')
     </div>
+    
+    <script src="<?php echo asset('/js/pop-up.js')?>"></script>
 </body>
 </html>

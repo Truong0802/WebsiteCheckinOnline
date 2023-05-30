@@ -75,18 +75,98 @@
             <br><br>
             @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
                 <div class="container">
-                    <strong>Hãy lựa chọn cách tính điểm chuyên cần</strong>
-                        <form action="/option-row-14" method="post">
-                            <input type="radio" name="divideall" value="{{$listid}}">
-                            <label>Chia đều 9 buổi 3 điểm</label>
+                    <strong>Hãy lựa chọn cách tính điểm chuyên cần:</strong>
+                    <form action="/option-row-14" method="post">
+                        <br>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="radio" name="divideall" value="{{$listid}}" id="divideall">
+                                <label>Chia đều 3 điểm cho 9 buổi</label>
+                                <button type="button" id="openModal1">Chi tiết</button>
+                                <div id="myModal1" class="modal1">
+                                    <div class="modal-content">
+                                        <span class="close1">&times;</span>
+                                        <h2>Hướng dẫn</h2>
+                                        <p>Chia 3 điểm chuyên cần đều cho 9 buổi ( 0.33 điểm cho từng buổi )</p>
+                                        <p>VD: Điểm danh được 9 buổi = 2.97 ( Làm tròn thành 3 ), Điểm danh được 7 buổi = 2.31 ( Làm tròn thành 2 )</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="radio" name="divide3" value="{{$listid}}" id="divide3">
+                                <label>Chia lấy 3 buổi 1 điểm</label>
+                                <button type="button" id="openModal2">Chi tiết</button>
+                                <div id="myModal2" class="modal2">
+                                    <div class="modal-content">
+                                        <span class="close2">&times;</span>
+                                        <h2>Hướng dẫn</h2>
+                                        <p>Chia 9 buổi ra thành 3 buổi nhỏ</p>
+                                        <p>Cách tính: 3 buổi nhỏ = 1 điểm, 2 buổi nhỏ = 0.5 điểm, 1 buổi nhỏ = 0 điểm</p>
+                                        <p>VD: Điểm danh được 3 3 3 ( Buổi nhỏ ) = 3 điểm, Điểm danh 3 2 1 ( Buổi nhỏ ) = 1.5 điểm </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary" >Chọn</button>
+                    @csrf
+                    </form>
+                    <script>
+                        var divideall = document.getElementById("divideall");
+                        var divide3 = document.getElementById("divide3");
 
-                            <input type="radio" name="divide3" value="{{$listid}}">
-                            <label>Chia lấy 3 buổi 1 điểm</label>
+                        var modal1 = document.getElementById("myModal1");
+                        var btn1 = document.getElementById("openModal1");
+                        var modal2 = document.getElementById("myModal2");
+                        var btn2 = document.getElementById("openModal2");
+                        var closeBtn1 = document.getElementsByClassName("close1")[0];
+                        var closeBtn2 = document.getElementsByClassName("close2")[0];
 
-                            <br>
-                            <button type="submit" class="btn btn-primary" >Chọn</button>
-                        @csrf
-                        </form>
+                        divideall.addEventListener("change", function() {
+                            if (this.checked) {
+                                divide3.checked = false;
+                            }
+                        });
+
+                        divide3.addEventListener("change", function() {
+                            if (this.checked) {
+                                divideall.checked = false;
+                            }
+                        });
+
+                        btn1.addEventListener("click", function() 
+                        {
+                            modal1.style.display = "block";
+                        });
+
+                        btn2.addEventListener("click", function() 
+                        {
+                            modal2.style.display = "block";
+                        });
+
+
+                        closeBtn1.addEventListener("click", function() 
+                        {
+                            modal1.style.display = "none";
+                        });
+
+                        closeBtn2.addEventListener("click", function() 
+                        {
+                            modal2.style.display = "none";
+                        });
+
+                        window.addEventListener("click", function(event) 
+                        {
+                            if (event.target == modal1 && event.target == modal2) 
+                            {
+                                modal1.style.display = "none";
+                                modal2.style.display = "none";
+                            }
+                        });
+                    </script>
                 </div>
             @endif
             <br><br>
