@@ -245,12 +245,27 @@
                                         @else
                                             <td></td>
                                         @endif
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+
+                                        <style>
+                                            .detail .class-list table tr .score-input
+                                            {
+                                                padding: 0;
+                                            }
+
+                                            .table tbody tr td input
+                                            {
+                                                padding: 10px;
+                                                width: 35px;
+                                                border: none;
+                                            }
+                                        </style>
+                                        <td class="score-input"><input type="text"></td>
+                                        <td class="score-input"><input type="text"></td>
+                                        <td class="score-input"><input type="text"></td>
+                                        <td class="score-input"><input type="text"></td>
 
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',9)->exists())
+                                            <!-- Điểm 14 -->
                                             @if($allstudentlist->Diem14 != null)
                                                 <td>$allstudentlist->Diem14</td>
                                             @else
@@ -258,11 +273,13 @@
                                             @endif
                                             <td></td>
 
+                                            <!-- Điểm 16 -->
                                             @if($allstudentlist->Diem16 != null)
                                                 <td>$allstudentlist->Diem16</td>
                                             @else
                                                 @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
-                        {{-- Nhập điểm --}}       <td><input type="number"></td>
+                                                    {{-- Nhập điểm --}}       
+                                                    <td class="score-input"><input type="text"></td>
                                                 @else
                                                     <td></td>
                                                 @endif
