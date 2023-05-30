@@ -277,8 +277,9 @@
                                             @if($allstudentlist->Diem16 != null)
                                                 <td>$allstudentlist->Diem16</td>
                                             @else
+                                            {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
                                                 @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
-                                                    {{-- Nhập điểm --}}       
+                                                    {{-- Nhập điểm --}}
                                                     <td class="score-input"><input type="text"></td>
                                                 @else
                                                     <td></td>

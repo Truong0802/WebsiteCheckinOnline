@@ -132,7 +132,7 @@ class TeacherController extends Controller
         }
         public function timkiemsinhvien(Request $request){
             if(session()->exists('teacherid')){
-                $studentname = DB::table('sinh_vien')->where('HoTenSV','like',$request->studentname)->first();
+                $studentname = DB::table('sinh_vien')->where('HoTenSV','like','%'.$request->studentname.'%')->first();
                 $studentid = $request->mssv;
                 $searchlist = DB::table('danh_sach_sinh_vien')
                 ->when($studentname, function ($query) use ($studentname) {
