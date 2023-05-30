@@ -173,7 +173,7 @@ class TeacherController extends Controller
                 $timestart = Carbon::now();
                 session()->put('countdown',$timestart);
             }
-            elseif(session()->get('studentid'))
+            elseif(session()->has('studentid'))
             {
 
                 //test dữ liệu trả về
