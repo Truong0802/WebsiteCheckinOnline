@@ -2,7 +2,7 @@
     use Carbon\Carbon;
 ?>
 @extends('layouts.master-student')
-<title>Trang chủ</title>
+
 @section('content')
         <div id="ribbon">
             <span class="ribbon-button-alignment">

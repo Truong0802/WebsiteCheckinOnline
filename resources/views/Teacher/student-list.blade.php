@@ -1,5 +1,4 @@
 @extends('layouts.master-teacher')
-<title>Danh sách sinh viên</title>
 @section('content')
 
         <div id="ribbon">
@@ -64,7 +63,25 @@
                     @csrf
                 </form>
             </div>
+            @foreach($getinfoclass as $key)
+            <?php
 
+            $listid = substr($key->MaDanhSach, 0, -1);
+
+            $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
+            ?>
+            @endforeach
+            <br><br>
+            <div class="container">
+                <strong>Lựa chọn cách tính điểm chuyên cần</strong>
+                    <form action="/option-row-14" method="post">
+                        <input type="radio" name="divideall" value="{{$listid}}">
+                        <label>Chia đều</label>
+                        <button type="submit" class="btn btn-primary" >Chọn</button>
+                    @csrf
+                    </form>
+            </div>
+            <br><br>
             <div class="col-md-12 detail">
                 <style>
                     .detail
@@ -73,27 +90,13 @@
                     }
                 </style>
                 <div class="class-list">
-
-                    @foreach($getinfoclass as $key)
-
                         <span><strong>HỌC PHẦN:</strong>
-
                             {{-- Lập trình ứng dụng với Java  --}}
-
-
-                            <?php
-
-                                $listid = $key->MaDanhSach;
-                                $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
-                            ?>
-
-                        @endforeach
                             <?php
                                 echo $classname->TenMH;
                             ?>
                         <strong> <?php echo $classname->MaMH ?> </strong> - (Nhóm <?php echo $classname->NhomMH ?>) - Số tín chỉ: <?php echo $classname->STC ?></span>
                         <br><br>
-
                         <div class="table">
                             <table>
                                 <thead>
@@ -264,10 +267,10 @@
                                         <td class="score-input"><input type="text"></td>
                                         <td class="score-input"><input type="text"></td>
 
-                                        @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',9)->exists())
+                                        @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
                                             <!-- Điểm 14 -->
                                             @if($allstudentlist->Diem14 != null)
-                                                <td>$allstudentlist->Diem14</td>
+                                                <td>{{$allstudentlist->Diem14}}</td>
                                             @else
                                                 <td></td>
                                             @endif
@@ -275,7 +278,7 @@
 
                                             <!-- Điểm 16 -->
                                             @if($allstudentlist->Diem16 != null)
-                                                <td>$allstudentlist->Diem16</td>
+                                                <td>{{$allstudentlist->Diem16}}</td>
                                             @else
                                             {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
                                                 @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)

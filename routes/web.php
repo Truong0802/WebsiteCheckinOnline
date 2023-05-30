@@ -50,5 +50,7 @@ Route::get('/diem-danh',[TeacherController::class,'DiemDanh']);
 //Hỗ trợ
 Route::get('/ho-tro', [ContactController::class, 'contact']);
 
-//Trang admin 
+//Trang admin
 Route::get('/admin', [SinhVienController::class, 'admin']);
+// Chọn option
+Route::post('/option-row-14', [TeacherController::class,'ChiaDiem']);

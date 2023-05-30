@@ -17,7 +17,10 @@ class TeacherController extends Controller
             if(session()->exists('teacherid')){
                 if($request->lop){
                     $teacherid = session()->get('teacherid');
-                    $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaTTMH',$request->lop)->distinct()->paginate(5);
+                    $allsubject = DB::table('lich_giang_day')
+                    ->where('MSGV',$teacherid)
+                    ->where('MaTTMH',$request->lop)
+                    ->distinct()->paginate(5);
                 }
                 else{
                     $teacherid = session()->get('teacherid');
@@ -102,6 +105,8 @@ class TeacherController extends Controller
             return redirect()->to('/trang-chu');
         }
 //
+//Danh sách sinh viên
+
         public function danhsachsinhvien(Request $request)
         {
             if(session()->exists('teacherid')){
@@ -123,6 +128,7 @@ class TeacherController extends Controller
                     }
 
                 }
+
 
             }
             else{
@@ -175,19 +181,56 @@ class TeacherController extends Controller
                     // dd($request->buoi);
                 //Ràng buộc thời gian sử dụng để được insert không được vượt thời gian lúc bấm (session ở quyền giảng viên) là 3p
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
-                $findlistidofstudent = DB::table('danh_sach_sinh_vien')->where('MSSV',session()->get('studentid'))->first();
-                $timecheckin = Carbon::now();
-                $diff = $timecheckin->diff(session()->get('countdown'));
-                // dd($diff->i);
-                if( $diff->i <= 3){
-                    $studentchecked = DB::table('diem_danh')->insert([
-                        'MaDanhSach' => $findlistidofstudent->MaDanhSach,
-                        'MaBuoi' => $request->buoi,
-                        'NgayDiemDanh' => $timecheckin,
-                    ]);
+                if(session()->get('countdown'))
+                {
+                    $findlistidofstudent = DB::table('danh_sach_sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                    $timecheckin = Carbon::now();
+                    $diff = $timecheckin->diff(session()->get('countdown'));
+                    // dd($diff->i);
+                    if( $diff->i <= 3){
+                        $studentchecked = DB::table('diem_danh')->insert([
+                            'MaDanhSach' => $findlistidofstudent->MaDanhSach,
+                            'MaBuoi' => $request->buoi,
+                            'NgayDiemDanh' => $timecheckin,
+                        ]);
+                    }
+
+                    return redirect()->to('/trang-chu');
+                }
+                else{
+                    return redirect()->to('/trang-chu');;
                 }
 
-                return redirect()->to('/trang-chu');
             }
+        }
+
+        public function ChiaDiem(Request $request){
+            if($request->input('divideall'))
+            {
+                $option1 = $request->input('divideall');
+                $findlop = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like', $option1.'%')->distinct()->first();
+
+                $listUpToRow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like', $option1.'%')->distinct()->get();
+                // dd($listUpToRow14);
+                foreach($listUpToRow14 as $resultCheck)
+                {
+
+                    $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
+
+                    $latestpoint = $countChecked * 3/9;
+                    $latestpoint = round($latestpoint, 2);
+
+                    if($countChecked  >= 7)
+                    {
+
+                        $row14UpDate = DB::table('danh_sach_sinh_vien')
+                        ->where('MSSV',$resultCheck->MSSV)
+                        ->update(['Diem14' => $latestpoint]);
+                    }
+                }
+                return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH)->withInput();
+            }
+
+
         }
 }
