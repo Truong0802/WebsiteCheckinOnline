@@ -68,16 +68,18 @@
                 <div class="contact-container">
                     <div class="row">
                         <div class="contact-address">
-                            <h1>Địa chỉ</h1>
-                            <div class="address">
-                                <h2><strong>HUTECH khu E</strong></h2>
-                                <p><strong>Địa chỉ: </strong>Phân khu đào tạo E1, Khu Công Nghệ cao TP.HCM, Phường Hiệp Phú, TP. Thủ Đức, TP.HCM</p>
-                                <h2><strong>HUTECH khu A,B</strong></h2>
-                                <p><strong>Địa chỉ: </strong>475A Điện Biên Phủ, P.25, Q.Bình Thạnh, TP.HCM</p>
-                                <h2><strong>HUTECH khu U</strong></h2>
-                                <p><strong>Địa chỉ: </strong>31/36 Ung Văn Khiêm, P.25, Q.Bình Thạnh, TP.HCM</p>
-                                <h2><strong>HUTECH khu R</strong></h2>
-                                <p><strong>Địa chỉ: </strong>Viện Công nghệ Cao Hutech, Lô E2B4, đường D1, Phường Long Thạnh Mỹ, khu Công Nghệ Cao, TP. Thủ Đức, TP.HCM</p>
+                            <div class="table">
+                                <h1>Địa chỉ</h1>
+                                <div class="address">
+                                    <h2><strong>Thu Duc Campus ( Khu E )</strong></h2>
+                                    <p><strong>Địa chỉ: </strong>Phân khu đào tạo E1, Khu Công Nghệ cao TP.HCM, Phường Hiệp Phú, TP. Thủ Đức, TP.HCM</p>
+                                    <h2><strong>Sai Gon Campus ( Khu A,B )</strong></h2>
+                                    <p><strong>Địa chỉ: </strong>475A Điện Biên Phủ, P.25, Q.Bình Thạnh, TP.HCM</p>
+                                    <h2><strong>Ung Van Khiem Campus ( Khu U )</strong></h2>
+                                    <p><strong>Địa chỉ: </strong>31/36 Ung Văn Khiêm, P.25, Q.Bình Thạnh, TP.HCM</p>
+                                    <h2><strong>Hitech Park Campus ( Khu R )</strong></h2>
+                                    <p><strong>Địa chỉ: </strong>Viện Công nghệ Cao Hutech, Lô E2B4, đường D1, Phường Long Thạnh Mỹ, khu Công Nghệ Cao, TP. Thủ Đức, TP.HCM</p>
+                                </div>
                             </div>
                         </div>
                     </div>

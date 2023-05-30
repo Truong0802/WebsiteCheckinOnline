@@ -49,14 +49,14 @@
                         </div> --}}
                     </div>
                     <br>
-                    {{-- <div class="row">
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="class-name">Tên lớp:</label>
                                 <input type="text" class="form-control" id="class-name" name="classname">
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                     <br>
                     <button type="submit" class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
                     <a type="button" href="/xoa-tim-kiem-sv" class="btn btn-primary" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
@@ -241,24 +241,40 @@
                                     @else
                                         <td></td>
                                     @endif
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <style>
+                                        .detail .class-list table tr .score-input
+                                        {
+                                            padding: 0;
+                                        }
+
+                                        .table tbody tr td input
+                                        {
+                                            padding: 10px;
+                                            width: 35px;
+                                            border: none;
+                                        }
+                                    </style>
+                                    <td class="score-input"><input type="text"></td>
+                                    <td class="score-input"><input type="text"></td>
+                                    <td class="score-input"><input type="text"></td>
+                                    <td class="score-input"><input type="text"></td>
 
                                     @if(DB::table('diem_danh')->where('MaDanhSach','like','%'.substr($listid, 0, -1).'%')->where('MaBuoi',9)->exists())
+                                        <!-- diem 14 -->
                                         @if($allstudentlist->Diem14 != null)
                                             <td>$allstudentlist->Diem14</td>
                                         @else
                                             <td></td>
                                         @endif
-                                        <td></td>
+                                            <td></td>
 
+                                        <!-- diem 16 -->
                                         @if($allstudentlist->Diem16 != null)
                                             <td>$allstudentlist->Diem16</td>
                                         @else
                                             @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
-                      {{-- Nhập điểm --}}       <td><input type="number"></td>  --}}
+                                                <!-- Nhập điểm      -->
+                                                <td class="score-input"><input type="number"></td>
                                             @else
                                                 <td></td>
                                             @endif
@@ -274,13 +290,12 @@
                                         @else
                                             <td></td>
                                         @endif
-
                                     @else
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                     @endif
-
                                 </tr>
                                 @endforeach
                             </tbody>

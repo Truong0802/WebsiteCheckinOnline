@@ -63,7 +63,7 @@
                     </a>
                 </li>
                 <li>
-                    <a title="Hỗ trợ" href="">
+                    <a title="Hỗ trợ" href="/ho-tro">
                         <i class="fa fa-lg fa-fw fa-phone"></i>
                         <span class="menu-item-parent">Hỗ trợ</span>
                     </a>
