@@ -66,13 +66,17 @@
             </div>
             @foreach($getinfoclass as $key)
             <?php
+            if($key != null)
+            {
+                $listid = substr($key->MaDanhSach, 0, -1);
 
-            $listid = substr($key->MaDanhSach, 0, -1);
+                $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
+            }
 
-            $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
             ?>
             @endforeach
             <br><br>
+        @if(isset($listid) && isset($classname))
             @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
                 <div class="container">
                     <strong>Hãy lựa chọn cách tính điểm chuyên cần:</strong>
@@ -137,30 +141,30 @@
                             }
                         });
 
-                        btn1.addEventListener("click", function() 
+                        btn1.addEventListener("click", function()
                         {
                             modal1.style.display = "block";
                         });
 
-                        btn2.addEventListener("click", function() 
+                        btn2.addEventListener("click", function()
                         {
                             modal2.style.display = "block";
                         });
 
 
-                        closeBtn1.addEventListener("click", function() 
+                        closeBtn1.addEventListener("click", function()
                         {
                             modal1.style.display = "none";
                         });
 
-                        closeBtn2.addEventListener("click", function() 
+                        closeBtn2.addEventListener("click", function()
                         {
                             modal2.style.display = "none";
                         });
 
-                        window.addEventListener("click", function(event) 
+                        window.addEventListener("click", function(event)
                         {
-                            if (event.target == modal1 && event.target == modal2) 
+                            if (event.target == modal1 && event.target == modal2)
                             {
                                 modal1.style.display = "none";
                                 modal2.style.display = "none";
@@ -410,7 +414,7 @@
                         </table>
 
                     </div>
-
+                @endif
                 </div>
             </div>
             {{ $getinfoclass->appends(request()->all())->links('pagination::bootstrap-4') }}

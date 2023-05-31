@@ -113,7 +113,7 @@ class TeacherController extends Controller
             if(session()->exists('teacherid')){
                 if($request->lop){
                     $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->distinct()->paginate(20);
-
+                    session()->put('danh-sach-sinh-vien-lop',$request->lop);
                     $datatemp = [];
                     foreach($classlist as $checkData)
                     {
@@ -156,7 +156,7 @@ class TeacherController extends Controller
 
         public function removetimkiemsv()
         {
-            return redirect()->back();
+            return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'));
         }
 
         //
