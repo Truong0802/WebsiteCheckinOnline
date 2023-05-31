@@ -4,6 +4,12 @@
 @extends('layouts.master-student')
 
 @section('content')
+        @if (session('error'))
+            {{-- {{dd(session('error'))}} --}}
+            <div class="alert alert-danger text-center">Bạn đang thực hiện hành vi không cho phép</div>
+            @elseif(session('error2'))
+                <div class="alert alert-danger text-center">{{ session('error2') }}</div>
+        @endif
         <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">

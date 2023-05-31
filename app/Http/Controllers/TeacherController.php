@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TeacherController extends Controller
 {
@@ -172,6 +173,17 @@ class TeacherController extends Controller
                 //tạo session lưu thời gian sau khi parse từ Carbo để đối chiếu so sánh với quyền học sinh lúc bấm
                 $timestart = Carbon::now();
                 session()->put('countdown',$timestart);
+
+                session()->put('request->buoi', $request->buoi);
+                session()->put('countdowndie', Carbon::now()->addMinutes(3)); //Giới hạn thời gian link sống trong 3p
+                // dd(session()->get('countdowndie'));
+                if(session()->get('countdowndie'))
+                {
+
+                }
+                else{
+                    session()->forget('request->buoi');
+                }
             }
             elseif(session()->has('studentid'))
             {
@@ -181,24 +193,90 @@ class TeacherController extends Controller
                     // dd($request->buoi);
                 //Ràng buộc thời gian sử dụng để được insert không được vượt thời gian lúc bấm (session ở quyền giảng viên) là 3p
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
-                if(session()->get('countdown'))
+                if(session()->has('countdown'))
                 {
-                    $findlistidofstudent = DB::table('danh_sach_sinh_vien')->where('MSSV',session()->get('studentid'))->first();
-                    $timecheckin = Carbon::now();
-                    $diff = $timecheckin->diff(session()->get('countdown'));
-                    // dd($diff->i);
-                    if( $diff->i <= 3){
-                        $studentchecked = DB::table('diem_danh')->insert([
-                            'MaDanhSach' => $findlistidofstudent->MaDanhSach,
-                            'MaBuoi' => $request->buoi,
-                            'NgayDiemDanh' => $timecheckin,
-                        ]);
-                    }
 
-                    return redirect()->to('/trang-chu');
+                        $findlistidofstudent = DB::table('danh_sach_sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+
+                        $timecheckin = Carbon::now();
+                        $diff = $timecheckin->diff(session()->get('countdown'));
+                        // dd($diff->i);
+                        if( $diff->i <= 3){
+                            try
+                            {
+                                $checkrequest = DB::table('diem_danh')
+                                ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
+                                ->where('MaBuoi',$request->buoi)->first();
+                                // dd($checkrequest);
+                                if($checkrequest != null)
+                                {
+                                    if(session()->has('error2'))
+                                    {
+                                        session()->forget('error2');
+                                    }
+                                    else{
+                                        return back()->with('error2','Không được điểm danh 2 lần!!!')->withInput();
+                                    }
+
+                                }
+                                elseif($checkrequest == null)
+                                {
+                                    if($request->buoi == session()->get('request->buoi'))
+                                    {
+                                        $studentchecked = DB::table('diem_danh')->insert([
+                                            'MaDanhSach' => $findlistidofstudent->MaDanhSach,
+                                            'MaBuoi' => session()->get('request->buoi'),
+                                            'NgayDiemDanh' => $timecheckin,
+                                        ]);
+                                    }
+                                    else{
+                                            if(session()->has('error2'))
+                                        {
+                                            session()->forget('error2');
+                                        }
+                                        else{
+                                            return back()->with('error2','Điểm danh không thành công')->withInput();
+                                        }
+                                    }
+                                }
+
+                                // dd($checkrequest);
+                            }
+                            catch(\Illuminate\Database\QueryException $exception)
+                            {
+                                // dd($exception->getMessage());
+                                return back()->with('error',$exception->getMessage())->withInput();
+                            }
+
+                            return redirect()->to('/trang-chu');
+
+
+
+
+                        }
+                        elseif( $diff->i > 3){
+                            if(session()->has('error2'))
+                            {
+                                session()->forget('error2');
+                            }
+                            else{
+                                return back()->with('error2','Điểm danh không thành công')->withInput();
+                            }
+
+                        }
+
+
+
                 }
                 else{
-                    return redirect()->to('/trang-chu');;
+                    if(session()->has('error2'))
+                    {
+                        session()->forget('error2');
+                    }
+                    else{
+                        return back()->with('error2','Điểm danh không thành công')->withInput();
+                    }
+
                 }
 
             }
