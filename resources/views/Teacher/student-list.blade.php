@@ -181,7 +181,11 @@
                         grid-template-columns: 15fr
                     }
                 </style>
+                @if (session('error-row16'))
+                    <div class="alert alert-danger text-center">{{ session('error-row16') }}</div>
+                @endif
                 <div class="class-list">
+
                         <span><strong>HỌC PHẦN:</strong>
                             {{-- Lập trình ứng dụng với Java  --}}
                             <?php

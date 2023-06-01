@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+Use Exception;
 
 class TeacherController extends Controller
 {
@@ -373,50 +374,64 @@ class TeacherController extends Controller
             // dd($request->row16);
             if($request->row16)
             {
-                $limit = count($request->row16);
 
-                $listid = [];
-                $listid =session()->get('row16');
+                    $limit = count($request->row16);
 
-                $i =0;
+                    $listid = [];
+                    $listid =session()->get('row16');
 
-                // dd($request->row16);
-                foreach($listid as $key)
-                {
-                    if($i < $limit)
+                    $i =0;
+
+                    // dd($request->row16);
+                    foreach($listid as $key)
                     {
-                        $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
-                        //Mã kết quả của sinh viên trong db bảng điểm
-                        $MaKQSV = $findrow14->MSSV.$findrow14->MaTTMH.$findrow14->MaHK;
-                        if($findrow14->Diem16 == null)
+                        if($i < $limit)
                         {
-                            session()->put('timeForChange', Carbon::now()->addWeeks(2)); //Nếu chưa nhập điểm thì set thời gian cho phép sửa điểm là 2 tuần kế từ lúc nhập điểm
+                            if(is_numeric($request->row16[$i]))
+                            {
+                                $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
+                                //Mã kết quả của sinh viên trong db bảng điểm
+                                $MaKQSV = $findrow14->MSSV.$findrow14->MaTTMH.$findrow14->MaHK;
+                                if($findrow14->Diem16 == null)
+                                {
+                                    session()->put('timeForChange', Carbon::now()->addWeeks(2)); //Nếu chưa nhập điểm thì set thời gian cho phép sửa điểm là 2 tuần kế từ lúc nhập điểm
 
+                                }
+                            // else
+                            // {
+                                // if(session()->has('timeForChange'))
+                                // {
+                                    // session()->forget('timeForChange'); //Nếu đã có điểm tồn tại mà sửa điểm thì không cho sửa nữa
+                                    //}
+                            // }
+                                // dd($MaKQSV);
+
+
+                                    $row16UpDate = DB::table('danh_sach_sinh_vien')
+                                    ->where('MaDanhSach',$findrow14->MaDanhSach)
+                                    ->update(['Diem16' => round($request->row16[$i], 2)]);
+
+
+
+                            //Tính ra điểm Qúa trình
+                                $result = $findrow14->Diem14 + round($request->row16[$i], 2);
+                                $DQT = DB::table('ket_qua')
+                                ->where('MaKQSV',$MaKQSV)
+                                ->update(['DiemQT' => $result]);
+                                $i++;
+                            }
+                            else{
+                                return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số!')->withInput();
+                            }
                         }
-                       // else
-                       // {
-                           // if(session()->has('timeForChange'))
-                           // {
-                               // session()->forget('timeForChange'); //Nếu đã có điểm tồn tại mà sửa điểm thì không cho sửa nữa
-                            //}
-                       // }
-                        // dd($MaKQSV);
-                        $row16UpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$findrow14->MaDanhSach)
-                            ->update(['Diem16' => round($request->row16[$i], 2)]);
 
-                    //Tính ra điểm Qúa trình
-                        $result = $findrow14->Diem14 + round($request->row16[$i], 2);
-                        $DQT = DB::table('ket_qua')
-                        ->where('MaKQSV',$MaKQSV)
-                        ->update(['DiemQT' => $result]);
-                        $i++;
+
+
                     }
+                    session()->forget('row16');// Sau khi xử lý xóa session
+                    return redirect('/danh-sach-sinh-vien?lop='.$findrow14->MaTTMH);
 
 
-                }
-                session()->forget('row16');// Sau khi xử lý xóa session
-                return redirect('/danh-sach-sinh-vien?lop='.$findrow14->MaTTMH);
             }
             else
             {
