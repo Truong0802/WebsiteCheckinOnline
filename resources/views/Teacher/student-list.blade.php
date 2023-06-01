@@ -372,10 +372,13 @@
                                                 <td></td>
                                             @endif
                                             <td></td>
-
                                             <!-- Điểm 16 -->
                                             @if($allstudentlist->Diem16 != null)
-                                                <td>{{$allstudentlist->Diem16}}</td>
+                                                @if(session()->has('timeForChange'))
+                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" value="{{$allstudentlist->Diem16}}" >{{session()->push('row16',$allstudentlist->MaDanhSach)}}</td>
+                                                @else
+                                                    <td>{{$allstudentlist->Diem16}}</td>
+                                                @endif
                                             @else
                                             {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
                                                 @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)

@@ -175,7 +175,7 @@ class TeacherController extends Controller
                 session()->put('countdown',$timestart);
 
                 session()->put('request->buoi', $request->buoi);
-                session()->put('countdowndie', Carbon::now()->addMinutes(3)); //Giới hạn thời gian link sống trong 3p
+                session()->put('countdowndie', Carbon::now()->addMinutes(5)); //Giới hạn thời gian link sống trong 5p
                 // dd(session()->get('countdowndie'));
                 if(session()->get('countdowndie'))
                 {
@@ -201,7 +201,7 @@ class TeacherController extends Controller
                         $timecheckin = Carbon::now();
                         $diff = $timecheckin->diff(session()->get('countdown'));
                         // dd($diff->i);
-                        if( $diff->i <= 3){
+                        if( $diff->i <= 5){
                             try
                             {
                                 $checkrequest = DB::table('diem_danh')
@@ -254,7 +254,7 @@ class TeacherController extends Controller
 
 
                         }
-                        elseif( $diff->i > 3){
+                        elseif( $diff->i > 5){
                             if(session()->has('error2'))
                             {
                                 session()->forget('error2');
@@ -380,12 +380,26 @@ class TeacherController extends Controller
 
                 $i =0;
 
+                // dd($request->row16);
                 foreach($listid as $key)
                 {
                     if($i < $limit)
                     {
                         $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
+                        //Mã kết quả của sinh viên trong db bảng điểm
                         $MaKQSV = $findrow14->MSSV.$findrow14->MaTTMH.$findrow14->MaHK;
+                        if($findrow14->Diem16 == null)
+                        {
+                            session()->put('timeForChange', Carbon::now()->addWeeks(2)); //Nếu chưa nhập điểm thì set thời gian cho phép sửa điểm là 2 tuần kế từ lúc nhập điểm
+
+                        }
+                       // else
+                       // {
+                           // if(session()->has('timeForChange'))
+                           // {
+                               // session()->forget('timeForChange'); //Nếu đã có điểm tồn tại mà sửa điểm thì không cho sửa nữa
+                            //}
+                       // }
                         // dd($MaKQSV);
                         $row16UpDate = DB::table('danh_sach_sinh_vien')
                             ->where('MaDanhSach',$findrow14->MaDanhSach)
