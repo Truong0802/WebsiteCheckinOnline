@@ -69,7 +69,7 @@
             if($key != null)
             {
                 $listid = substr($key->MaDanhSach, 0, -1);
-
+                $phanloailop = substr($key->MaDanhSach,3,1);
                 $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
             }
 
@@ -77,102 +77,149 @@
             @endforeach
             <br><br>
         @if(isset($listid) && isset($classname))
-            @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
-                <div class="container">
-                    <strong>Hãy lựa chọn cách tính điểm chuyên cần:</strong>
-                    <form action="/option-row-14" method="post">
-                        <br>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <input type="radio" name="divideall" value="{{$listid}}" id="divideall">
-                                <label>Chia đều 3 điểm cho 9 buổi</label>
-                                <button type="button" id="openModal1">Chi tiết</button>
-                                <div id="myModal1" class="modal1">
-                                    <div class="modal-content">
-                                        <span class="close1">&times;</span>
-                                        <h2>Hướng dẫn</h2>
-                                        <p>Chia 3 điểm chuyên cần đều cho 9 buổi ( 0.33 điểm cho từng buổi )</p>
-                                        <p>VD: Điểm danh được 9 buổi = 2.97 ( Làm tròn thành 3 ), Điểm danh được 7 buổi = 2.31 ( Làm tròn thành 2 )</p>
+            @if($phanloailop == '1' || $phanloailop == '2')
+                @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
+                    <div class="container">
+                        <strong>Hãy lựa chọn cách tính điểm chuyên cần:</strong>
+                        <form action="/option-row-14" method="post">
+                            <br>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="radio" name="divideall" value="{{$listid}}" id="divideall">
+                                    <label>Chia đều 3 điểm cho 9 buổi</label>
+                                    <button type="button" id="openModal1">Chi tiết</button>
+                                    <div id="myModal1" class="modal1">
+                                        <div class="modal-content">
+                                            <span class="close1">&times;</span>
+                                            <h2>Hướng dẫn</h2>
+                                            <p>Chia 3 điểm chuyên cần đều cho 9 buổi ( 0.33 điểm cho từng buổi )</p>
+                                            <p>VD: Điểm danh được 9 buổi = 2.97 ( Làm tròn thành 3 ), Điểm danh được 7 buổi = 2.31 ( Làm tròn thành 2 )</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <input type="radio" name="divide3" value="{{$listid}}" id="divide3">
-                                <label>Chia lấy 3 buổi 1 điểm</label>
-                                <button type="button" id="openModal2">Chi tiết</button>
-                                <div id="myModal2" class="modal2">
-                                    <div class="modal-content">
-                                        <span class="close2">&times;</span>
-                                        <h2>Hướng dẫn</h2>
-                                        <p>Chia 9 buổi ra thành 3 buổi nhỏ</p>
-                                        <p>Cách tính: 3 buổi nhỏ = 1 điểm, 2 buổi nhỏ = 0.5 điểm, 1 buổi nhỏ = 0 điểm</p>
-                                        <p>VD: Điểm danh được 3 3 3 ( Buổi nhỏ ) = 3 điểm, Điểm danh 3 2 1 ( Buổi nhỏ ) = 1.5 điểm </p>
+                            <br>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="radio" name="divide3" value="{{$listid}}" id="divide3">
+                                    <label>Chia lấy 3 buổi 1 điểm</label>
+                                    <button type="button" id="openModal2">Chi tiết</button>
+                                    <div id="myModal2" class="modal2">
+                                        <div class="modal-content">
+                                            <span class="close2">&times;</span>
+                                            <h2>Hướng dẫn</h2>
+                                            <p>Chia 9 buổi ra thành 3 buổi nhỏ</p>
+                                            <p>Cách tính: 3 buổi nhỏ = 1 điểm, 2 buổi nhỏ = 0.5 điểm, 1 buổi nhỏ = 0 điểm</p>
+                                            <p>VD: Điểm danh được 3 3 3 ( Buổi nhỏ ) = 3 điểm, Điểm danh 3 2 1 ( Buổi nhỏ ) = 1.5 điểm </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br>
-                        <button type="submit" class="btn btn-primary" >Chọn</button>
-                    @csrf
-                    </form>
-                    <script>
-                        var divideall = document.getElementById("divideall");
-                        var divide3 = document.getElementById("divide3");
+                            <br>
+                            <button type="submit" class="btn btn-primary" >Chọn</button>
+                        @csrf
+                        </form>
+                @endif
+            @elseif($phanloailop == '3')
+                @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',6)->exists())
+                        <div class="container">
+                            <strong>Hãy lựa chọn cách tính điểm chuyên cần:</strong>
+                            <form action="/option-row-14" method="post">
+                                <br>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input type="radio" name="divideall" value="{{$listid}}" id="divideall">
+                                        <label>Chia đều 3 điểm cho 6 buổi</label>
+                                        <button type="button" id="openModal1">Chi tiết</button>
+                                        <div id="myModal1" class="modal1">
+                                            <div class="modal-content">
+                                                <span class="close1">&times;</span>
+                                                <h2>Hướng dẫn</h2>
+                                                <p>Chia 3 điểm chuyên cần đều cho 6 buổi ( 0.33 điểm cho từng buổi )</p>
+                                                <p>VD: Điểm danh được 9 buổi = 2.97 ( Làm tròn thành 3 ), Điểm danh được 7 buổi = 2.31 ( Làm tròn thành 2 )</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input type="radio" name="divide3" value="{{$listid}}" id="divide3">
+                                        <label>Chia lấy 3 buổi 1 điểm</label>
+                                        <button type="button" id="openModal2">Chi tiết</button>
+                                        <div id="myModal2" class="modal2">
+                                            <div class="modal-content">
+                                                <span class="close2">&times;</span>
+                                                <h2>Hướng dẫn</h2>
+                                                <p>Chia 6 buổi ra thành 3 buổi nhỏ</p>
+                                                <p>Cách tính: 3 buổi nhỏ = 1 điểm, 2 buổi nhỏ = 0.5 điểm, 1 buổi nhỏ = 0 điểm</p>
+                                                <p>VD: Điểm danh được 3 3 3 ( Buổi nhỏ ) = 3 điểm, Điểm danh 3 2 1 ( Buổi nhỏ ) = 1.5 điểm </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-primary" >Chọn</button>
+                            @csrf
+                            </form>
+                @endif
 
-                        var modal1 = document.getElementById("myModal1");
-                        var btn1 = document.getElementById("openModal1");
-                        var modal2 = document.getElementById("myModal2");
-                        var btn2 = document.getElementById("openModal2");
-                        var closeBtn1 = document.getElementsByClassName("close1")[0];
-                        var closeBtn2 = document.getElementsByClassName("close2")[0];
+            @endif
+                        <script>
+                            var divideall = document.getElementById("divideall");
+                            var divide3 = document.getElementById("divide3");
 
-                        divideall.addEventListener("change", function() {
-                            if (this.checked) {
-                                divide3.checked = false;
-                            }
-                        });
+                            var modal1 = document.getElementById("myModal1");
+                            var btn1 = document.getElementById("openModal1");
+                            var modal2 = document.getElementById("myModal2");
+                            var btn2 = document.getElementById("openModal2");
+                            var closeBtn1 = document.getElementsByClassName("close1")[0];
+                            var closeBtn2 = document.getElementsByClassName("close2")[0];
 
-                        divide3.addEventListener("change", function() {
-                            if (this.checked) {
-                                divideall.checked = false;
-                            }
-                        });
+                            divideall.addEventListener("change", function() {
+                                if (this.checked) {
+                                    divide3.checked = false;
+                                }
+                            });
 
-                        btn1.addEventListener("click", function()
-                        {
-                            modal1.style.display = "block";
-                        });
+                            divide3.addEventListener("change", function() {
+                                if (this.checked) {
+                                    divideall.checked = false;
+                                }
+                            });
 
-                        btn2.addEventListener("click", function()
-                        {
-                            modal2.style.display = "block";
-                        });
+                            btn1.addEventListener("click", function()
+                            {
+                                modal1.style.display = "block";
+                            });
+
+                            btn2.addEventListener("click", function()
+                            {
+                                modal2.style.display = "block";
+                            });
 
 
-                        closeBtn1.addEventListener("click", function()
-                        {
-                            modal1.style.display = "none";
-                        });
-
-                        closeBtn2.addEventListener("click", function()
-                        {
-                            modal2.style.display = "none";
-                        });
-
-                        window.addEventListener("click", function(event)
-                        {
-                            if (event.target == modal1 && event.target == modal2)
+                            closeBtn1.addEventListener("click", function()
                             {
                                 modal1.style.display = "none";
+                            });
+
+                            closeBtn2.addEventListener("click", function()
+                            {
                                 modal2.style.display = "none";
-                            }
-                        });
-                    </script>
-                </div>
-            @endif
+                            });
+
+                            window.addEventListener("click", function(event)
+                            {
+                                if (event.target == modal1 && event.target == modal2)
+                                {
+                                    modal1.style.display = "none";
+                                    modal2.style.display = "none";
+                                }
+                            });
+                        </script>
+                    </div>
+
             <br><br>
             <div class="col-md-12 detail">
                 <style>
@@ -243,7 +290,7 @@
                                         @else
                                             <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=6">6</a></td>
                                         @endif
-    {{-- Buoi7 --}}
+    {{-- Buoi7 --}}                 @if($phanloailop == '1' || $phanloailop == '2')
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',7)->exists())
                                             <td>7</td>
                                         @else
@@ -261,6 +308,11 @@
                                         @else
                                             <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=9">9</a></td>
                                         @endif
+                                    @elseif($phanloailop == '3')
+                                        <td>7</td>
+                                        <td>8</td>
+                                        <td>9</td>
+                                    @endif
                                         <td>10</td>
                                         <td>11</td>
                                         <td>12</td>
@@ -277,9 +329,15 @@
                                         $stt =0;
                                     ?>
                             <form action="/nhap-diem" method="post">
+                            @if($phanloailop == '1' || $phanloailop == '2')
                                 @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
                                     <button type="submit" class="btn btn-primary" >Xác nhận điểm</button>
                                 @endif
+                            @elseif($phanloailop == '3')
+                                @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',6)->exists())
+                                    <button type="submit" class="btn btn-primary" >Xác nhận điểm</button>
+                                @endif
+                            @endif
                                     @foreach($getinfoclass as $allstudentlist)
                                     <?php
                                         // dd($getinfoclass);
@@ -334,6 +392,7 @@
                                         @else
                                             <td></td>
                                         @endif
+                                    @if($phanloailop == '1' || $phanloailop == '2')
                                         @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->where('MaBuoi',7)->exists())
                                         <td>x</td>
                                         @else
@@ -349,7 +408,11 @@
                                         @else
                                             <td></td>
                                         @endif
-
+                                    @elseif($phanloailop == '3')
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    @endif
                                         <style>
                                             .detail .class-list table tr .score-input
                                             {
@@ -367,8 +430,9 @@
                                         <td class="score-input"><input type="text"></td>
                                         <td class="score-input"><input type="text"></td>
                                         <td class="score-input"><input type="text"></td>
-
+                                    @if($phanloailop == '1' || $phanloailop == '2')
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
+
                                             <!-- Điểm 14 -->
                                             @if($allstudentlist->Diem14 != null)
                                                 <td>{{$allstudentlist->Diem14}}</td>
@@ -403,13 +467,57 @@
                                             @else
                                                 <td></td>
                                             @endif
+                                        @else
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        @endif
+                                    @endif
+                                    @if($phanloailop == '3' )
 
+                                        @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',6)->exists())
 
-                                    @else
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                            <!-- Điểm 14 -->
+                                            @if($allstudentlist->Diem14 != null)
+                                                <td>{{$allstudentlist->Diem14}}</td>
+                                            @else
+                                                <td></td>
+                                            @endif
+                                            <td></td>
+                                            <!-- Điểm 16 -->
+                                            @if($allstudentlist->Diem16 != null)
+                                                @if(session()->has('timeForChange'))
+                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" value="{{$allstudentlist->Diem16}}" >{{session()->push('row16',$allstudentlist->MaDanhSach)}}</td>
+                                                @else
+                                                    <td>{{$allstudentlist->Diem16}}</td>
+                                                @endif
+                                            @else
+                                            {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
+                                                @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 5)
+                                                    {{-- Nhập điểm --}}
+                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" >{{session()->push('row16',$allstudentlist->MaDanhSach)}}</td>
+                                                @else
+                                                    <td></td>
+                                                @endif
+                                            @endif
+
+                                            <?php
+                                                $diemqt = DB::table('ket_qua')->where('MaKQSV',$allstudentlist->MaKQSV)->first();
+                                            ?>
+                                            @if($diemqt->DiemQT != null)
+                                                <td>
+                                                    <?php echo $diemqt->DiemQT ?>
+                                                </td>
+                                            @else
+                                                <td></td>
+                                            @endif
+                                        @else
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        @endif
                                     @endif
                                 </tr>
                                 @endforeach

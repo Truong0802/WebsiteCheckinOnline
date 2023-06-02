@@ -197,7 +197,9 @@ class TeacherController extends Controller
                 if(session()->has('countdown'))
                 {
 
-                        $findlistidofstudent = DB::table('danh_sach_sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                        $findlistidofstudent = DB::table('danh_sach_sinh_vien')
+                        ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                        ->where('MSSV',session()->get('studentid'))->first();
 
                         $timecheckin = Carbon::now();
                         $diff = $timecheckin->diff(session()->get('countdown'));
@@ -295,17 +297,35 @@ class TeacherController extends Controller
                 {
 
                     $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
-
-                    $latestpoint = $countChecked * 3/9;
-                    $latestpoint = round($latestpoint, 2);
-
-                    if($countChecked  >= 7)
+                    //Đối với môn thực hành
+                    $phanloailop = substr($resultCheck->MaDanhSach,3,1);
+                    if($phanloailop == '3')
                     {
+                        $latestpoint = $countChecked * 3/6;
+                        $latestpoint = round($latestpoint, 2);
+                        if($countChecked  >= 5)
+                        {
 
-                        $row14UpDate = DB::table('danh_sach_sinh_vien')
-                        ->where('MSSV',$resultCheck->MSSV)
-                        ->update(['Diem14' => $latestpoint]);
+                            $row14UpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MSSV',$resultCheck->MSSV)
+                            ->update(['Diem14' => $latestpoint]);
+                        }
                     }
+                    else{
+                            //Đối với môn lý thuyết
+                        $latestpoint = $countChecked * 3/9;
+                        $latestpoint = round($latestpoint, 2);
+                        if($countChecked  >= 7)
+                        {
+
+                            $row14UpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MSSV',$resultCheck->MSSV)
+                            ->update(['Diem14' => $latestpoint]);
+                        }
+                    }
+
+
+
                 }
                 return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
             }
@@ -319,44 +339,85 @@ class TeacherController extends Controller
                 {
 
                     $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
-
-
-
-                    if($countChecked  >= 7)
+                    //Đối với môn thực hành
+                    $phanloailop = substr($resultCheck->MaDanhSach,3,1);
+                    if($phanloailop == '3')
                     {
-                        $input = $countChecked; // Tổng số buổi đã điểm danh
-                        $divide = $input%3;
-                        if($divide == 0) // nếu số buổi đi là 3 hoặc 6 hoặc 9
+                        if($countChecked  >= 5)
                         {
-                            $result = $input/3;
-
-                        }
-                        else{
-                            $afterDivide = $input-$divide; //Tách buổi %3 ra khỏi phần thừa
-
-
-                            if($afterDivide %3 == 0)
+                            $input = $countChecked; // Tổng số buổi đã điểm danh
+                            $divide = $input%3;
+                            if($divide == 0) // nếu số buổi đi là 3 hoặc 6 hoặc 9
                             {
-                                $result = $afterDivide/3; //Điểm theo tiêu chuẩn 3 3 3
+                                $result = $input/3;
 
-                                if($divide %2 == 0) //Nếu thừa 2 buổi thì cộng 2 buổi đó chỉ bằng 0.5
+                            }
+                            else{
+                                $afterDivide = $input-$divide; //Tách buổi %3 ra khỏi phần thừa
+
+
+                                if($afterDivide %3 == 0)
                                 {
-                                    $temp=0.5;
+                                    $result = $afterDivide/3; //Điểm theo tiêu chuẩn 3 3 3
+
+                                    if($divide %2 == 0) //Nếu thừa 2 buổi thì cộng 2 buổi đó chỉ bằng 0.5
+                                    {
+                                        $temp=0.5;
+                                    }
+                                    else{ //Nếu chỉ thừa ra 1 buổi thì điểm cộng thêm == 0
+                                        $temp = 0;
+                                    }
+                                    $result = $result + $temp;
+
                                 }
-                                else{ //Nếu chỉ thừa ra 1 buổi thì điểm cộng thêm == 0
-                                    $temp = 0;
-                                }
-                                $result = $result + $temp;
+
 
                             }
 
-
+                            $row14UpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MSSV',$resultCheck->MSSV)
+                            ->update(['Diem14' => $result]);
                         }
-
-                        $row14UpDate = DB::table('danh_sach_sinh_vien')
-                        ->where('MSSV',$resultCheck->MSSV)
-                        ->update(['Diem14' => $result]);
                     }
+                    else{ //Nếu là môn lý thuyết
+                        if($countChecked  >= 7)
+                        {
+                            $input = $countChecked; // Tổng số buổi đã điểm danh
+                            $divide = $input%3;
+                            if($divide == 0) // nếu số buổi đi là 3 hoặc 6 hoặc 9
+                            {
+                                $result = $input/3;
+
+                            }
+                            else{
+                                $afterDivide = $input-$divide; //Tách buổi %3 ra khỏi phần thừa
+
+
+                                if($afterDivide %3 == 0)
+                                {
+                                    $result = $afterDivide/3; //Điểm theo tiêu chuẩn 3 3 3
+
+                                    if($divide %2 == 0) //Nếu thừa 2 buổi thì cộng 2 buổi đó chỉ bằng 0.5
+                                    {
+                                        $temp=0.5;
+                                    }
+                                    else{ //Nếu chỉ thừa ra 1 buổi thì điểm cộng thêm == 0
+                                        $temp = 0;
+                                    }
+                                    $result = $result + $temp;
+
+                                }
+
+
+                            }
+
+                            $row14UpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MSSV',$resultCheck->MSSV)
+                            ->update(['Diem14' => $result]);
+                        }
+                    }
+
+
                 }
                 return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
             }
