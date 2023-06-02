@@ -184,6 +184,7 @@ class TeacherController extends Controller
                 }
                 else{
                     session()->forget('request->buoi');
+
                 }
             }
             elseif(session()->has('studentid'))
@@ -448,7 +449,7 @@ class TeacherController extends Controller
                     {
                         if($i < $limit)
                         {
-                            if(is_numeric($request->row16[$i]))
+                            if(is_numeric($request->row16[$i]) && $request->row16[$i] > 0 )
                             {
                                 $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
                                 //Mã kết quả của sinh viên trong db bảng điểm
@@ -493,7 +494,7 @@ class TeacherController extends Controller
                                 {
                                     session()->forget('error-row16');
                                 }
-                                return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số!')->withInput();
+                                return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
                             }
                         }
 
