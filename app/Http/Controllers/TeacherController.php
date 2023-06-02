@@ -392,6 +392,15 @@ class TeacherController extends Controller
                                 $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
                                 //Mã kết quả của sinh viên trong db bảng điểm
                                 $MaKQSV = $findrow14->MSSV.$findrow14->MaTTMH.$findrow14->MaHK;
+                                //Điều kiện không cho phép tổng điểm quá 10
+                                if($findrow14->Diem14 + round($request->row16[$i], 2) > 10)
+                                {
+                                    if(session()->has('error-row16'))
+                                    {
+                                        session()->forget('error-row16');
+                                    }
+                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Điểm tổng không vượt quá 10')->withInput();
+                                }
                                 if($findrow14->Diem16 == null)
                                 {
                                     session()->put('timeForChange', Carbon::now()->addWeeks(2)); //Nếu chưa nhập điểm thì set thời gian cho phép sửa điểm là 2 tuần kế từ lúc nhập điểm
@@ -405,8 +414,6 @@ class TeacherController extends Controller
                                     //}
                             // }
                                 // dd($MaKQSV);
-
-
                                     $row16UpDate = DB::table('danh_sach_sinh_vien')
                                     ->where('MaDanhSach',$findrow14->MaDanhSach)
                                     ->update(['Diem16' => round($request->row16[$i], 2)]);
@@ -421,6 +428,10 @@ class TeacherController extends Controller
                                 $i++;
                             }
                             else{
+                                if(session()->has('error-row16'))
+                                {
+                                    session()->forget('error-row16');
+                                }
                                 return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số!')->withInput();
                             }
                         }
