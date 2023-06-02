@@ -413,18 +413,40 @@
                                         <td></td>
                                         <td></td>
                                     @endif
-                                        <style>
+                                    <style>
                                             .detail .class-list table tr .score-input
                                             {
                                                 padding: 0;
+                                                margin: -10px;
                                             }
 
                                             .table tbody tr td input
                                             {
                                                 padding: 10px;
-                                                width: 35px;
+                                                width: 51px;
                                                 border: none;
                                             }
+
+                                            td.score-input 
+                                            {
+                                                position: relative;
+                                            }
+
+                                            .score-input input[type="text"] 
+                                            {
+                                                display: block;
+                                                padding: 10px;
+                                                margin: 0;
+                                                border: none;
+                                                background: transparent;
+                                            }
+
+                                            td.score-input input[type="text"]:focus 
+                                            {
+                                                outline: none;
+                                                border: none;
+                                            }
+
                                         </style>
                                         <td class="score-input"><input type="text"></td>
                                         <td class="score-input"><input type="text"></td>
