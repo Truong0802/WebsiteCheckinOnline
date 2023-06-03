@@ -174,7 +174,9 @@ class TeacherController extends Controller
                 //tạo session lưu thời gian sau khi parse từ Carbo để đối chiếu so sánh với quyền học sinh lúc bấm
                 $timestart = Carbon::now();
                 session()->put('countdown',$timestart);
-
+                //Kiem tra va lay ca mattmh
+                session()->put('lopdiemdanh',$request->lop.$request->buoi);
+                //  dd(substr(session()->get('lopdiemdanh'),-1,4));
                 session()->put('request->buoi', $request->buoi);
                 session()->put('countdowndie', Carbon::now()->addMinutes(5)); //Giới hạn thời gian link sống trong 5p
                 // dd(session()->get('countdowndie'));
@@ -184,7 +186,7 @@ class TeacherController extends Controller
                 }
                 else{
                     session()->forget('request->buoi');
-
+                    session()->forget('lopdiemdanh');
                 }
             }
             elseif(session()->has('studentid'))
@@ -197,79 +199,101 @@ class TeacherController extends Controller
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
                 if(session()->has('countdown'))
                 {
-
+                    if($request->lop ==  substr(session()->get('lopdiemdanh'),0,-1))
+                    {
                         $findlistidofstudent = DB::table('danh_sach_sinh_vien')
-                        ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                        // ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                        ->where('MaTTMH',$request->lop)
                         ->where('MSSV',session()->get('studentid'))->first();
 
-                        $timecheckin = Carbon::now();
-                        $diff = $timecheckin->diff(session()->get('countdown'));
-                        // dd($diff->i);
-                        if( $diff->i <= 5){
-                            try
-                            {
-                                $checkrequest = DB::table('diem_danh')
-                                ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
-                                ->where('MaBuoi',$request->buoi)->first();
-                                // dd($checkrequest);
-                                if($checkrequest != null)
+                        if($findlistidofstudent != null)
+                        {
+                            $timecheckin = Carbon::now();
+                            $diff = $timecheckin->diff(session()->get('countdown'));
+                            // dd($diff->i);
+                            if( $diff->i <= 5){
+                                try
                                 {
-                                    if(session()->has('error2'))
+                                    $checkrequest = DB::table('diem_danh')
+                                    ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
+                                    ->where('MaBuoi',$request->buoi)->first();
+                                    // dd($checkrequest);
+                                    if($checkrequest != null)
                                     {
-                                        session()->forget('error2');
-                                    }
-                                    else{
-                                        return back()->with('error2','Không được điểm danh 2 lần!!!')->withInput();
-                                    }
-
-                                }
-                                elseif($checkrequest == null)
-                                {
-                                    if($request->buoi == session()->get('request->buoi'))
-                                    {
-                                        $studentchecked = DB::table('diem_danh')->insert([
-                                            'MaDanhSach' => $findlistidofstudent->MaDanhSach,
-                                            'MaBuoi' => session()->get('request->buoi'),
-                                            'NgayDiemDanh' => $timecheckin,
-                                        ]);
-                                    }
-                                    else{
-                                            if(session()->has('error2'))
+                                        if(session()->has('error2'))
                                         {
                                             session()->forget('error2');
                                         }
                                         else{
-                                            return back()->with('error2','Điểm danh không thành công')->withInput();
+                                            return back()->with('error2','Không được điểm danh 2 lần!!!')->withInput();
+                                        }
+
+                                    }
+                                    elseif($checkrequest == null)
+                                    {
+                                        if($request->buoi == session()->get('request->buoi'))
+                                        {
+                                            $studentchecked = DB::table('diem_danh')->insert([
+                                                'MaDanhSach' => $findlistidofstudent->MaDanhSach,
+                                                'MaBuoi' => substr(session()->get('lopdiemdanh'),-1,4),
+                                                'NgayDiemDanh' => $timecheckin,
+                                            ]);
+                                        }
+                                        else{
+                                                if(session()->has('error2'))
+                                            {
+                                                session()->forget('error2');
+                                            }
+                                            else{
+                                                return back()->with('error2','Điểm danh thất bại')->withInput();
+                                            }
                                         }
                                     }
+
+                                    // dd($checkrequest);
+                                }
+                                catch(\Illuminate\Database\QueryException $exception)
+                                {
+                                    // dd($exception->getMessage());
+                                    return back()->with('error',$exception->getMessage())->withInput();
                                 }
 
-                                // dd($checkrequest);
+                                return redirect()->to('/trang-chu');
+
+
+
+
                             }
-                            catch(\Illuminate\Database\QueryException $exception)
-                            {
-                                // dd($exception->getMessage());
-                                return back()->with('error',$exception->getMessage())->withInput();
+                            elseif( $diff->i > 5){
+                                if(session()->has('error2'))
+                                {
+                                    session()->forget('error2');
+                                }
+                                else{
+                                    return back()->with('error2','Điểm danh quá hạn')->withInput();
+                                }
+
                             }
-
-                            return redirect()->to('/trang-chu');
-
-
-
-
                         }
-                        elseif( $diff->i > 5){
-                            if(session()->has('error2'))
-                            {
-                                session()->forget('error2');
-                            }
-                            else{
-                                return back()->with('error2','Điểm danh không thành công')->withInput();
-                            }
-
+                        else{
+                             if(session()->has('error2'))
+                                {
+                                    session()->forget('error2');
+                                }
+                                else{
+                                    return back()->with('error2','Không tồn tại lớp học này!')->withInput();
+                                }
                         }
-
-
+                    }
+                    else{
+                        if(session()->has('error2'))
+                        {
+                            session()->forget('error2');
+                        }
+                        else{
+                            return back()->with('error2','Không tồn tại lớp học này!')->withInput();
+                        }
+                    }
 
                 }
                 else{
@@ -283,6 +307,9 @@ class TeacherController extends Controller
 
                 }
 
+            }
+            else{
+                return redirect()->to('/');
             }
         }
 
@@ -304,6 +331,7 @@ class TeacherController extends Controller
                     {
                         $latestpoint = $countChecked * 3/6;
                         $latestpoint = round($latestpoint, 2);
+                        // $latestpoint = round($latestpoint + 0.5, 0, PHP_ROUND_HALF_UP);
                         if($countChecked  >= 5)
                         {
 
@@ -315,7 +343,11 @@ class TeacherController extends Controller
                     else{
                             //Đối với môn lý thuyết
                         $latestpoint = $countChecked * 3/9;
+                        // $input = 2.33;
+                        // $latestpoint = round($input+0.20, 2, PHP_ROUND_HALF_UP);
+                        // $latestpoint = (int)$latestpoint;
                         $latestpoint = round($latestpoint, 2);
+                        // dd($latestpoint);
                         if($countChecked  >= 7)
                         {
 
@@ -449,7 +481,7 @@ class TeacherController extends Controller
                     {
                         if($i < $limit)
                         {
-                            if(is_numeric($request->row16[$i]) && $request->row16[$i] > 0 )
+                            if(is_numeric($request->row16[$i]) && $request->row16[$i] > 0 && $request->row16[$i] <= 7)
                             {
                                 $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
                                 //Mã kết quả của sinh viên trong db bảng điểm
