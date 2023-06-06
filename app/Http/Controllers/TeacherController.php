@@ -206,7 +206,14 @@ class TeacherController extends Controller
                 {
                     $encryptedData = $request->input('data');
                     // dd($encryptedData);
-                    $data = decrypt($encryptedData);
+                    try{
+                        $data = decrypt($encryptedData);
+                    }
+                    catch(Exception $ex)
+                    {
+                        return back()->with('error2','Điểm danh thất bại')->withInput();
+                    }
+
                     if($data["lop"] ==  substr(session()->get('lopdiemdanh'),0,-1))
                     {
                         $findlistidofstudent = DB::table('danh_sach_sinh_vien')
