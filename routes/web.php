@@ -45,7 +45,7 @@ Route::get('/tim-kiem-sinh-vien',[TeacherController::class,'timkiemsinhvien']);
 //
 Route::get('/xoa-tim-kiem-sv',[TeacherController::class,'removetimkiemsv']);
 //Điểm danh
-Route::get('/diem-danh',[TeacherController::class,'DiemDanh']);
+Route::get('/diem-danh',[TeacherController::class,'DiemDanh'])->name('diemdanh');
 
 //Hỗ trợ
 Route::get('/ho-tro', [ContactController::class, 'contact']);

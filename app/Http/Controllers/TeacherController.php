@@ -9,6 +9,7 @@ use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 Use Exception;
+use Illuminate\Support\Facades\Crypt;
 
 class TeacherController extends Controller
 {
@@ -172,12 +173,16 @@ class TeacherController extends Controller
 
                 //Tạo mã QR
                 //tạo session lưu thời gian sau khi parse từ Carbo để đối chiếu so sánh với quyền học sinh lúc bấm
+                $encryptedData = $request->input('data');
+                // dd($encryptedData);
+                $data = decrypt($encryptedData);
+                // dd($data["lop"]);
                 $timestart = Carbon::now();
                 session()->put('countdown',$timestart);
                 //Kiem tra va lay ca mattmh
-                session()->put('lopdiemdanh',$request->lop.$request->buoi);
+                session()->put('lopdiemdanh',$data["lop"].$data["buoi"]);
                 //  dd(substr(session()->get('lopdiemdanh'),-1,4));
-                session()->put('request->buoi', $request->buoi);
+                session()->put('request->buoi',$data["buoi"]);
                 session()->put('countdowndie', Carbon::now()->addMinutes(5)); //Giới hạn thời gian link sống trong 5p
                 // dd(session()->get('countdowndie'));
                 if(session()->get('countdowndie'))
@@ -199,11 +204,14 @@ class TeacherController extends Controller
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
                 if(session()->has('countdown'))
                 {
-                    if($request->lop ==  substr(session()->get('lopdiemdanh'),0,-1))
+                    $encryptedData = $request->input('data');
+                    // dd($encryptedData);
+                    $data = decrypt($encryptedData);
+                    if($data["lop"] ==  substr(session()->get('lopdiemdanh'),0,-1))
                     {
                         $findlistidofstudent = DB::table('danh_sach_sinh_vien')
                         // ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
-                        ->where('MaTTMH',$request->lop)
+                        ->where('MaTTMH',$data["lop"])
                         ->where('MSSV',session()->get('studentid'))->first();
 
                         if($findlistidofstudent != null)
@@ -216,7 +224,7 @@ class TeacherController extends Controller
                                 {
                                     $checkrequest = DB::table('diem_danh')
                                     ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
-                                    ->where('MaBuoi',$request->buoi)->first();
+                                    ->where('MaBuoi',$data["buoi"])->first();
                                     // dd($checkrequest);
                                     if($checkrequest != null)
                                     {
@@ -231,7 +239,7 @@ class TeacherController extends Controller
                                     }
                                     elseif($checkrequest == null)
                                     {
-                                        if($request->buoi == session()->get('request->buoi'))
+                                        if($data["buoi"] == session()->get('request->buoi'))
                                         {
                                             $studentchecked = DB::table('diem_danh')->insert([
                                                 'MaDanhSach' => $findlistidofstudent->MaDanhSach,
@@ -360,6 +368,18 @@ class TeacherController extends Controller
 
 
                 }
+                $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->whereNotNull('DiemQT')->first();
+                if($checkDQT != null)
+                {
+                    $result = $findlop->Diem14 + $findlop->Diem16;
+                    // dd($result);
+                    $DQT = DB::table('ket_qua')
+                                ->where('MaKQSV',$findlop->MaKQSV)
+                                ->update(['DiemQT' => $result]);
+                }
+                else{
+
+                }
                 return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
             }
             elseif($request->input('divide3'))
@@ -379,21 +399,21 @@ class TeacherController extends Controller
                         if($countChecked  >= 5)
                         {
                             $input = $countChecked; // Tổng số buổi đã điểm danh
-                            $divide = $input%3;
-                            if($divide == 0) // nếu số buổi đi là 3 hoặc 6 hoặc 9
+                            $divide = $input%2;
+                            if($divide == 0) // nếu số buổi đi là 2 hoặc 4 hoặc 6
                             {
-                                $result = $input/3;
+                                $result = $input/2;
 
                             }
                             else{
-                                $afterDivide = $input-$divide; //Tách buổi %3 ra khỏi phần thừa
+                                $afterDivide = $input-$divide; //Tách buổi %2 ra khỏi phần thừa
 
 
-                                if($afterDivide %3 == 0)
+                                if($afterDivide %2 == 0)
                                 {
-                                    $result = $afterDivide/3; //Điểm theo tiêu chuẩn 3 3 3
+                                    $result = $afterDivide/2; //Điểm theo tiêu chuẩn 3 3 3
 
-                                    if($divide %2 == 0) //Nếu thừa 2 buổi thì cộng 2 buổi đó chỉ bằng 0.5
+                                    if($divide %1 == 0) //Nếu thừa 1 buổi thì cộng 1 buổi đó chỉ bằng 0.5
                                     {
                                         $temp=0.5;
                                     }
@@ -450,6 +470,18 @@ class TeacherController extends Controller
                         }
                     }
 
+
+                }
+                $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->whereNotNull('DiemQT')->first();
+                if($checkDQT != null)
+                {
+                    $result = $findlop->Diem14 + $findlop->Diem16;
+                    // dd($result);
+                    $DQT = DB::table('ket_qua')
+                                ->where('MaKQSV',$findlop->MaKQSV)
+                                ->update(['DiemQT' => $result]);
+                }
+                else{
 
                 }
                 return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);

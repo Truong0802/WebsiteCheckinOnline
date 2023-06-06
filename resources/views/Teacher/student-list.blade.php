@@ -145,15 +145,15 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <input type="radio" name="divide3" value="{{$listid}}" id="divide3">
-                                        <label>Chia lấy 3 buổi 1 điểm</label>
+                                        <label>Chia lấy 2 buổi 1 điểm</label>
                                         <button type="button" id="openModal2">Chi tiết</button>
                                         <div id="myModal2" class="modal2">
                                             <div class="modal-content">
                                                 <span class="close2">&times;</span>
                                                 <h2>Hướng dẫn</h2>
                                                 <p>Chia 6 buổi ra thành 3 buổi nhỏ</p>
-                                                <p>Cách tính: 3 buổi nhỏ = 1 điểm, 2 buổi nhỏ = 0.5 điểm, 1 buổi nhỏ = 0 điểm</p>
-                                                <p>VD: Điểm danh được 3 3 3 ( Buổi nhỏ ) = 3 điểm, Điểm danh 3 2 1 ( Buổi nhỏ ) = 1.5 điểm </p>
+                                                <p>Cách tính: 2 buổi nhỏ = 1 điểm, 1 buổi nhỏ = 0.5 điểm</p>
+                                                <p>VD: Điểm danh được 2 2 2 ( Buổi nhỏ ) = 3 điểm, Điểm danh 2 2 1 ( Buổi nhỏ ) = 2.5 điểm </p>
                                             </div>
                                         </div>
                                     </div>
@@ -257,56 +257,120 @@
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',1)->exists())
                                             <td>1</td>
                                         @else
-                                            <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=1">1</a></td>
+                                            <?php
+                                                $data = [
+                                                    'lop' => $classname->MaTTMH,
+                                                    'buoi' => 1
+                                                ];
+                                                $encryptedData = encrypt($data);
+                                            ?>
+                                            {{-- <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=1">1</a></td> --}}
+                                            <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">1</a></td>
                                         @endif
     {{-- Buoi2 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',2)->exists())
 
                                             <td>2</td>
                                         @else
-                                            <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=2">2</a></td>
+                                            <?php
+                                                $data = [
+                                                    'lop' => $classname->MaTTMH,
+                                                    'buoi' => 2
+                                                ];
+                                                $encryptedData = encrypt($data);
+                                            ?>
+                                            <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">2</a></td>
                                         @endif
     {{-- Buoi3 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',3)->exists())
                                             <td>3</td>
                                         @else
-                                            <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=3">3</a></td>
+                                            <?php
+                                                $data = [
+                                                    'lop' => $classname->MaTTMH,
+                                                    'buoi' => 3
+                                                ];
+                                                $encryptedData = encrypt($data);
+                                            ?>
+                                            <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">3</a></td>
                                         @endif
     {{-- Buoi4 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',4)->exists())
                                             <td>4</td>
                                         @else
-                                            <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=4">4</a></td>
+                                            <?php
+                                                $data = [
+                                                    'lop' => $classname->MaTTMH,
+                                                    'buoi' => 4
+                                                ];
+                                                $encryptedData = encrypt($data);
+                                            ?>
+                                            <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">4</a></td>
                                         @endif
     {{-- Buoi5 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',5)->exists())
                                             <td>5</td>
                                         @else
-                                            <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=5">5</a></td>
+                                            <?php
+                                                $data = [
+                                                    'lop' => $classname->MaTTMH,
+                                                    'buoi' => 5
+                                                ];
+                                                $encryptedData = encrypt($data);
+                                            ?>
+                                            <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">5</a></td>
                                         @endif
     {{-- Buoi6 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',6)->exists())
                                             <td>6</td>
                                         @else
-                                            <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=6">6</a></td>
+                                                <?php
+                                                $data = [
+                                                    'lop' => $classname->MaTTMH,
+                                                    'buoi' => 6
+                                                ];
+                                                $encryptedData = encrypt($data);
+                                            ?>
+                                            <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">6</a></td>
                                         @endif
     {{-- Buoi7 --}}                 @if($phanloailop == '1' || $phanloailop == '2')
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',7)->exists())
                                             <td>7</td>
                                         @else
-                                            <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=7">7</a></td>
+                                            <?php
+                                                $data = [
+                                                    'lop' => $classname->MaTTMH,
+                                                    'buoi' => 7
+                                                ];
+                                                $encryptedData = encrypt($data);
+                                            ?>
+                                            <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">7</a></td>
                                         @endif
     {{-- Buoi8 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',8)->exists())
                                             <td>8</td>
                                         @else
-                                            <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=8">8</a></td>
+                                            <?php
+                                                $data = [
+                                                    'lop' => $classname->MaTTMH,
+                                                    'buoi' => 8
+                                                ];
+                                                $encryptedData = encrypt($data);
+                                            ?>
+                                            <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">8</a></td>
                                         @endif
     {{-- Buoi9 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
                                             <td>9</td>
                                         @else
-                                            <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=9">9</a></td>
+                                            <?php
+                                                $data = [
+                                                    'lop' => $classname->MaTTMH,
+                                                    'buoi' => 9
+                                                ];
+                                                $encryptedData = encrypt($data);
+                                            ?>
+                                            <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">9</a></td>
                                         @endif
                                     @elseif($phanloailop == '3')
                                         <td>7</td>
@@ -427,12 +491,12 @@
                                                 border: none;
                                             }
 
-                                            td.score-input 
+                                            td.score-input
                                             {
                                                 position: relative;
                                             }
 
-                                            .score-input input[type="text"] 
+                                            .score-input input[type="text"]
                                             {
                                                 display: block;
                                                 padding: 10px;
@@ -441,7 +505,7 @@
                                                 background: transparent;
                                             }
 
-                                            td.score-input input[type="text"]:focus 
+                                            td.score-input input[type="text"]:focus
                                             {
                                                 outline: none;
                                                 border: none;
