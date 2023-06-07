@@ -30,15 +30,15 @@
                 <form action='/tim-kiem-sinh-vien' method='get'>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="student-name">Họ tên:</label>
-                                <input type="text" class="form-control" id="student-name" name="studentname">
+                                <div class="form-group">
+                                <label for="student-id">MSSV:</label>
+                                <input type="text" class="form-control" id="student-id" name="mssv">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="student-id">MSSV:</label>
-                                <input type="text" class="form-control" id="student-id" name="mssv">
+                                <label for="student-name">Họ tên:</label>
+                                <input type="text" class="form-control" id="student-name" name="studentname">
                             </div>
                         </div>
                     </div>
@@ -52,8 +52,7 @@
                         </div>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
-                    <a type="button" href="/xoa-tim-kiem-sv" class="btn btn-primary" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
+                    <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
                     @csrf
                 </form>
                 <div class="col-md-12 detail">
