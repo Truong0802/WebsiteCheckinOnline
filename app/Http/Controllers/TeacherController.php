@@ -167,6 +167,25 @@ class TeacherController extends Controller
             return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'));
         }
         //
+        public function qrcodeGenerate()
+        {
+            $encryptedData = DB::table('checklog')->where('MSGV',session()->get('teacherid'))->orderByDesc('Id')->first();
+            //Tạo mã QR
+            $qrCodes = [];
+            $url = '/diem-danh?data='.$encryptedData->URL;
+            $urlconvert = url($url);
+            // dd($urlconvert);
+            $qrCodes['simple'] = QrCode::size(400)->generate($urlconvert);
+            // $qrCodes['changeColor'] = QrCode::size(120)->color(255, 0, 0)->generate($url);
+            // $qrCodes['changeBgColor'] = QrCode::size(120)->backgroundColor(255, 0, 0)->generate($url);
+
+            // $qrCodes['styleDot'] = QrCode::size(120)->style('dot')->generate($url);
+            // $qrCodes['styleSquare'] = QrCode::size(120)->style('square')->generate($url);
+            // $qrCodes['styleRound'] = QrCode::size(120)->style('round')->generate($url);
+            // $qrCodes['withImage'] = QrCode::size(200)->generate($urlconvert);
+            return view('Teacher/empty-site-for-qr',$qrCodes);
+
+        }
 
         public function DiemDanh(Request $request)
         {
@@ -184,20 +203,7 @@ class TeacherController extends Controller
                     'URL' => $encryptedData,
                     'TimeOpenLink' => $timestart
                 ]);
-                //Tạo mã QR
-                $qrCodes = [];
-                $url = '/diem-danh?data='.$encryptedData;
-                $urlconvert = url($url);
-                // dd($urlconvert);
-                $qrCodes['simple'] = QrCode::size(400)->generate($urlconvert);
-                // $qrCodes['changeColor'] = QrCode::size(120)->color(255, 0, 0)->generate($url);
-                // $qrCodes['changeBgColor'] = QrCode::size(120)->backgroundColor(255, 0, 0)->generate($url);
-
-                // $qrCodes['styleDot'] = QrCode::size(120)->style('dot')->generate($url);
-                // $qrCodes['styleSquare'] = QrCode::size(120)->style('square')->generate($url);
-                // $qrCodes['styleRound'] = QrCode::size(120)->style('round')->generate($url);
-                // $qrCodes['withImage'] = QrCode::size(200)->generate($urlconvert);
-                return view('Teacher/empty-site-for-qr',$qrCodes);
+                return redirect()->to('/form-diem-danh');
             }
             elseif(session()->has('studentid'))
             {
