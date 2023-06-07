@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 Use Exception;
 use Illuminate\Support\Facades\Crypt;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TeacherController extends Controller
 {
@@ -161,14 +162,16 @@ class TeacherController extends Controller
             return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'));
         }
 
+        public function trovedanhsach()
+        {
+            return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'));
+        }
         //
 
         public function DiemDanh(Request $request)
         {
             if(session()->get('teacherid'))
             {
-
-                //Tạo mã QR
                 //tạo session lưu thời gian sau khi parse từ Carbo để đối chiếu so sánh với quyền học sinh lúc bấm
                 $encryptedData = $request->input('data');
                 // dd($encryptedData);
@@ -181,6 +184,20 @@ class TeacherController extends Controller
                     'URL' => $encryptedData,
                     'TimeOpenLink' => $timestart
                 ]);
+                //Tạo mã QR
+                $qrCodes = [];
+                $url = '/diem-danh?data='.$encryptedData;
+                $urlconvert = url($url);
+                // dd($urlconvert);
+                $qrCodes['simple'] = QrCode::size(400)->generate($urlconvert);
+                // $qrCodes['changeColor'] = QrCode::size(120)->color(255, 0, 0)->generate($url);
+                // $qrCodes['changeBgColor'] = QrCode::size(120)->backgroundColor(255, 0, 0)->generate($url);
+
+                // $qrCodes['styleDot'] = QrCode::size(120)->style('dot')->generate($url);
+                // $qrCodes['styleSquare'] = QrCode::size(120)->style('square')->generate($url);
+                // $qrCodes['styleRound'] = QrCode::size(120)->style('round')->generate($url);
+                // $qrCodes['withImage'] = QrCode::size(200)->generate($urlconvert);
+                return view('Teacher/empty-site-for-qr',$qrCodes);
             }
             elseif(session()->has('studentid'))
             {
