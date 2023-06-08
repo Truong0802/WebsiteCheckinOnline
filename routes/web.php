@@ -58,3 +58,10 @@ Route::get('/admin', [SinhVienController::class, 'admin']);
 Route::post('/option-row-14', [TeacherController::class,'ChiaDiem']);
 //nĐiểm cột 16
 Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
+
+
+//Admin Thêm sinh viên
+Route::get('/dang-ky-sinh-vien',[SinhVienController::class,'frmAddSV']);
+Route::post('/them-sinh-vien',[SinhVienController::class,'themSinhVien']);
+Route::get('/confirmToAdd',[SinhVienController::class,'confirmAddStudent']);
+Route::get('/Delete-id',[SinhVienController::class,'DeletSinhVien']);

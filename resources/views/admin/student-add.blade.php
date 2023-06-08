@@ -1,6 +1,13 @@
 @extends('layouts.master-admin')
 
 @section('content')
+@if (session('error-Add'))
+            {{-- {{dd(session('error'))}} --}}
+    <div class="alert alert-danger text-center">{{ session('error-Add') }}</div>
+@endif
+@if(session('success-Add'))
+    <div class="alert alert-success text-center">{{ session('success-Add') }}</div>
+@endif
 <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">
@@ -27,7 +34,7 @@
             </div>
 
             <div class="container">
-                <form action='/tim-kiem-sinh-vien' method='get'>
+                <form action='/them-sinh-vien' method='post'>
                     <div class="row">
                         <div class="col-md-4">
                                 <div class="form-group">
@@ -50,9 +57,45 @@
                                 <input type="text" class="form-control" id="class-name" name="classname">
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="student-name">Mật khẩu:</label>
+                                <input type="text" class="form-control" id="password" name="password">
+                            </div>
+                        </div>
                     </div>
+
+                    {{-- <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="class-name">Phường:</label>
+                                <input type="text" class="form-control" id="phuong" name="phuong">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="class-name">Quận:</label>
+                                <input type="text" class="form-control" id="quan" name="quan">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="class-name">Thành Phố:</label>
+                                <input type="text" class="form-control" id="TP" name="TP">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="class-name">Địa chỉ chi tiết:</label>
+                                <input type="text" class="form-control" id="DiaChi" name="DiaChi">
+                            </div>
+                        </div>
+                    </div> --}}
                     <br>
                     <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
+                    <a type="button" href="/confirmToAdd" class="btn btn-primary" onclick="removeFilterData()">Xác nhận thêm</a>
                     @csrf
                 </form>
                 <div class="col-md-12 detail">
@@ -63,7 +106,7 @@
                     }
                 </style>
                 <div class="class-list">
-                    <span><strong>HỌC PHẦN:</strong> Lập trình ứng dụng với Java <strong> (CMP3025) </strong> - Nhóm 2 - Số tín chỉ: 3</span>
+                    {{-- <span><strong>HỌC PHẦN:</strong> Lập trình ứng dụng với Java <strong> (CMP3025) </strong> - Nhóm 2 - Số tín chỉ: 3</span> --}}
                     <br><br>
                     <div class="table">
                         <table>
@@ -74,162 +117,46 @@
                                     <td>Họ tên</td>
                                     <td>Tên lớp</td>
                                     <td></td>
+                                    <td></td>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>2</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>3</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>4</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>5</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                        
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>6</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>7</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>8</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                        
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>9</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>10</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>11</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                        
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>12</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>13</td>
-                                    <td>20111061224</td>
-                                    <td>Trần Nguyên Trường</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>14</td>
-                                    <td>2011060957</td>
-                                    <td>Hồ Phú Tài</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                        
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td>15</td>
-                                    <td>2011062236</td>
-                                    <td>Nguyễn Phương Minh</td>
-                                    <td>20DTHA2</td>
-                                    <td>Chỉnh sửa</td>
-                                    <td>Xóa sinh viên</td>
-                                </tr>
-                            </tbody>
+                            <?php
+                                $stt =1;
+                            ?>
+                        @if(session()->has('DanhSachTam'))
+                            @foreach (session()->get('DanhSachTam') as $temp)
+                                <?php
+                                    $MSSVCut = substr($temp,0,10);
+                                    $CutClass = substr($temp,-7);
+                                    $HoTen = Str::between($temp,$MSSVCut,'MK');
+                                    $Password = Str::between($temp,'MK',$CutClass);
+                                ?>
+                                <tbody>
+                                    <tr>
+                                        <td>{{$stt}}</td>
+                                        <td>{{$MSSVCut}}</td>
+                                        <td>{{$HoTen}}</td>
+                                        <td>{{$CutClass}}</td>
+                                        <td>Chỉnh sửa</td>
+                                        <td><a href="/Delete-id?id={{$temp}}&num={{$stt}}">Xóa sinh viên</a></td>
+                                    </tr>
+                                </tbody>
+                                <?php
+                                    $stt++;
+                                ?>
+                            @endforeach
+                        @else
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        @endif
                         </table>
                     </div>
                 </div>
@@ -238,4 +165,4 @@
         </div>
 </div>
 
-@stop   
+@stop

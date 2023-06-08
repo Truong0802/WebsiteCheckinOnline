@@ -42,7 +42,7 @@
                     </a>
                 </li> -->
                 <li>
-                    <a title="Hồ sơ cá nhân" href="">
+                    <a title="Hồ sơ cá nhân" href="/dang-ky-sinh-vien">
                         <i class="fa fa-lg fa-fw fa-user"></i>
                         <span class="menu-item-parent">Quản lý sinh viên</span>
                     </a>
