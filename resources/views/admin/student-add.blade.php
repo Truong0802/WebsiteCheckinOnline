@@ -1,7 +1,7 @@
 @extends('layouts.master-admin')
 
 @section('content')
-<div id="ribbon">
+        <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">
                     <i class="fa fa-refresh"></i>
@@ -41,6 +41,7 @@
                                 <input type="text" class="form-control" id="student-name" name="studentname">
                             </div>
                         </div>
+                        
                     </div>
                     <br>
                     <div class="row">
@@ -52,7 +53,11 @@
                         </div>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
+                    <div class="btn-container">
+                        <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
+                        <input type="file" id="fileInput" class="custom-file-input">
+                    </div>
+                    
                     @csrf
                 </form>
                 <div class="col-md-12 detail">
@@ -73,6 +78,7 @@
                                     <td>Mã SV</td>
                                     <td>Họ tên</td>
                                     <td>Tên lớp</td>
+                                    <td>Tác vụ</td>
                                     <td></td>
                                 </tr>
                             </thead>

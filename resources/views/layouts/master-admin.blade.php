@@ -42,13 +42,13 @@
                     </a>
                 </li> -->
                 <li>
-                    <a title="Hồ sơ cá nhân" href="">
+                    <a title="Hồ sơ cá nhân" href="/quan-ly-sinh-vien">
                         <i class="fa fa-lg fa-fw fa-user"></i>
                         <span class="menu-item-parent">Quản lý sinh viên</span>
                     </a>
                 </li>
                 <li class="open">
-                    <a href="" title="Học tập">
+                    <a href="/quan-ly-lop-hoc" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
                         <span class="menu-item-parent">Quản lý lớp học</span>
                         <b class="collapse-sign">

@@ -54,6 +54,9 @@ Route::get('/ho-tro', [ContactController::class, 'contact']);
 
 //Trang admin
 Route::get('/admin', [SinhVienController::class, 'admin']);
+Route::get('/quan-ly-lop-hoc', [SinhVienController::class, 'adminClass']);
+Route::get('/quan-ly-sinh-vien', [SinhVienController::class, 'adminStudent']);
+
 // Chọn option
 Route::post('/option-row-14', [TeacherController::class,'ChiaDiem']);
 //nĐiểm cột 16

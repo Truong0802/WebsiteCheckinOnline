@@ -12,6 +12,16 @@ class SinhVienController extends Controller
         return view('admin/student-add');
     }
 
+    public function adminClass()
+    {
+        return view('admin/class');
+    }
+
+    public function adminStudent()
+    {
+        return view('admin/student');
+    }
+
     public function themSinhVien()
     {
         $sinhVien = DB::table('sinh_vien');
