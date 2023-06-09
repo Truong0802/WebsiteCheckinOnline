@@ -92,8 +92,9 @@
                                         </thead>
 
                                         <tbody>
-                                            @foreach($getallsubject as $subjectlist)
+                                            @foreach($getallsubject as $tkblist)
                                             <?php
+                                                $subjectlist = DB::table('lich_giang_day')->where('MaNgay',$tkblist->MaNgay)->first();
                                                 $dateparse = Carbon::parse($subjectlist->NgayDay);
                                             ?>
 

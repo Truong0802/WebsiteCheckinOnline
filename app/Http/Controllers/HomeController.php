@@ -33,7 +33,7 @@ class HomeController extends Controller
             if(session()->exists('studentid')){
                 $username = session()->get('studentid');
 
-                $allsubject = DB::table('lich_giang_day')->where('MSSV',$username)->distinct()->get();
+                $allsubject = DB::table('tkb')->where('MSSV',$username)->distinct()->get();
                 // $classname = DB::table('lop')->where('MaLop',session()->get('malop'))->get();
                 // session()->put('allsubjectname',$subjectname->TenMH);
                 return view('Student/index',['getallsubject' => $allsubject]);
