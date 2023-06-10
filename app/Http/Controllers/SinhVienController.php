@@ -196,7 +196,8 @@ class SinhVienController extends Controller
                 $CutClass = Str::between($temp,'Lop','GV');
                 $CutMSGV = Str::after($temp,'GV');
                 $MaTTMH = Str::between($temp,'MaMH','TenMH');
-                $checkLop = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->first();
+                $checkLop = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaLop',$CutClass)
+                            ->where('MaBuoi',1)->first();
 
                 if($checkLop == null)
                 {
@@ -280,13 +281,19 @@ class SinhVienController extends Controller
                     else
                     {
                     //Thêm tiếp các buổi 2,3,4,5 theo stt lấy từ db +1
-                    //    $stt = DB::table('lich_giang_day')->where('MaNgay','like','%'.$MaTTMH.'%')->distinct()->count('MaNgay');
-                    //     dd(++$stt);
+                        $stt = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaLop',$CutClass)->distinct()->count('MaNgay');
+                        // dd(++$stt);
+                        if($stt != 0)
+                        {
+                            ++$stt;
+                        }else
+                        {
+                            $array = session('DanhSachLopTam');
+                            $position = array_search($temp,$array);
+                            $stt= $position+1;
+                            //Lấy stt buổi
+                        }
 
-                        $array = session('DanhSachLopTam');
-                        $position = array_search($temp,$array);
-                        $stt= $position+1;
-                        //Lấy stt buổi
                         $formatTime = $datetimeConvert->format('H:i');
                         $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
                         if($checkTypeTime != null)
