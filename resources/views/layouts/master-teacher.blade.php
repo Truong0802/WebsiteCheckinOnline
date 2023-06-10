@@ -81,11 +81,7 @@
                 </li> --}}
 
                 <li>
-<<<<<<< HEAD
-                    <a  href="/logout"  title="Đăng xuất" href="">
-=======
                     <a  href="/logout"  title="Đăng xuất" >
->>>>>>> cc9e686faae46de763ae3e487ffa3c8fe63c759f
                         <i class="fa fa-arrow-circle-left hit"></i>
                         <span class="menu-item-parent">Đăng xuất</span>
                     </a>
