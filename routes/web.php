@@ -6,6 +6,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SinhVienController;
+use Google\Service\Classroom\Teacher;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,3 +75,9 @@ Route::get('/Delete-id',[SinhVienController::class,'DeletSinhVien']);
 Route::post('/them-danh-sach',[SinhVienController::class,'ThemDanhSach']);
 Route::get('/Delete-subject',[SinhVienController::class,'DeletLop']);
 Route::get('/confirmToAddSubject',[SinhVienController::class,'ConfirmAddClass']);
+
+//Admin thêm danh sách sinh viên lớp
+Route::get('/Them-danh-sach-sv',[TeacherController::class,'frmAddStudentList']);
+Route::post('/them-danh-sach-sinh-vien',[TeacherController::class,'ThemDanhSachSV']);
+Route::get('/DeleteSV',[TeacherController::class,'XoaKhoiDanhSach']);
+Route::get('/confirmToAddDSSV',[TeacherController::class,'XacNhanThemSV']);

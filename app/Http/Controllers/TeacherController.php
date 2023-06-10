@@ -583,4 +583,43 @@ class TeacherController extends Controller
             }
 
         }
+
+        public function frmAddStudentList(Request $request)
+        {
+            session()->put('classAddId',$request->lop);
+
+            return view('admin/student');
+        }
+
+        public function ThemDanhSachSV(Request $request)
+        {
+            if($request !=null)
+            {
+                $MaTTMH = $request->classid;
+                // dd($MaTTMH);
+                $checkfindnameTeacher = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->orderBy('MaNgay','DESC')->first();
+                // dd($request);
+                // dd($checkfindnameTeacher);
+                $temp = $request->classid.'HocKy'.$request->Hocki.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH;
+                session()->push('DanhSachSinhVienTam',$temp);
+                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'));
+            }
+
+        }
+        public function XoaKhoiDanhSach(Request $request)
+        {
+            $array = session('DanhSachSinhVienTam');
+            $position = array_search($request->id, $array);
+            // dd($position);
+            unset($array[$position]);
+            session(['DanhSachSinhVienTam' => $array]);
+            return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'));
+        }
+
+        public function XacNhanThemSV(Request $request)
+        {
+            //Xử lý cắt chuỗi lấy MSSV để tạo mã danh sách
+            //XỬ lý cắt chuỗi lấy Mã Học kì tạo MaHK
+            //Xử lý cắt chuỗi ghép tạo MaKQSV = MSSV + MaTTMH + MaHK
+        }
 }

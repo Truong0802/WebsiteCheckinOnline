@@ -1,5 +1,8 @@
-
-@extends('layouts.master-teacher')
+@if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
+    @extends('layouts.master-admin')
+@else
+    @extends('layouts.master-teacher')
+@endif
 
 @section('content')
 

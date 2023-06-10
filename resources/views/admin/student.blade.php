@@ -19,7 +19,7 @@
                     <div class="col-md-6 pr-0">
                         <div>
                             <h1 class="page-title txt-color-blueDark">
-                                <i class="fa fa-lg fa-fw fa-user"></i> Sinh viên
+                                <i class="fa fa-lg fa-fw fa-user"></i> Thêm Danh Sách Sinh Viên
                             </h1>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
             </div>
 
             <div class="container">
-                <form action='/tim-kiem-sinh-vien' method='get'>
+                <form action='/them-danh-sach-sinh-vien' method='post'>
                     <div class="row">
                         <div class="col-md-4">
                                 <div class="form-group">
@@ -44,15 +44,30 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Lớp:</label>
-                                <input type="text" class="form-control" id="student-name" name="studentname">
+                                <input type="text" class="form-control" id="class-name" name="classname">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="hoc-ky">Học kì:</label>
+                                <?php
+                                    $listhk = DB::table('hoc_ky')->get();
+                                ?>
+                                <select class="form-control" id="Hocki" name="Hocki">
+                                    <option value="">---Chọn Thông Tin---</option>
+                                    @foreach($listhk as $AllList)
+                                        <option value="{{$AllList->MaHK}}">{{$AllList->HocKy}} - {{$AllList->NamHoc}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
+                    <input type='hidden' name='classid' value='<?php echo session()->get('classAddId') ?>'>
                     <br>
                     <div class="btn-container">
                         <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
                     </div>
-                    
+                    <a type="button" href="/confirmToAddDSSV" class="btn btn-primary" onclick="removeFilterData()">Xác nhận thêm</a>
                     @csrf
                 </form>
                 <div class="col-md-12 detail">
@@ -69,19 +84,34 @@
                             <tr>
                                 <td>STT</td>
                                 <td>MSSV</td>
-                                <td>Tên SV</td>
-                                <td>Lớp</td>
+                                <td>Họ Tên</td>
+                                <td>Môn Học</td>
+                                <td></td>
                                 <td></td>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2011060957</td>
-                                <td>Hồ Phú Tài</td>
-                                <td>20DTHA2</td>
-                                <td><a href=""><i class="fa-regular fa-eye"></a></i></td>
-                            </tr>
+                            <?php
+                                $stt=0;
+                            ?>
+                            @if(session()->get('DanhSachSinhVienTam'))
+                                @foreach(session()->get('DanhSachSinhVienTam') as $key)
+                                <?php
+                                    $Mssv = Str::between($key,'MSSV','MaTTMH');
+                                    $findStudentName = DB::table('sinh_vien')->where('MSSV',$Mssv)->first();
+                                    $CutClass = Str::before($key,'HocKy');
+                                    $findSubjectName = DB::table('mon_hoc')->where('MaTTMH',$CutClass)->first();
+                                ?>
+                                    <tr>
+                                        <td>{{++$stt;}}</td>
+                                        <td>{{$Mssv}}</td>
+                                        <td>{{$findStudentName->HoTenSV}}</td>
+                                        <td>{{$findSubjectName->TenMH}}</td>
+                                        <td><a href=""><i class="fa-regular fa-eye"></a></i></td>
+                                        <td><a href="/DeleteSV?id={{$key}}">Xóa sinh viên</a></td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -90,5 +120,5 @@
             </div>
             </div>
         </div>
-        
+
 @stop

@@ -80,7 +80,7 @@
                 </li>
             @endif
                 <li>
-                    <a  href="/danh-sach-lop"  title="Đăng xuất" href="">
+                    <a  href="/logout"  title="Đăng xuất" href="">
                         <i class="fa fa-arrow-circle-left hit"></i>
                         <span class="menu-item-parent">Đăng xuất</span>
                     </a>
