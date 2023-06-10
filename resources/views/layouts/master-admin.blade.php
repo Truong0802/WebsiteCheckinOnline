@@ -48,7 +48,7 @@
                     </a>
                 </li>
                 <li class="open">
-                    <a href="" title="Học tập">
+                    <a href="/dang-ky-mon-hoc" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
                         <span class="menu-item-parent">Quản lý lớp học</span>
                         <b class="collapse-sign">
@@ -69,7 +69,7 @@
                     </a>
                 </li> -->
                 <li>
-                    <a  href="/logout"  title="Đăng xuất" href="">
+                    <a  href="/logout"  title="Đăng xuất">
                         <i class="fa fa-arrow-circle-left hit"></i>
                         <span class="menu-item-parent">Đăng xuất</span>
                     </a>
