@@ -33,6 +33,7 @@
                 </a>
             </span>
         </div>
+        @if(session()->get('ChucVu') == 'GV')
         <nav>
             <ul>
                 <li>
@@ -68,8 +69,8 @@
                         <span class="menu-item-parent">Hỗ trợ</span>
                     </a>
                 </li>
-            @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
-                <li class="open">
+
+                {{-- <li class="open">
                     <a href="/quan-ly-sinh-vien" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
                         <span class="menu-item-parent">Danh Mục Quản lý</span>
@@ -77,16 +78,66 @@
                             <em class="fa fa-minus-square-o"></em>
                         </b>
                     </a>
-                </li>
-            @endif
+                </li> --}}
+
                 <li>
+<<<<<<< HEAD
                     <a  href="/logout"  title="Đăng xuất" href="">
+=======
+                    <a  href="/logout"  title="Đăng xuất" >
+>>>>>>> cc9e686faae46de763ae3e487ffa3c8fe63c759f
                         <i class="fa fa-arrow-circle-left hit"></i>
                         <span class="menu-item-parent">Đăng xuất</span>
                     </a>
                 </li>
             </ul>
         </nav>
+        @endif
+        @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
+        <nav>
+            <ul>
+                <li>
+                    <a title="Hồ sơ cá nhân" href="/quan-ly-sinh-vien">
+                        <i class="fa fa-lg fa-fw fa-user"></i>
+                        <span class="menu-item-parent">Quản lý sinh viên</span>
+                    </a>
+                </li>
+                <li class="open">
+                    <a href="/quan-ly-lop-hoc" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Quản lý lớp học</span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li>
+                <li class="open">
+                    <a href="/danh-sach-lop" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Danh sách lớp</span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li>
+                <li class="open">
+                    <a href="/test-excel" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Thêm vào danh sách lớp</span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li>
+                <li>
+                    <a  href="/logout"  title="Đăng xuất" >
+                        <i class="fa fa-arrow-circle-left hit"></i>
+                        <span class="menu-item-parent">Đăng xuất</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        @endif
         <span class="minifyme">
                 <i class="fa fa-arrow-circle-left hit"></i>
         </span>

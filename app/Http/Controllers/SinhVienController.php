@@ -337,4 +337,9 @@ class SinhVienController extends Controller
             return redirect()->to('/quan-ly-lop-hoc')->with('error-AddCLass','Không tồn tại danh sách cần xác nhận')->withInput();
         }
     }
+
+    public function addStudentToClass()
+    {
+        return view('admin/student-add-to-class');
+    }
 }

@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
     @extends('layouts.master-admin')
 @else
     @extends('layouts.master-teacher')
 @endif
+=======
+@extends('layouts.master-teacher')
+>>>>>>> cc9e686faae46de763ae3e487ffa3c8fe63c759f
+
 
 @section('content')
 

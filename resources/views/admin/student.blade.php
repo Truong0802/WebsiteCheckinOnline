@@ -67,7 +67,11 @@
                     <div class="btn-container">
                         <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
                     </div>
+<<<<<<< HEAD
                     <a type="button" href="/confirmToAddDSSV" class="btn btn-primary" onclick="removeFilterData()">Xác nhận thêm</a>
+=======
+
+>>>>>>> cc9e686faae46de763ae3e487ffa3c8fe63c759f
                     @csrf
                 </form>
                 <div class="col-md-12 detail">
@@ -115,9 +119,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-                </div>
-            </div>
             </div>
         </div>
 
