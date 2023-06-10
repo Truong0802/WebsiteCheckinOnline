@@ -79,8 +79,12 @@ Route::post('/them-sinh-vien',[SinhVienController::class,'themSinhVien']);
 Route::get('/confirmToAdd',[SinhVienController::class,'confirmAddStudent']);
 Route::get('/Delete-id',[SinhVienController::class,'DeletSinhVien']);
 
+//Admin thêm sinh viên vào lớp
+Route::get('/test-excel',[SinhVienController::class,'addStudentToClass']);
+
 //Admin thêm lớp
 
 Route::post('/them-danh-sach',[SinhVienController::class,'ThemDanhSach']);
 Route::get('/Delete-subject',[SinhVienController::class,'DeletLop']);
 Route::get('/confirmToAddSubject',[SinhVienController::class,'ConfirmAddClass']);
+

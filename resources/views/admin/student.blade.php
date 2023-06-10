@@ -52,7 +52,7 @@
                     <div class="btn-container">
                         <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
                     </div>
-                    
+
                     @csrf
                 </form>
                 <div class="col-md-12 detail">
@@ -86,9 +86,6 @@
                     </table>
                 </div>
             </div>
-                </div>
-            </div>
-            </div>
         </div>
-        
+
 @stop
