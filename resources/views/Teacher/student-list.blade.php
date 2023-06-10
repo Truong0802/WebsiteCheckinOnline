@@ -241,7 +241,42 @@
                         <strong> <?php echo $classname->MaMH ?> </strong> - (Nhóm <?php echo $classname->NhomMH ?>) - Số tín chỉ: <?php echo $classname->STC ?></span>
                         <br><br>
                         <div class="table">
-                            <table>
+                            <style>
+                                .detail .class-list table tr .score-input
+                                {
+                                    padding: 0;
+                                    margin: -10px;
+                                }
+
+                                .table tbody tr td input
+                                {
+                                    padding: 10px;
+                                    width: 51px;
+                                    border: none;
+                                }
+
+                                td.score-input
+                                {
+                                    position: relative;
+                                }
+
+                                .score-input input[type="text"]
+                                {
+                                    display: block;
+                                    padding: 10px;
+                                    margin: 0;
+                                    border: none;
+                                    background: transparent;
+                                }
+
+                                td.score-input input[type="text"]:focus
+                                {
+                                    outline: none;
+                                    border: none;
+                                }
+
+                            </style>
+                            <table id="student-table">
                                 <thead>
                                     <tr>
                                         <td>STT</td>
@@ -253,7 +288,7 @@
                                             // $check = DB::table('diem_danh')->where('MaDanhSach','like','%'.$listid.'%')->where('MaBuoi',1)->exists();
                                         ?>
 
-    {{-- Buoi1--}}
+                                        {{-- Buoi1--}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',1)->exists())
                                             <td>1</td>
                                         @else
@@ -267,7 +302,7 @@
                                             {{-- <td class="buoi-hoc"><a href="/diem-danh?lop={{$classname->MaTTMH}}&buoi=1">1</a></td> --}}
                                             <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">1</a></td>
                                         @endif
-    {{-- Buoi2 --}}
+                                        {{-- Buoi2 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',2)->exists())
 
                                             <td>2</td>
@@ -281,7 +316,7 @@
                                             ?>
                                             <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">2</a></td>
                                         @endif
-    {{-- Buoi3 --}}
+                                        {{-- Buoi3 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',3)->exists())
                                             <td>3</td>
                                         @else
@@ -294,7 +329,7 @@
                                             ?>
                                             <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">3</a></td>
                                         @endif
-    {{-- Buoi4 --}}
+                                        {{-- Buoi4 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',4)->exists())
                                             <td>4</td>
                                         @else
@@ -307,7 +342,7 @@
                                             ?>
                                             <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">4</a></td>
                                         @endif
-    {{-- Buoi5 --}}
+                                        {{-- Buoi5 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',5)->exists())
                                             <td>5</td>
                                         @else
@@ -320,7 +355,7 @@
                                             ?>
                                             <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">5</a></td>
                                         @endif
-    {{-- Buoi6 --}}
+                                        {{-- Buoi6 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',6)->exists())
                                             <td>6</td>
                                         @else
@@ -333,7 +368,8 @@
                                             ?>
                                             <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">6</a></td>
                                         @endif
-    {{-- Buoi7 --}}                 @if($phanloailop == '1' || $phanloailop == '2')
+                                        {{-- Buoi7 --}}
+                                        @if($phanloailop == '1' || $phanloailop == '2')
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',7)->exists())
                                             <td>7</td>
                                         @else
@@ -346,7 +382,7 @@
                                             ?>
                                             <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">7</a></td>
                                         @endif
-    {{-- Buoi8 --}}
+                                        {{-- Buoi8 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',8)->exists())
                                             <td>8</td>
                                         @else
@@ -359,7 +395,7 @@
                                             ?>
                                             <td class="buoi-hoc"><a href="{{ route('diemdanh', ['data' => $encryptedData]) }}">8</a></td>
                                         @endif
-    {{-- Buoi9 --}}
+                                        {{-- Buoi9 --}}
                                         @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
                                             <td>9</td>
                                         @else
@@ -477,41 +513,7 @@
                                         <td></td>
                                         <td></td>
                                     @endif
-                                    <style>
-                                            .detail .class-list table tr .score-input
-                                            {
-                                                padding: 0;
-                                                margin: -10px;
-                                            }
 
-                                            .table tbody tr td input
-                                            {
-                                                padding: 10px;
-                                                width: 51px;
-                                                border: none;
-                                            }
-
-                                            td.score-input
-                                            {
-                                                position: relative;
-                                            }
-
-                                            .score-input input[type="text"]
-                                            {
-                                                display: block;
-                                                padding: 10px;
-                                                margin: 0;
-                                                border: none;
-                                                background: transparent;
-                                            }
-
-                                            td.score-input input[type="text"]:focus
-                                            {
-                                                outline: none;
-                                                border: none;
-                                            }
-
-                                        </style>
                                         <td class="score-input"><input type="text"></td>
                                         <td class="score-input"><input type="text"></td>
                                         <td class="score-input"><input type="text"></td>
@@ -614,10 +616,61 @@
 
                         </table>
 
+
                     </div>
+
                 @endif
                 </div>
+
             </div>
+
+            <style>
+                #export-excel
+                {
+                    margin-left: 20px;
+                }
+            </style>
+            <button id="export-excel" class="btn btn-primary" onclick="exportToExcel()">Xuất Excel</button>
+            <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+            <script>
+                function exportToExcel()
+                {
+                    var table = document.getElementById('student-table');
+                    var workbook = XLSX.utils.table_to_book(table);
+                    var today = new Date();
+                    var fileName = 'data_' + today.getFullYear() + '_' + (today.getMonth() + 1) + '_' + today.getDate() + '.xlsx';
+
+                    // Chuẩn bị dữ liệu để xuất file Excel
+                    var wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };
+                    var wbout = XLSX.write(workbook, wopts);
+
+                    function s2ab(s) {
+                        var buf = new ArrayBuffer(s.length);
+                        var view = new Uint8Array(buf);
+                        for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+                        return buf;
+                    }
+
+                    // Tạo đối tượng blob từ dữ liệu Excel
+                    var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+
+                    // Tạo URL tạm thời cho blob
+                    var url = URL.createObjectURL(blob);
+
+                    // Tạo một thẻ a ẩn để kích hoạt việc tải xuống
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+
+                    // Simulate click để tải xuống file
+                    a.click();
+
+                    // Xóa URL tạm thời
+                    setTimeout(function () {
+                        URL.revokeObjectURL(url);
+                    }, 1000);
+                }
+            </script>
             {{ $getinfoclass->appends(request()->all())->links('pagination::bootstrap-4') }}
             {{-- <div class="text-center">
                 <div class="pagination">
