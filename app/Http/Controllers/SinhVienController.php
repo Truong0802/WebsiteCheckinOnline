@@ -17,7 +17,21 @@ class SinhVienController extends Controller
             return redirect()->to('/');
     }
 
+<<<<<<< HEAD
+    public function adminClass()
+    {
+        return view('admin/class');
+    }
+
+    public function adminStudent()
+    {
+        return view('admin/student');
+    }
+
+    public function themSinhVien()
+=======
     public function frmAddSV()
+>>>>>>> 990c24520aa6f0eb62ea64bb7f235b865cd386ce
     {
         return view('admin/student-add');
     }
