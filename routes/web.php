@@ -89,11 +89,8 @@ Route::post('/them-danh-sach',[SinhVienController::class,'ThemDanhSach']);
 Route::get('/Delete-subject',[SinhVienController::class,'DeletLop']);
 Route::get('/confirmToAddSubject',[SinhVienController::class,'ConfirmAddClass']);
 
-<<<<<<< HEAD
 //Admin thêm danh sách sinh viên lớp
 Route::get('/Them-danh-sach-sv',[TeacherController::class,'frmAddStudentList']);
 Route::post('/them-danh-sach-sinh-vien',[TeacherController::class,'ThemDanhSachSV']);
 Route::get('/DeleteSV',[TeacherController::class,'XoaKhoiDanhSach']);
 Route::get('/confirmToAddDSSV',[TeacherController::class,'XacNhanThemSV']);
-=======
->>>>>>> cc9e686faae46de763ae3e487ffa3c8fe63c759f
