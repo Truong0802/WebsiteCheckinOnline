@@ -624,13 +624,7 @@
 
             </div>
 
-            <style>
-                #export-excel
-                {
-                    margin-left: 20px;
-                }
-            </style>
-            <button id="export-excel" class="btn btn-primary" onclick="exportToExcel()">Xuất Excel</button>
+            <button style="margin-left: 20px;" id="export-excel" class="btn btn-primary" onclick="exportToExcel()">Xuất Excel</button>
             <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
             <script>
                 function exportToExcel()
