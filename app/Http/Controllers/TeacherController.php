@@ -28,12 +28,11 @@ class TeacherController extends Controller
                 }
                 else{
                     $teacherid = session()->get('teacherid');
-                    $allsubject = DB::table('lich_giang_day')->paginate(5);
-
+                    $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)->paginate(5);
                 }
 
 
-                return view('Teacher/class-list',['getallclass'=>$allsubject]);
+                return view('Teacher/class-list',['getallsubject'=>$allsubject]);
             }
             else{
                 return redirect()->to('/');
@@ -42,7 +41,7 @@ class TeacherController extends Controller
 
         public function timkiem(Request $request)
         {
-            if(session()->exists('teacherid') && session()->get('ChucVu') != 'QL'){
+            if(session()->exists('teacherid') && session()->get('ChucVu') != 'QL' || session()->get('ChucVu') != 'AM'){
                 $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
                 $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
                 $coursename = DB::table('khoa_hoc')->where('KhoaHoc', $request->coursename)->first();

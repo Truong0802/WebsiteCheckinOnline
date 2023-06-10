@@ -56,6 +56,15 @@
                         </b>
                     </a>
                 </li>
+                <li class="open">
+                    <a href="/danh-sach-lop" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Danh sách lớp</span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li>
                 <!-- <li>
                     <a href="">
                         <i class="fa fa-lg fa-fw fa-cog"></i>

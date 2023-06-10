@@ -16,7 +16,7 @@
             </span>
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
-                    <a>Thêm Lớp Môn Học</a>
+                    <a>Quản lý lớp học</a>
                 </li>
             </ol>
         </div>
@@ -26,7 +26,7 @@
                     <div class="col-md-6 pr-0">
                         <div>
                             <h1 class="page-title txt-color-blueDark">
-                                <i class="fa-fw fa fa-graduation-cap"></i> Thêm Lớp Môn Học
+                                <i class="fa-fw fa fa-graduation-cap"></i> Quản lý lớp học
                             </h1>
                         </div>
                     </div>
@@ -108,15 +108,19 @@
                         <table>
                             <thead>
                                 <tr>
+                                    <td>STT</td>
                                     <td>Tiết bắt đầu</td>
                                     <td>Tên Môn Học</td>
                                     <td>Mã Môn Học</td>
-                                    <td>Tên lớp</td>
+                                    <td>Nhóm Môn Học</td>
+                                    <td>Lớp</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                             </thead>
-
+                        <?php
+                            $stt =0;
+                        ?>
                         @if(session()->has('DanhSachLopTam'))
                             @foreach (session()->get('DanhSachLopTam') as $temp)
                                 <?php
@@ -125,13 +129,16 @@
                                     $CutClass = Str::between($temp,'Lop','GV');
                                     $MaTTMH = Str::between($temp,'MaMH','TenMH');
                                     $MaMH = substr($MaTTMH, 0 ,-2);
+                                    $NhomMH = substr($MaTTMH,-2);
                                     $TenMH = Str::between($temp,'TenMH','Lop');
                                 ?>
                                 <tbody>
                                     <tr>
+                                        <td>{{++$stt}}</td>
                                         <td>{{$date}}</td>
                                         <td>{{$MaMH}}</td>
                                         <td>{{$TenMH}}</td>
+                                        <td>{{$NhomMH}}</td>
                                         <td>{{$CutClass}}</td>
                                         <td>Chỉnh sửa</td>
                                         <td><a href="/Delete-subject?id={{$temp}}">Xóa</a></td>

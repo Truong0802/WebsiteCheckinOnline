@@ -68,8 +68,19 @@
                         <span class="menu-item-parent">Hỗ trợ</span>
                     </a>
                 </li>
+            @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
+                <li class="open">
+                    <a href="/quan-ly-sinh-vien" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Danh Mục Quản lý</span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li>
+            @endif
                 <li>
-                    <a  href="/logout"  title="Đăng xuất" href="">
+                    <a  href="/danh-sach-lop"  title="Đăng xuất" href="">
                         <i class="fa fa-arrow-circle-left hit"></i>
                         <span class="menu-item-parent">Đăng xuất</span>
                     </a>
@@ -84,7 +95,7 @@
     <div id="main" role="main">
         @yield('content')
     </div>
-    
+
     <script src="<?php echo asset('/js/pop-up.js')?>"></script>
 </body>
 </html>

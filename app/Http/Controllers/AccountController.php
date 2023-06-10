@@ -75,7 +75,6 @@ class AccountController extends Controller
         session()->forget('ChucVu');
         session()->forget('malop');
         session()->forget('mon-hoc');
-
         session()->forget('row16');
         return redirect()->to('/');
     }

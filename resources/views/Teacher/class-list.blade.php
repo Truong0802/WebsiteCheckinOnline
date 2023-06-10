@@ -11,7 +11,7 @@
             </span>
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
-                    <a>Danh sách sinh viên</a>
+                    <a>Danh sách Lớp Học</a>
                 </li>
             </ol>
         </div>
@@ -73,7 +73,7 @@
                                 <input type="text" class="form-control" id="subject-name" name="subjectname">
                             </div>
                         </div>
-                        @if(session()->get('ChucVu') == 'QL' && session()->get('ChucVu') == 'AM')
+                        @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="lecturer-name">Tên giảng viên:</label>
@@ -105,6 +105,9 @@
                                 <td>Số tín chỉ</td>
                                 <td>Tên giảng viên</td>
                                 <td></td>
+                                @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
+                                <td></td>
+                                @endif
                             </tr>
                         </thead>
                         <?php
@@ -140,7 +143,11 @@
                                     $teachername= DB::table('giang_vien')->where('MSGV',$key->MSGV)->first();
                                     echo $teachername->HoTenGV;
                                 ?></td>
-                                <td><a href="/danh-sach-sinh-vien?lop={{$key->MaTTMH}}"><i class="fa-regular fa-eye"></a></i></td>
+
+                                    <td><a href="/danh-sach-sinh-vien?lop={{$key->MaTTMH}}"><i class="fa-regular fa-eye"></a></i></td>
+                                @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
+                                    <td><a href="/Them-danh-sach-sv?lop={{$key->MaTTMH}}">Thêm danh sách</a></i></td>
+                                @endif
                             </tr>
                         </tbody>
                         @endforeach
@@ -150,7 +157,7 @@
             </div>
 
             {{-- Phân trang dùng laravel --}}
-            {{ $getallsubject->appends(request()->all())->links('pagination::bootstrap-4') }}
+            {{ $getallsubject->appends(request()->all())->links('pagination::bootstrap-4')}}
 
             {{-- <div class="text-center">
                 <div class="pagination">
