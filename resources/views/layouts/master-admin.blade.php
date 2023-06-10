@@ -42,21 +42,13 @@
                     </a>
                 </li> -->
                 <li>
-<<<<<<< HEAD
                     <a title="Hồ sơ cá nhân" href="/quan-ly-sinh-vien">
-=======
-                    <a title="Hồ sơ cá nhân" href="/dang-ky-sinh-vien">
->>>>>>> 990c24520aa6f0eb62ea64bb7f235b865cd386ce
                         <i class="fa fa-lg fa-fw fa-user"></i>
                         <span class="menu-item-parent">Quản lý sinh viên</span>
                     </a>
                 </li>
                 <li class="open">
-<<<<<<< HEAD
-                    <a href="/dang-ky-mon-hoc" title="Học tập">
-=======
                     <a href="/quan-ly-lop-hoc" title="Học tập">
->>>>>>> 1901557fd437cb5dcc9719bc5eafcd339a6e2781
                         <i class="fa fa-lg fa-fw fa-book"></i>
                         <span class="menu-item-parent">Quản lý lớp học</span>
                         <b class="collapse-sign">

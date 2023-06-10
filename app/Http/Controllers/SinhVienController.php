@@ -17,21 +17,7 @@ class SinhVienController extends Controller
             return redirect()->to('/');
     }
 
-<<<<<<< HEAD
-    public function adminClass()
-    {
-        return view('admin/class');
-    }
-
-    public function adminStudent()
-    {
-        return view('admin/student');
-    }
-
-    public function themSinhVien()
-=======
     public function frmAddSV()
->>>>>>> 990c24520aa6f0eb62ea64bb7f235b865cd386ce
     {
         return view('admin/student-add');
     }
@@ -113,7 +99,7 @@ class SinhVienController extends Controller
                 } catch(Exception $ex)
                 {
                     // dd($ex);
-                    return redirect()->to('/dang-ky-sinh-vien')->with('error-Add','Đã tồn tại sinh viên'.' '.substr($temp,0,10).'')->withInput();
+                    return redirect()->to('/quan-ly-sinh-vien')->with('error-Add','Đã tồn tại sinh viên'.' '.substr($temp,0,10).'')->withInput();
 
                 }
 
@@ -128,11 +114,11 @@ class SinhVienController extends Controller
             // session()->forget('TP');
             // session()->forget('DiaChi');
             session()->forget('DanhSachTam');
-            return redirect()->to('/dang-ky-sinh-vien')->with('success-Add','Thêm thành công');
+            return redirect()->to('/quan-ly-sinh-vien')->with('success-Add','Thêm thành công');
         }
         else
         {
-            redirect()->to('/dang-ky-sinh-vien')->with('error-Add','Không tồn tại danh sách cần xác nhận')->withInput();
+            redirect()->to('/quan-ly-sinh-vien')->with('error-Add','Không tồn tại danh sách cần xác nhận')->withInput();
         }
 
 
@@ -145,10 +131,10 @@ class SinhVienController extends Controller
         // dd($position);
         unset($array[$position]);
         session(['DanhSachTam' => $array]);
-        return redirect()->to('/dang-ky-sinh-vien');
+        return redirect()->to('/quan-ly-sinh-vien');
     }
 
-    public function ThemLopHoc()
+    public function FrmThemLopHoc()
     {
         // dd($request);
         return view('admin/class-subject-add');
@@ -194,7 +180,7 @@ class SinhVienController extends Controller
         // dd($position);
         unset($array[$position]);
         session(['DanhSachLopTam' => $array]);
-        return redirect()->to('/dang-ky-mon-hoc');
+        return redirect()->to('/quan-ly-lop-hoc');
     }
 
     public function ConfirmAddClass()
@@ -235,13 +221,13 @@ class SinhVienController extends Controller
                         catch(Exception $ex)
                         {
                             // dd($ex);
-                            return redirect()->to('/dang-ky-mon-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
+                            return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
 
                         }
                     }
                     else
                     {
-                        return redirect()->to('/dang-ky-mon-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
+                        return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
                     }
 
                 }
@@ -281,13 +267,13 @@ class SinhVienController extends Controller
                             catch(Exception $ex)
                             {
                                 // dd($ex);
-                                return redirect()->to('/dang-ky-mon-hoc')->with('error-AddClass','Lỗi nhập liệu lớp'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
+                                return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu lớp'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
 
                             }
                         }
                         else
                         {
-                            return redirect()->to('/dang-ky-mon-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
+                            return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
                         }
 
                     }
@@ -321,14 +307,14 @@ class SinhVienController extends Controller
                             catch(Exception $ex)
                             {
                                 dd($ex);
-                                return redirect()->to('/dang-ky-mon-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách lớp '.' '.Str::between($temp,'MaMH','TenMH').' đã tồn tại')->withInput();
+                                return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách lớp '.' '.Str::between($temp,'MaMH','TenMH').' đã tồn tại')->withInput();
 
                             }
 
                         }
                         else
                         {
-                            return redirect()->to('/dang-ky-mon-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
+                            return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
                         }
                     }
 
@@ -337,11 +323,11 @@ class SinhVienController extends Controller
 
             }
             session()->forget('DanhSachLopTam');
-            return redirect()->to('/dang-ky-mon-hoc')->with('success-AddClass','Thêm thành công');
+            return redirect()->to('/quan-ly-lop-hoc')->with('success-AddClass','Thêm thành công');
         }
         else
         {
-            return redirect()->to('/dang-ky-mon-hoc')->with('error-AddCLass','Không tồn tại danh sách cần xác nhận')->withInput();
+            return redirect()->to('/quan-ly-lop-hoc')->with('error-AddCLass','Không tồn tại danh sách cần xác nhận')->withInput();
         }
     }
 }

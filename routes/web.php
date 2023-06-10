@@ -54,8 +54,8 @@ Route::get('/ho-tro', [ContactController::class, 'contact']);
 
 //Trang admin
 Route::get('/admin', [SinhVienController::class, 'admin']);
-Route::get('/quan-ly-lop-hoc', [SinhVienController::class, 'adminClass']);
-Route::get('/quan-ly-sinh-vien', [SinhVienController::class, 'adminStudent']);
+Route::get('/quan-ly-lop-hoc',[SinhVienController::class,'FrmThemLopHoc']);
+Route::get('/quan-ly-sinh-vien',[SinhVienController::class,'frmAddSV']);
 
 // Chọn option
 Route::post('/option-row-14', [TeacherController::class,'ChiaDiem']);
@@ -64,13 +64,13 @@ Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
 
 
 //Admin Thêm sinh viên
-Route::get('/dang-ky-sinh-vien',[SinhVienController::class,'frmAddSV']);
+
 Route::post('/them-sinh-vien',[SinhVienController::class,'themSinhVien']);
 Route::get('/confirmToAdd',[SinhVienController::class,'confirmAddStudent']);
 Route::get('/Delete-id',[SinhVienController::class,'DeletSinhVien']);
 
 //Admin thêm lớp
-Route::get('/dang-ky-mon-hoc',[SinhVienController::class,'ThemLopHoc']);
+
 Route::post('/them-danh-sach',[SinhVienController::class,'ThemDanhSach']);
 Route::get('/Delete-subject',[SinhVienController::class,'DeletLop']);
 Route::get('/confirmToAddSubject',[SinhVienController::class,'ConfirmAddClass']);

@@ -1,9 +1,6 @@
 @extends('layouts.master-admin')
 
 @section('content')
-<<<<<<< HEAD
-        <div id="ribbon">
-=======
 @if (session('error-Add'))
             {{-- {{dd(session('error'))}} --}}
     <div class="alert alert-danger text-center">{{ session('error-Add') }}</div>
@@ -11,8 +8,7 @@
 @if(session('success-Add'))
     <div class="alert alert-success text-center">{{ session('success-Add') }}</div>
 @endif
-<div id="ribbon">
->>>>>>> 990c24520aa6f0eb62ea64bb7f235b865cd386ce
+        <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">
                     <i class="fa fa-refresh"></i>
@@ -52,7 +48,7 @@
                                 <input type="text" class="form-control" id="student-name" name="studentname">
                             </div>
                         </div>
-                        
+
                     </div>
                     <br>
                     <div class="row">
@@ -99,16 +95,12 @@
                         </div>
                     </div> --}}
                     <br>
-<<<<<<< HEAD
                     <div class="btn-container">
                         <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
                         <input type="file" id="fileInput" class="custom-file-input">
+                        <a type="button" href="/confirmToAdd" class="btn btn-primary" onclick="removeFilterData()">Xác nhận thêm</a>
                     </div>
-                    
-=======
-                    <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
-                    <a type="button" href="/confirmToAdd" class="btn btn-primary" onclick="removeFilterData()">Xác nhận thêm</a>
->>>>>>> 990c24520aa6f0eb62ea64bb7f235b865cd386ce
+
                     @csrf
                 </form>
                 <div class="col-md-12 detail">
