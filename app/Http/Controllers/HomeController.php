@@ -49,14 +49,16 @@ class HomeController extends Controller
                     $findsubjectid = DB::table('lich_giang_day')->where('MSGV',$teacherid)->distinct()->first();
                     if($findsubjectid != null)
                     {
-                        $firstsubjectid = substr($findsubjectid->MaNgay,0,1);
-                        // dd($firstsubjectid);
-                        if($firstsubjectid == '1')
-                        {
-                            $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaNgay','like',$firstsubjectid.'%')->distinct()->paginate(5);
-                            return view('Teacher/class-list',['getallsubject' => $allsubject]);
-                        }
 
+                        // dd($firstsubjectid);
+                            $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaBuoi',1)->distinct()->paginate(5);
+                            if($allsubject != null)
+                            {
+                                return view('Teacher/class-list',['getallsubject' => $allsubject]);
+                            }
+                            else{
+                                return redirect()->to('/');
+                            }
                     }
                     else{
                        if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM' )
