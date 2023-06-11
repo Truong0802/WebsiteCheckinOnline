@@ -602,7 +602,10 @@ class TeacherController extends Controller
                 session()->push('DanhSachSinhVienTam',$temp);
                 return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'));
             }
-
+            else
+            {
+                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'))->with('error-AddDSSV','Lỗi nhập liệu')->withInput();
+            }
         }
         public function XoaKhoiDanhSach(Request $request)
         {
@@ -698,6 +701,141 @@ class TeacherController extends Controller
             else
             {
                 return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'))->with('error-AddDSSV','Không tồn tại danh sách cần xác nhận')->withInput();
+            }
+        }
+
+        public function FrmThemGV()
+        {
+            return view('admin/teacher-add');
+        }
+
+        public function ThemGV(Request $request)
+        {
+            if($request != null)
+            {
+                $temp = 'MSGV'.$request->msgv.'HoTen'.$request->teachername.'Pass'.$request->password.'Role'.$request->role.'KHOA'.$request->khoa;
+                session()->push('DanhSachGVTam',$temp);
+                return redirect()->to('/quan-ly-gv');
+            }
+            else
+            {
+                return redirect()->to('/quan-ly-gv')->with('error-Add-T',' Lỗi nhập liệu ')->withInput();
+            }
+        }
+
+        public function XoaGVDSTam(Request $request)
+        {
+            $array = session('DanhSachGVTam');
+            $position = array_search($request->id, $array);
+            unset($array[$position]);
+            session(['DanhSachGVTam' => $array]);
+            return redirect()->to('/quan-ly-gv');
+        }
+
+        public function XacNhanThemGV(Request $request)
+        {
+            if(session('DanhSachGVTam') != null)
+            {
+                foreach (session()->get('DanhSachGVTam') as $temp)
+                {
+                        $MSGVCut = Str::between($temp,'MSGV','HoTen');
+                        $HoTen = Str::between($temp,'HoTen','Pass');
+                        $Password = Str::between($temp,'Pass','Role');
+                        $CutRoleid = Str::between($temp,'Role','KHOA');
+                        // $FindCV = DB::table('chuc_vu')->where('MaChucVu',$CutRoleid)->first();
+                        $CutKhoa = Str::after($temp,'KHOA');
+
+                    try{
+
+                        //Insert GV
+                        $InsertGV = DB::table('giang_vien')->insert([
+                            'MSGV' => $MSGVCut,
+                            'Password' => md5($Password),
+                            'HoTenGV' => $HoTen,
+                            'MaChucVu' => $CutRoleid,
+                            'MaKhoa' => $CutKhoa
+                        ]);
+                    }
+                    catch(Exception $ex)
+                    {
+                        return redirect()->to('/quan-ly-gv')->with('error-Add-T','Đã tồn tại giảng viên')->withInput();
+                    }
+                }
+                session()->forget('DanhSachGVTam');
+                return redirect()->to('/quan-ly-gv')->with('success-Add-T','Thêm thành công');
+
+            }
+            else
+            {
+                return redirect()->to('/quan-ly-gv')->with('error-Add-T','Không tồn tại danh sách cần xác nhận')->withInput();
+            }
+        }
+
+        public function FrmThemLopNienKhoa()
+        {
+            return view('admin/class-add');
+        }
+
+        public function ThemLop(Request $request)
+        {
+            if($request != null)
+            {
+                $temp = 'Lop'.$request->classid.'KHOAHOC'.$request->KhoaHoc.'year'.$request->startYears.'-'.$request->endYears;
+                // dd($temp);
+                session()->push('DanhSachLopNKTam',$temp);
+                return redirect()->to('/them-lop-nien-khoa');
+            }
+            else
+            {
+                return redirect()->to('/quan-ly-gv')->with('error-Add-C',' Lỗi nhập liệu ')->withInput();
+            }
+            return redirect()->to('/them-lop-nien-khoa');
+        }
+
+        public function XoaDSLopTam(Request $request)
+        {
+            $array = session('DanhSachLopNKTam');
+            $position = array_search($request->id, $array);
+            unset($array[$position]);
+            session(['DanhSachLopNKTam' => $array]);
+            return redirect()->to('/them-lop-nien-khoa');
+        }
+
+        public function XacNhanThemLopNK(Request $request)
+        {
+            if(session('DanhSachLopNKTam') != null)
+            {
+                foreach (session()->get('DanhSachLopNKTam') as $temp)
+                {
+                    $CutLop = Str::between($temp,'Lop','KHOAHOC');
+                    $CutKhoaHoc = Str::between($temp,'KHOAHOC','year');
+                    $CutNamBatDau = Str::between($temp,'year','-');
+                    $CutNamKetThuc = Str::after($temp,'-');
+
+                    //Kiểm tra có tồn tại năm học đó chưa
+                    $CheckKH = DB::table('khoa_hoc')->where('KhoaHoc',$CutKhoaHoc)->first();
+                    if($CheckKH == null)
+                    {
+                        //chưa tồn tại năm học => thêm mới
+                        $InsertNewKH = DB::table('khoa_hoc')->insert([
+                            'KhoaHoc' => $CutKhoaHoc,
+                            'NamHocDuKien' => $CutNamBatDau.'-'.$CutNamKetThuc
+                        ]);
+                    }
+
+                    //Thêm lớp học
+                    $insertNewLopNK = DB::table('lop')->insert([
+                        'MaLop' => $CutLop,
+                        'TenLop' => $CutLop,
+                        'KhoaHoc' => $CutKhoaHoc
+                    ]);
+                }
+                session()->forget('DanhSachLopNKTam');
+                return redirect()->to('/them-lop-nien-khoa')->with('success-Add-C','Thêm thành công');
+            }
+            else
+            {
+                return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C','Không tồn tại danh sách cần xác nhận')->withInput();
             }
         }
 }

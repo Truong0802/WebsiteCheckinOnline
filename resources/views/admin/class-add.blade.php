@@ -1,0 +1,143 @@
+@extends('layouts.master-admin')
+
+@section('content')
+@if (session('error-Add-C'))
+            {{-- {{dd(session('error'))}} --}}
+    <div class="alert alert-danger text-center">{{ session('error-Add-C') }}</div>
+@endif
+@if(session('success-Add-C'))
+    <div class="alert alert-success text-center">{{ session('success-Add-C') }}</div>
+@endif
+        <div id="ribbon">
+            <span class="ribbon-button-alignment">
+                <span class="btn btn-ribbon" id="refresh" placement="bottom">
+                    <i class="fa fa-refresh"></i>
+                </span>
+            </span>
+            <ol class="breadcrumb">
+                <li class="ng-star-inserted">
+                    <a>Thêm lớp</a>
+                </li>
+            </ol>
+        </div>
+        <div class="mt-4" id="content">
+            <div class="  mx-4">
+                <div class="row mb-3">
+                    <div class="col-md-6 pr-0">
+                        <div>
+                            <h1 class="page-title txt-color-blueDark">
+                                <i class="fa-fw fa fa-graduation-cap"></i> Thêm lớp
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <form action='/them-lop' method='post'>
+                    <div class="row">
+                        <div class="col-md-4">
+                                <div class="form-group">
+                                <label for="teacher-id">Lớp:</label>
+                                <input type="text" class="form-control" id="Classid" name="classid">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="student-name">Niên khóa:</label>
+                                <input type="text" class="form-control" id="KhoaHoc" name="KhoaHoc">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="student-name">Năm bắt đầu:</label>
+                                <input type="text" class="form-control" id="startYears" name="startYears">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="student-name">Năm kết thúc:</label>
+                                <input type="text" class="form-control" id="endYears" name="endYears">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="btn-container">
+                        <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm Lớp</button>
+                        <input type="file" id="fileInput" class="custom-file-input">
+                        <a type="button" href="/confirmToAddClass" class="btn btn-primary" onclick="removeFilterData()">Xác nhận thêm</a>
+                    </div>
+
+                    @csrf
+                </form>
+                <div class="col-md-12 detail">
+                <style>
+                    .detail
+                    {
+                        grid-template-columns: 15fr
+                    }
+                </style>
+                <div class="class-list">
+                    {{-- <span><strong>HỌC PHẦN:</strong> Lập trình ứng dụng với Java <strong> (CMP3025) </strong> - Nhóm 2 - Số tín chỉ: 3</span> --}}
+                    <br><br>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>STT</td>
+                                    <td>Lớp</td>
+                                    <td>Khóa học</td>
+                                    <td>Năm học bắt đầu</td>
+                                    <td>Năm học kết thúc</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <?php
+                                $stt =1;
+                            ?>
+                        @if(session()->has('DanhSachLopNKTam'))
+                            @foreach (session()->get('DanhSachLopNKTam') as $temp)
+                                <?php
+                                    $CutLop = Str::between($temp,'Lop','KHOAHOC');
+                                    $CutKhoaHoc = Str::between($temp,'KHOAHOC','year');
+                                    $CutNamBatDau = Str::between($temp,'year','-');
+                                    $CutNamKetThuc = Str::after($temp,'-');
+                                ?>
+                                <tbody>
+                                    <tr>
+                                        <td>{{$stt}}</td>
+                                        <td>{{$CutLop}}</td>
+                                        <td>{{$CutKhoaHoc}}</td>
+                                        <td>{{$CutNamBatDau}}</td>
+                                        <td>{{$CutNamKetThuc}}</td>
+                                        <td><a href="/Delete-class-id?id={{$temp}}">Xóa lớp</a></td>
+                                    </tr>
+                                </tbody>
+                                <?php
+                                    $stt++;
+                                ?>
+                            @endforeach
+                        @else
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        @endif
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+</div>
+
+@stop
