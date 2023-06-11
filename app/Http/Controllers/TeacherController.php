@@ -341,6 +341,9 @@ class TeacherController extends Controller
                 {
 
                     $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
+                    $TongSoBuoiUpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MSSV',$resultCheck->MSSV)
+                            ->update(['TongSoBuoi' => $countChecked]);
                     //Đối với môn thực hành
                     $phanloailop = substr($resultCheck->MaDanhSach,3,1);
                     if($phanloailop == '3')
@@ -350,7 +353,6 @@ class TeacherController extends Controller
                         // $latestpoint = round($latestpoint + 0.5, 0, PHP_ROUND_HALF_UP);
                         if($countChecked  >= 5)
                         {
-
                             $row14UpDate = DB::table('danh_sach_sinh_vien')
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $latestpoint]);
