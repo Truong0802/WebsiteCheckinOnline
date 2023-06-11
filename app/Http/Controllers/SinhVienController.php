@@ -313,7 +313,7 @@ class SinhVienController extends Controller
                             }
                             catch(Exception $ex)
                             {
-                                dd($ex);
+                                // dd($ex);
                                 return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách lớp '.' '.Str::between($temp,'MaMH','TenMH').' đã tồn tại')->withInput();
 
                             }

@@ -694,6 +694,15 @@ class TeacherController extends Controller
                     {
                         return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'))->with('error-AddDSSV','Đã tồn tại danh sách sinh viên '.$Mssv.' trong lớp này! ')->withInput();
                     }
+                    //Insert TKB:
+                    $getAllLichGiangDay = DB::table('lich_giang_day')->where('MaTTMH',$CutClass)->get();
+                    foreach($getAllLichGiangDay as $getList)
+                    {
+                        $InsertTKB = DB::table('tkb')->insert([
+                            'MaNgay' => $getList->MaNgay,
+                            'MSSV' => $Mssv
+                        ]);
+                    }
                 }
                 session()->forget('DanhSachSinhVienTam');
                 return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'))->with('success-AddDSSV','Thêm thành công');
