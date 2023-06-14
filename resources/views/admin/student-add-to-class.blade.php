@@ -35,7 +35,11 @@
     <h1>Hiển thị dữ liệu từ Excel</h1>
     <input type="file" id="fileInput" />
     <br><br>
-    <table id="excelTable"></table>
+    <form action='/test-excel-ctrl' method='post'>
+        <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm danh sách</button>
+        <table id="excelTable"></table>
+        @csrf
+    </form>
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script>
         function handleFileSelect(evt)
@@ -82,34 +86,68 @@
                 headerRow.appendChild(th7);
                 table.appendChild(headerRow);
 
-                for (let i = 1; i < jsonData.length; i++)
-                {
+                // for (let i = 1; i < jsonData.length; i++)
+                // {
+                //     let dataRow = document.createElement('tr');
+                //     for (let j = 0; j < 3; j++)
+                //     {
+                //         let td = document.createElement('td');
+                //         td.textContent = jsonData[i][j];
+                //         dataRow.appendChild(td);
+                //     }
+                //     let dates = jsonData[i][3].split(' - ');
+                //     for (let j = 0; j < 2; j++)
+                //     {
+                //         let td = document.createElement('td');
+                //         td.textContent = dates[j];
+                //         dataRow.appendChild(td);
+                //     }
+                //     let datesTime = jsonData[i][4].split(' - ');
+                //     for (let j = 0; j < 2; j++)
+                //     {
+                //         let td = document.createElement('td');
+                //         td.textContent = datesTime[j];
+                //         dataRow.appendChild(td);
+                //     }
+                //     table.appendChild(dataRow);
+                // }
+                for (let i = 1; i < jsonData.length; i++) {
                     let dataRow = document.createElement('tr');
-                    for (let j = 0; j < 3; j++)
-                    {
+                    for (let j = 0; j < 3; j++) {
                         let td = document.createElement('td');
-                        td.textContent = jsonData[i][j];
+                        let input = document.createElement('input');
+                        input.type = 'text'; //Set input type
+                        input.value = jsonData[i][j]; //Set input value
+                        input.name = 'ttsv[]';
+                        td.appendChild(input);
                         dataRow.appendChild(td);
                     }
                     let dates = jsonData[i][3].split(' - ');
-                    for (let j = 0; j < 2; j++)
-                    {
+                    for (let j = 0; j < 2; j++) {
                         let td = document.createElement('td');
-                        td.textContent = dates[j];
+                        let input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = dates[j];
+                        input.name = 'ttngaythang[]';
+                        td.appendChild(input);
                         dataRow.appendChild(td);
                     }
                     let datesTime = jsonData[i][4].split(' - ');
-                    for (let j = 0; j < 2; j++)
-                    {
+                    for (let j = 0; j < 2; j++) {
                         let td = document.createElement('td');
-                        td.textContent = datesTime[j];
+                        let input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = datesTime[j];
+                        input.name = 'ttTg[]';
+                        td.appendChild(input);
                         dataRow.appendChild(td);
                     }
                     table.appendChild(dataRow);
                 }
+
             };
 
-            reader.readAsArrayBuffer(file);
+                reader.readAsArrayBuffer(file);
         }
 
         document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);

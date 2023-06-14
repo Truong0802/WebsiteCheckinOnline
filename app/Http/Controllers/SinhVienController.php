@@ -342,4 +342,9 @@ class SinhVienController extends Controller
     {
         return view('admin/student-add-to-class');
     }
+
+    public function addStudentToClassBack(Request $request)
+    {
+        dd($request);
+    }
 }

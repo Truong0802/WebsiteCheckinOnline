@@ -80,8 +80,9 @@ Route::post('/them-sinh-vien',[SinhVienController::class,'themSinhVien']);
 Route::get('/confirmToAdd',[SinhVienController::class,'confirmAddStudent']);
 Route::get('/Delete-id',[SinhVienController::class,'DeletSinhVien']);
 
-//Admin thêm sinh viên vào lớp
+//Admin test thêm sinh viên vào lớp qua file excel
 Route::get('/test-excel',[SinhVienController::class,'addStudentToClass']);
+Route::post('/test-excel-ctrl',[SinhVienController::class,'addStudentToClassBack']);
 
 //Admin thêm lớp
 
