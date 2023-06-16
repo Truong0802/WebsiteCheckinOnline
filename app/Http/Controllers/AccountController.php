@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
-
-
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\ValidationException;
 class AccountController extends Controller
 {
     //
@@ -35,8 +35,13 @@ class AccountController extends Controller
     }
 
 
-    public function login(Request $request)
+    public function login(Request $request):RedirectResponse
     {
+
+        $validated = $request->validate([
+            'username' => 'required|max:25',
+            'password' => 'required',
+        ]);
         $username = $request->username;
         $password = md5($request->password);
         $studentLogin = DB::table('sinh_vien')->where('MSSV',$username)->where('password',$password)->first();
