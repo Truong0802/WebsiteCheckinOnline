@@ -92,7 +92,7 @@
                                                 <i class="icon-append fa fa-user"></i>
                                                 <input class="form-control login-form ng-dirty ng-valid ng-touched" name="username" ngmodel="" required="" type="text">
                                                 @error('username')
-                                                         <div class="alert alert-danger">{{ $message }}</div>
+                                                         <div class="alert alert-danger">{{ $errors->first('username') }}</div>
                                                 @enderror
                                                 <b class="tooltip tooltip-top-right">
                                                     <i class="fa fa-user txt-color-teal"></i> Vui lòng điền tài khoản đăng nhập </b>
@@ -105,7 +105,7 @@
                                                 <i class="icon-append fa fa-lock"></i>
                                                 <input class="form-control login-form ng-dirty ng-valid ng-touched" name="password" ngmodel="" required="" type="password">
                                                 @error('password')
-                                                         <div class="alert alert-danger">{{ $message }}</div>
+                                                         <div class="alert alert-danger">{{ $errors->first('password') }}</div>
                                                 @enderror
                                                 <b class="tooltip tooltip-top-right">
                                                     <i class="fa fa-lock txt-color-teal"></i> Nhập mật mã của bạn </b>

@@ -37,11 +37,20 @@ class AccountController extends Controller
 
     public function login(Request $request):RedirectResponse
     {
+        //Tùy biến mã lỗi trả về
+        $messages = [
+            'username.required' => 'Không được để trống Tài khoản đăng nhập',
+            'username.max' => 'Tài khoản nhập vào không hợp lệ </br> vui lòng nhập Mã sinh viên/ Mã giảng viên để tiếp tục',
+            'password.required' => 'Không được để trống Mật khẩu'
+        ];
 
+        //Điều kiện lọc lỗi
         $validated = $request->validate([
             'username' => 'required|max:25',
             'password' => 'required',
-        ]);
+        ], $messages);
+
+
         $username = $request->username;
         $password = md5($request->password);
         $studentLogin = DB::table('sinh_vien')->where('MSSV',$username)->where('password',$password)->first();
@@ -71,7 +80,7 @@ class AccountController extends Controller
             }
             else
             {
-                return redirect()->to('/')->with('error-Login','Mã số sinh viên hoặc mật khẩu không hợp lệ')->withInput();
+                return redirect()->to('/')->with('error-Login','Tài khoản hoặc mật khẩu không hợp lệ')->withInput();
             }
         }
     }
