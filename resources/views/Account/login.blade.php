@@ -82,6 +82,10 @@
                                 <header>Đăng nhập</header>
                                     <fieldset>
                                         <section>
+                                            @if (session('error-Login'))
+                                                        {{-- {{dd(session('error'))}} --}}
+                                                <div class="alert alert-danger text-center">{{ session('error-Login') }}</div>
+                                            @endif
                                             <label class="label">Tài khoản</label>
                                             <label class="input">
                                                 <i class="icon-append fa fa-user"></i>

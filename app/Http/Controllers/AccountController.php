@@ -64,7 +64,10 @@ class AccountController extends Controller
                     return redirect()->to('/trang-chu');
                 }
             }
-            return redirect()->back();
+            else
+            {
+                return redirect()->to('/')->with('error-Login','Mã số sinh viên hoặc mật khẩu không hợp lệ')->withInput();
+            }
         }
     }
 
