@@ -40,13 +40,14 @@ class AccountController extends Controller
         //Tùy biến mã lỗi trả về
         $messages = [
             'username.required' => 'Không được để trống Tài khoản đăng nhập',
-            'username.max' => 'Tài khoản nhập vào không hợp lệ </br> vui lòng nhập Mã sinh viên/ Mã giảng viên để tiếp tục',
+            'username.max' => 'Tài khoản nhập vào không hợp lệ.
+                        Vui lòng nhập Mã sinh viên/ Mã giảng viên để tiếp tục',
             'password.required' => 'Không được để trống Mật khẩu'
         ];
 
         //Điều kiện lọc lỗi
         $validated = $request->validate([
-            'username' => 'required|max:25',
+            'username' => 'required|max:20',
             'password' => 'required',
         ], $messages);
 
