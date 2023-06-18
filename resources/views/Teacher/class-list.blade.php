@@ -113,6 +113,7 @@
                         <?php
                             $stt=0;
                         ?>
+                    @if($getallsubject != null)
                         @foreach($getallsubject as $key)
 
                         <tbody>
@@ -151,14 +152,31 @@
                             </tr>
                         </tbody>
                         @endforeach
-
+                    @else
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
+                                    <td></td>
+                                @endif
+                            </tr>
+                        </tbody>
+                    @endif
                     </table>
                 </div>
             </div>
-
+        @if($getallsubject != null)
             {{-- Phân trang dùng laravel --}}
             {{ $getallsubject->appends(request()->all())->links('pagination::bootstrap-4')}}
-
+        @endif
             {{-- <div class="text-center">
                 <div class="pagination">
                     <ul class="pagination-list">
