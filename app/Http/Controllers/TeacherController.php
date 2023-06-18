@@ -43,13 +43,13 @@ class TeacherController extends Controller
 
         public function timkiem(Request $request)
         {
-            if(session()->exists('teacherid') && session()->get('ChucVu') != 'QL' || session()->get('ChucVu') != 'AM'){
+            if(session()->exists('teacherid') && session()->get('ChucVu') == 'GV'){
                 $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
                 $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
                 $coursename = DB::table('khoa_hoc')->where('KhoaHoc', $request->coursename)->first();
                 $courselist = DB::table('khoa_hoc')->where('KhoaHoc', $request->courselist)->first();
 
-                    $allsubject = DB::table('lich_giang_day')->where('MSGV',session()->get('teacherid'))->where('MaNgay','like','1%')
+                    $allsubject = DB::table('lich_giang_day')->where('MSGV',session()->get('teacherid'))->where('MaBuoi',1)
                     ->when($teacherid, function ($query) use ($teacherid) {
                         return $query->where('MSGV', $teacherid->MSGV)->distinct();
                     })
@@ -78,7 +78,7 @@ class TeacherController extends Controller
                 $coursename = DB::table('khoa_hoc')->where('KhoaHoc', $request->coursename)->first();
                 $courselist = DB::table('khoa_hoc')->where('KhoaHoc', $request->courselist)->first();
 
-                    $allsubject = DB::table('lich_giang_day')
+                    $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)
                     ->when($teacherid, function ($query) use ($teacherid) {
                         return $query->where('MSGV', $teacherid->MSGV)->distinct();
                     })
@@ -107,7 +107,15 @@ class TeacherController extends Controller
 
         public function removetimkiem()
         {
-            return redirect()->to('/trang-chu');
+            if(session()->get('ChucVu') != 'GV')
+            {
+                return redirect()->to('/danh-sach-lop');
+            }
+            else
+            {
+                return redirect()->to('/trang-chu');
+            }
+
         }
 //
 //Danh sách sinh viên
