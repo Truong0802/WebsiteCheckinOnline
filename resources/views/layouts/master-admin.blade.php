@@ -41,6 +41,7 @@
                         <span class="menu-item-parent">Trang chủ</span>
                     </a>
                 </li> -->
+            @if(session()->get('ChucVu') == 'AM')
                 <li>
                     <a title="Hồ sơ cá nhân" href="/quan-ly-sinh-vien">
                         <i class="fa fa-lg fa-fw fa-user"></i>
@@ -75,15 +76,6 @@
                     </a>
                 </li>
                 <li class="open">
-                    <a href="/danh-sach-lop" title="Học tập">
-                        <i class="fa fa-lg fa-fw fa-book"></i>
-                        <span class="menu-item-parent">Danh sách lớp</span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-minus-square-o"></em>
-                        </b>
-                    </a>
-                </li>
-                <li class="open">
                     <a href="/test-excel" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
                         <span class="menu-item-parent">Thêm vào danh sách lớp</span>
@@ -92,6 +84,17 @@
                         </b>
                     </a>
                 </li>
+            @endif
+                <li class="open">
+                    <a href="/danh-sach-lop" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Danh sách lớp</span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li>
+
                 <!-- <li>
                     <a href="">
                         <i class="fa fa-lg fa-fw fa-cog"></i>

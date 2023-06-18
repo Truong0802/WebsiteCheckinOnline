@@ -92,52 +92,54 @@
         @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
         <nav>
             <ul>
-                <li>
-                    <a title="Hồ sơ cá nhân" href="/quan-ly-sinh-vien">
-                        <i class="fa fa-lg fa-fw fa-user"></i>
-                        <span class="menu-item-parent">Quản lý sinh viên</span>
-                    </a>
-                </li>
-                <li class="open">
-                    <a href="/quan-ly-lop-hoc" title="Học tập">
-                        <i class="fa fa-lg fa-fw fa-book"></i>
-                        <span class="menu-item-parent">Quản lý lớp học</span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-minus-square-o"></em>
-                        </b>
-                    </a>
-                </li>
-                <li class="open">
-                    <a href="/quan-ly-gv" title="Giảng viên">
-                        <i class="fa fa-lg fa-fw fa-book"></i>
-                        <span class="menu-item-parent">Quản lý giảng viên</span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-minus-square-o"></em>
-                        </b>
-                    </a>
-                </li>
-                <li class="open">
-                    <a href="/them-lop-nien-khoa" title="Lớp niên khóa">
-                        <i class="fa fa-lg fa-fw fa-book"></i>
-                        <span class="menu-item-parent">Thêm Lớp Niên Khóa</span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-minus-square-o"></em>
-                        </b>
-                    </a>
-                </li>
+                @if(session()->get('ChucVu') == 'AM')
+                    <li>
+                        <a title="Hồ sơ cá nhân" href="/quan-ly-sinh-vien">
+                            <i class="fa fa-lg fa-fw fa-user"></i>
+                            <span class="menu-item-parent">Quản lý sinh viên</span>
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="/quan-ly-lop-hoc" title="Học tập">
+                            <i class="fa fa-lg fa-fw fa-book"></i>
+                            <span class="menu-item-parent">Quản lý lớp học</span>
+                            <b class="collapse-sign">
+                                <em class="fa fa-minus-square-o"></em>
+                            </b>
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="/quan-ly-gv" title="Giảng viên">
+                            <i class="fa fa-lg fa-fw fa-book"></i>
+                            <span class="menu-item-parent">Quản lý giảng viên</span>
+                            <b class="collapse-sign">
+                                <em class="fa fa-minus-square-o"></em>
+                            </b>
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="/them-lop-nien-khoa" title="Lớp niên khóa">
+                            <i class="fa fa-lg fa-fw fa-book"></i>
+                            <span class="menu-item-parent">Thêm Lớp Niên Khóa</span>
+                            <b class="collapse-sign">
+                                <em class="fa fa-minus-square-o"></em>
+                            </b>
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="/test-excel" title="Học tập">
+                            <i class="fa fa-lg fa-fw fa-book"></i>
+                            <span class="menu-item-parent">Thêm vào danh sách lớp</span>
+                            <b class="collapse-sign">
+                                <em class="fa fa-minus-square-o"></em>
+                            </b>
+                        </a>
+                    </li>
+                @endif
                 <li class="open">
                     <a href="/danh-sach-lop" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
                         <span class="menu-item-parent">Danh sách lớp</span>
-                        <b class="collapse-sign">
-                            <em class="fa fa-minus-square-o"></em>
-                        </b>
-                    </a>
-                </li>
-                <li class="open">
-                    <a href="/test-excel" title="Học tập">
-                        <i class="fa fa-lg fa-fw fa-book"></i>
-                        <span class="menu-item-parent">Thêm vào danh sách lớp</span>
                         <b class="collapse-sign">
                             <em class="fa fa-minus-square-o"></em>
                         </b>
