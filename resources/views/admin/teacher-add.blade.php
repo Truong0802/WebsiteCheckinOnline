@@ -76,9 +76,16 @@
                             <div class="form-group">
                                 <label for="hoc-ky">Chức vụ:</label>
                                 <?php
-                                    $AllRole = DB::table('chuc_vu')
-                                    ->where('MaChucVu','!=',session('ChucVu'))
-                                    ->where('MaChucVu','!=','AM')->get();
+                                    if(session('ChucVu') != 'AM')
+                                    {
+                                        $AllRole = DB::table('chuc_vu')
+                                        ->where('MaChucVu','!=',session('ChucVu'))
+                                        ->where('MaChucVu','!=','AM')->get();
+                                    }
+                                    elseif(session('ChucVu') == 'AM')
+                                    {
+                                        $AllRole = DB::table('chuc_vu')->get();
+                                    }
                                 ?>
                                 <select class="form-control" id="Role" name="role">
                                     <option value="">---Chọn Thông Tin---</option>

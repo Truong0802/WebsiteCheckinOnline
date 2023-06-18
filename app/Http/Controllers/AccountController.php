@@ -27,7 +27,6 @@ class AccountController extends Controller
 
                 return redirect()->to('/trang-chu');
             }
-
         }
         else{
             return view('Account.login');
@@ -35,7 +34,7 @@ class AccountController extends Controller
     }
 
 
-    public function login(Request $request):RedirectResponse
+    public function login(Request $request)
     {
         //Tùy biến mã lỗi trả về
         $messages = [
@@ -65,12 +64,12 @@ class AccountController extends Controller
         }
         else
         {
-            if($teacherLogin !=null)
+            if($teacherLogin != null)
             {
                 session()->put('teacherid',$teacherLogin->MSGV);
                 session()->put('name',$teacherLogin->HoTenGV);
                 session()->put('ChucVu',$teacherLogin->MaChucVu);
-                if($teacherLogin->MaChucVu == 'AM')
+                if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
                 {
                     return redirect()->to('/admin');
                 }

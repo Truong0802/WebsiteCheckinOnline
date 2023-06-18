@@ -11,8 +11,10 @@ class SinhVienController extends Controller
 {
     public function admin()
     {
-        if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM' )
+        if(session()->get('ChucVu') == 'AM' )
             return view('admin/student-add');
+        elseif(session()->get('ChucVu') == 'QL')
+            return redirect()->to('/danh-sach-lop');
         else
             return redirect()->to('/');
     }
