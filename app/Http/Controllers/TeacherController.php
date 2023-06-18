@@ -610,6 +610,11 @@ class TeacherController extends Controller
 
         public function ThemDanhSachSV(Request $request)
         {
+            $validated = $request->validate([
+                'mssv' => 'required',
+                'studentname' => 'required',
+                'classname' => 'required'
+            ]);
             if($request !=null)
             {
                 $MaTTMH = $request->classid;
@@ -736,6 +741,11 @@ class TeacherController extends Controller
 
         public function ThemGV(Request $request)
         {
+            $validated = $request->validate([
+                'msgv' => 'required',
+                'teachername' => 'required',
+                'password' => 'required'
+            ]);
             if($request != null)
             {
                 $temp = 'MSGV'.$request->msgv.'HoTen'.$request->teachername.'Pass'.$request->password.'Role'.$request->role.'KHOA'.$request->khoa;

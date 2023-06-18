@@ -40,12 +40,18 @@
                                 <div class="form-group">
                                 <label for="teacher-id">MSGV:</label>
                                 <input type="text" class="form-control" id="teacher-id" name="msgv">
+                                @error('msgv')
+                                    <div class="alert alert-danger">{{ $errors->first('msgv') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="teacher-name">Họ tên:</label>
                                 <input type="text" class="form-control" id="teacher-name" name="teachername">
+                                @error('teachername')
+                                    <div class="alert alert-danger">{{ $errors->first('teachername') }}</div>
+                                @enderror
                             </div>
                         </div>
 
@@ -56,6 +62,9 @@
                             <div class="form-group">
                                 <label for="student-name">Mật khẩu:</label>
                                 <input type="text" class="form-control" id="password" name="password">
+                                @error('password')
+                                    <div class="alert alert-danger">{{ $errors->first('password') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">

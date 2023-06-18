@@ -40,18 +40,27 @@
                                 <div class="form-group">
                                 <label for="student-id">MSSV:</label>
                                 <input type="text" class="form-control" id="student-id" name="mssv">
+                                @error('mssv')
+                                    <div class="alert alert-danger">{{ $errors->first('mssv') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Tên sinh viên:</label>
                                 <input type="text" class="form-control" id="student-name" name="studentname">
+                                @error('studentname')
+                                    <div class="alert alert-danger">{{ $errors->first('studentname') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Lớp:</label>
                                 <input type="text" class="form-control" id="class-name" name="classname">
+                                @error('classname')
+                                    <div class="alert alert-danger">{{ $errors->first('classname') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">

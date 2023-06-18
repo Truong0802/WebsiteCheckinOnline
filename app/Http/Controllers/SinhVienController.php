@@ -33,6 +33,14 @@ class SinhVienController extends Controller
         // $sinhVien -> TenLop = $request->input('TenLop');
 
         // $sinhVien->save(); //Update database
+        //Điều kiện lọc lỗi
+        $validated = $request->validate([
+            'mssv' => 'required',
+            'studentname' => 'required',
+            'classname' => 'required',
+            'password' => 'required'
+        ]);
+
         if($request != null)
         {
             if(session()->has('teacherid') && session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')

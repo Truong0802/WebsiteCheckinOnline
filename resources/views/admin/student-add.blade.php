@@ -38,14 +38,20 @@
                     <div class="row">
                         <div class="col-md-4">
                                 <div class="form-group">
-                                <label for="student-id">MSSV:</label>
-                                <input type="text" class="form-control" id="student-id" name="mssv">
-                            </div>
+                                    <label for="student-id">MSSV:</label>
+                                    <input type="text" class="form-control" id="student-id" name="mssv">
+                                    @error('mssv')
+                                        <div class="alert alert-danger">{{ $errors->first('mssv') }}</div>
+                                    @enderror
+                                </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Họ tên:</label>
                                 <input type="text" class="form-control" id="student-name" name="studentname">
+                                @error('studentname')
+                                    <div class="alert alert-danger">{{ $errors->first('studentname') }}</div>
+                                @enderror
                             </div>
                         </div>
 
@@ -56,12 +62,18 @@
                             <div class="form-group">
                                 <label for="class-name">Tên lớp:</label>
                                 <input type="text" class="form-control" id="class-name" name="classname">
+                                @error('classname')
+                                    <div class="alert alert-danger">{{ $errors->first('classname') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Mật khẩu:</label>
                                 <input type="text" class="form-control" id="password" name="password">
+                                @error('password')
+                                    <div class="alert alert-danger">{{ $errors->first('password') }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
