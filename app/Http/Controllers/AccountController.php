@@ -69,6 +69,7 @@ class AccountController extends Controller
                 session()->put('teacherid',$teacherLogin->MSGV);
                 session()->put('name',$teacherLogin->HoTenGV);
                 session()->put('ChucVu',$teacherLogin->MaChucVu);
+                //Thêm điều kiện lấy thông tin khoa để mở rộng quyền truy cập của GV/Quản lý của các khoa khác nhau
                 if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
                 {
                     return redirect()->to('/admin');

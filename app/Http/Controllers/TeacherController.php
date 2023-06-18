@@ -30,6 +30,7 @@ class TeacherController extends Controller
                 else{
                     $teacherid = session()->get('teacherid');
                     $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)->paginate(5);
+                    //Thêm điều kiện else cho trường hợp quản lý truy cập sẽ lọc ra những lớp thuộc khoa của quản lý đó
                 }
 
 
