@@ -132,6 +132,7 @@
                                         <td><a href="/DeleteSV?id={{$key}}">Xóa sinh viên</a></td>
                                     </tr>
                                 @endforeach
+
                             @endif
                         </tbody>
                     </table>

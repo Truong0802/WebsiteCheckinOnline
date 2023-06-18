@@ -351,6 +351,7 @@ class TeacherController extends Controller
 
                     $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
                     $TongSoBuoiUpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MaDanhSach',$findlop->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['TongSoBuoi' => $countChecked]);
                     //Đối với môn thực hành
@@ -363,6 +364,7 @@ class TeacherController extends Controller
                         if($countChecked  >= 5)
                         {
                             $row14UpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MaDanhSach',$findlop->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $latestpoint]);
                         }
@@ -379,6 +381,7 @@ class TeacherController extends Controller
                         {
 
                             $row14UpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MaDanhSach',$findlop->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $latestpoint]);
                         }
@@ -447,6 +450,7 @@ class TeacherController extends Controller
                             }
 
                             $row14UpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MaDanhSach',$findlop->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $result]);
                         }
@@ -484,6 +488,7 @@ class TeacherController extends Controller
                             }
 
                             $row14UpDate = DB::table('danh_sach_sinh_vien')
+                            ->where('MaDanhSach',$findlop->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $result]);
                         }

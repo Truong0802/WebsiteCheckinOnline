@@ -93,125 +93,125 @@
 
                                         <tbody>
                                             @foreach($getallsubject as $tkblist)
-                                            <?php
-                                                $subjectlist = DB::table('lich_giang_day')->where('MaNgay',$tkblist->MaNgay)->first();
-                                                $dateparse = Carbon::parse($subjectlist->NgayDay);
-                                            ?>
+                                                <?php
+                                                    $subjectlist = DB::table('lich_giang_day')->where('MaNgay',$tkblist->MaNgay)->first();
+                                                    $dateparse = Carbon::parse($subjectlist->NgayDay);
+                                                ?>
 
                                                 @if($dateparse->between($startOfWeek, $endOfWeek))
 
 
-                                            <?php
-                                            //Chuyển từ string sang datetime để so sánh
-
-                                                $dayOfWeek = $dateparse->format('l');
-                                                $daysOfWeek = [
-                                                                'Sunday' => 'Chủ nhật',
-                                                                'Monday' => 'Thứ 2',
-                                                                'Tuesday' => 'Thứ 3',
-                                                                'Wednesday' => 'Thứ 4',
-                                                                'Thursday' => 'Thứ 5',
-                                                                'Friday' => 'Thứ 6',
-                                                                'Saturday' => 'Thứ 7'
-                                                            ];
-
-                                            ?>
-
-                                            <tr>
-                                                <th colspan="4" class="bagroud">
-                                                <strong>
-                                                    <?php
-                                                        echo $daysOfWeek[$dayOfWeek].', '.$dateparse->format('d/m').'/'.$dateparse->format('Y');
-                                                    ?>
-                                                </strong>
-
-                                                </th>
-                                            </tr>
-
-
-
-                                            <tr class="mt-3 cursor-pointer open-detail">
-                                                <td class="data-html" style="display: none;">
-
-                                                    {{-- <div class="row mb-4">
-                                                        <div class="col-md-12">
-                                                            <h1 class="font-weight-bold text-center"> Tiếng Anh 6 (ENC106) </h1>
-                                                        </div>
-                                                    </div> --}}
-                                                    <div class="row mb-2">
-                                                        <div class="col-md-12">
-                                                            <h4 style="text-decoration: underline;">Thông tin chi tiết</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12 well">
-                                                            {{-- <table class="table table-condensed table-detail">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="120">Lớp:</td>
-                                                                        <td class="font-weight-bold"> 20DTHA2 </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td width="120">Phòng học:</td>
-                                                                        <td class="font-weight-bold"> E1-09.01 </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td width="120">Thứ:</td>
-                                                                        <td> Thứ 5 </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td width="120">Tiết:</td>
-                                                                        <td class="font-weight-bold"> 2-6 </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td width="120"> Giảng viên: </td>
-                                                                        <td> LÐT0020478 </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table> --}}
-                                                        </div>
-                                                    </div>
-
-                                                </td>
-
-                                                <td class=" text-center pt-4">
-                                                    <strong class="title-red"> {{$subjectlist->MaTietHoc}}</strong>
-                                                </td>
-                                                <td class=" pt-4">
                                                 <?php
-                                                    $subjectname = DB::table('mon_hoc')
-                                                    ->where('MaTTMH',$subjectlist->MaTTMH)
-                                                    ->first();
-                                                    if(session()->exists('teacherid'))
-                                                    {
-                                                        echo '<a href='.'/danh-sach-lop?'.'lop='.$subjectlist->MaTTMH.' >'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</a>';
-                                                    }
-                                                    else{
-                                                        echo '<Strong >'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</Strong>';
-                                                    }
+                                                //Chuyển từ string sang datetime để so sánh
+
+                                                    $dayOfWeek = $dateparse->format('l');
+                                                    $daysOfWeek = [
+                                                                    'Sunday' => 'Chủ nhật',
+                                                                    'Monday' => 'Thứ 2',
+                                                                    'Tuesday' => 'Thứ 3',
+                                                                    'Wednesday' => 'Thứ 4',
+                                                                    'Thursday' => 'Thứ 5',
+                                                                    'Friday' => 'Thứ 6',
+                                                                    'Saturday' => 'Thứ 7'
+                                                                ];
 
                                                 ?>
-                                                </td>
-                                                <td class=" pt-4">
-                                                    <p>
-                                                        {{-- <span> Phòng: <strong> E1-09.01 - </strong>
-                                                        </span> --}}
 
-                                                        <span> Lớp: {{$subjectlist->MaLop}} </span>
+                                                <tr>
+                                                    <th colspan="4" class="bagroud">
+                                                    <strong>
+                                                        <?php
+                                                            echo $daysOfWeek[$dayOfWeek].', '.$dateparse->format('d/m').'/'.$dateparse->format('Y');
+                                                        ?>
+                                                    </strong>
 
-                                                    </p>
-                                                </td>
-
-                                                    @if(session()->exists('teacherid'))
-                                                        <td class=" pt-4"><a href="/buoi?num={{$subjectlist->MaBuoi}}">ĐIỂM DANH</a></td>
-                                                    @else
-                                                        <td class=" pt-4"></td>
-                                                    @endif
-
-                                            </tr>
+                                                    </th>
+                                                </tr>
 
 
-                                            @endif
+
+                                                <tr class="mt-3 cursor-pointer open-detail">
+                                                    <td class="data-html" style="display: none;">
+
+                                                        {{-- <div class="row mb-4">
+                                                            <div class="col-md-12">
+                                                                <h1 class="font-weight-bold text-center"> Tiếng Anh 6 (ENC106) </h1>
+                                                            </div>
+                                                        </div> --}}
+                                                        <div class="row mb-2">
+                                                            <div class="col-md-12">
+                                                                <h4 style="text-decoration: underline;">Thông tin chi tiết</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 well">
+                                                                {{-- <table class="table table-condensed table-detail">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td width="120">Lớp:</td>
+                                                                            <td class="font-weight-bold"> 20DTHA2 </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td width="120">Phòng học:</td>
+                                                                            <td class="font-weight-bold"> E1-09.01 </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td width="120">Thứ:</td>
+                                                                            <td> Thứ 5 </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td width="120">Tiết:</td>
+                                                                            <td class="font-weight-bold"> 2-6 </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td width="120"> Giảng viên: </td>
+                                                                            <td> LÐT0020478 </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table> --}}
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+
+                                                    <td class=" text-center pt-4">
+                                                        <strong class="title-red"> {{$subjectlist->MaTietHoc}}</strong>
+                                                    </td>
+                                                    <td class=" pt-4">
+                                                    <?php
+                                                        $subjectname = DB::table('mon_hoc')
+                                                        ->where('MaTTMH',$subjectlist->MaTTMH)
+                                                        ->first();
+                                                        if(session()->exists('teacherid'))
+                                                        {
+                                                            echo '<a href='.'/danh-sach-lop?'.'lop='.$subjectlist->MaTTMH.' >'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</a>';
+                                                        }
+                                                        else{
+                                                            echo '<Strong >'.$subjectname->MaMH.' - '.$subjectname->TenMH.'</Strong>';
+                                                        }
+
+                                                    ?>
+                                                    </td>
+                                                    <td class=" pt-4">
+                                                        <p>
+                                                            {{-- <span> Phòng: <strong> E1-09.01 - </strong>
+                                                            </span> --}}
+
+                                                            <span> Lớp: {{$subjectlist->MaLop}} </span>
+
+                                                        </p>
+                                                    </td>
+
+                                                        @if(session()->exists('teacherid'))
+                                                            <td class=" pt-4"><a href="/buoi?num={{$subjectlist->MaBuoi}}">ĐIỂM DANH</a></td>
+                                                        @else
+                                                            <td class=" pt-4"></td>
+                                                        @endif
+
+                                                </tr>
+
+
+                                                @endif
                                             @endforeach
 
                                         </tbody>

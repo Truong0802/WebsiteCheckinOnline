@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Carbon\Carbon;
 class HomeController extends Controller
 {
     //
     public function trangchusv(Request $request){
             if(session()->exists('studentid')){
                 $username = session()->get('studentid');
+                $startOfWeek = Carbon::now()->startOfWeek();
+                $endOfWeek = Carbon::now()->endOfWeek();
 
                 $allsubject = DB::table('tkb')->where('MSSV',$username)->distinct()->get();
                 // $classname = DB::table('lop')->where('MaLop',session()->get('malop'))->get();
