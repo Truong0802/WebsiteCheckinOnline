@@ -360,6 +360,7 @@ class TeacherController extends Controller
                     {
                         $latestpoint = $countChecked * 3/6;
                         $latestpoint = round($latestpoint, 2);
+                        $latestpoint = ceil($latestpoint * 10) / 10; //Làm tròn lên số gần nhất
                         // $latestpoint = round($latestpoint + 0.5, 0, PHP_ROUND_HALF_UP);
                         if($countChecked  >= 5)
                         {
@@ -372,11 +373,8 @@ class TeacherController extends Controller
                     else{
                             //Đối với môn lý thuyết
                         $latestpoint = $countChecked * 3/9;
-                        // $input = 2.33;
-                        // $latestpoint = round($input+0.20, 2, PHP_ROUND_HALF_UP);
-                        // $latestpoint = (int)$latestpoint;
                         $latestpoint = round($latestpoint, 2);
-                        // dd($latestpoint);
+                        $latestpoint = ceil($latestpoint * 10) / 10; //Làm tròn lên số gần nhất
                         if($countChecked  >= 7)
                         {
 
