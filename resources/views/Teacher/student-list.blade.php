@@ -12,7 +12,7 @@
                 <li class="ng-star-inserted">
                     <a>Danh sách sinh viên</a>
                 </li>
-            </ol>
+            </ol>~
         </div>
         <div class="mt-4" id="content">
             <div class="  mx-4">

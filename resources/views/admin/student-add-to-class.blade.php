@@ -111,7 +111,7 @@
                 //     }
                 //     table.appendChild(dataRow);
                 // }
-                for (let i = 1; i < jsonData.length; i++) {
+                    for (let i = 1; i < jsonData.length; i++) {
                     let dataRow = document.createElement('tr');
                     for (let j = 0; j < 3; j++) {
                         let td = document.createElement('td');
@@ -122,6 +122,7 @@
                         td.appendChild(input);
                         dataRow.appendChild(td);
                     }
+
                     let dates = jsonData[i][3].split(' - ');
                     for (let j = 0; j < 2; j++) {
                         let td = document.createElement('td');

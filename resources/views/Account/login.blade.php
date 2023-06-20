@@ -103,7 +103,17 @@
                                             <label class="label">Mật mã</label>
                                             <label class="input">
                                                 <i class="icon-append fa fa-lock"></i>
-                                                <input class="form-control login-form ng-dirty ng-valid ng-touched" name="password" ngmodel="" required="" type="password">
+                                                <input class="form-control login-form ng-dirty ng-valid ng-touched" name="password" ngmodel="" required="" type="password" id="passwordInput">
+                                                {{-- Đổi dấu pasword --}}
+                                                {{-- <script>
+                                                    const passwordInput = document.getElementById('passwordInput');
+
+                                                    passwordInput.addEventListener('input', function() {
+                                                    const value = this.value;
+                                                    const maskedValue = value.replace(/./g, '*');
+                                                    this.value = maskedValue;
+                                                    });
+                                                </script> --}}
                                                 @error('password')
                                                          <div class="alert alert-danger">{{ $errors->first('password') }}</div>
                                                 @enderror

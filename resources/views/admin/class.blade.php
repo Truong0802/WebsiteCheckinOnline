@@ -46,7 +46,7 @@
                     <div class="btn-container">
                         <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm lớp</button>
                     </div>
-                    
+
                     @csrf
                 </form>
                 <div class="col-md-12 detail">
@@ -92,5 +92,5 @@
             </div>
             </div>
         </div>
-        
+
 @stop
