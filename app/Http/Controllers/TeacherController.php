@@ -155,10 +155,12 @@ class TeacherController extends Controller
                 $searchlist = DB::table('danh_sach_sinh_vien')
                 ->when($request->studentname, function ($query) use ($request) {
                     return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
+                        ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
                         ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
                 })
                 ->when($request->mssv, function ($query) use ($request) {
-                    return $query->where('danh_sach_sinh_vien.MSSV', $request->mssv);
+                    return $query->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
+                    ->where('danh_sach_sinh_vien.MSSV', $request->mssv);
                 })
                 ->paginate(10);
 
@@ -598,7 +600,7 @@ class TeacherController extends Controller
             }
 
         }
-
+//Thêm danh sách
         public function frmAddStudentList(Request $request)
         {
             session()->put('classAddId',$request->lop);

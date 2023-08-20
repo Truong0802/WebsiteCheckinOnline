@@ -49,7 +49,7 @@
                             </div>
                         </div> --}}
                     </div>
-                    <br>
+                    {{-- <br>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -57,7 +57,7 @@
                                 <input type="text" class="form-control" id="class-name" name="classname">
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <br>
                     <button type="submit" class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
                     <a type="button" href="/xoa-tim-kiem-sv" class="btn btn-primary" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
