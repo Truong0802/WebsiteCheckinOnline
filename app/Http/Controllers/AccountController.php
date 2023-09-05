@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Arr;
+Use Exception;
 class AccountController extends Controller
 {
     //
@@ -39,6 +41,7 @@ class AccountController extends Controller
     {
         if(session()->has('cdLoginRequest'))
         {
+
             $start = session()->get('cdLoginRequest');
             $end_date = $start->copy()->addDays(7);
             $diff = $end_date->diffInDays($start);
@@ -62,42 +65,81 @@ class AccountController extends Controller
 
                 $username = $request->username;
                 $password = md5($request->password);
-                $studentLogin = DB::table('sinh_vien')->where('MSSV',$username)->where('password',$password)->first();
-                $teacherLogin = DB::table('giang_vien')->where('MSGV',$username)->where('password',$password)->first();
-                // $testmacAddr = exec('getmac');
-                // $testipAddr= $request->ip();
-                // dd($testipAddr);
-                if($studentLogin != null){
-                    session()->put('studentid',$studentLogin->MSSV);
-                    session()->put('name',$studentLogin->HoTenSV);
-                    session()->put('malop',$studentLogin->MaLop);
-                    return redirect()->to('/trang-chu');
-                }
-                else
-                {
-                    if($teacherLogin != null)
-                    {
-                        session()->put('teacherid',$teacherLogin->MSGV);
-                        session()->put('name',$teacherLogin->HoTenGV);
-                        session()->put('ChucVu',$teacherLogin->MaChucVu);
-                        //Thêm điều kiện lấy thông tin khoa để mở rộng quyền truy cập của GV/Quản lý của các khoa khác nhau
-                        if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
-                        {
-                            return redirect()->to('/admin');
-                        }
-                        elseif($teacherLogin->MaChucVu == 'GV')
-                        {
-                            return redirect()->to('/trang-chu');
-                        }
+                $params = [
+                    $username,
+                    $password,
+                ];
+                //$studentLogin = DB::table('sinh_vien')->where('MSSV',$username)->where('password',$password)->first();
+                //$teacherLogin = DB::table('giang_vien')->where('MSGV',$username)->where('password',$password)->first();
+                try{
+                    $studentLogin= DB::select('select * from sinh_vien where MSSV = ? and password = ?', $params)[0];
+                    if($studentLogin != null){
+                        session()->put('studentid',$studentLogin->MSSV);
+                        session()->put('name',$studentLogin->HoTenSV);
+                        session()->put('malop',$studentLogin->MaLop);
+                        return redirect()->to('/trang-chu');
                     }
-                    else
+                }
+                catch(Exception $ex){
+                    try{
+                        $teacherLogin = DB::select('select * from giang_vien where MSGV = ? and password = ?', $params)[0];
+                        if($teacherLogin != null)
+                        {
+
+                            session()->put('teacherid',$teacherLogin->MSGV);
+                            session()->put('name',$teacherLogin->HoTenGV);
+                            session()->put('ChucVu',$teacherLogin->MaChucVu);
+                            //Thêm điều kiện lấy thông tin khoa để mở rộng quyền truy cập của GV/Quản lý của các khoa khác nhau
+                            if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
+                            {
+                                return redirect()->to('/admin');
+                            }
+                            elseif($teacherLogin->MaChucVu == 'GV')
+                            {
+                                return redirect()->to('/trang-chu');
+                            }
+                        }
+                    }catch(Exception $ex)
                     {
                         return redirect()->to('/')->with('error-Login','Tài khoản hoặc mật khẩu không hợp lệ')->withInput();
                     }
+
                 }
+                // $testmacAddr = exec('getmac');
+                // $testipAddr= $request->ip();
+                // dd($testipAddr);
+
+                // if($studentLogin != null){
+                //     session()->put('studentid',$studentLogin->MSSV);
+                //     session()->put('name',$studentLogin->HoTenSV);
+                //     session()->put('malop',$studentLogin->MaLop);
+                //     return redirect()->to('/trang-chu');
+                // }
+                // else
+                // {
+                //     if($teacherLogin != null)
+                //     {
+                //         session()->put('teacherid',$teacherLogin->MSGV);
+                //         session()->put('name',$teacherLogin->HoTenGV);
+                //         session()->put('ChucVu',$teacherLogin->MaChucVu);
+                //         //Thêm điều kiện lấy thông tin khoa để mở rộng quyền truy cập của GV/Quản lý của các khoa khác nhau
+                //         if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
+                //         {
+                //             return redirect()->to('/admin');
+                //         }
+                //         elseif($teacherLogin->MaChucVu == 'GV')
+                //         {
+                //             return redirect()->to('/trang-chu');
+                //         }
+                //     }
+                //     else
+                //     {
+                //         return redirect()->to('/')->with('error-Login','Tài khoản hoặc mật khẩu không hợp lệ')->withInput();
+                //     }
+                // }
             }
             else{
-                return redirect()->to('/')->with('error-Login','Thời gian chờ còn lại: ('.$diff.")")->withInput();
+                return redirect()->to('/')->with('error-Login','Thời gian chờ còn lại: ('.$diff.") ngày")->withInput();
             }
         }
         else
@@ -120,39 +162,77 @@ class AccountController extends Controller
 
                         $username = $request->username;
                         $password = md5($request->password);
-                        $studentLogin = DB::table('sinh_vien')->where('MSSV',$username)->where('password',$password)->first();
-                        $teacherLogin = DB::table('giang_vien')->where('MSGV',$username)->where('password',$password)->first();
-                        // $testmacAddr = exec('getmac');
-                        // $testipAddr= $request->ip();
-                        // dd($testipAddr);
-                        if($studentLogin != null){
-                            session()->put('studentid',$studentLogin->MSSV);
-                            session()->put('name',$studentLogin->HoTenSV);
-                            session()->put('malop',$studentLogin->MaLop);
-                            return redirect()->to('/trang-chu');
-                        }
-                        else
-                        {
-                            if($teacherLogin != null)
-                            {
-                                session()->put('teacherid',$teacherLogin->MSGV);
-                                session()->put('name',$teacherLogin->HoTenGV);
-                                session()->put('ChucVu',$teacherLogin->MaChucVu);
-                                //Thêm điều kiện lấy thông tin khoa để mở rộng quyền truy cập của GV/Quản lý của các khoa khác nhau
-                                if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
-                                {
-                                    return redirect()->to('/admin');
-                                }
-                                elseif($teacherLogin->MaChucVu == 'GV')
-                                {
-                                    return redirect()->to('/trang-chu');
-                                }
+                        $params = [
+                            $username,
+                            $password,
+                        ];
+                        try{
+                            $studentLogin= DB::select('select * from sinh_vien where MSSV = ? and password = ?', $params)[0];
+                            if($studentLogin != null){
+                                session()->put('studentid',$studentLogin->MSSV);
+                                session()->put('name',$studentLogin->HoTenSV);
+                                session()->put('malop',$studentLogin->MaLop);
+                                return redirect()->to('/trang-chu');
                             }
-                            else
+                        }
+                        catch(Exception $ex){
+                            try{
+                                $teacherLogin = DB::select('select * from giang_vien where MSGV = ? and password = ?', $params)[0];
+                                if($teacherLogin != null)
+                                {
+
+                                    session()->put('teacherid',$teacherLogin->MSGV);
+                                    session()->put('name',$teacherLogin->HoTenGV);
+                                    session()->put('ChucVu',$teacherLogin->MaChucVu);
+                                    //Thêm điều kiện lấy thông tin khoa để mở rộng quyền truy cập của GV/Quản lý của các khoa khác nhau
+                                    if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
+                                    {
+                                        return redirect()->to('/admin');
+                                    }
+                                    elseif($teacherLogin->MaChucVu == 'GV')
+                                    {
+                                        return redirect()->to('/trang-chu');
+                                    }
+                                }
+                            }catch(Exception $ex)
                             {
                                 return redirect()->to('/')->with('error-Login','Tài khoản hoặc mật khẩu không hợp lệ')->withInput();
                             }
+
                         }
+                        // $testmacAddr = exec('getmac');
+                        // $testipAddr= $request->ip();
+                        // dd($testipAddr);
+
+                        // if($studentLogin != null){
+                        //     session()->put('studentid',$studentLogin->MSSV);
+                        //     session()->put('name',$studentLogin->HoTenSV);
+                        //     session()->put('malop',$studentLogin->MaLop);
+                        //     return redirect()->to('/trang-chu');
+                        // }
+                        // else
+                        // {
+                        //     if($teacherLogin != null)
+                        //     {
+
+                        //         session()->put('teacherid',$teacherLogin->MSGV);
+                        //         session()->put('name',$teacherLogin->HoTenGV);
+                        //         session()->put('ChucVu',$teacherLogin->MaChucVu);
+                        //         //Thêm điều kiện lấy thông tin khoa để mở rộng quyền truy cập của GV/Quản lý của các khoa khác nhau
+                        //         if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
+                        //         {
+                        //             return redirect()->to('/admin');
+                        //         }
+                        //         elseif($teacherLogin->MaChucVu == 'GV')
+                        //         {
+                        //             return redirect()->to('/trang-chu');
+                        //         }
+                        //     }
+                        //     else
+                        //     {
+                        //         return redirect()->to('/')->with('error-Login','Tài khoản hoặc mật khẩu không hợp lệ')->withInput();
+                        //     }
+                        // }
         }
     }
 
@@ -164,11 +244,11 @@ class AccountController extends Controller
         session()->forget('malop');
         session()->forget('mon-hoc');
         session()->forget('row16');
-        //Set thời gian bắt đầu cho cd đến khi được đăng nhập lại là 7 ngày
-        $now = Carbon::now();
-        // $end_date = $now->copy()->addDays(7);
-        // $diff = $end_date->diffInDays($now);
-        session()->put('cdLoginRequest', $now);
+        // //Set thời gian bắt đầu cho cd đến khi được đăng nhập lại là 7 ngày
+        // $now = Carbon::now();
+        // // $end_date = $now->copy()->addDays(7);
+        // // $diff = $end_date->diffInDays($now);
+        // session()->put('cdLoginRequest', $now);
         return redirect()->to('/');
     }
 

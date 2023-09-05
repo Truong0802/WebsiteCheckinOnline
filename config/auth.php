@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // 'checkinStudent_web' =>  [
+        //     'driver' => 'session',
+        //     'provider' => 'Student_User',
+        // ],
     ],
 
     /*
@@ -69,6 +73,14 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+        // 'Student_User' =>  [
+        //         'driver' => 'database',
+        //         'table' => 'sinh_vien',
+        //     ],
+        // 'Teacher_User' =>  [
+        //         'driver' => 'database',
+        //         'table' => 'giang_vien',
+        //     ],
     ],
 
     /*
@@ -97,6 +109,12 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        // 'checkinStudent_web' => [
+        //     'provider' => 'Student_User',
+        //     'table' => 'password_reset_tokens',
+        //     'expire' => 60,
+        //     'throttle' => 60,
+        // ],
     ],
 
     /*

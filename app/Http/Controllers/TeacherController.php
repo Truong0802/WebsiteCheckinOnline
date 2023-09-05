@@ -12,6 +12,7 @@ Use Exception;
 use Illuminate\Support\Facades\Crypt;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
+use Jenssegers\Agent\Agent;
 
 class TeacherController extends Controller
 {
@@ -225,6 +226,12 @@ class TeacherController extends Controller
                 //Ràng buộc thời gian sử dụng để được insert không được vượt thời gian lúc bấm (session ở quyền giảng viên) là 3p
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
 
+                //Kiểm tra IP & Info Device
+                    $ip = $request->ip();
+                    //$device = Agent::device();
+                    //dd($ip);
+
+                    //
                     $encryptedData = $request->data;
                     // dd($encryptedData);
                     $findPath = DB::table('checklog')->where('URL',$encryptedData)->orderByDesc('Id')->first();
