@@ -12,7 +12,7 @@ Use Exception;
 use Illuminate\Support\Facades\Crypt;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
-use Jenssegers\Agent\Agent;
+use Jenssegers\Agent\Facades\Agent;
 
 class TeacherController extends Controller
 {
@@ -226,10 +226,7 @@ class TeacherController extends Controller
                 //Ràng buộc thời gian sử dụng để được insert không được vượt thời gian lúc bấm (session ở quyền giảng viên) là 3p
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
 
-                //Kiểm tra IP & Info Device
-                    $ip = $request->ip();
-                    //$device = Agent::device();
-                    //dd($ip);
+
 
                     //
                     $encryptedData = $request->data;
@@ -255,13 +252,84 @@ class TeacherController extends Controller
                             {
                                 $timecheckin = Carbon::now();
                                 $diff = $timecheckin->diff(Carbon::parse($findPath->TimeOpenLink));
-                                // dd($diff->i);
+
                                 if( $diff->i <= 5){
                                     try
                                     {
+                                        //Bỏ
+                                        //Kiểm tra IP & Info Device
+                                        // $ip = $request->ip();
+                                        // $getmacAddr = exec('getmac');
+                                        //$device = Agent::device();
+
+                                     //Kiểm tra IP điểm danh có trùng với IP đã dùng để điểm danh vào buổi đầu hay không
+                                       //if($data["buoi"] == 1) //Buổi đầu tiên add Ip vào
+                                       //{
+                                             //Điểm danh
+                                        // $checkrequest = DB::table('diem_danh')
+                                        // ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
+                                        // ->where('MaBuoi',$data["buoi"])->first();
+
+                                        // // dd($checkrequest);
+                                        // if($checkrequest != null)
+                                        // {
+                                        //     if(session()->has('error2'))
+                                        //     {
+                                        //         session()->forget('error2');
+                                        //     }
+                                        //     else{
+                                        //         return back()->with('error2','Không được điểm danh 2 lần!!!')->withInput();
+                                        //     }
+
+                                        // }
+                                        // elseif($checkrequest == null)
+                                        // {
+                                        //     if($data["buoi"] == $datafromdb["buoi"])
+                                        //     {
+                                        //         $checkAllIp = DB::table('IPCheck')->where('IPv4',$ip)->first();
+                                        //          if($checkAllIp ==null)
+                                        //          {
+                                        //              $inputIpv4AtFirtTime = DB::table('IPCheck')->insert([
+                                        //                  'IPv4' => $ip,
+                                        //                  'MAC' => $getmacAddr,
+                                        //              ]);
+                                        //           }
+
+                                        //         $studentchecked = DB::table('diem_danh')->insert([
+                                        //             'MaDanhSach' => $findlistidofstudent->MaDanhSach,
+                                        //             'MaBuoi' => $data["buoi"],
+                                        //             'NgayDiemDanh' => $timecheckin,
+                                        //             'IPv4' => $ip,
+                                        //         ]);
+                                        //     }
+                                        //     else{
+                                        //             if(session()->has('error2'))
+                                        //         {
+                                        //             session()->forget('error2');
+                                        //         }
+                                        //         else{
+                                        //             return back()->with('error2','Điểm danh thất bại')->withInput();
+                                        //         }
+                                        //     }
+                                        // }
+
+
+                                       //}
+                                       //else{ --> đi tiếp đoạn dưới
+                                        //$checkIpUsed = DB:table('diem_danh')-where('MaDanhSach',$findlistidofstudent->MaDanhSach)
+                                        //->where('IPv4',$ip)->where('MaBuoi',1)->first();
+
+                                        //if($checkIpUsed == null)
+                                        //{
+                                        //  return back()->with('error2','Không được điểm danh hộ!')->withInput();
+                                        //}else{ --> đi tiếp đoạn dưới
+                                        //Bỏ
+
+                                        //Điểm danh
                                         $checkrequest = DB::table('diem_danh')
                                         ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
                                         ->where('MaBuoi',$data["buoi"])->first();
+
                                         // dd($checkrequest);
                                         if($checkrequest != null)
                                         {
@@ -295,11 +363,11 @@ class TeacherController extends Controller
                                             }
                                         }
 
-                                        // dd($checkrequest);
+
                                     }
                                     catch(\Illuminate\Database\QueryException $exception)
                                     {
-                                        // dd($exception->getMessage());
+
                                         return back()->with('error',$exception->getMessage())->withInput();
                                     }
 

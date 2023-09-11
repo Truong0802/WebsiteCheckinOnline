@@ -19,7 +19,7 @@
         <div class="login-info">
             <span class="ng-star-inserted">
                 <a>
-                    <img alt="" class="online" src="/assets/img/avatar.png">
+                    <img alt="" class="online" src="{{asset('/img/avatar.png')}}">
                     <span>
                         <?php
                             $studentname =session()->get('name');

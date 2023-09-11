@@ -14,6 +14,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Arr;
 Use Exception;
+use hisorange\BrowserDetect\Parser as Browser;
+use Jenssegers\Agent\Facades\Agent;
 class AccountController extends Controller
 {
     //
@@ -39,6 +41,8 @@ class AccountController extends Controller
 
     public function login(Request $request)
     {
+
+
         if(session()->has('cdLoginRequest'))
         {
 
@@ -53,13 +57,18 @@ class AccountController extends Controller
                     'username.required' => 'Không được để trống Tài khoản đăng nhập',
                     'username.max' => 'Tài khoản nhập vào không hợp lệ.
                                 Vui lòng nhập Mã sinh viên/ Mã giảng viên để tiếp tục',
-                    'password.required' => 'Không được để trống Mật khẩu'
+                    //Dành cho phần đổi mật khẩu
+                    'password.min' => 'Mật khẩu phải lớn hơn 4 ký tự',
+                    'password.regex' => 'Mật khẩu nhập không hợp lệ',
+                    'password.required' => 'Không được để trống Mật khẩu',
+
                 ];
 
                 //Điều kiện lọc lỗi
                 $validated = $request->validate([
                     'username' => 'required|max:20',
-                    'password' => 'required',
+                    'password' => 'required|min:4|regex:/^.*(?=.*[!$#%]).*$/',
+                    //Thêm điều kiện nếu set validation cho đổi mật khẩu:|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/
                 ], $messages);
 
 
@@ -105,38 +114,6 @@ class AccountController extends Controller
                     }
 
                 }
-                // $testmacAddr = exec('getmac');
-                // $testipAddr= $request->ip();
-                // dd($testipAddr);
-
-                // if($studentLogin != null){
-                //     session()->put('studentid',$studentLogin->MSSV);
-                //     session()->put('name',$studentLogin->HoTenSV);
-                //     session()->put('malop',$studentLogin->MaLop);
-                //     return redirect()->to('/trang-chu');
-                // }
-                // else
-                // {
-                //     if($teacherLogin != null)
-                //     {
-                //         session()->put('teacherid',$teacherLogin->MSGV);
-                //         session()->put('name',$teacherLogin->HoTenGV);
-                //         session()->put('ChucVu',$teacherLogin->MaChucVu);
-                //         //Thêm điều kiện lấy thông tin khoa để mở rộng quyền truy cập của GV/Quản lý của các khoa khác nhau
-                //         if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
-                //         {
-                //             return redirect()->to('/admin');
-                //         }
-                //         elseif($teacherLogin->MaChucVu == 'GV')
-                //         {
-                //             return redirect()->to('/trang-chu');
-                //         }
-                //     }
-                //     else
-                //     {
-                //         return redirect()->to('/')->with('error-Login','Tài khoản hoặc mật khẩu không hợp lệ')->withInput();
-                //     }
-                // }
             }
             else{
                 return redirect()->to('/')->with('error-Login','Thời gian chờ còn lại: ('.$diff.") ngày")->withInput();
@@ -200,39 +177,7 @@ class AccountController extends Controller
                             }
 
                         }
-                        // $testmacAddr = exec('getmac');
-                        // $testipAddr= $request->ip();
-                        // dd($testipAddr);
 
-                        // if($studentLogin != null){
-                        //     session()->put('studentid',$studentLogin->MSSV);
-                        //     session()->put('name',$studentLogin->HoTenSV);
-                        //     session()->put('malop',$studentLogin->MaLop);
-                        //     return redirect()->to('/trang-chu');
-                        // }
-                        // else
-                        // {
-                        //     if($teacherLogin != null)
-                        //     {
-
-                        //         session()->put('teacherid',$teacherLogin->MSGV);
-                        //         session()->put('name',$teacherLogin->HoTenGV);
-                        //         session()->put('ChucVu',$teacherLogin->MaChucVu);
-                        //         //Thêm điều kiện lấy thông tin khoa để mở rộng quyền truy cập của GV/Quản lý của các khoa khác nhau
-                        //         if($teacherLogin->MaChucVu == 'AM' || $teacherLogin->MaChucVu == 'QL')
-                        //         {
-                        //             return redirect()->to('/admin');
-                        //         }
-                        //         elseif($teacherLogin->MaChucVu == 'GV')
-                        //         {
-                        //             return redirect()->to('/trang-chu');
-                        //         }
-                        //     }
-                        //     else
-                        //     {
-                        //         return redirect()->to('/')->with('error-Login','Tài khoản hoặc mật khẩu không hợp lệ')->withInput();
-                        //     }
-                        // }
         }
     }
 
@@ -244,6 +189,8 @@ class AccountController extends Controller
         session()->forget('malop');
         session()->forget('mon-hoc');
         session()->forget('row16');
+
+        //Tạo session ghi time khóa đăng nhập 7 ngày
         // //Set thời gian bắt đầu cho cd đến khi được đăng nhập lại là 7 ngày
         // $now = Carbon::now();
         // // $end_date = $now->copy()->addDays(7);
