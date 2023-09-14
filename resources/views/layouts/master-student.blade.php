@@ -49,7 +49,7 @@
                     </a>
                 </li>
                 <li class="open">
-                    <a href="" title="Học tập">
+                    <a href="/thoi-khoa-bieu" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
                         <span class="menu-item-parent">Thời khóa biểu </span>
                         <b class="collapse-sign">
@@ -58,7 +58,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/xac-nhan-nguoi-dung">
                         <i class="fa fa-lg fa-fw fa-cog"></i>
                         <span class="menu-item-parent"> Cài đặt tài khoản </span>
                     </a>

@@ -8,6 +8,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SinhVienController;
 use Google\Service\Classroom\Teacher;
 use App\Http\Controllers\InfoController;
+use Google\Service\AdExchangeBuyer\Account;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,7 @@ Route::get('/logout',[AccountController::class,'logout']);
 
 //Trang thời khóa biểu sinh viên
 Route::get('/trang-chu',[HomeController::class,'trangchusv']);
+Route::get('/thoi-khoa-bieu',[HomeController::class,'trangchusv']);
 
 //Trang danh sách lớp của giảng viên
 Route::get('/danh-sach-lop',[TeacherController::class,'danhsachlop']);
@@ -111,3 +113,7 @@ Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
 
 //Trang thông tin & cập nhật thông tin
 Route::get('/thong-tin-ca-nhan',[InfoController::class,'FrmAcessInfo']);
+
+//Cập nhật mật khẩu lần đầu
+Route::get('/xac-nhan-nguoi-dung',[AccountController::class,'FrmChangePass']);
+Route::post('/Confirmed',[AccountController::class,'ConfirmAndChangePass']);

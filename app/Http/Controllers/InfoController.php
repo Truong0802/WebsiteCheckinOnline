@@ -17,5 +17,10 @@ class InfoController extends Controller
             //dd($InfoOfStudent);
             return view('Student/student-info',['getInfoFromObject' => $InfoOfStudent]);
         }
+        elseif(session()->exists('teacherid')){
+            $InfoOfteacher = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+            //dd( $InfoOfteacher);
+            return view('Student/student-info',['getInfoFromObject' => $InfoOfteacher]);
+        }
     }
 }
