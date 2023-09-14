@@ -5,6 +5,18 @@
 @extends('layouts.master-student')
 
 @section('content')
+<style>
+    .inner-class .custom-info
+    {
+        margin-left: 20px;
+    }
+
+    .custom-info .custom-list-li .info
+    {
+        font-weight: bold;
+    }
+</style>
+
 <div class="inner-class">
     <div class="row well m-3">
         <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
