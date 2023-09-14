@@ -237,7 +237,7 @@ class AccountController extends Controller
         {
             $UpdateHasConfirmed =  DB::table('giang_vien')
                                 ->where('MSGV', session()->get('teacherid'))
-                                ->update(['Confirmed' => 1, 'password' => $request->password]);
+                                ->update(['Confirmed' => 1, 'password' => md5($request->password)]);
         }
 
     }
