@@ -229,7 +229,7 @@ class AccountController extends Controller
 
             $UpdateHasConfirmed =  DB::table('sinh_vien')
                                  ->where('MSSV', session()->get('studentid'))
-                                 ->update(['Confirmed' => 1, 'password' => $request->password]);
+                                 ->update(['Confirmed' => 1, 'password' => md5($request->password)]);
 
             return redirect()->to('/trang-chu');
         }
