@@ -33,8 +33,7 @@
     <div class="inner-class">
         <div class="row well m-3">
             <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
-                {{-- <img alt="" class="online" src="/assets/img/avatar.png"> --}}
-                <img src="https://api.hutech.edu.vn/files/public/file-avatar/mq/d536e02ea9ba2e126486358694479d7c.jpegpng" class="img-responsive" style="margin:auto" onerror="this.src='assets/images/noimage.jpg'">
+                <img alt="" class="online img-responsive" style="margin:auto" src="{{asset('/img/ori-ava.png')}}">
             </div>
             <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
                 <ul class="list-unstyled custom-list-li">
