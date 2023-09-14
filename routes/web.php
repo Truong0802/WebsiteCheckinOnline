@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SinhVienController;
 use Google\Service\Classroom\Teacher;
+use App\Http\Controllers\InfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,3 +108,6 @@ Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
 // Route::post('/them-lop',[TeacherController::class,'ThemLop']);
 // Route::get('/Delete-class-id',[TeacherController::class,'XoaDSLopTam']);
 // Route::get('/confirmToAddClass',[TeacherController::class,'XacNhanThemLopNK']);
+
+//Trang thông tin & cập nhật thông tin
+Route::get('/thong-tin-ca-nhan',[InfoController::class,'FrmAcessInfo']);
