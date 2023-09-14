@@ -59,7 +59,7 @@ class AccountController extends Controller
                                 Vui lòng nhập Mã sinh viên/ Mã giảng viên để tiếp tục',
                     //Dành cho phần đổi mật khẩu
                     'password.min' => 'Mật khẩu phải lớn hơn 4 ký tự',
-                    'password.regex' => 'Mật khẩu nhập không hợp lệ',
+                    // 'password.regex' => 'Mật khẩu nhập không hợp lệ',
                     'password.required' => 'Không được để trống Mật khẩu',
 
                 ];
@@ -67,7 +67,7 @@ class AccountController extends Controller
                 //Điều kiện lọc lỗi
                 $validated = $request->validate([
                     'username' => 'required|max:20',
-                    'password' => 'required|min:4|regex:/^.*(?=.*[!$#%]).*$/',
+                    'password' => 'required|min:4',
                     //Thêm điều kiện nếu set validation cho đổi mật khẩu:|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/
                 ], $messages);
 
@@ -129,7 +129,7 @@ class AccountController extends Controller
                                         Vui lòng nhập Mã sinh viên/ Mã giảng viên để tiếp tục',
                             //Dành cho phần đổi mật khẩu
                             'password.min' => 'Mật khẩu phải lớn hơn 4 ký tự',
-                            'password.regex' => 'Mật khẩu nhập không hợp lệ',
+                            //'password.regex' => 'Mật khẩu nhập không hợp lệ',
                             'password.required' => 'Không được để trống Mật khẩu',
 
                         ];
@@ -137,7 +137,7 @@ class AccountController extends Controller
                         //Điều kiện lọc lỗi
                         $validated = $request->validate([
                             'username' => 'required|max:20',
-                            'password' => 'required|min:4|regex:/^.*(?=.*[!$#%]).*$/',
+                            'password' => 'required|min:4',
                             //Thêm điều kiện nếu set validation cho đổi mật khẩu:|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/
                         ], $messages);
 
@@ -231,13 +231,29 @@ class AccountController extends Controller
                                  ->where('MSSV', session()->get('studentid'))
                                  ->update(['Confirmed' => 1, 'password' => md5($request->password)]);
 
-            return redirect()->to('/trang-chu');
+            return redirect()->to('/trang-chu')->with('success1','Xác thực thành công!')->withInput();
         }
         else if(session()->exists('teacherid'))
         {
+             $messages = [
+                'username.required' => 'Không được để trống Tài khoản đăng nhập',
+                'username.max' => 'Tài khoản nhập vào không hợp lệ.
+                            Vui lòng nhập Mã sinh viên/ Mã giảng viên để tiếp tục',
+                //Dành cho phần đổi mật khẩu
+                'password.min' => 'Mật khẩu phải lớn hơn 4 ký tự',
+                'password.regex' => 'Mật khẩu nhập không hợp lệ (Mật khẩu phải có viết thường, hoa, số và ký tự đặc biệt)',
+                'password.required' => 'Không được để trống Mật khẩu',
+
+            ];
+            $validated = $request->validate([
+                'username' => 'required|max:20',
+                'password' => 'required|min:4|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[@!$#%]).*$/',
+                //Thêm điều kiện nếu set validation cho đổi mật khẩu:|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/
+            ], $messages);
             $UpdateHasConfirmed =  DB::table('giang_vien')
                                 ->where('MSGV', session()->get('teacherid'))
                                 ->update(['Confirmed' => 1, 'password' => md5($request->password)]);
+            return redirect()->to('/trang-chu')->with('success1','Xác thực thành công!')->withInput();
         }
 
     }

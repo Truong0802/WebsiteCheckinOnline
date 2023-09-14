@@ -115,5 +115,8 @@ Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
 Route::get('/thong-tin-ca-nhan',[InfoController::class,'FrmAcessInfo']);
 
 //Cập nhật mật khẩu lần đầu
+//Sử dụng sau khi tạo điều kiện if else trong popup,
+//nếu check trong tbl sinh_vien hoặc giang_vien ở row Confirmed == 0 (tức chưa đổi tk lần đầu login)
+//thì sẽ luôn hiện popup
 Route::get('/xac-nhan-nguoi-dung',[AccountController::class,'FrmChangePass']);
 Route::post('/Confirmed',[AccountController::class,'ConfirmAndChangePass']);

@@ -82,7 +82,13 @@
                                             <label class="label">Tài khoản</label>
                                             <label class="input">
                                                 <i class="icon-append fa fa-user"></i>
-                                                <input class="form-control login-form ng-dirty ng-valid ng-touched" name="username" value="{{session()->get('studentid')}}" ngmodel="" required="" type="text" readonly>
+                                                <?php
+                                                    if(session()->exists('studentid'))
+                                                        $id= session()->get('studentid');
+                                                    elseif(session()->exists('teacherid'))
+                                                        $id= session()->get('teacherid')
+                                                ?>
+                                                <input class="form-control login-form ng-dirty ng-valid ng-touched" name="username" value="{{$id}}" ngmodel="" required="" type="text" readonly>
                                                 <b class="tooltip tooltip-top-right">
                                                     <i class="fa fa-user txt-color-teal"></i> Vui lòng điền tài khoản đăng nhập </b>
                                             </label>

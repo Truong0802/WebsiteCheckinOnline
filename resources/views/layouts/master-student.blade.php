@@ -58,7 +58,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/xac-nhan-nguoi-dung">
+                    <a href="">
                         <i class="fa fa-lg fa-fw fa-cog"></i>
                         <span class="menu-item-parent"> Cài đặt tài khoản </span>
                     </a>
