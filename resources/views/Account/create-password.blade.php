@@ -76,7 +76,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
                         <div class="well no-padding">
                             <form action="/Confirmed" method="post" class="smart-form client-form ng-dirty ng-touched ng-valid" novalidate="">
-                                <header>Xác nhận</header>
+                                <header>Xác thực & thay đổi mật khẩu</header>
                                     <fieldset>
                                         <section>
                                             <label class="label">Tài khoản</label>
@@ -118,13 +118,13 @@
                                             </label>
                                         </section>
                                         <section>
-                                            <div class="note"> Đăng nhập không được?
+                                            <!--<div class="note"> Đăng nhập không được?
                                                 <a href="http://qlcntt.hutech.edu.vn/ho-tro?tieu_de=tai%20khoan">Xem hướng dẫn tại đây</a>
-                                            </div>
+                                            </div>-->
                                         </section>
                                     </fieldset>
                                     <footer>
-                                        <button class="btn btn-primary" type="submit"> Đăng nhập </button>
+                                        <button class="btn btn-primary" type="submit"> Xác nhận thay đổi </button>
                                     </footer>
                                     @csrf
                             </form>
