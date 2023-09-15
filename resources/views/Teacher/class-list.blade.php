@@ -175,20 +175,58 @@
                     </table>
                 </div>
             </div>
-        @if($getallsubject != null)
-            {{-- Phân trang dùng laravel --}}
-            {{ $getallsubject->appends(request()->all())->links('pagination::bootstrap-4')}}
-        @endif
-            {{-- <div class="text-center">
-                <div class="pagination">
-                    <ul class="pagination-list">
+            @if($getallsubject != null)
+                {{-- Phân trang dùng laravel --}}
+                {{ $getallsubject->appends(request()->all())->links('pagination::bootstrap-4')}}
+            @endif
+                {{-- <div class="text-center">
+                    <div class="pagination">
+                        <ul class="pagination-list">
 
-                        <li class="hidden-phone current"><a title="1" href="" class="pagenav">1</a></li>
-                        <li class="hidden-phone next"><a title="2" href="" class="pagenav number">2</a></li>
-                        <li class="hidden-phone next-page"><a title="Trang sau" href="" class="pagenav"><i class="fa fa-chevron-right"></i></a></li>
-                    </ul>
-                    <input type="hidden" name="limitstart" value="0">
-                </div>
-            </div> --}}
+                            <li class="hidden-phone current"><a title="1" href="" class="pagenav">1</a></li>
+                            <li class="hidden-phone next"><a title="2" href="" class="pagenav number">2</a></li>
+                            <li class="hidden-phone next-page"><a title="Trang sau" href="" class="pagenav"><i class="fa fa-chevron-right"></i></a></li>
+                        </ul>
+                        <input type="hidden" name="limitstart" value="0">
+                    </div>
+                </div> --}}
+
+                <?php
+                    if(session()->exists('teacherid') )
+                    {
+                        $checkConfirmOrNot = DB::table('giang_vien')->where('MSGV',session()->get('teacherid') )->first();
+                    }
+                ?>
+                    @if($checkConfirmOrNot)
+
+                        @if($checkConfirmOrNot->Confirmed != 1)
+                            <!--Xuất popup để chuyển qua trang xác thực khi bấm Ok-->
+                            <div class="popup-container" id="popup">
+                                <div class="popup-content">
+                                    <h2>Thông báo</h2>
+                                    <p>Bạn cần thay đổi thông tin mật khẩu</p>
+                                    <a type="button" href="/xac-nhan-nguoi-dung">Đi thay đổi</a>
+                                    <button onclick = "closePopup()">Đóng</button>
+                                </div>
+
+                                <script>
+                                    const popup = document.getElementById("popup");
+                                    function showPopup()
+                                    {
+                                        popup.style.display = "flex";
+                                    }
+                                    function closePopup()
+                                    {
+                                        popup.style.display = "none";
+                                    }
+                                    window.onload = showPopup;
+                                </script>
+                            </div>
+                        @else
+
+                        @endif
+
+                    @endif
+
         </div>
 @stop

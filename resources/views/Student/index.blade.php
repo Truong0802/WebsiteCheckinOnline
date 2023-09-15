@@ -13,45 +13,6 @@
                 <div class="alert alert-success text-center">{{ session('success1') }}</div>
         @endif
 
-        <?php
-            if(session()->exists('studentid') )
-            {
-            $checkConfirmOrNot = DB::table('sinh_vien')->where('MSSV',session()->get('studentid') )->first();
-            }
-
-        ?>
-            @if($checkConfirmOrNot)
-
-                @if($checkConfirmOrNot->Confirmed != 1)
-                    <!--Xuất popup để chuyển qua trang xác thực khi bấm Ok-->
-                    <div class="popup-container" id="popup">
-                        <div class="popup-content">
-                            <h2>Thông báo</h2>
-                            <p>Bạn cần thay đổi thông tin mật khẩu</p>
-                            <a type="button" href="/xac-nhan-nguoi-dung">Ok</a>
-                            <button onclick = "closePopup()">Đóng</button>
-                        </div>
-
-                        <script>
-                            const popup = document.getElementById("popup");
-                            function showPopup()
-                            {
-                                popup.style.display = "flex";
-                            }
-                            function closePopup()
-                            {
-                                popup.style.display = "none";
-                            }
-                            window.onload = showPopup;
-                        </script>
-                    </div>
-            @else
-                <div></div>
-            @endif
-
-        @endif
-
-
         <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">
@@ -288,5 +249,44 @@
                     </div>
                 </div>
             </section>
+
+
+            <?php
+                if(session()->exists('studentid') )
+                {
+                $checkConfirmOrNot = DB::table('sinh_vien')->where('MSSV',session()->get('studentid') )->first();
+                }
+            ?>
+                @if($checkConfirmOrNot)
+
+                    @if($checkConfirmOrNot->Confirmed != 1)
+                        <!--Xuất popup để chuyển qua trang xác thực khi bấm Ok-->
+                        <div class="popup-container" id="popup">
+                            <div class="popup-content">
+                                <h2>Thông báo</h2>
+                                <p>Bạn cần thay đổi thông tin mật khẩu</p>
+                                <a type="button" href="/xac-nhan-nguoi-dung">Đi thay đổi</a>
+                                <button onclick = "closePopup()">Đóng</button>
+                            </div>
+
+                            <script>
+                                const popup = document.getElementById("popup");
+                                function showPopup()
+                                {
+                                    popup.style.display = "flex";
+                                }
+                                function closePopup()
+                                {
+                                    popup.style.display = "none";
+                                }
+                                window.onload = showPopup;
+                            </script>
+                        </div>
+                    @else
+
+                    @endif
+
+                @endif
+
         </div>
 @stop
