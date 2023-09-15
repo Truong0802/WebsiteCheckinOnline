@@ -7,6 +7,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SinhVienController;
 use Google\Service\Classroom\Teacher;
+use App\Http\Controllers\InfoController;
+use Google\Service\AdExchangeBuyer\Account;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +37,7 @@ Route::get('/logout',[AccountController::class,'logout']);
 
 //Trang thời khóa biểu sinh viên
 Route::get('/trang-chu',[HomeController::class,'trangchusv']);
+Route::get('/thoi-khoa-bieu',[HomeController::class,'trangchusv']);
 
 //Trang danh sách lớp của giảng viên
 Route::get('/danh-sach-lop',[TeacherController::class,'danhsachlop']);
@@ -107,3 +110,13 @@ Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
 // Route::post('/them-lop',[TeacherController::class,'ThemLop']);
 // Route::get('/Delete-class-id',[TeacherController::class,'XoaDSLopTam']);
 // Route::get('/confirmToAddClass',[TeacherController::class,'XacNhanThemLopNK']);
+
+//Trang thông tin & cập nhật thông tin
+Route::get('/thong-tin-ca-nhan',[InfoController::class,'FrmAcessInfo']);
+
+//Cập nhật mật khẩu lần đầu
+//Sử dụng sau khi tạo điều kiện if else trong popup,
+//nếu check trong tbl sinh_vien hoặc giang_vien ở row Confirmed == 0 (tức chưa đổi tk lần đầu login)
+//thì sẽ luôn hiện popup
+Route::get('/xac-nhan-nguoi-dung',[AccountController::class,'FrmChangePass']);
+Route::post('/Confirmed',[AccountController::class,'ConfirmAndChangePass']);

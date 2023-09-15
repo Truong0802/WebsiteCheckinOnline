@@ -11,7 +11,7 @@
             <div class="col-md-6 pr-0">
                 <div>
                     <h1 class="page-title txt-color-blueDark">
-                        <i class="fa fa-lg fa-fw fa-user"></i> Thông tin sinh viên
+                        <i class="fa fa-lg fa-fw fa-user"></i> Thông tin cá nhân
                     </h1>
                 </div>
             </div>
@@ -33,31 +33,90 @@
     <div class="inner-class">
         <div class="row well m-3">
             <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
-                <img alt="" class="online img-responsive" style="margin:auto" src="{{asset('/img/ori-ava.png')}}">
+                <?php
+
+                    if($getInfoFromObject->HinhDaiDien == null)
+                    {
+                        $imgAvatar = '/img/ori-ava.png';
+                    }
+                    else{
+                        $imgAvatar = $getInfoFromObject->HinhDaiDien;
+                    }
+                ?>
+                <img alt="" class="online img-responsive" style = "width: 150px;" style="margin:auto" src="{{asset($imgAvatar)}}">
             </div>
             <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
                 <ul class="list-unstyled custom-list-li">
+                    <?php
+                        if(session()->exists('studentid'))
+                        {
+                            $Name = $getInfoFromObject->HoTenSV;
+                            $MS = $getInfoFromObject->MSSV;
+                            $ClassId = $getInfoFromObject->MaLop;
+                            $getIdNienKhoa = DB::table('lop')->where('MaLop',$ClassId)->first();
+
+                            $NienKhoa = DB::table('khoa_hoc')->where('KhoaHoc',$getIdNienKhoa->KhoaHoc)->first();
+                            $getNameOfDepartment = null;
+                            //dd($NienKhoa->NamHocDuKien);
+                        }
+                        else
+                        {
+                            if(session()->exists('teacherid')){
+                                $Name = $getInfoFromObject->HoTenGV;
+                                $MS = $getInfoFromObject->MSGV;
+                                $getDepartmentId = $getInfoFromObject->MaKhoa;
+                                $getNameOfDepartment = DB::table('khoa')->where('MaKhoa',$getDepartmentId)->first();
+                                //dd($getNameOfDepartment);
+                                $NienKhoa = null;
+                                $ClassId = null;
+
+                            }
+
+                        }
+                    ?>
                     <li>Họ tên:
-                        <span class="info">Hồ Phú Tài</span>
+                        <span class="info">{{$Name}}</span>
                     </li>
                     <li>Mã số sinh viên:
-                        <span class="info">2011060957</span>
+                        <span class="info">{{$MS}}</span>
                     </li>
-                    <li>Chương trình:
-                        <span class="info">Chưa cập nhật</span>
-                    </li>
+                    @if(session()->exists('teacherid'))
+                        <li></li>
+                        <li></li>
+                    @else
+                        <li>Chương trình:
+                            <span class="info">Chưa cập nhật</span>
+                        </li>
+
                     <li>Hệ đào tạo:
                         <span class="info">Chưa cập nhật</span>
                     </li>
+                    @endif
                     <li>Khoa:
-                        <span class="info">Khoa Công Nghệ Thông Tin</span>
+                        @if($getNameOfDepartment != null)
+                            <span class="info">{{$getNameOfDepartment->TenKhoa}}</span>
+                        @else
+                            <span class="info">Khoa Công Nghệ Thông Tin</span>
+                        @endif
                     </li>
-                    <li>Lớp:
-                        <span class="info">20DTHA2</span>
-                    </li>
-                    <li> Niên khóa:
-                        <span class="info">2020 - 2024</span>
-                    </li>
+
+                        @if($ClassId != null)
+                            <li>Lớp:
+                                <span class="info">{{$ClassId}}</span>
+                            </li>
+                        @else
+                            <li></li>
+                        @endif
+
+
+                        @if($NienKhoa != null)
+                            <li> Niên khóa:
+                                <span class="info">{{$NienKhoa->NamHocDuKien}}</span>
+                            </li>
+                        @else
+                            <li></li>
+                        @endif
+
                 </ul>
             </section>
         </div>

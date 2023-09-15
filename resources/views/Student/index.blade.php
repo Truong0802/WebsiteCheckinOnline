@@ -9,6 +9,8 @@
             <div class="alert alert-danger text-center">Bạn đang thực hiện hành vi không cho phép</div>
             @elseif(session('error2'))
                 <div class="alert alert-danger text-center">{{ session('error2') }}</div>
+            @elseif(session('success1'))
+                <div class="alert alert-success text-center">{{ session('success1') }}</div>
         @endif
 
         <div class="popup-container" id="popup">

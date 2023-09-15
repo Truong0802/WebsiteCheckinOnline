@@ -43,13 +43,13 @@
                     </a>
                 </li>
                 <li>
-                    <a title="Hồ sơ cá nhân" href="">
+                    <a title="Hồ sơ cá nhân" href="/thong-tin-ca-nhan">
                         <i class="fa fa-lg fa-fw fa-user"></i>
                         <span class="menu-item-parent">Hồ sơ cá nhân</span>
                     </a>
                 </li>
                 <li class="open">
-                    <a href="" title="Học tập">
+                    <a href="/thoi-khoa-bieu" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
                         <span class="menu-item-parent">Thời khóa biểu </span>
                         <b class="collapse-sign">

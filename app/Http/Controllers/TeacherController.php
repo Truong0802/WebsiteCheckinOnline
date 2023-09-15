@@ -351,6 +351,7 @@ class TeacherController extends Controller
                                                     'MaBuoi' => $data["buoi"],
                                                     'NgayDiemDanh' => $timecheckin,
                                                 ]);
+
                                             }
                                             else{
                                                     if(session()->has('error2'))
@@ -371,7 +372,7 @@ class TeacherController extends Controller
                                         return back()->with('error',$exception->getMessage())->withInput();
                                     }
 
-                                    return redirect()->to('/trang-chu');
+                                    return redirect()->to('/trang-chu')->with('success1','Điểm danh thành công')->withInput();
 
 
 

@@ -2,7 +2,9 @@
 
 
 @section('content')
-
+        @if(session('success1'))
+            <div class="alert alert-success text-center">{{ session('success1') }}</div>
+        @endif
         <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">
