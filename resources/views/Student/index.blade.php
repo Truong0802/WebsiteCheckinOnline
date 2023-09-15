@@ -10,6 +10,28 @@
             @elseif(session('error2'))
                 <div class="alert alert-danger text-center">{{ session('error2') }}</div>
         @endif
+
+        <div class="popup-container" id="popup">
+            <div class="popup-content">
+                <h2>Thông báo</h2>
+                <p>Bạn cần thay đổi thông tin mật khẩu</p>
+                <button onclick = "closePopup()">Đóng</button>
+            </div>
+
+            <script>
+                const popup = document.getElementById("popup");
+                function showPopup()
+                {
+                    popup.style.display = "flex";
+                }
+                function closePopup()
+                {
+                    popup.style.display = "none";
+                }
+                window.onload = showPopup;
+            </script>
+        </div>
+
         <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">
