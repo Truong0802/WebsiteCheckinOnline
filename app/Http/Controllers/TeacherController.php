@@ -627,16 +627,26 @@ class TeacherController extends Controller
                             {
                                 $resultConvert = $request->row16[$i];
                             }
+
                             if(is_numeric($resultConvert) == false)
                             {
-
-                                $resultConvert = number_format($resultConvert, 2, '.', '');
-
-
+                                if(str_contains($request->row16[$i],",") == true || str_contains($request->row16[$i],".") == true) //Nếu ký tự nhập vào là số thập phân
+                                {
+                                    try{
+                                        $resultConvert = number_format($resultConvert,2,'.',''); //sinh ra thêm số để chuẩn number sau khi thêm . hoặc , vd: 5.5 -> 5.50
+                                    }catch(ModelNotFoundException $exception)
+                                    {
+                                        return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
+                                    }
+                                }
+                                else //nếu nhập kí tự chữ cái
+                                {
+                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
+                                }
                             }
 
                             // dd($resultConvert);
-                            if(is_numeric($resultConvert) && $resultConvert > 0 && $resultConvert <= 7)
+                            if(is_numeric($resultConvert) == true && $resultConvert > 0 && $resultConvert <= 7)
                             {
 
                                 $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
