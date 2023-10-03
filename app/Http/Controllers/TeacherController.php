@@ -256,75 +256,6 @@ class TeacherController extends Controller
                                 if( $diff->i <= 5){
                                     try
                                     {
-                                        //Bỏ
-                                        //Kiểm tra IP & Info Device
-                                        // $ip = $request->ip();
-                                        // $getmacAddr = exec('getmac');
-                                        //$device = Agent::device();
-
-                                     //Kiểm tra IP điểm danh có trùng với IP đã dùng để điểm danh vào buổi đầu hay không
-                                       //if($data["buoi"] == 1) //Buổi đầu tiên add Ip vào
-                                       //{
-                                             //Điểm danh
-                                        // $checkrequest = DB::table('diem_danh')
-                                        // ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
-                                        // ->where('MaBuoi',$data["buoi"])->first();
-
-                                        // // dd($checkrequest);
-                                        // if($checkrequest != null)
-                                        // {
-                                        //     if(session()->has('error2'))
-                                        //     {
-                                        //         session()->forget('error2');
-                                        //     }
-                                        //     else{
-                                        //         return back()->with('error2','Không được điểm danh 2 lần!!!')->withInput();
-                                        //     }
-
-                                        // }
-                                        // elseif($checkrequest == null)
-                                        // {
-                                        //     if($data["buoi"] == $datafromdb["buoi"])
-                                        //     {
-                                        //         $checkAllIp = DB::table('IPCheck')->where('IPv4',$ip)->first();
-                                        //          if($checkAllIp ==null)
-                                        //          {
-                                        //              $inputIpv4AtFirtTime = DB::table('IPCheck')->insert([
-                                        //                  'IPv4' => $ip,
-                                        //                  'MAC' => $getmacAddr,
-                                        //              ]);
-                                        //           }
-
-                                        //         $studentchecked = DB::table('diem_danh')->insert([
-                                        //             'MaDanhSach' => $findlistidofstudent->MaDanhSach,
-                                        //             'MaBuoi' => $data["buoi"],
-                                        //             'NgayDiemDanh' => $timecheckin,
-                                        //             'IPv4' => $ip,
-                                        //         ]);
-                                        //     }
-                                        //     else{
-                                        //             if(session()->has('error2'))
-                                        //         {
-                                        //             session()->forget('error2');
-                                        //         }
-                                        //         else{
-                                        //             return back()->with('error2','Điểm danh thất bại')->withInput();
-                                        //         }
-                                        //     }
-                                        // }
-
-
-                                       //}
-                                       //else{ --> đi tiếp đoạn dưới
-                                        //$checkIpUsed = DB:table('diem_danh')-where('MaDanhSach',$findlistidofstudent->MaDanhSach)
-                                        //->where('IPv4',$ip)->where('MaBuoi',1)->first();
-
-                                        //if($checkIpUsed == null)
-                                        //{
-                                        //  return back()->with('error2','Không được điểm danh hộ!')->withInput();
-                                        //}else{ --> đi tiếp đoạn dưới
-                                        //Bỏ
-
                                         //Điểm danh
                                         $checkrequest = DB::table('diem_danh')
                                         ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
@@ -446,6 +377,27 @@ class TeacherController extends Controller
                             ->where('MaDanhSach',$findlop->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $latestpoint]);
+
+                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->first();
+                            if($checkDQT)
+                            {
+                                if($findlop->Diem16 != null)
+                                {
+                                    $result = $findlop->Diem14 + $findlop->Diem16;
+                                    // dd($result);
+                                    $DQT = DB::table('ket_qua')
+                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->update(['DiemQT' => $result]);
+                                }
+                                else{
+                                    $result = $findlop->Diem14;
+                                    $DQT = DB::table('ket_qua')
+                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->update(['DiemQT' => $result]);
+                                }
+
+                            }
+
                         }
                     }
                     else{
@@ -460,24 +412,42 @@ class TeacherController extends Controller
                             ->where('MaDanhSach',$findlop->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $latestpoint]);
+
+
+                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->first();
+                            if($checkDQT)
+                            {
+                                if($findlop->Diem16 != null)
+                                {
+                                    $result = $findlop->Diem14 + $findlop->Diem16;
+                                    // dd($result);
+                                    $DQT = DB::table('ket_qua')
+                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->update(['DiemQT' => $result]);
+                                }
+                                else{
+                                    $result = $findlop->Diem14;
+                                    $DQT = DB::table('ket_qua')
+                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->update(['DiemQT' => $result]);
+                                }
+
+                            }
                         }
                     }
 
 
 
                 }
-                $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->whereNotNull('DiemQT')->first();
-                if($checkDQT != null)
-                {
-                    $result = $findlop->Diem14 + $findlop->Diem16;
-                    // dd($result);
-                    $DQT = DB::table('ket_qua')
-                                ->where('MaKQSV',$findlop->MaKQSV)
-                                ->update(['DiemQT' => $result]);
-                }
-                else{
-
-                }
+                // $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->whereNotNull('DiemQT')->first();
+                // if($checkDQT != null)
+                // {
+                //     $result = $findlop->Diem14 + $findlop->Diem16;
+                //     // dd($result);
+                //     $DQT = DB::table('ket_qua')
+                //                 ->where('MaKQSV',$findlop->MaKQSV)
+                //                 ->update(['DiemQT' => $result]);
+                // }
                 return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
             }
             elseif($request->input('divide3'))
@@ -529,6 +499,26 @@ class TeacherController extends Controller
                             ->where('MaDanhSach',$findlop->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $result]);
+
+                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->first();
+                            if($checkDQT)
+                            {
+                                if($findlop->Diem16 != null)
+                                {
+                                    $result = $findlop->Diem14 + $findlop->Diem16;
+                                    // dd($result);
+                                    $DQT = DB::table('ket_qua')
+                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->update(['DiemQT' => $result]);
+                                }
+                                else{
+                                    $result = $findlop->Diem14;
+                                    $DQT = DB::table('ket_qua')
+                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->update(['DiemQT' => $result]);
+                                }
+
+                            }
                         }
                     }
                     else{ //Nếu là môn lý thuyết
@@ -567,23 +557,32 @@ class TeacherController extends Controller
                             ->where('MaDanhSach',$findlop->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $result]);
+
+                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->first();
+                            if($checkDQT)
+                            {
+                                if($findlop->Diem16 != null)
+                                {
+                                    $result = $findlop->Diem14 + $findlop->Diem16;
+                                    dd($result);
+                                    $DQT = DB::table('ket_qua')
+                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->update(['DiemQT' => $result]);
+                                }
+                                else{
+                                    $result = $findlop->Diem14;
+                                    $DQT = DB::table('ket_qua')
+                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->update(['DiemQT' => $result]);
+                                }
+
+                            }
                         }
                     }
 
 
                 }
-                $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->whereNotNull('DiemQT')->first();
-                if($checkDQT != null)
-                {
-                    $result = $findlop->Diem14 + $findlop->Diem16;
-                    // dd($result);
-                    $DQT = DB::table('ket_qua')
-                                ->where('MaKQSV',$findlop->MaKQSV)
-                                ->update(['DiemQT' => $result]);
-                }
-                else{
 
-                }
                 return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
             }
             else //Nếu không chọn gì trong các option tính điểm
@@ -597,7 +596,15 @@ class TeacherController extends Controller
 
         public function DiemCot16(Request $request)
         {
-            // dd($request->row16);
+            // $messages = [
+            //     'row16.alpha_decimal' => '...',
+
+            // ];
+
+            // $validated = $request->validate([
+            //     'row16' => 'alpha_decimal | regex:/^[0-9,\\.]+$/',
+            // ], $messages);
+            // dd(number_format($request->row16[0], 2, '.', ''));
             if($request->row16)
             {
 
@@ -607,19 +614,37 @@ class TeacherController extends Controller
                     $listid =session()->get('row16');
 
                     $i =0;
-
                     // dd($request->row16);
                     foreach($listid as $key)
                     {
                         if($i < $limit)
                         {
-                            if(is_numeric($request->row16[$i]) && $request->row16[$i] > 0 && $request->row16[$i] <= 7)
+                            if(str_contains($request->row16[$i],",") == true)
                             {
+                                $resultConvert = str_replace(",",".", $request->row16[$i]);
+                            }
+                            else
+                            {
+                                $resultConvert = $request->row16[$i];
+                            }
+                            if(is_numeric($resultConvert) == false)
+                            {
+
+                                $resultConvert = number_format($resultConvert, 2, '.', '');
+
+
+                            }
+
+                            // dd($resultConvert);
+                            if(is_numeric($resultConvert) && $resultConvert > 0 && $resultConvert <= 7)
+                            {
+
                                 $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
+
                                 //Mã kết quả của sinh viên trong db bảng điểm
                                 $MaKQSV = $findrow14->MSSV.$findrow14->MaTTMH.$findrow14->MaHK;
                                 //Điều kiện không cho phép tổng điểm quá 10
-                                if($findrow14->Diem14 + round($request->row16[$i], 2) > 10)
+                                if($findrow14->Diem14 + round($resultConvert, 2) > 10)
                                 {
                                     if(session()->has('error-row16'))
                                     {
@@ -642,12 +667,12 @@ class TeacherController extends Controller
                                 // dd($MaKQSV);
                                     $row16UpDate = DB::table('danh_sach_sinh_vien')
                                     ->where('MaDanhSach',$findrow14->MaDanhSach)
-                                    ->update(['Diem16' => round($request->row16[$i], 2)]);
+                                    ->update(['Diem16' => round($resultConvert, 2)]);
 
 
 
                             //Tính ra điểm Qúa trình
-                                $result = $findrow14->Diem14 + round($request->row16[$i], 2);
+                                $result = $findrow14->Diem14 + round($resultConvert, 2);
                                 $DQT = DB::table('ket_qua')
                                 ->where('MaKQSV',$MaKQSV)
                                 ->update(['DiemQT' => $result]);
@@ -667,13 +692,14 @@ class TeacherController extends Controller
                     }
                     session()->forget('row16');// Sau khi xử lý xóa session
                     return redirect('/danh-sach-sinh-vien?lop='.$findrow14->MaTTMH);
-
+                    // return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'));
 
             }
             else
             {
                 return redirect()->back();
             }
+
 
         }
 //Thêm danh sách
