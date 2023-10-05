@@ -596,15 +596,6 @@ class TeacherController extends Controller
 
         public function DiemCot16(Request $request)
         {
-            // $messages = [
-            //     'row16.alpha_decimal' => '...',
-
-            // ];
-
-            // $validated = $request->validate([
-            //     'row16' => 'alpha_decimal | regex:/^[0-9,\\.]+$/',
-            // ], $messages);
-            // dd(number_format($request->row16[0], 2, '.', ''));
             if($request->row16)
             {
 
@@ -614,7 +605,6 @@ class TeacherController extends Controller
                     $listid =session()->get('row16');
 
                     $i =0;
-                    // dd($request->row16);
                     foreach($listid as $key)
                     {
                         if($i < $limit)
@@ -628,13 +618,20 @@ class TeacherController extends Controller
                                 $resultConvert = $request->row16[$i];
                             }
 
-                            if(is_numeric($resultConvert) == false)
+                            if(is_numeric($resultConvert) == false )
                             {
-                                if(str_contains($request->row16[$i],",") == true || str_contains($request->row16[$i],".") == true) //Nếu ký tự nhập vào là số thập phân
+                                if(preg_match('/^ [0-9]*$/',$resultConvert) == 1 && preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$resultConvert) == 0) //Kiểm tra có tồn tại số bên trong hay không
                                 {
-                                    try{
-                                        $resultConvert = number_format($resultConvert,2,'.',''); //sinh ra thêm số để chuẩn number sau khi thêm . hoặc , vd: 5.5 -> 5.50
-                                    }catch(ModelNotFoundException $exception)
+                                    if(str_contains($request->row16[$i],",") == true || str_contains($request->row16[$i],".") == true) //Nếu ký tự nhập vào là số thập phân
+                                    {
+                                        try{
+                                            $resultConvert = number_format($resultConvert,2,'.',''); //sinh ra thêm số để chuẩn number sau khi thêm . hoặc , vd: 5.5 -> 5.50
+                                        }catch(ModelNotFoundException $exception)
+                                        {
+                                            return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
+                                        }
+                                    }
+                                    else //nếu nhập kí tự chữ cái
                                     {
                                         return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
                                     }
@@ -643,6 +640,8 @@ class TeacherController extends Controller
                                 {
                                     return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
                                 }
+
+
                             }
 
                             // dd($resultConvert);
