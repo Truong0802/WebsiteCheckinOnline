@@ -12,7 +12,8 @@ Use Exception;
 use Illuminate\Support\Facades\Crypt;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
-use Jenssegers\Agent\Facades\Agent;
+// use Jenssegers\Agent\Facades\Agent;
+// use Stevebauman\Location\Facades\Location;
 
 class TeacherController extends Controller
 {
@@ -223,6 +224,7 @@ class TeacherController extends Controller
                 //test dữ liệu trả về
                     // dd($request->lop);
                     // dd($request->buoi);
+
                 //Ràng buộc thời gian sử dụng để được insert không được vượt thời gian lúc bấm (session ở quyền giảng viên) là 3p
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
 
