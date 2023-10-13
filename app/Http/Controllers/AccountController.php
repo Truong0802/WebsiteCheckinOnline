@@ -150,8 +150,8 @@ class AccountController extends Controller
                         try{
                             $studentLogin= DB::select('select * from sinh_vien where MSSV = ? and password = ?', $params)[0];
                             if($studentLogin != null){
-                                //Tạo thời gian giới hạn đăng nhập
-                                session()->put('clockUp',Carbon::now()->addHours(1));
+                                //Tạo thời gian giới hạn đăng nhập 30p
+                                session()->put('clockUp',Carbon::now()->addMinutes(20));
                                 session()->put('studentid',$studentLogin->MSSV);
                                 session()->put('name',$studentLogin->HoTenSV);
                                 session()->put('malop',$studentLogin->MaLop);
@@ -164,8 +164,8 @@ class AccountController extends Controller
                                 $teacherLogin = DB::select('select * from giang_vien where MSGV = ? and password = ?', $params)[0];
                                 if($teacherLogin != null)
                                 {
-                                    //Tạo thời gian giới hạn đăng nhập
-                                    session()->put('clockUp',Carbon::now()->addHours(8));
+                                    //Tạo thời gian giới hạn đăng nhập 480p == 8 hours
+                                    session()->put('clockUp',Carbon::now()->addMinutes(480));
                                     session()->put('teacherid',$teacherLogin->MSGV);
                                     session()->put('name',$teacherLogin->HoTenGV);
                                     session()->put('ChucVu',$teacherLogin->MaChucVu);

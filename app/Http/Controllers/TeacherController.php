@@ -666,6 +666,7 @@ class TeacherController extends Controller
                                     return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Điểm tổng không vượt quá 10')->withInput();
                                 }
 
+                                //Điều kiện kiểm tra thời gian thỏa để sửa điểm hay không
                                 if(session()->has('timeForChange') && Carbon::now()->greaterThan(Carbon::parse( session()->get('timeForChange'))))
                                 {
                                     session()->forget('timeForChange');
