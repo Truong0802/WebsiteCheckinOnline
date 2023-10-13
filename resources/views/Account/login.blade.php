@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<?php echo asset('/css/smartadmin-production.min.css')?>">
     <title>Trang thông tin đăng nhập</title>
 </head>
-<body>
+<body onload="getLocation()">
     <div id="extr-page">
         <header class="animated fadeInDown" id="header">
             <div id="logo-group">
@@ -121,7 +121,7 @@
                                                     <i class="fa fa-lock txt-color-teal"></i> Nhập mật mã của bạn </b>
                                             </label>
                                         </section>
-                                        <section>
+                                        {{-- <section>
                                             <style>
                                                 .select-form
                                                 {
@@ -131,14 +131,14 @@
                                                     border: 1px solid #ccc;
                                                 }
                                             </style>
-                                            {{-- <select class="select-form" name="app_key">
+                                            <select class="select-form" name="app_key">
                                                 <option value="0: null">-- Chọn phân hệ --</option>
                                                 <option value="1: MOBILE_HUTECH">Đại học - Cao đẳng </option>
                                                 <option value="2: VQT-OUM">Viện quốc tế - OUM </option>
                                                 <option value="3: VQT-LINCOLN">Viện quốc tế - LINCOLN </option>
                                                 <option value="4: VIEN_DTTX">Viện hợp tác và phát triển đào tạo </option>
-                                            </select> --}}
-                                        </section>
+                                            </select>
+                                        </section> --}}
                                         <section>
                                             <div class="note"> Đăng nhập không được?
                                                 <a href="http://qlcntt.hutech.edu.vn/ho-tro?tieu_de=tai%20khoan">Xem hướng dẫn tại đây</a>
@@ -146,7 +146,7 @@
                                         </section>
                                     </fieldset>
                                     <footer>
-                                        <button class="btn btn-primary" type="submit"> Đăng nhập </button>
+                                        <button id="login-btn" class="btn btn-primary" type="submit"> Đăng nhập </button>
                                     </footer>
                                     @csrf
                             </form>
@@ -174,5 +174,44 @@
             </div>
         </div>
     </div>
+
+    <script src="{{asset('js/locaton.js')}}" alt="getLoction"></script>
+    <script>
+        const getLocation = () =>
+        {
+            if ("geolocation" in navigator)
+            {
+                navigator.geolocation.getCurrentPosition(function(position)
+                {
+                    let latitude = position.coords.latitude;
+                    let longitude = position.coords.longitude;
+
+                    console.log("Latitude: " + latitude);
+                    console.log("Longitude: " + longitude);
+
+                    // document.getElementById("Latitude").textContent = "Vĩ độ: " + latitude;
+                    // document.getElementById("Longitude").textContent = "Kinh độ: " + longitude;
+
+                    if ((latitude >= 10.854600 && latitude <= 10.856000) &&
+                        (longitude >= 106.784120 && longitude <= 106.786130))
+                    {
+                        // document.getElementById("notify").textContent = "Nằm trong vị trí đã cho";
+                        console.log("Nằm trong vị trí đã cho");
+                    }
+                    else
+                    {
+                        // document.getElementById("notify").textContent = "Không nằm trong vị trí đã cho";
+                        console.log("Không nằm trong vị trí đã cho");
+                        const button = document.getElementById("login-btn");
+                        button.disabled = true;
+                    }
+                });
+            }
+            else
+            {
+                console.log("Trình duyệt không hỗ trợ Geolocation.");
+            }
+        }
+    </script>
 </body>
 </html>
