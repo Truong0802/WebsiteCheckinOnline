@@ -207,7 +207,7 @@ class TeacherController extends Controller
                 //tạo session lưu thời gian sau khi parse từ Carbo để đối chiếu so sánh với quyền học sinh lúc bấm
                 $encryptedData = $request->input('data');
                 // dd($encryptedData);
-                $data = decrypt($encryptedData);
+                // $data = decrypt($encryptedData);
                 // dd($data["lop"]);
                 $timestart = Carbon::now();
 
@@ -230,13 +230,15 @@ class TeacherController extends Controller
 
 
 
-                    //
+                    //lấy dữ liệu sau ?data=
                     $encryptedData = $request->data;
                     // dd($encryptedData);
+                    //Tìm đường dẫn điểm danh thuộc buổi học...
                     $findPath = DB::table('checklog')->where('URL',$encryptedData)->orderByDesc('Id')->first();
                     if($findPath != null)
                     {
                         // dd($encryptedData);
+                        //Giải mã dữ liệu đường dẫn
                         try{
                             $data = decrypt($encryptedData);
                             $datafromdb = decrypt($findPath->URL);
@@ -331,7 +333,6 @@ class TeacherController extends Controller
                                         return back()->with('error2','Điểm danh thất bại')->withInput();
                                     }
                             }
-
                     }
                     else
                     {
@@ -655,6 +656,7 @@ class TeacherController extends Controller
                                 //Mã kết quả của sinh viên trong db bảng điểm
                                 $MaKQSV = $findrow14->MSSV.$findrow14->MaTTMH.$findrow14->MaHK;
                                 //Điều kiện không cho phép tổng điểm quá 10
+
                                 if($findrow14->Diem14 + round($resultConvert, 2) > 10)
                                 {
                                     if(session()->has('error-row16'))
@@ -663,11 +665,22 @@ class TeacherController extends Controller
                                     }
                                     return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Điểm tổng không vượt quá 10')->withInput();
                                 }
-                                if($findrow14->Diem16 == null)
-                                {
-                                    session()->put('timeForChange', Carbon::now()->addWeeks(2)); //Nếu chưa nhập điểm thì set thời gian cho phép sửa điểm là 2 tuần kế từ lúc nhập điểm
 
+                                //Điều kiện kiểm tra thời gian thỏa để sửa điểm hay không
+                                if(session()->has('timeForChange') && Carbon::now()->greaterThan(Carbon::parse( session()->get('timeForChange'))))
+                                {
+                                    session()->forget('timeForChange');
+                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Quá thời gian sửa điểm')->withInput();
                                 }
+                                else
+                                {
+                                    if($findrow14->Diem16 == null)
+                                    {
+                                        session()->put('timeForChange',Carbon::now()->addWeeks(2)); //Nếu chưa nhập điểm thì set thời gian cho phép sửa điểm là 2 tuần kế từ lúc nhập điểm
+
+                                    }
+                                }
+
                             // else
                             // {
                                 // if(session()->has('timeForChange'))

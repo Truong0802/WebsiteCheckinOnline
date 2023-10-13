@@ -6,10 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Http\Controllers\AccountController;
+
 class HomeController extends Controller
 {
     //
     public function trangchusv(Request $request){
+            if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse( session()->get('clockUp'))))
+            {
+                return redirect()->action([
+                    AccountController::class,
+                    'logout'
+                ]);
+
+            }
             if(session()->exists('studentid')){
                 $username = session()->get('studentid');
                 $startOfWeek = Carbon::now()->startOfWeek();
