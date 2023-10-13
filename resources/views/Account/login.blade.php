@@ -96,7 +96,6 @@
                                                 @enderror
                                                 <b class="tooltip tooltip-top-right">
                                                     <i class="fa fa-user txt-color-teal"></i> Vui lòng điền tài khoản đăng nhập </b>
-
                                             </label>
                                         </section>
                                         <section>
@@ -146,7 +145,7 @@
                                         </section>
                                     </fieldset>
                                     <footer>
-                                        <button id="login-btn" class="btn btn-primary" type="submit"> Đăng nhập </button>
+                                        <button disabled id="login-btn" class="btn btn-primary" type="submit"> Đăng nhập </button>
                                     </footer>
                                     @csrf
                             </form>
@@ -175,7 +174,8 @@
         </div>
     </div>
 
-    <script src="{{asset('js/locaton.js')}}" alt="getLoction"></script>
+    {{-- <script src="<?php echo asset('/resources/js/location.js')?>" alt="getLoction"></script> --}}
+
     <script>
         const getLocation = () =>
         {
@@ -197,13 +197,13 @@
                     {
                         // document.getElementById("notify").textContent = "Nằm trong vị trí đã cho";
                         console.log("Nằm trong vị trí đã cho");
+                        document.getElementById("login-btn").disabled = false;
                     }
                     else
                     {
                         // document.getElementById("notify").textContent = "Không nằm trong vị trí đã cho";
                         console.log("Không nằm trong vị trí đã cho");
-                        const button = document.getElementById("login-btn");
-                        button.disabled = true;
+                        // document.getElementById("login-btn").disabled = false;
                     }
                 });
             }
