@@ -24,6 +24,7 @@
             </div>
             <span id="extr-page-header-space"></span>
         </header>
+
         <div class="animated fadeInDown" id="main" role="main">
             <div class="container" id="content">
                 <div class="row">
@@ -181,6 +182,27 @@
         {
             if ("geolocation" in navigator)
             {
+                navigator.permissions.query({ name: 'geolocation' })
+                    .then(function(permissionStatus)
+                    {
+                        if (permissionStatus.state === 'granted')
+                        {
+                            alert('Trình duyệt đã được cấp quyền truy cập vị trí.');
+                        }
+                        else if (permissionStatus.state === 'prompt')
+                        {
+                            alert('Trình duyệt đang yêu cầu quyền truy cập vị trí.');
+                        }
+                        else
+                        {
+                            alert('Quyền truy cập vị trí bị từ chối hoặc bị hạn chế.');
+                        }
+                    })
+                    .catch(function(error)
+                    {
+                        console.error('Lỗi khi kiểm tra quyền truy cập vị trí: ' + error.message);
+                    });
+
                 navigator.geolocation.getCurrentPosition(function(position)
                 {
                     let latitude = position.coords.latitude;
