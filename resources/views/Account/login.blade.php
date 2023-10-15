@@ -90,7 +90,7 @@
                                             <label class="label">Tài khoản</label>
                                             <label class="input">
                                                 <i class="icon-append fa fa-user"></i>
-                                                <input class="form-control login-form ng-dirty ng-valid ng-touched" name="username" ngmodel="" required="" type="text">
+                                                <input id="username" class="form-control login-form ng-dirty ng-valid ng-touched" name="username" ngmodel="" required="" type="text">
                                                 @error('username')
                                                          <div class="alert alert-danger">{{ $errors->first('username') }}</div>
                                                 @enderror
@@ -197,13 +197,27 @@
                     {
                         // document.getElementById("notify").textContent = "Nằm trong vị trí đã cho";
                         console.log("Nằm trong vị trí đã cho");
-                        document.getElementById("login-btn").disabled = false;
+                        // document.getElementById("login-btn").disabled = false;
                     }
                     else
                     {
                         // document.getElementById("notify").textContent = "Không nằm trong vị trí đã cho";
                         console.log("Không nằm trong vị trí đã cho");
                         // document.getElementById("login-btn").disabled = false;
+                        document.getElementById("username").addEventListener('input', function()
+                        {
+                            let inputValue = this.value;
+                            if(!isNaN(inputValue))
+                            {
+                                console.log("là kiểu số");
+                                document.getElementById("login-btn").disabled = true;
+                            }
+                            else
+                            {
+                                console.log("là kiểu chuỗi");
+                                document.getElementById("login-btn").disabled = false;
+                            }
+                        })
                     }
                 });
             }
