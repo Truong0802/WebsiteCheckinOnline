@@ -1,7 +1,12 @@
 @extends('layouts.master-teacher')
 
 @section('content')
-
+    <?php
+        if(session()->exists('row16'))
+        {
+            session()->forget('row16');
+        }
+    ?>
         <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">
@@ -531,7 +536,7 @@
                                             <!-- Điểm 16 -->
                                             @if($allstudentlist->Diem16 != null)
                                                 @if(session()->has('timeForChange'))
-                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" value="{{$allstudentlist->Diem16}}" >{{session()->push('row16',$allstudentlist->MaDanhSach)}}</td>
+                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" value="{{$allstudentlist->Diem16}}" >{{session()->push('row16',$allstudentlist->MaDanhSach."/".$allstudentlist->MSSV)}}</td>
                                                 @else
                                                     <td>{{$allstudentlist->Diem16}}</td>
                                                 @endif
@@ -539,7 +544,7 @@
                                             {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
                                                 @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
                                                     {{-- Nhập điểm --}}
-                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" >{{session()->push('row16',$allstudentlist->MaDanhSach)}}</td>
+                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" >{{session()->push('row16',$allstudentlist->MaDanhSach."/".$allstudentlist->MSSV)}}</td>
                                                 @else
                                                     <td></td>
                                                 @endif
@@ -576,7 +581,7 @@
                                             <!-- Điểm 16 -->
                                             @if($allstudentlist->Diem16 != null)
                                                 @if(session()->has('timeForChange'))
-                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" value="{{$allstudentlist->Diem16}}" >{{session()->push('row16',$allstudentlist->MaDanhSach)}}</td>
+                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" value="{{$allstudentlist->Diem16}}" >{{session()->push('row16',$allstudentlist->MaDanhSach.'/'.$allstudentlist->MSSV)}}</td>
                                                 @else
                                                     <td>{{$allstudentlist->Diem16}}</td>
                                                 @endif
@@ -584,7 +589,7 @@
                                             {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
                                                 @if(DB::table('diem_danh')->where('MaDanhSach',$allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 5)
                                                     {{-- Nhập điểm --}}
-                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" >{{session()->push('row16',$allstudentlist->MaDanhSach)}}</td>
+                                                    <td class="score-input"><input type="text" id="row16" name="row16[]" >{{session()->push('row16',$allstudentlist->MaDanhSach."/".$allstudentlist->MSSV)}}</td>
                                                 @else
                                                     <td></td>
                                                 @endif

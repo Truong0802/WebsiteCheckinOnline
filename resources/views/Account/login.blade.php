@@ -219,7 +219,7 @@
                     {
                         // document.getElementById("notify").textContent = "Nằm trong vị trí đã cho";
                         console.log("Nằm trong vị trí đã cho");
-                        // document.getElementById("login-btn").disabled = false;
+                        document.getElementById("login-btn").disabled = false;
                     }
                     else
                     {

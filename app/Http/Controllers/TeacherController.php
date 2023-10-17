@@ -599,6 +599,7 @@ class TeacherController extends Controller
 
         public function DiemCot16(Request $request)
         {
+            //  dd(session()->get('row16'));
             if($request->row16)
             {
 
@@ -614,7 +615,7 @@ class TeacherController extends Controller
                         {
                             if(str_contains($request->row16[$i],",") == true)
                             {
-                                $resultConvert = str_replace(",",".", $request->row16[$i]);
+                                $resultConvert = str::replace(",",".", $request->row16[$i]);
                             }
                             else
                             {
@@ -650,8 +651,9 @@ class TeacherController extends Controller
                             // dd($resultConvert);
                             if(is_numeric($resultConvert) == true && $resultConvert > 0 && $resultConvert <= 7)
                             {
-
-                                $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$key)->first();
+                                $ThongTinMaDanhSach = str::before($key, '/');
+                                $GetInfoStudent = str::after($key,'/');
+                                $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$ThongTinMaDanhSach)->first();
 
                                 //Mã kết quả của sinh viên trong db bảng điểm
                                 $MaKQSV = $findrow14->MSSV.$findrow14->MaTTMH.$findrow14->MaHK;
@@ -691,6 +693,7 @@ class TeacherController extends Controller
                                 // dd($MaKQSV);
                                     $row16UpDate = DB::table('danh_sach_sinh_vien')
                                     ->where('MaDanhSach',$findrow14->MaDanhSach)
+                                    ->where('MSSV',$GetInfoStudent)
                                     ->update(['Diem16' => round($resultConvert, 2)]);
 
 
@@ -700,6 +703,11 @@ class TeacherController extends Controller
                                 $DQT = DB::table('ket_qua')
                                 ->where('MaKQSV',$MaKQSV)
                                 ->update(['DiemQT' => $result]);
+
+                                $array = session('row16');
+                                $position = array_search($key, $array);
+                                unset($array[$position]);
+                                session(['row16' => $array]);
                                 $i++;
                             }
                             else{
