@@ -216,6 +216,8 @@
 
                     if ((latitude >= 10.854600 && latitude <= 10.856000) &&
                         (longitude >= 106.784120 && longitude <= 106.786130))
+                        //(latitude >= 10.88270 && latitude <= 10.88390) && (longitude >= 106.77920 && longitude <= 106.78025) (Ký túc xá khu B)
+                        //(latitude >= 10.93315 && latitude <= 10.93340) && (longitude >= 107.10270 && longitude <= 107.10290) (Nhà riêng)
                     {
                         // document.getElementById("notify").textContent = "Nằm trong vị trí đã cho";
                         console.log("Nằm trong vị trí đã cho");
