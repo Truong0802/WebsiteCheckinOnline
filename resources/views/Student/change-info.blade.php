@@ -73,10 +73,10 @@
                             <span class="info">20DTHA2</span>
                         </li>
                         <li>Email:
-                            <span class="info">Chưa cập nhật</span>
+                            <input class="info" type="text" placeholder="abc@gmail.com">
                         </li>
                         <li>Số điện thoại:
-                            <span class="info">Chưa cập nhật</span>
+                            <input class="info" type="text" placeholder="09xxxxxx99">
                         </li>
                         <li> Niên khóa:
                             <span class="info">2020 - 2024</span>
