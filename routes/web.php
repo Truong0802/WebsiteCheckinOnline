@@ -111,8 +111,7 @@ Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
 // Route::get('/Delete-class-id',[TeacherController::class,'XoaDSLopTam']);
 // Route::get('/confirmToAddClass',[TeacherController::class,'XacNhanThemLopNK']);
 
-//Trang thông tin & cập nhật thông tin
-Route::get('/thong-tin-ca-nhan',[InfoController::class,'FrmAcessInfo']);
+
 
 //Cập nhật mật khẩu lần đầu
 //Sử dụng sau khi tạo điều kiện if else trong popup,
@@ -121,7 +120,8 @@ Route::get('/thong-tin-ca-nhan',[InfoController::class,'FrmAcessInfo']);
 Route::get('/xac-nhan-nguoi-dung',[AccountController::class,'FrmChangePass']);
 Route::post('/Confirmed',[AccountController::class,'ConfirmAndChangePass']);
 
-
+//Trang thông tin & cập nhật thông tin
+Route::get('/thong-tin-ca-nhan',[InfoController::class,'FrmAcessInfo']);
 //Chỉnh sửa thông tin cá nhân
-Route::get('/trang-thay-doi-thong-tin',[AccountController::class,'FrmChangeInfo']);
-Route::post('/thay-doi-thong-tin',[AccountController::class,'ChangeInfoFunc'])->name('ChangeInfo');
+Route::get('/trang-thay-doi-thong-tin',[InfoController::class,'FrmChangeInfo']);
+Route::post('/thay-doi-thong-tin',[InfoController::class,'ChangeInfoFunc'])->name('ChangeInfo');

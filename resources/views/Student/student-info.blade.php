@@ -49,13 +49,13 @@
 
                     if($getInfoFromObject->HinhDaiDien == null)
                     {
-                        $imgAvatar = '/img/ori-ava.png';
+                        $imgAvatar = 'ori-ava.png';
                     }
                     else{
                         $imgAvatar = $getInfoFromObject->HinhDaiDien;
                     }
                 ?>
-                <img alt="" class="online img-responsive" style = "width: 150px;" style="margin:auto" src="{{asset($imgAvatar)}}">
+                <img alt="" class="online img-responsive" style = "width: 150px;" style="margin:auto" src="{{asset('img/Avatar/'.$imgAvatar)}}">
             </div>
             <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
                 <ul class="list-unstyled custom-list-li">
@@ -89,9 +89,16 @@
                     <li>Họ tên:
                         <span class="info">{{$Name}}</span>
                     </li>
-                    <li>Mã số sinh viên:
-                        <span class="info">{{$MS}}</span>
-                    </li>
+                    @if(session()->exists('teacherid'))
+                        <li>Mã số giảng viên:
+                            <span class="info">{{$MS}}</span>
+                        </li>
+                    @else
+                        <li>Mã số sinh viên:
+                            <span class="info">{{$MS}}</span>
+                        </li>
+                    @endif
+
                     @if(session()->exists('teacherid'))
                         <li></li>
                         <li></li>
@@ -112,32 +119,44 @@
                         @endif
                     </li>
 
-                    @if($ClassId != null)
-                        <li>Lớp:
-                            <span class="info">{{$ClassId}}</span>
+                        @if($ClassId != null)
+                            <li>Lớp:
+                                <span class="info">{{$ClassId}}</span>
+                            </li>
+                        @else
+                            <li></li>
+                        @endif
+
+                        <li>Email:
+                            @if($getInfoFromObject->Email == null)
+                                <span class="info">Chưa cập nhật</span>
+                            @else
+                                <span class="info">{{$getInfoFromObject->Email}}</span>
+                            @endif
                         </li>
-                    @else
-                        <li></li>
-                    @endif
 
-                    <li>Email:
-                        <span class="info">Chưa cập nhật</span>
-                    </li>
-
-                    <li>Số điện thoại:
-                        <span class="info">Chưa cập nhật</span>
-                    </li>
-
-                    @if($NienKhoa != null)
-                        <li> Niên khóa:
-                            <span class="info">{{$NienKhoa->NamHocDuKien}}</span>
+                        <li>Số điện thoại:
+                            @if($getInfoFromObject->SDT == null)
+                                <span class="info">Chưa cập nhật</span>
+                            @else
+                                <span class="info">{{$getInfoFromObject->SDT}}</span>
+                            @endif
                         </li>
-                    @else
-                        <li></li>
-                    @endif
+
+                        @if($NienKhoa != null)
+                            <li> Niên khóa:
+                                <span class="info">{{$NienKhoa->NamHocDuKien}}</span>
+                            </li>
+                        @else
+                            <li></li>
+                        @endif
+
                     <li>
                         <br>
-                        <button class="btn btn-primary" id="change-information">Thay đổi thông tin</button>
+                        <form action="/trang-thay-doi-thong-tin" method="get">
+                            <button class="btn btn-primary" id="change-information">Thay đổi thông tin</button>
+                        </form>
+
                     </li>
                 </ul>
             </section>

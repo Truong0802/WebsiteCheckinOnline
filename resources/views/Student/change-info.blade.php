@@ -43,23 +43,72 @@
             }
         </style>
 
+        <?php
+            if(session()->exists('studentid'))
+            {
+                $Name = $dataBefore->HoTenSV;
+                $MS = $dataBefore->MSSV;
+                $ClassId = $dataBefore->MaLop;
+                $getIdNienKhoa = DB::table('lop')->where('MaLop',$ClassId)->first();
+
+                $NienKhoa = DB::table('khoa_hoc')->where('KhoaHoc',$getIdNienKhoa->KhoaHoc)->first();
+                $getNameOfDepartment = null;
+                if($dataBefore->HinhDaiDien ==null )
+                {
+                    $imgAvatar = 'ori-ava.png';
+                }
+                else {
+                    $imgAvatar = $dataBefore->HinhDaiDien;
+                }
+
+            }
+            else
+            {
+                if(session()->exists('teacherid')){
+                    $Name = $dataBefore->HoTenGV;
+                    $MS = $dataBefore->MSGV;
+                    $getDepartmentId = $dataBefore->MaKhoa;
+                    $getNameOfDepartment = DB::table('khoa')->where('MaKhoa',$getDepartmentId)->first();
+                    //dd($getNameOfDepartment);
+                    $NienKhoa = null;
+                    $ClassId = null;
+                    if($dataBefore->HinhDaiDien ==null )
+                    {
+                        $imgAvatar = 'ori-ava.png';
+                    }
+                    else {
+                        $imgAvatar = $dataBefore->HinhDaiDien;
+                    }
+                }
+
+            }
+        ?>
 
     <form action="{{ route('ChangeInfo') }}" method="post" enctype="multipart/form-data">
         <div class="inner-class">
             <div class="row well m-3">
 
                 <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
-                    <img alt="" class="online" style = "width: 150px;" src="/assets/img/ori-ava.png">
+                    <img alt="" class="online" style = "width: 150px;" src="{{asset('img/Avatar/'.$imgAvatar)}}">
                     <input class="img-upload" type="file" name="imagePath" size="30"/>
                 </div>
                 <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
                     <ul class="list-unstyled custom-list-li">
+
                         <li>Họ tên:
-                            <span class="info">Hồ Phú Tài</span>
+                            <span class="info">{{$Name}}</span>
                         </li>
-                        <li>Mã số sinh viên:
-                            <span class="info">2011060957</span>
-                        </li>
+                        @if(session()->exists('studentid'))
+                            <li>Mã số sinh viên:
+                                <span class="info">{{$MS}}</span>
+                            </li>
+                        @else
+                            @if(session()->exists('teacherid'))
+                                <li>Mã số giảng viên:
+                                    <span class="info">{{$MS}}</span>
+                                </li>
+                            @endif
+                        @endif
                         <li>Chương trình:
                             <span class="info">Chưa cập nhật</span>
                         </li>
@@ -69,18 +118,39 @@
                         <li>Khoa:
                             <span class="info">Khoa Công Nghệ Thông Tin</span>
                         </li>
-                        <li>Lớp:
-                            <span class="info">20DTHA2</span>
-                        </li>
-                        <li>Email:
-                            <input class="info" type="text" placeholder="abc@gmail.com">
-                        </li>
-                        <li>Số điện thoại:
-                            <input class="info" type="text" placeholder="09xxxxxx99">
-                        </li>
-                        <li> Niên khóa:
-                            <span class="info">2020 - 2024</span>
-                        </li>
+                        @if(session()->exists('studentid'))
+                            <li>Lớp:
+                                <span class="info">{{$ClassId}}</span>
+                            </li>
+                        @endif
+                            <li>Email:
+                                @if($dataBefore->Email == null)
+                                    <input class="info" name="mailDetail" type="text" placeholder="abc@gmail.com">
+                                @else
+                                    <input class="info" name="mailDetail" type="text" placeholder="{{$dataBefore->Email}}">
+                                @endif
+                                @error('mailDetail')
+                                    <div class="alert alert-danger">{{ $errors->first('mailDetail') }}</div>
+                                @enderror
+                            </li>
+                            <li>Số điện thoại:
+                                @if($dataBefore->SDT == null)
+                                    <input class="info" name="phoneNum" type="text" placeholder="09xxxxxx99">
+                                @else
+                                    <input class="info" name="phoneNum" type="text" placeholder="{{$dataBefore->SDT}}">
+                                @endif
+                                @error('phoneNum')
+                                    <div class="alert alert-danger">{{ $errors->first('phoneNum') }}</div>
+                                @enderror
+                            </li>
+                            @if(session()->exists('studentid'))
+                                <li> Niên khóa:
+                                    <span class="info">{{$NienKhoa->NamHocDuKien}}</span>
+                                </li>
+
+                            @endif
+
+
                         <li>
                             <br>
                             <button type="submit" class="btn btn-success" id="page-back">Xác nhận</button>

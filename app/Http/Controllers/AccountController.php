@@ -266,42 +266,6 @@ class AccountController extends Controller
     }
 
 
-    //Thông tin người dùng
-    public function FrmChangeInfo(){
-        if(session()->exists('studentid') || session()->exists('teacherid')){
-            return view('Student.change-info');
-
-        }
-        else
-        {
-            return redirect()->to('/')->with('error-Login','Yêu cầu đăng nhập để thực hiện')->withInput();
-        }
-    }
-
-    public function ChangeInfoFunc(Request $request)
-    {
-
-        if($request->has('imagePath'))
-        {
-            $dataFile = $request->imagePath;
-            $file_ext = $request->imagePath->extension();
-            $timeOpen = Carbon::now()->format('dmY-his');
-            // $file_name = $dataFile->getClientoriginalName();
-            if(session()->exists('studentid'))
-            {
-                $file_name = time().'-'.session()->get('studentid').'.'.$file_ext;
-            }
-            else if(session()->exists('teacherid'))
-            {
-                $file_name = $timeOpen.'-'.session()->get('teacherid').'.'.$file_ext;
-            }
-            // dd($file_ext);
-            // dd($file_name);
-            $dataFile->move(public_path('img/upload'), $file_name);
-        }
-        dd($request);
-        return redirect()->to('/thong-tin-ca-nhan');
-    }
 
 
 

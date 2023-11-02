@@ -21,7 +21,26 @@
         <div class="login-info">
             <span class="ng-star-inserted">
                 <a>
-                    <img alt="" class="online" src="{{asset('/img/avatar.png')}}">
+                    <?php
+                        if(session()->exists('teacherid'))
+                        {
+                            $getInfoFromObject = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+                        }
+                        else if(session()->exists('studentid'))
+                        {
+                            $getInfoFromObject = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                        }
+
+                        if($getInfoFromObject->HinhDaiDien == null)
+                        {
+                            $imgAvatar = 'ori-ava.png';
+                        }
+                        else{
+                            $imgAvatar = $getInfoFromObject->HinhDaiDien;
+                        }
+
+                    ?>
+                    <img alt="" class="online" src="{{asset('img/Avatar/'.$imgAvatar)}}">
                     <span>
                         <?php
                             $studentname =session()->get('name');
