@@ -1,4 +1,21 @@
 .custom-info ul li
 {
     margin-bottom:5px;
+    margin-left: 50px;
+}
+
+.img-upload
+{
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+::-webkit-file-upload-button
+{
+    background: #494949;
+    color: white;
+    cursor: pointer;
+    border-color: #494949;
+    outline-color: none;
 }
