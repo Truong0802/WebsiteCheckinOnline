@@ -124,4 +124,4 @@ Route::post('/Confirmed',[AccountController::class,'ConfirmAndChangePass']);
 
 //Chỉnh sửa thông tin cá nhân
 Route::get('/trang-thay-doi-thong-tin',[AccountController::class,'FrmChangeInfo']);
-Route::post('/thay-doi-thong-tin',[AccountController::class,'ChangeInfoFunc']);
+Route::post('/thay-doi-thong-tin',[AccountController::class,'ChangeInfoFunc'])->name('ChangeInfo');

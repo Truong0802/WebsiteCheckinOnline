@@ -18,6 +18,7 @@
         </ol>
     </div>
     <div class="mt-4" id="content">
+
         <div class="  mx-4">
             <div class="row mb-3">
                 <div class="col-md-6 pr-0">
@@ -41,15 +42,15 @@
                 font-weight: bold;
             }
         </style>
-    <form action="@url{'/thay-doi-thong-tin'}" method="post" enctype="multipart/form-data">
+
+
+    <form action="{{ route('ChangeInfo') }}" method="post" enctype="multipart/form-data">
         <div class="inner-class">
-
-
-
             <div class="row well m-3">
+
                 <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
                     <img alt="" class="online" style = "width: 150px;" src="/assets/img/ori-ava.png">
-                    <input class="img-upload" type="file" size="30"/>
+                    <input class="img-upload" type="file" name="imagePath" size="30"/>
                 </div>
                 <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
                     <ul class="list-unstyled custom-list-li">
@@ -82,14 +83,14 @@
                         </li>
                         <li>
                             <br>
-                            <button class="btn btn-success" id="page-back">Xác nhận</button>
+                            <button type="submit" class="btn btn-success" id="page-back">Xác nhận</button>
                         </li>
                     </ul>
                 </section>
+
             </div>
         </div>
-        @csrf
+    @csrf
     </form>
-
     </div>
 @stop
