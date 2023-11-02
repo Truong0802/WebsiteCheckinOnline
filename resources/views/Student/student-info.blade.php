@@ -5,6 +5,18 @@
 @extends('layouts.master-student')
 
 @section('content')
+<div id="ribbon">
+    <span class="ribbon-button-alignment">
+        <span class="btn btn-ribbon" id="refresh" placement="bottom">
+            <i class="fa fa-refresh"></i>
+        </span>
+    </span>
+    <ol class="breadcrumb">
+        <li class="ng-star-inserted">
+            <a>Hồ sơ cá nhân</a>
+        </li>
+    </ol>
+</div>
 <div class="mt-4" id="content">
     <div class="  mx-4">
         <div class="row mb-3">
@@ -100,23 +112,33 @@
                         @endif
                     </li>
 
-                        @if($ClassId != null)
-                            <li>Lớp:
-                                <span class="info">{{$ClassId}}</span>
-                            </li>
-                        @else
-                            <li></li>
-                        @endif
+                    @if($ClassId != null)
+                        <li>Lớp:
+                            <span class="info">{{$ClassId}}</span>
+                        </li>
+                    @else
+                        <li></li>
+                    @endif
 
+                    <li>Email:
+                        <span class="info">Chưa cập nhật</span>
+                    </li>
 
-                        @if($NienKhoa != null)
-                            <li> Niên khóa:
-                                <span class="info">{{$NienKhoa->NamHocDuKien}}</span>
-                            </li>
-                        @else
-                            <li></li>
-                        @endif
+                    <li>Số điện thoại:
+                        <span class="info">Chưa cập nhật</span>
+                    </li>
 
+                    @if($NienKhoa != null)
+                        <li> Niên khóa:
+                            <span class="info">{{$NienKhoa->NamHocDuKien}}</span>
+                        </li>
+                    @else
+                        <li></li>
+                    @endif
+                    <li>
+                        <br>
+                        <button class="btn btn-primary" id="change-information">Thay đổi thông tin</button>
+                    </li>
                 </ul>
             </section>
         </div>
