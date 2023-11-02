@@ -260,7 +260,22 @@ class AccountController extends Controller
                                 ->update(['Confirmed' => 1, 'password' => md5($request->password)]);
             return redirect()->to('/trang-chu')->with('success1','Xác thực thành công!')->withInput();
         }
+        else{
+            return redirect()->to('/')->with('error-Login','Yêu cầu đăng nhập để thực hiện')->withInput();
+        }
+    }
 
+
+    //Thông tin người dùng
+    public function FrmChangeInfo(){
+        if(session()->exists('studentid') || session()->exists('teacherid')){
+            return view('Student.change-info');
+
+        }
+        else
+        {
+            return redirect()->to('/')->with('error-Login','Yêu cầu đăng nhập để thực hiện')->withInput();
+        }
     }
 
 

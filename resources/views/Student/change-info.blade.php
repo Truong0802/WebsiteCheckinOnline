@@ -41,12 +41,15 @@
                 font-weight: bold;
             }
         </style>
-
+    <form action="@url{'/thay-doi-thong-tin'}" method="post" enctype="multipart/form-data">
         <div class="inner-class">
+
+
+
             <div class="row well m-3">
                 <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
                     <img alt="" class="online" style = "width: 150px;" src="/assets/img/ori-ava.png">
-                    <button class="btn btn-dark" id="choose-avatar" style = "margin-top: 20px;">Chọn hình ảnh</button>
+                    <button type="file" class="btn btn-dark" id="choose-avatar" style = "margin-top: 20px;">Chọn hình ảnh</button>
                 </div>
                 <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
                     <ul class="list-unstyled custom-list-li">
@@ -85,5 +88,8 @@
                 </section>
             </div>
         </div>
+        @csrf
+    </form>
+
     </div>
 @stop

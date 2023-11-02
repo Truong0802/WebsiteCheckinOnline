@@ -120,3 +120,8 @@ Route::get('/thong-tin-ca-nhan',[InfoController::class,'FrmAcessInfo']);
 //thì sẽ luôn hiện popup
 Route::get('/xac-nhan-nguoi-dung',[AccountController::class,'FrmChangePass']);
 Route::post('/Confirmed',[AccountController::class,'ConfirmAndChangePass']);
+
+
+//Chỉnh sửa thông tin cá nhân
+Route::get('/trang-thay-doi-thong-tin',[AccountController::class,'FrmChangeInfo']);
+Route::post('/thay-doi-thong-tin',[AccountController::class,'ChangeInfoFunc']);

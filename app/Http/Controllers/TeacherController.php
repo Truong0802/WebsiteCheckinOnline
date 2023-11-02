@@ -126,7 +126,7 @@ class TeacherController extends Controller
         {
             if(session()->exists('teacherid')){
                 if($request->lop){
-                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->distinct()->paginate(20);
+                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->distinct()->paginate(25);
                     session()->put('danh-sach-sinh-vien-lop',$request->lop);
                     $datatemp = [];
                     foreach($classlist as $checkData)

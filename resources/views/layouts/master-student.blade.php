@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/trang-thay-doi-thong-tin">
                         <i class="fa fa-lg fa-fw fa-cog"></i>
                         <span class="menu-item-parent"> Cài đặt tài khoản </span>
                     </a>
