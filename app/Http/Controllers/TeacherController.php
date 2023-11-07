@@ -672,6 +672,12 @@ class TeacherController extends Controller
                                 if(session()->has('timeForChange') && Carbon::now()->greaterThan(Carbon::parse( session()->get('timeForChange'))))
                                 {
                                     session()->forget('timeForChange');
+                                    $setNullTimeForChange = DB::table('danh_sach_sinh_vien')
+                                    ->where('MaDanhSach',$findrow14->MaDanhSach)
+                                    ->where('MSSV',$GetInfoStudent)
+                                    ->update([
+                                        'TimeForChangeRow16'=> null
+                                    ]);
                                     return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Quá thời gian sửa điểm')->withInput();
                                 }
                                 else
@@ -679,7 +685,12 @@ class TeacherController extends Controller
                                     if($findrow14->Diem16 == null)
                                     {
                                         session()->put('timeForChange',Carbon::now()->addWeeks(2)); //Nếu chưa nhập điểm thì set thời gian cho phép sửa điểm là 2 tuần kế từ lúc nhập điểm
-
+                                        $setNullTimeForChange = DB::table('danh_sach_sinh_vien')
+                                                ->where('MaDanhSach',$findrow14->MaDanhSach)
+                                                ->where('MSSV',$GetInfoStudent)
+                                                ->update([
+                                                    'TimeForChangeRow16'=> session()->get('timeForChange')
+                                                ]);
                                     }
                                 }
 

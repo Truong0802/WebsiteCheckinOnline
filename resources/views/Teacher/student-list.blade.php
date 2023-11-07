@@ -447,7 +447,8 @@
                                     <?php
                                         // dd($getinfoclass);
 
-                                        $studentname = DB::table('sinh_vien')->where('MSSV',$allstudentlist->MSSV)->first();
+                                        $studentname = DB::table('sinh_vien')->where('MSSV',$allstudentlist->MSSV)
+                                                       ->first();
                                     ?>
                                     <tr>
                                         <td>
@@ -535,7 +536,7 @@
                                             <td></td>
                                             <!-- Điểm 16 -->
                                             @if($allstudentlist->Diem16 != null)
-                                                @if(session()->has('timeForChange'))
+                                                @if($allstudentlist->TimeForChangeRow16 != null)
                                                     <td class="score-input"><input type="text" id="row16" name="row16[]" value="{{$allstudentlist->Diem16}}" >{{session()->push('row16',$allstudentlist->MaDanhSach."/".$allstudentlist->MSSV)}}</td>
                                                 @else
                                                     <td>{{$allstudentlist->Diem16}}</td>
@@ -580,7 +581,7 @@
                                             <td></td>
                                             <!-- Điểm 16 -->
                                             @if($allstudentlist->Diem16 != null)
-                                                @if(session()->has('timeForChange'))
+                                                @if($allstudentlist->TimeForChangeRow16 != null)
                                                     <td class="score-input"><input type="text" id="row16" name="row16[]" value="{{$allstudentlist->Diem16}}" >{{session()->push('row16',$allstudentlist->MaDanhSach.'/'.$allstudentlist->MSSV)}}</td>
                                                 @else
                                                     <td>{{$allstudentlist->Diem16}}</td>

@@ -68,21 +68,21 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
-        // 'Student_User' =>  [
-        //         'driver' => 'database',
-        //         'table' => 'sinh_vien',
-        //     ],
-        // 'Teacher_User' =>  [
-        //         'driver' => 'database',
-        //         'table' => 'giang_vien',
-        //     ],
     ],
 
+    // 'providers' => [
+    //     'user' => [
+    //         'driver' => 'custom', // Sử dụng driver tùy chỉnh
+    //         'model' => App\User::class,
+    //     ],
+    // ],
+
+    // 'custom' => [
+    //     'provider' => 'user', // Sử dụng provider 'users' đã định nghĩa ở trên
+    //     'table' => 'sinh_vien', // Tên bảng bạn muốn truy vấn
+    //     'id' => 'MSSV', // Trường ID (ví dụ: 'mssv' hoặc 'username')
+    //     // Thêm các cấu hình khác theo nhu cầu
+    // ],
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords

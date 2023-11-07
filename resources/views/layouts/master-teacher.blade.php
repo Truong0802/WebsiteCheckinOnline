@@ -73,12 +73,12 @@
                         </b>
                     </a>
                 </li>
-                <li>
+                <!--<li>
                     <a href="/trang-thay-doi-thong-tin">
                         <i class="fa fa-lg fa-fw fa-cog"></i>
                         <span class="menu-item-parent"> Cài đặt tài khoản </span>
                     </a>
-                </li>
+                </li>-->
                 <li>
                     <a title="Hỗ trợ" href="/ho-tro">
                         <i class="fa fa-lg fa-fw fa-phone"></i>
