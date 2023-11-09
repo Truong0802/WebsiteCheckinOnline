@@ -18,13 +18,13 @@ use App\Http\Controllers\HomeController;
 class TeacherController extends Controller
 {
     //Hồ sơ giảng dạy
-        public function hosogiangday()
-        {
-            return redirect()->action([
-                HomeController::class,
-                'trangchusv'
-            ]);
-        }
+        // public function hosogiangday()
+        // {
+        //     return redirect()->action([
+        //         HomeController::class,
+        //         'trangchusv'
+        //     ]);
+        // }
 
         //Của khoa Quản lý
         public function danhsachlop(Request $request)
