@@ -2,8 +2,8 @@
 
 
 @section('content')
-        @if(session('success1'))
-            <div class="alert alert-success text-center">{{ session('success1') }}</div>
+        @if(session('errorClass1'))
+            <div class="alert alert-danger text-center">{{ session('errorClass1') }}</div>
         @endif
         <div id="ribbon">
             <span class="ribbon-button-alignment">
@@ -147,7 +147,7 @@
                                     echo $teachername->HoTenGV;
                                 ?></td>
 
-                                    <td><a href="/danh-sach-sinh-vien?lop={{$key->MaTTMH}}"><i class="fa-regular fa-eye"></a></i></td>
+                                    <td><a href="/danh-sach-sinh-vien?lop={{$key->MaTTMH}}&HK={{$key->MaHK}}"><i class="fa-regular fa-eye"></a></i></td>
                                 @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
                                     <td><a href="/Them-danh-sach-sv?lop={{$key->MaTTMH}}">Thêm danh sách</a></i></td>
                                 @endif

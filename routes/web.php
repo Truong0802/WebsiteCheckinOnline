@@ -125,3 +125,6 @@ Route::get('/thong-tin-ca-nhan',[InfoController::class,'FrmAcessInfo']);
 //Chỉnh sửa thông tin cá nhân
 Route::get('/trang-thay-doi-thong-tin',[InfoController::class,'FrmChangeInfo']);
 Route::post('/thay-doi-thong-tin',[InfoController::class,'ChangeInfoFunc'])->name('ChangeInfo');
+
+//Hồ sơ giảng dạy
+Route::get('/ho-so-tt-giang-day',[TeacherController::class,'hosogiangday']);

@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li class="open">
-                    <a href="" title="Học tập">
+                    <a href="/ho-so-tt-giang-day" title="Lịch trình">
                         <i class="fa fa-lg fa-fw fa-book"></i>
                         <span class="menu-item-parent">Hồ sơ giảng dạy </span>
                         <b class="collapse-sign">

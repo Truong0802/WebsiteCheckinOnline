@@ -11,7 +11,8 @@ use App\Http\Controllers\AccountController;
 class HomeController extends Controller
 {
     //
-    public function trangchusv(Request $request){
+    public function trangchusv(){
+        //Giới hạn thời gian login
             if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse( session()->get('clockUp'))))
             {
                 return redirect()->action([
@@ -40,7 +41,7 @@ class HomeController extends Controller
                     {
 
                         // dd($firstsubjectid);
-                            $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaBuoi',1)->distinct()->paginate(5);
+                            $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaBuoi',1)->latest('NgayDay')->distinct()->paginate(5);
                             if($allsubject != null)
                             {
                                 return view('Teacher/class-list',['getallsubject' => $allsubject]);

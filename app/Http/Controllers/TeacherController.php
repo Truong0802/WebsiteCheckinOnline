@@ -14,10 +14,18 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 // use Jenssegers\Agent\Facades\Agent;
 // use Stevebauman\Location\Facades\Location;
-
+use App\Http\Controllers\HomeController;
 class TeacherController extends Controller
 {
-    //
+    //Hồ sơ giảng dạy
+        public function hosogiangday()
+        {
+            return redirect()->action([
+                HomeController::class,
+                'trangchusv'
+            ]);
+        }
+
         //Của khoa Quản lý
         public function danhsachlop(Request $request)
         {
@@ -27,11 +35,12 @@ class TeacherController extends Controller
                     $allsubject = DB::table('lich_giang_day')
                     ->where('MSGV',$teacherid)
                     ->where('MaTTMH',$request->lop)
+                    ->latest('NgayDay')
                     ->distinct()->paginate(5);
                 }
                 else{
                     $teacherid = session()->get('teacherid');
-                    $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)->paginate(5);
+                    $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)->latest('NgayDay')->paginate(5);
                     //Thêm điều kiện else cho trường hợp quản lý truy cập sẽ lọc ra những lớp thuộc khoa của quản lý đó
                 }
 
@@ -125,8 +134,9 @@ class TeacherController extends Controller
         public function danhsachsinhvien(Request $request)
         {
             if(session()->exists('teacherid')){
+                // dd($request);
                 if($request->lop){
-                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->distinct()->paginate(25);
+                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)->distinct()->paginate(25);
                     session()->put('danh-sach-sinh-vien-lop',$request->lop);
                     $datatemp = [];
                     foreach($classlist as $checkData)
@@ -139,7 +149,8 @@ class TeacherController extends Controller
                     }
                     else //Nếu lớp chưa có danh sách
                     {
-                        return redirect()->to('/trang-chu');
+                        return redirect()->to('/trang-chu')->with('errorClass1','Lớp chưa có danh sách!')->withInput();
+                        // return redirect()->to('/trang-chu');
                     }
 
                 }
