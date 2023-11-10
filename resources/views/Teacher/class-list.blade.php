@@ -199,7 +199,7 @@
                 ?>
                     @if($checkConfirmOrNot)
 
-                        @if($checkConfirmOrNot->Confirmed != 1)
+                        @if($checkConfirmOrNot->Confirmed != 1 && session()->get('ChucVu') != 'QL' && session()->get('ChucVu') != 'AM')
                             <!--Xuất popup để chuyển qua trang xác thực khi bấm Ok-->
                             <div class="popup-container" id="popup">
                                 <div class="popup-content">

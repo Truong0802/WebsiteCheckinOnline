@@ -67,9 +67,9 @@ Route::get('/tro-ve',[TeacherController::class,'trovedanhsach']);
 Route::get('/ho-tro', [ContactController::class, 'contact']);
 
 //Trang admin
-// Route::get('/admin', [SinhVienController::class, 'admin']);
-// Route::get('/quan-ly-lop-hoc',[SinhVienController::class,'FrmThemLopHoc']);
-// Route::get('/quan-ly-sinh-vien',[SinhVienController::class,'frmAddSV']);
+Route::get('/admin', [SinhVienController::class, 'admin']);
+Route::get('/quan-ly-lop-hoc',[SinhVienController::class,'FrmThemLopHoc']);
+Route::get('/quan-ly-sinh-vien',[SinhVienController::class,'frmAddSV']);
 
 // Chọn option
 Route::post('/option-row-14', [TeacherController::class,'ChiaDiem']);
@@ -78,38 +78,36 @@ Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
 
 
 //Admin Thêm sinh viên
-
-// Route::post('/them-sinh-vien',[SinhVienController::class,'themSinhVien']);
-// Route::get('/confirmToAdd',[SinhVienController::class,'confirmAddStudent']);
-// Route::get('/Delete-id',[SinhVienController::class,'DeletSinhVien']);
+Route::post('/them-sinh-vien',[SinhVienController::class,'themSinhVien']);
+Route::get('/confirmToAdd',[SinhVienController::class,'confirmAddStudent']);
+Route::get('/Delete-id',[SinhVienController::class,'DeletSinhVien']);
 
 //Admin test thêm sinh viên vào lớp qua file excel
-// Route::get('/test-excel',[SinhVienController::class,'addStudentToClass']);
-// Route::post('/test-excel-ctrl',[SinhVienController::class,'addStudentToClassBack']);
+Route::get('/test-excel',[SinhVienController::class,'addStudentToClass']);
+Route::post('/test-excel-ctrl',[SinhVienController::class,'addStudentToClassBack']);
 
 //Admin thêm lớp
-
-// Route::post('/them-danh-sach',[SinhVienController::class,'ThemDanhSach']);
-// Route::get('/Delete-subject',[SinhVienController::class,'DeletLop']);
-// Route::get('/confirmToAddSubject',[SinhVienController::class,'ConfirmAddClass']);
+Route::post('/them-danh-sach',[SinhVienController::class,'ThemDanhSach']);
+Route::get('/Delete-subject',[SinhVienController::class,'DeletLop']);
+Route::get('/confirmToAddSubject',[SinhVienController::class,'ConfirmAddClass']);
 
 //Admin thêm danh sách sinh viên lớp
-// Route::get('/Them-danh-sach-sv',[TeacherController::class,'frmAddStudentList']);
-// Route::post('/them-danh-sach-sinh-vien',[TeacherController::class,'ThemDanhSachSV']);
-// Route::get('/DeleteSV',[TeacherController::class,'XoaKhoiDanhSach']);
-// Route::get('/confirmToAddDSSV',[TeacherController::class,'XacNhanThemSV']);
+Route::get('/Them-danh-sach-sv',[TeacherController::class,'frmAddStudentList']);
+Route::post('/them-danh-sach-sinh-vien',[TeacherController::class,'ThemDanhSachSV']);
+Route::get('/DeleteSV',[TeacherController::class,'XoaKhoiDanhSach']);
+Route::get('/confirmToAddDSSV',[TeacherController::class,'XacNhanThemSV']);
 
 //Thêm giảng viên
-// Route::get('/quan-ly-gv',[TeacherController::class,'FrmThemGV']);
-// Route::post('/them-giang-vien',[TeacherController::class,'ThemGV']);
-// Route::get('/Delete-gv-id',[TeacherController::class,'XoaGVDSTam']);
-// Route::get('/confirmToAddGV',[TeacherController::class,'XacNhanThemGV']);
+Route::get('/quan-ly-gv',[TeacherController::class,'FrmThemGV']);
+Route::post('/them-giang-vien',[TeacherController::class,'ThemGV']);
+Route::get('/Delete-gv-id',[TeacherController::class,'XoaGVDSTam']);
+Route::get('/confirmToAddGV',[TeacherController::class,'XacNhanThemGV']);
 
 //Thêm lớp học
-// Route::get('/them-lop-nien-khoa',[TeacherController::class,'FrmThemLopNienKhoa']);
-// Route::post('/them-lop',[TeacherController::class,'ThemLop']);
-// Route::get('/Delete-class-id',[TeacherController::class,'XoaDSLopTam']);
-// Route::get('/confirmToAddClass',[TeacherController::class,'XacNhanThemLopNK']);
+Route::get('/them-lop-nien-khoa',[TeacherController::class,'FrmThemLopNienKhoa']);
+Route::post('/them-lop',[TeacherController::class,'ThemLop']);
+Route::get('/Delete-class-id',[TeacherController::class,'XoaDSLopTam']);
+Route::get('/confirmToAddClass',[TeacherController::class,'XacNhanThemLopNK']);
 
 
 
