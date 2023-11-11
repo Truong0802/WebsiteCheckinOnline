@@ -149,7 +149,7 @@
 
                                     <td><a href="/danh-sach-sinh-vien?lop={{$key->MaTTMH}}&HK={{$key->MaHK}}"><i class="fa-regular fa-eye"></a></i></td>
                                 @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
-                                    <td><a href="/Them-danh-sach-sv?lop={{$key->MaTTMH}}">Thêm danh sách</a></i></td>
+                                    <td><a href="/Them-danh-sach-sv?lop={{$key->MaTTMH}}&HK={{$key->MaHK}}">Thêm danh sách</a></i></td>
                                 @endif
                             </tr>
                         </tbody>

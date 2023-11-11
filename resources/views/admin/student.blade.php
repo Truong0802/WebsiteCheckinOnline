@@ -63,7 +63,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-4">
+                       <!-- <div class="col-md-4">
                             <div class="form-group">
                                 <label for="hoc-ky">Học kì:</label>
                                 <select class="form-control" id="Hocki" name="Hocki">
@@ -75,14 +75,14 @@
                                     <option value="3">3</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
-                    <div class="col-md-4">
+                    <!--<div class="col-md-4">
                         <div class="form-group">
                             <label for="year">Năm Học:</label>
                             <input type="text" class="form-control" id="year" name="year">
                         </div>
-                    </div>
+                    </div>-->
                     <input type='hidden' name='classid' value='<?php echo session()->get('classAddId') ?>'>
                     <br>
                     <div class="btn-container">

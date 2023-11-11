@@ -760,7 +760,7 @@ class TeacherController extends Controller
         public function frmAddStudentList(Request $request)
         {
             session()->put('classAddId',$request->lop);
-            // session()->put('HKid',$request->HK);
+            session()->put('HKid',$request->HK);
 
             return view('admin/student');
         }
@@ -776,13 +776,15 @@ class TeacherController extends Controller
             {
                 $MaTTMH = $request->classid;
                 $checkfindnameTeacher = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->orderBy('MaNgay','DESC')->first();
-                $temp = $request->classid.'HocKy'.$request->Hocki.'NamHoc'.$request->year.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
+                $cutHK= substr(session()->get('HKid'), 0, 2);
+                $CutYearOfClass = Str::after(session()->get('HKid'),$cutHK);
+                $temp = $request->classid.'HocKy'.$cutHK.'NamHoc'.$CutYearOfClass.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
                 session()->push('DanhSachSinhVienTam',$temp);
-                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'));
+                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'));
             }
             else
             {
-                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'))->with('error-AddDSSV','Lỗi nhập liệu')->withInput();
+                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Lỗi nhập liệu')->withInput();
             }
         }
         public function XoaKhoiDanhSach(Request $request)
@@ -791,7 +793,7 @@ class TeacherController extends Controller
             $position = array_search($request->id, $array);
             unset($array[$position]);
             session(['DanhSachSinhVienTam' => $array]);
-            return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'));
+            return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'));
         }
 
         public function XacNhanThemSV(Request $request)
@@ -817,7 +819,7 @@ class TeacherController extends Controller
                 // Chuyển Collection đã sắp xếp trở lại thành mảng
                 $sortedArray = $sortedCollection->all();
 
-                dd($sortedArray);
+                // dd($sortedArray);
 
                 foreach(session('DanhSachSinhVienTam') as $key)
                 {
@@ -872,7 +874,7 @@ class TeacherController extends Controller
                     }
                     catch(Exception $ex)
                     {
-                        return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'))->with('error-AddDSSV','Đã tồn tại danh sách sinh viên '.$Mssv.' trong lớp này! ')->withInput();
+                        return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Đã tồn tại danh sách sinh viên '.$Mssv.' trong lớp này! ')->withInput();
                     }
                     //Insert danh sách
                     try{
@@ -887,7 +889,7 @@ class TeacherController extends Controller
                     }
                     catch(Exception $ex)
                     {
-                        return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'))->with('error-AddDSSV','Đã tồn tại danh sách sinh viên '.$Mssv.' trong lớp này! ')->withInput();
+                        return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Đã tồn tại danh sách sinh viên '.$Mssv.' trong lớp này! ')->withInput();
                     }
                     //Insert TKB:
                     $getAllLichGiangDay = DB::table('lich_giang_day')->where('MaTTMH',$CutClass)->get();
@@ -900,11 +902,11 @@ class TeacherController extends Controller
                     }
                 }
                 session()->forget('DanhSachSinhVienTam');
-                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'))->with('success-AddDSSV','Thêm thành công');
+                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('success-AddDSSV','Thêm thành công');
             }
             else
             {
-                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'))->with('error-AddDSSV','Không tồn tại danh sách cần xác nhận')->withInput();
+                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Không tồn tại danh sách cần xác nhận')->withInput();
             }
         }
 
