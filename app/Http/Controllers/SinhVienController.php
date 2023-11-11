@@ -355,7 +355,7 @@ class SinhVienController extends Controller
 
     public function addStudentToClassBack(Request $request)
     {
-        $limit = count($request->mssv);
+        // $limit = count($request->mssv);
         dd($request);
     }
 }

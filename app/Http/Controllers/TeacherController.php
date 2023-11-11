@@ -760,6 +760,7 @@ class TeacherController extends Controller
         public function frmAddStudentList(Request $request)
         {
             session()->put('classAddId',$request->lop);
+            // session()->put('HKid',$request->HK);
 
             return view('admin/student');
         }
@@ -775,7 +776,7 @@ class TeacherController extends Controller
             {
                 $MaTTMH = $request->classid;
                 $checkfindnameTeacher = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->orderBy('MaNgay','DESC')->first();
-                $temp = $request->classid.'HocKy'.$request->Hocki.'NamHoc'.$request->year.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH;
+                $temp = $request->classid.'HocKy'.$request->Hocki.'NamHoc'.$request->year.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
                 session()->push('DanhSachSinhVienTam',$temp);
                 return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId'));
             }
@@ -801,6 +802,23 @@ class TeacherController extends Controller
             //Xử lý cắt chuỗi ghép tạo MaKQSV = MSSV + MaTTMH + MaHK
             if(session('DanhSachSinhVienTam') != null)
             {
+                //Xử lý sắp xếp trước khi add vào danh sách db
+                $arrayTemp = [];
+                $arrayTemp = session()->get('DanhSachSinhVienTam');
+                $collection = collect($arrayTemp);
+
+                // Sắp xếp theo giá trị ASCII của phần tử sau dấu "|"
+                $sortedCollection = $collection->sortBy(function ($item) {
+                    // Tách chuỗi thành mảng sử dụng dấu "|", và lấy phần tử thứ 1 (sau dấu "|") để sắp xếp
+                    $parts = explode('HoTenSV', $item);
+                    return $parts[1];
+                })->values();
+
+                // Chuyển Collection đã sắp xếp trở lại thành mảng
+                $sortedArray = $sortedCollection->all();
+
+                dd($sortedArray);
+
                 foreach(session('DanhSachSinhVienTam') as $key)
                 {
 
