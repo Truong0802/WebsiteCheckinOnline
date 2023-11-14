@@ -80,7 +80,20 @@ class TeacherController extends Controller
                     })
                     ->paginate(5);
 
-                return view('Teacher/class-list', ['getallsubject' => $allsubject]);
+                    $checkTemp = [];
+                    foreach($allsubject as $Try)
+                    {
+                        $checkTemp= $allsubject;
+                    }
+                    if($checkTemp == null)
+                    {
+                        return redirect()->to('/trang-chu')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
+                    }
+                    else
+                    {
+                        return view('Teacher/class-list', ['getallsubject' => $allsubject]);
+                    }
+
             }
             elseif(session()->exists('teacherid') && session()->get('ChucVu') != 'GV')
             {
@@ -109,7 +122,19 @@ class TeacherController extends Controller
                     })
                     ->paginate(5);
 
-                return view('Teacher/class-list', ['getallsubject' => $allsubject]);
+                    $checkTemp = [];
+                    foreach($allsubject as $Try)
+                    {
+                        $checkTemp= $allsubject;
+                    }
+                    if($checkTemp == null)
+                    {
+                        return redirect()->to('/danh-sach-lop')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
+                    }
+                    else
+                    {
+                        return view('Teacher/class-list', ['getallsubject' => $allsubject]);
+                    }
             }
             else{
                 return redirect()->to('/');
