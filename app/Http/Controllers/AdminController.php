@@ -106,6 +106,7 @@ class AdminController extends Controller
                         'BanCanSu' => 0,
                         'MaDiaChi' => $MSSVCut.$CutClass
                     ]);
+
                 } catch(Exception $ex)
                 {
                     // dd($ex);

@@ -139,7 +139,11 @@
                         </li>
 
                         <li>Địa chỉ:
-                            <span class="info">Chưa cập nhật</span>
+                            @if($getInforAddress->DiaChi == null)
+                                <span class="info">Chưa cập nhật</span>
+                            @else
+                                <span class="info">{{$getInforAddress->DiaChi.', '.$getInforAddress->Phuong.', '.$getInforAddress->Quan.', '.$getInforAddress->ThanhPho}}</span>
+                            @endif
                         </li>
 
                         @if($NienKhoa != null)
