@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 Use Exception;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-class SinhVienController extends Controller
+class AdminController extends Controller
 {
     public function admin()
     {

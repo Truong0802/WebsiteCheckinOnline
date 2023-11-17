@@ -5,7 +5,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\SinhVienController;
+use App\Http\Controllers\AdminController;
 use Google\Service\Classroom\Teacher;
 use App\Http\Controllers\InfoController;
 use Google\Service\AdExchangeBuyer\Account;
@@ -67,9 +67,9 @@ Route::get('/tro-ve',[TeacherController::class,'trovedanhsach']);
 Route::get('/ho-tro', [ContactController::class, 'contact']);
 
 //Trang admin
-Route::get('/admin', [SinhVienController::class, 'admin']);
-Route::get('/quan-ly-lop-hoc',[SinhVienController::class,'FrmThemLopHoc']);
-Route::get('/quan-ly-sinh-vien',[SinhVienController::class,'frmAddSV']);
+Route::get('/admin', [AdminController::class, 'admin']);
+Route::get('/quan-ly-lop-hoc',[AdminController::class,'FrmThemLopHoc']);
+Route::get('/quan-ly-sinh-vien',[AdminController::class,'frmAddSV']);
 
 // Chọn option
 Route::post('/option-row-14', [TeacherController::class,'ChiaDiem']);
@@ -78,18 +78,18 @@ Route::post('/nhap-diem', [TeacherController::class,'DiemCot16']);
 
 
 //Admin Thêm sinh viên
-Route::post('/them-sinh-vien',[SinhVienController::class,'themSinhVien']);
-Route::get('/confirmToAdd',[SinhVienController::class,'confirmAddStudent']);
-Route::get('/Delete-id',[SinhVienController::class,'DeletSinhVien']);
+Route::post('/them-sinh-vien',[AdminController::class,'themSinhVien']);
+Route::get('/confirmToAdd',[AdminController::class,'confirmAddStudent']);
+Route::get('/Delete-id',[AdminController::class,'DeletSinhVien']);
 
 //Admin test thêm sinh viên vào lớp qua file excel
-Route::get('/test-excel',[SinhVienController::class,'addStudentToClass']);
-Route::post('/test-excel-ctrl',[SinhVienController::class,'addStudentToClassBack']);
+Route::get('/test-excel',[AdminController::class,'addStudentToClass']);
+Route::post('/test-excel-ctrl',[AdminController::class,'addStudentToClassBack']);
 
 //Admin thêm lớp
-Route::post('/them-danh-sach',[SinhVienController::class,'ThemDanhSach']);
-Route::get('/Delete-subject',[SinhVienController::class,'DeletLop']);
-Route::get('/confirmToAddSubject',[SinhVienController::class,'ConfirmAddClass']);
+Route::post('/them-danh-sach',[AdminController::class,'ThemDanhSach']);
+Route::get('/Delete-subject',[AdminController::class,'DeletLop']);
+Route::get('/confirmToAddSubject',[AdminController::class,'ConfirmAddClass']);
 
 //Admin thêm danh sách sinh viên lớp
 Route::get('/Them-danh-sach-sv',[TeacherController::class,'frmAddStudentList']);
