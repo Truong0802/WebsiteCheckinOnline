@@ -2,11 +2,6 @@
 
 @section('content')
     <div id="ribbon">
-        <span class="ribbon-button-alignment">
-            <span class="btn btn-ribbon" id="refresh" placement="bottom">
-                <i class="fa fa-refresh"></i>
-            </span>
-        </span>
         <ol class="breadcrumb">
             <li class="ng-star-inserted">
                 <a>HỖ TRỢ</a>
@@ -25,9 +20,9 @@
                     </div>
                 </div>
             </div>
-            
+
             <style>
-                .map-container iframe 
+                .map-container iframe
                 {
                     position: absolute;
                     top: 0;
@@ -90,17 +85,17 @@
                     </div>
                 </div>
             </div>
-              
+
             <!-- <script>
-                function initMap() 
+                function initMap()
                 {
                     // Tạo đối tượng map và đặt tọa độ trung tâm
-                    var map = new google.maps.Map(document.getElementById('contact-map'), 
+                    var map = new google.maps.Map(document.getElementById('contact-map'),
                     {
                         center: {lat: 10.793647, lng: 106.675965},
                         zoom: 16
                     });
-                    
+
                     // Đặt đánh dấu vị trí trên bản đồ
                     var marker = new google.maps.Marker(
                     {
@@ -114,4 +109,4 @@
                 src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
             </script> -->
         </div>
-@stop   
+@stop

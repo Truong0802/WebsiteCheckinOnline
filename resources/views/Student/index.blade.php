@@ -14,11 +14,6 @@
         @endif
 
         <div id="ribbon">
-            <span class="ribbon-button-alignment">
-                <span class="btn btn-ribbon" id="refresh" placement="bottom">
-                    <i class="fa fa-refresh"></i>
-                </span>
-            </span>
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
                     <a>Thời khoá biểu</a>
@@ -265,8 +260,8 @@
                             <div class="popup-content">
                                 <h2>Thông báo</h2>
                                 <p>Bạn cần thay đổi thông tin mật khẩu</p>
-                                <a type="button" href="/xac-nhan-nguoi-dung">Đi thay đổi</a>
-                                <button onclick = "closePopup()">Đóng</button>
+                                <a class="btn-change" type="button" href="/xac-nhan-nguoi-dung">Đi thay đổi</a>
+                                <button class="btn-primary" onclick = "closePopup()">Đóng</button>
                             </div>
 
                             <script>

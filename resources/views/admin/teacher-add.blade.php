@@ -9,11 +9,6 @@
     <div class="alert alert-success text-center">{{ session('success-Add-T') }}</div>
 @endif
         <div id="ribbon">
-            <span class="ribbon-button-alignment">
-                <span class="btn btn-ribbon" id="refresh" placement="bottom">
-                    <i class="fa fa-refresh"></i>
-                </span>
-            </span>
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
                     <a>Thêm giảng viên</a>

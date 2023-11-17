@@ -149,6 +149,35 @@
                                 </li>
 
                             @endif
+                        <li>Địa chỉ:
+                            <ul>
+                                <li>Thành phố / Tỉnh:
+                                    <select class="info" id="city" name="city">
+                                        <option value="" selected></option>
+                                    </select>
+                                </li>
+
+                                <li>Quận / Huyện:
+                                    <select class="info" id="district" name="district">
+                                        <option value="" selected></option>
+                                    </select>
+                                </li>
+
+                                <li>Phường / Xã:
+                                    <select class="info" id="ward" name="ward">
+                                        <option value="" selected></option>
+                                    </select>
+                                </li>
+
+                                <li>Số nhà:
+                                    <input class="info" name="address" type="text">
+                                </li>
+
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+                                <script src="<?php echo asset('/js/provinces.js')?>"></script>
+                            </ul>
+                        </li>
 
 
                         <li>

@@ -17,6 +17,36 @@
     <title>Trang chủ</title>
 </head>
 <body>
+    <header id="header">
+        <div id="logo-group">
+            <span id="logo">
+                <img src="<?php echo asset('/img/logo2.png')?>" alt="">
+            </span>
+        </div>
+            <div class="project-context hidden-xs dropdown" id="dropdown">
+                <span class="label">Liên kết</span>
+                <span class="project-selector" for="dropdown-toggle" > Trang thông tin <i class="fa fa-angle-down"></i>
+                </span>
+                <ul class="dropdown-menu ng-star-inserted" id="dropdown-menu">
+                    <li>
+                      <a href="https://www.hutech.edu.vn/" target="_blank">
+                        <i class="fa-solid fa-earth-asia"></i> Trang chủ HUTECH</a>
+                    </li>
+                    <li>
+                      <a href="http://qlcntt.hutech.edu.vn/ITHUTECH/Index" target="_blank"><i class="fa-solid fa-earth-asia"></i> Trung tâm QLCNTT</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                      <a href="https://www.facebook.com/hutechuniversity" target="_blank">
+                        <i class="fa-brands fa-facebook"></i>  HUTECH</a>
+                    </li>
+                    <li>
+                      <a href="https://www.facebook.com/hutech.itcenter/" target="_blank">
+                        <i class="fa-brands fa-facebook"></i>  Trung tâm QLCNTT</a>
+                    </li>
+                </ul>
+            </div>
+    </header>
     <aside id="left-panel">
         <div class="login-info">
             <span class="ng-star-inserted">
@@ -97,13 +127,11 @@
                 </li>
             </ul>
         </nav>
-        <span class="minifyme">
-                <i class="fa fa-arrow-circle-left hit"></i>
-        </span>
     </aside>
 
     <div id="main" role="main">
         @yield('content')
     </div>
+    <script src="<?php echo asset('/js/script.js')?>"></script>
 </body>
 </html>

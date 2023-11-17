@@ -6,11 +6,6 @@
 
 @section('content')
 <div id="ribbon">
-    <span class="ribbon-button-alignment">
-        <span class="btn btn-ribbon" id="refresh" placement="bottom">
-            <i class="fa fa-refresh"></i>
-        </span>
-    </span>
     <ol class="breadcrumb">
         <li class="ng-star-inserted">
             <a>Hồ sơ cá nhân</a>
@@ -143,6 +138,10 @@
                             @endif
                         </li>
 
+                        <li>Địa chỉ:
+                            <span class="info">Chưa cập nhật</span>
+                        </li>
+
                         @if($NienKhoa != null)
                             <li> Niên khóa:
                                 <span class="info">{{$NienKhoa->NamHocDuKien}}</span>
@@ -150,7 +149,6 @@
                         @else
                             <li></li>
                         @endif
-
                     <li>
                         <br>
                         <form action="/trang-thay-doi-thong-tin" method="get">

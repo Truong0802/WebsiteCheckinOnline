@@ -11,11 +11,6 @@
         <div class="alert alert-danger text-center">{{ session('errorClassList1') }}</div>
     @endif
         <div id="ribbon">
-            <span class="ribbon-button-alignment">
-                <span class="btn btn-ribbon" id="refresh" placement="bottom">
-                    <i class="fa fa-refresh"></i>
-                </span>
-            </span>
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
                     <a>Danh sách sinh viên</a>
