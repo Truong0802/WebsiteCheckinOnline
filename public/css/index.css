@@ -690,3 +690,8 @@ button
 {
     color: #fff;
 }
+
+#school-year > option
+{
+    text-align: center;
+}

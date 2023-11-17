@@ -20,7 +20,7 @@
     outline-color: none;
 }
 
-select
+#city, #district, #ward
 {
     width: 250px;
     height: 30px;
