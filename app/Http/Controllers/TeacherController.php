@@ -425,6 +425,7 @@ class TeacherController extends Controller
                             ->update(['TongSoBuoi' => $countChecked]);
                     //Đối với môn thực hành
                     $phanloailop = substr($resultCheck->MaDanhSach,3,1);
+
                     if($phanloailop == '3')
                     {
                         $latestpoint = $countChecked * 3/6;
@@ -441,6 +442,7 @@ class TeacherController extends Controller
                             $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->first();
                             if($checkDQT)
                             {
+
                                 if($findlop->Diem16 != null)
                                 {
                                     $result = $latestpoint + $findlop->Diem16;
@@ -450,7 +452,9 @@ class TeacherController extends Controller
                                                 ->update(['DiemQT' => $result]);
                                 }
                                 else{
+
                                     $result = $latestpoint;
+                                    // dd($result);
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
@@ -689,17 +693,17 @@ class TeacherController extends Controller
                                             $resultConvert = number_format($resultConvert,2,'.',''); //sinh ra thêm số để chuẩn number sau khi thêm . hoặc , vd: 5.5 -> 5.50
                                         }catch(ModelNotFoundException $exception)
                                         {
-                                            return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
+                                            return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
                                         }
                                     }
                                     else //nếu nhập kí tự chữ cái
                                     {
-                                        return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
+                                        return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
                                     }
                                 }
                                 else //nếu nhập kí tự chữ cái
                                 {
-                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
+                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
                                 }
 
 
@@ -722,7 +726,7 @@ class TeacherController extends Controller
                                     {
                                         session()->forget('error-row16');
                                     }
-                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Điểm tổng không vượt quá 10')->withInput();
+                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->with('error-row16','Điểm tổng không vượt quá 10')->withInput();
                                 }
 
                                 //Điều kiện kiểm tra thời gian thỏa để sửa điểm hay không
@@ -735,7 +739,7 @@ class TeacherController extends Controller
                                     ->update([
                                         'TimeForChangeRow16'=> null
                                     ]);
-                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Quá thời gian sửa điểm')->withInput();
+                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->with('error-row16','Quá thời gian sửa điểm')->withInput();
                                 }
                                 else
                                 {
@@ -783,7 +787,7 @@ class TeacherController extends Controller
                                 {
                                     session()->forget('error-row16');
                                 }
-                                return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
+                                return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->with('error-row16','Hãy nhập số chính xác!')->withInput();
                             }
                         }
 
@@ -791,7 +795,7 @@ class TeacherController extends Controller
 
                     }
                     session()->forget('row16');// Sau khi xử lý xóa session
-                    return redirect('/danh-sach-sinh-vien?lop='.$findrow14->MaTTMH);
+                    return redirect('/danh-sach-sinh-vien?lop='.$findrow14->MaTTMH.'&HK='.session()->get('HKid'));
                     // return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'));
 
             }

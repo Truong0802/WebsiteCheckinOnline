@@ -55,8 +55,8 @@ const getLocation = () =>
                         {
                             console.log("là kiểu số");
                             document.getElementById("login-btn").disabled = true;
-                            //Bật cho phép sv truy cập từ xa
-                            // document.getElementById("login-btn").disabled = false;
+                            // Bật cho phép sv truy cập từ xa
+                             document.getElementById("login-btn").disabled = false;
                         }
                         else
                         {
