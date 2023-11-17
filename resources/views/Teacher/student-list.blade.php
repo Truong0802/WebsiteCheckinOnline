@@ -73,7 +73,8 @@
             {
                 $listid = substr($key->MaDanhSach, 0, -1);
                 $phanloailop = substr($key->MaDanhSach,3,1);
-                $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)->distinct()->first();
+                $classname = DB::table('mon_hoc')->where('MaTTMH',$key->MaTTMH)
+                                ->distinct()->first();
             }
 
             ?>
@@ -298,6 +299,7 @@
                                             <?php
                                                 $data = [
                                                     'lop' => $classname->MaTTMH,
+                                                    'HK' => session()->get('HKid'),
                                                     'buoi' => 1
                                                 ];
                                                 $encryptedData = encrypt($data);
@@ -313,6 +315,7 @@
                                             <?php
                                                 $data = [
                                                     'lop' => $classname->MaTTMH,
+                                                    'HK' => session()->get('HKid'),
                                                     'buoi' => 2
                                                 ];
                                                 $encryptedData = encrypt($data);
@@ -326,6 +329,7 @@
                                             <?php
                                                 $data = [
                                                     'lop' => $classname->MaTTMH,
+                                                    'HK' => session()->get('HKid'),
                                                     'buoi' => 3
                                                 ];
                                                 $encryptedData = encrypt($data);
@@ -339,6 +343,7 @@
                                             <?php
                                                 $data = [
                                                     'lop' => $classname->MaTTMH,
+                                                    'HK' => session()->get('HKid'),
                                                     'buoi' => 4
                                                 ];
                                                 $encryptedData = encrypt($data);
@@ -352,6 +357,7 @@
                                             <?php
                                                 $data = [
                                                     'lop' => $classname->MaTTMH,
+                                                    'HK' => session()->get('HKid'),
                                                     'buoi' => 5
                                                 ];
                                                 $encryptedData = encrypt($data);
@@ -365,6 +371,7 @@
                                                 <?php
                                                 $data = [
                                                     'lop' => $classname->MaTTMH,
+                                                    'HK' => session()->get('HKid'),
                                                     'buoi' => 6
                                                 ];
                                                 $encryptedData = encrypt($data);
@@ -379,6 +386,7 @@
                                             <?php
                                                 $data = [
                                                     'lop' => $classname->MaTTMH,
+                                                    'HK' => session()->get('HKid'),
                                                     'buoi' => 7
                                                 ];
                                                 $encryptedData = encrypt($data);
@@ -392,6 +400,7 @@
                                             <?php
                                                 $data = [
                                                     'lop' => $classname->MaTTMH,
+                                                    'HK' => session()->get('HKid'),
                                                     'buoi' => 8
                                                 ];
                                                 $encryptedData = encrypt($data);
@@ -405,6 +414,7 @@
                                             <?php
                                                 $data = [
                                                     'lop' => $classname->MaTTMH,
+                                                    'HK' => session()->get('HKid'),
                                                     'buoi' => 9
                                                 ];
                                                 $encryptedData = encrypt($data);

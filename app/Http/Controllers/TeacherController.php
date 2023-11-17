@@ -306,7 +306,7 @@ class TeacherController extends Controller
                         }
                             $findlistidofstudent = DB::table('danh_sach_sinh_vien')
                             // ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
-                            ->where('MaTTMH',$data["lop"])
+                            ->where('MaTTMH',$data["lop"])->where('MaHK',$data["HK"])
                             ->where('MSSV',session()->get('studentid'))->first();
 
                             if($findlistidofstudent != null)
