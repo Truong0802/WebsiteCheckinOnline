@@ -7,6 +7,9 @@
             session()->forget('row16');
         }
     ?>
+    @if(session('errorClassList1'))
+        <div class="alert alert-danger text-center">{{ session('errorClassList1') }}</div>
+    @endif
         <div id="ribbon">
             <span class="ribbon-button-alignment">
                 <span class="btn btn-ribbon" id="refresh" placement="bottom">

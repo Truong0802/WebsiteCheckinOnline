@@ -163,6 +163,7 @@ class TeacherController extends Controller
                 if($request->lop){
                     $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)->distinct()->paginate(25);
                     session()->put('danh-sach-sinh-vien-lop',$request->lop);
+                    session()->put('HKid',$request->HK);
                     $datatemp = [];
                     foreach($classlist as $checkData)
                     {
@@ -201,38 +202,58 @@ class TeacherController extends Controller
                     ->where('danh_sach_sinh_vien.MSSV', $request->mssv);
                 })
                 ->paginate(10);
-
+                //Kiểm tra tìm kiếm có rỗng không
+                $checkTemp = [];
+                foreach( $searchlist as $ResultData)
+                {
+                    $checkTemp = $ResultData;
+                }
+                if($checkTemp == null)
+                {
+                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                                        ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->studentname.' với mã số '.$request->mssv)->withInput();
+                }
                 return view('Teacher/student-list', ['getinfoclass' => $searchlist]);
             }
+            else{
+                return redirect()->to('/');
+            }
+
         }
 
         public function removetimkiemsv()
         {
-            return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'));
+            return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'));
         }
 
         public function trovedanhsach()
         {
-            return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop'));
+            return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'));
         }
         //
         public function qrcodeGenerate()
         {
-            $encryptedData = DB::table('checklog')->where('MSGV',session()->get('teacherid'))->orderByDesc('Id')->first();
-            //Tạo mã QR
-            $qrCodes = [];
-            $url = '/diem-danh?data='.$encryptedData->URL;
-            $urlconvert = url($url);
-            // dd($urlconvert);
-            $qrCodes['simple'] = QrCode::size(400)->generate($urlconvert);
-            // $qrCodes['changeColor'] = QrCode::size(120)->color(255, 0, 0)->generate($url);
-            // $qrCodes['changeBgColor'] = QrCode::size(120)->backgroundColor(255, 0, 0)->generate($url);
+            if(session()->has('teacherid'))
+            {
+                $encryptedData = DB::table('checklog')->where('MSGV',session()->get('teacherid'))->orderByDesc('Id')->first();
+                //Tạo mã QR
+                $qrCodes = [];
+                $url = '/diem-danh?data='.$encryptedData->URL;
+                $urlconvert = url($url);
+                // dd($urlconvert);
+                $qrCodes['simple'] = QrCode::size(400)->generate($urlconvert);
+                // $qrCodes['changeColor'] = QrCode::size(120)->color(255, 0, 0)->generate($url);
+                // $qrCodes['changeBgColor'] = QrCode::size(120)->backgroundColor(255, 0, 0)->generate($url);
 
-            // $qrCodes['styleDot'] = QrCode::size(120)->style('dot')->generate($url);
-            // $qrCodes['styleSquare'] = QrCode::size(120)->style('square')->generate($url);
-            // $qrCodes['styleRound'] = QrCode::size(120)->style('round')->generate($url);
-            // $qrCodes['withImage'] = QrCode::size(200)->generate($urlconvert);
-            return view('Teacher/empty-site-for-qr',$qrCodes);
+                // $qrCodes['styleDot'] = QrCode::size(120)->style('dot')->generate($url);
+                // $qrCodes['styleSquare'] = QrCode::size(120)->style('square')->generate($url);
+                // $qrCodes['styleRound'] = QrCode::size(120)->style('round')->generate($url);
+                // $qrCodes['withImage'] = QrCode::size(200)->generate($urlconvert);
+                return view('Teacher/empty-site-for-qr',$qrCodes);
+            }
+            else{
+                return redirect()->to('/');
+            }
 
         }
 
@@ -792,25 +813,31 @@ class TeacherController extends Controller
 
         public function ThemDanhSachSV(Request $request)
         {
-            $validated = $request->validate([
-                'mssv' => 'required',
-                'studentname' => 'required',
-                'classname' => 'required'
-            ]);
-            if($request !=null)
-            {
-                $MaTTMH = $request->classid;
-                $checkfindnameTeacher = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->orderBy('MaNgay','DESC')->first();
-                $cutHK= substr(session()->get('HKid'), 0, 2);
-                $CutYearOfClass = Str::after(session()->get('HKid'),$cutHK);
-                $temp = $request->classid.'HocKy'.$cutHK.'NamHoc'.$CutYearOfClass.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
-                session()->push('DanhSachSinhVienTam',$temp);
-                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'));
+            if(session()->has('teacherid')){
+                $validated = $request->validate([
+                    'mssv' => 'required',
+                    'studentname' => 'required',
+                    'classname' => 'required'
+                ]);
+                if($request !=null)
+                {
+                    $MaTTMH = $request->classid;
+                    $checkfindnameTeacher = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->orderBy('MaNgay','DESC')->first();
+                    $cutHK= substr(session()->get('HKid'), 0, 2);
+                    $CutYearOfClass = Str::after(session()->get('HKid'),$cutHK);
+                    $temp = $request->classid.'HocKy'.$cutHK.'NamHoc'.$CutYearOfClass.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
+                    session()->push('DanhSachSinhVienTam',$temp);
+                    return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'));
+                }
+                else
+                {
+                    return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Lỗi nhập liệu')->withInput();
+                }
             }
-            else
-            {
-                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Lỗi nhập liệu')->withInput();
+            else{
+                return redirect()->to('/');
             }
+
         }
         public function XoaKhoiDanhSach(Request $request)
         {

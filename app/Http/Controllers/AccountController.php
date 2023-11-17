@@ -115,7 +115,6 @@ class AccountController extends Controller
         session()->forget('malop');
         session()->forget('mon-hoc');
         session()->forget('row16');
-
         //Tạo session ghi time khóa đăng nhập 7 ngày
         // //Set thời gian bắt đầu cho cd đến khi được đăng nhập lại là 7 ngày
         // $now = Carbon::now();
