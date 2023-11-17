@@ -443,7 +443,7 @@ class TeacherController extends Controller
                             {
                                 if($findlop->Diem16 != null)
                                 {
-                                    $result = $findlop->Diem14 + $findlop->Diem16;
+                                    $result = $latestpoint + $findlop->Diem16;
                                     // dd($result);
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
@@ -479,7 +479,7 @@ class TeacherController extends Controller
                             {
                                 if($findlop->Diem16 != null)
                                 {
-                                    $result = $findlop->Diem14 + $findlop->Diem16;
+                                    $result = $latestpoint + $findlop->Diem16;
                                     // dd($result);
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
@@ -565,7 +565,7 @@ class TeacherController extends Controller
                             {
                                 if($findlop->Diem16 != null)
                                 {
-                                    $resultlatest = $findlop->Diem14 + $findlop->Diem16;
+                                    $resultlatest = $result + $findlop->Diem16;
                                     // dd($result);
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
@@ -623,11 +623,11 @@ class TeacherController extends Controller
                             {
                                 if($findlop->Diem16 != null)
                                 {
-                                    $result = $findlop->Diem14 + $findlop->Diem16;
+                                    $resultlatest = $result + $findlop->Diem16;
                                     dd($result);
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
-                                                ->update(['DiemQT' => $result]);
+                                                ->update(['DiemQT' => $resultlatest]);
                                 }
                                 else{
                                     // $result = $findlop->Diem14;
