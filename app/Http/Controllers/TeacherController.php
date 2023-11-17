@@ -450,7 +450,7 @@ class TeacherController extends Controller
                                                 ->update(['DiemQT' => $result]);
                                 }
                                 else{
-                                    $result = $findlop->Diem14;
+                                    $result = $latestpoint;
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
@@ -486,7 +486,7 @@ class TeacherController extends Controller
                                                 ->update(['DiemQT' => $result]);
                                 }
                                 else{
-                                    $result = $findlop->Diem14;
+                                    $result = $latestpoint;
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
@@ -508,7 +508,7 @@ class TeacherController extends Controller
                 //                 ->where('MaKQSV',$findlop->MaKQSV)
                 //                 ->update(['DiemQT' => $result]);
                 // }
-                return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
+                return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH.'&HK='.session()->get('HKid'));
             }
             elseif($request->input('divide3'))
             {
@@ -565,14 +565,14 @@ class TeacherController extends Controller
                             {
                                 if($findlop->Diem16 != null)
                                 {
-                                    $result = $findlop->Diem14 + $findlop->Diem16;
+                                    $resultlatest = $findlop->Diem14 + $findlop->Diem16;
                                     // dd($result);
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
-                                                ->update(['DiemQT' => $result]);
+                                                ->update(['DiemQT' => $resultlatest]);
                                 }
                                 else{
-                                    $result = $findlop->Diem14;
+                                    // $result = $findlop->Diem14;
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
@@ -630,7 +630,7 @@ class TeacherController extends Controller
                                                 ->update(['DiemQT' => $result]);
                                 }
                                 else{
-                                    $result = $findlop->Diem14;
+                                    // $result = $findlop->Diem14;
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
@@ -643,7 +643,7 @@ class TeacherController extends Controller
 
                 }
 
-                return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH);
+                return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH.'&HK='.session()->get('HKid'));
             }
             else //Nếu không chọn gì trong các option tính điểm
             {
