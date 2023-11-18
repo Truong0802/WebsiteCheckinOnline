@@ -811,7 +811,10 @@ class TeacherController extends Controller
         {
             session()->put('classAddId',$request->lop);
             session()->put('HKid',$request->HK);
-
+            // if(session()->has('DanhSachSinhVienTam'))
+            // {
+            //     session()->forget('DanhSachSinhVienTam');
+            // }
             return view('admin/student');
         }
 
@@ -829,6 +832,16 @@ class TeacherController extends Controller
                     $checkfindnameTeacher = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->orderBy('MaNgay','DESC')->first();
                     $cutHK= substr(session()->get('HKid'), 0, 2);
                     $CutYearOfClass = Str::after(session()->get('HKid'),$cutHK);
+
+                    $checkSVisAvailable = DB::table('sinh_vien')->where('MSSV',$request->mssv)->first();
+                        // dd($checkSVisAvailable);
+                    if($checkSVisAvailable == null)
+                    {
+                        return redirect()->to('/quan-ly-sinh-vien')->with('error-Add','Không tồn tại sinh viên mã'.$request->mssv)->withInput();
+                    }
+
+
+
                     $temp = $request->classid.'HocKy'.$cutHK.'NamHoc'.$CutYearOfClass.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
                     session()->push('DanhSachSinhVienTam',$temp);
                     return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'));
@@ -845,6 +858,7 @@ class TeacherController extends Controller
         }
         public function XoaKhoiDanhSach(Request $request)
         {
+            // dd($request->id);
             $array = session('DanhSachSinhVienTam');
             $position = array_search($request->id, $array);
             unset($array[$position]);

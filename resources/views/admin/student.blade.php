@@ -117,7 +117,18 @@
                                 @foreach(session()->get('DanhSachSinhVienTam') as $key)
                                 <?php
                                     $Mssv = Str::between($key,'MSSV','MaTTMH');
+
                                     $findStudentName = DB::table('sinh_vien')->where('MSSV',$Mssv)->first();
+
+                                    if($findStudentName == null)
+                                    {
+                                        $array = session('DanhSachSinhVienTam');
+                                        $position = array_search($key, $array);
+                                        unset($array[$position]);
+                                        session(['DanhSachSinhVienTam' => $array]);
+
+                                    }
+
                                     $CutClass = Str::before($key,'HocKy');
                                     $findSubjectName = DB::table('mon_hoc')->where('MaTTMH',$CutClass)->first();
                                     $CutHK = Str::between($key,'HocKy','NamHoc');

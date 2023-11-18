@@ -35,7 +35,7 @@ class AdminController extends Controller
         // $sinhVien->save(); //Update database
         //Điều kiện lọc lỗi
         $validated = $request->validate([
-            'mssv' => 'required',
+            'mssv' => 'required|regex:/^.*(?=.*[0-9]).*$/',
             'studentname' => 'required',
             'classname' => 'required',
             'password' => 'required'
