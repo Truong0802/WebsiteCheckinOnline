@@ -35,14 +35,21 @@ class AdminController extends Controller
         // $sinhVien->save(); //Update database
         //Điều kiện lọc lỗi
         $validated = $request->validate([
-            'mssv' => 'required|regex:/^.*(?=.*[0-9]).*$/',
+            'mssv' => 'required',
             'studentname' => 'required',
             'classname' => 'required',
             'password' => 'required'
         ]);
+        if(preg_match('/^[0-9]*$/',$request->mssv) == 0 && preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->mssv) == 0)
+        {
+            // dd(preg_match('/^ [0-9]*$/',$request->mssv));
+            return redirect()->to('/quan-ly-sinh-vien')->with('error-Add','Mã số sinh viên không hợp lệ!')->withInput();
+        }
 
         if($request != null)
         {
+
+
             if(session()->has('teacherid') && session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
             {
                 try
