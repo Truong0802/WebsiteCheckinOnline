@@ -1053,13 +1053,16 @@ class TeacherController extends Controller
                         $CutKhoa = Str::after($temp,'KHOA');
 
                     try{
-
+                        $InsertDSDiaChi = DB::table('dia_chi')->insert([
+                            'MaDiaChi' =>  $MSGVCut
+                        ]);
                         //Insert GV
                         $InsertGV = DB::table('giang_vien')->insert([
                             'MSGV' => $MSGVCut,
                             'Password' => md5($Password),
                             'HoTenGV' => $HoTen,
                             'MaChucVu' => $CutRoleid,
+                            'MaDiaChi' =>  $MSGVCut,
                             'MaKhoa' => $CutKhoa
                         ]);
                     }

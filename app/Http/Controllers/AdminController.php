@@ -163,6 +163,20 @@ class AdminController extends Controller
         {
             if(session()->has('teacherid') && session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
             {
+                if($request->teacherid == null)
+                {
+                    return back()->with('error-AddClass','Không được bỏ trống giảng viên!')->withInput();
+                }
+                if($request->subjectname == null)
+                {
+                    return back()->with('error-AddClass','Không được bỏ trống môn học!')->withInput();
+                }
+                if($request->classname == null)
+                {
+                    return back()->with('error-AddClass','Không được bỏ trống Lớp học!')->withInput();
+                }
+
+
                 try
                 {
                     $time = Carbon::parse($request->timestart);
