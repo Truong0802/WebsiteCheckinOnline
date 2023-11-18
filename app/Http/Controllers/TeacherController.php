@@ -994,6 +994,14 @@ class TeacherController extends Controller
             ]);
             if($request != null)
             {
+                if($request->role == null )
+                {
+                    return redirect()->to('/quan-ly-gv')->with('error-Add-T',' Không được bỏ trống ô chức vụ')->withInput();
+                }
+                if($request->khoa == null)
+                {
+                    return redirect()->to('/quan-ly-gv')->with('error-Add-T',' Không được bỏ trống Khoa')->withInput();
+                }
                 $temp = 'MSGV'.$request->msgv.'HoTen'.$request->teachername.'Pass'.$request->password.'Role'.$request->role.'KHOA'.$request->khoa;
                 session()->push('DanhSachGVTam',$temp);
                 return redirect()->to('/quan-ly-gv');
