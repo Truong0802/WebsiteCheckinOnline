@@ -809,12 +809,30 @@ class TeacherController extends Controller
 //Thêm danh sách
         public function frmAddStudentList(Request $request)
         {
+            if(session()->has('classAddId'))
+            {
+                if( session()->get('classAddId') != $request->lop)
+                {
+
+                    if(session()->has('DanhSachSinhVienTam'))
+                    {
+                        session()->forget('DanhSachSinhVienTam');
+                    }
+                }
+                else
+                {
+                    if(session()->has('HKid') && session()->get('HKid') != $request->HK)
+                    {
+                        if(session()->has('DanhSachSinhVienTam'))
+                        {
+                            session()->forget('DanhSachSinhVienTam');
+                        }
+                    }
+                }
+            }
             session()->put('classAddId',$request->lop);
             session()->put('HKid',$request->HK);
-            // if(session()->has('DanhSachSinhVienTam'))
-            // {
-            //     session()->forget('DanhSachSinhVienTam');
-            // }
+
             return view('admin/student');
         }
 
