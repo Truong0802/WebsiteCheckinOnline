@@ -1059,8 +1059,30 @@ class TeacherController extends Controller
 
         public function ThemLop(Request $request)
         {
+            // dd(preg_match('/[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->startYears).'-'.preg_match('/[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->endYears).'-'.preg_match('/[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->KhoaHoc));
+            // dd(preg_match('/[!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->classid));
+
             if($request != null)
             {
+                if(preg_match('/[!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->classid) == 1)
+                {
+                    return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C',' Lỗi nhập thông tin lớp ')->withInput();
+                }
+                if( preg_match('/[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->startYears) == 1)
+                {
+                        // dd( preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->startYears));
+                        return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C',' Lỗi nhập năm học bắt đầu ')->withInput();
+                }
+                if(preg_match('/[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->endYears) == 1)
+                {
+                        // dd( preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->startYears));
+                        return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C',' Lỗi nhập năm học kết thúc')->withInput();
+                }
+                if(preg_match('/[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->KhoaHoc) == 1)
+                {
+                        // dd( preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->startYears));
+                        return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C',' Lỗi nhập Niên khóa')->withInput();
+                }
                 $temp = 'Lop'.$request->classid.'KHOAHOC'.$request->KhoaHoc.'year'.$request->startYears.'-'.$request->endYears;
                 // dd($temp);
                 session()->push('DanhSachLopNKTam',$temp);
@@ -1068,7 +1090,7 @@ class TeacherController extends Controller
             }
             else
             {
-                return redirect()->to('/quan-ly-gv')->with('error-Add-C',' Lỗi nhập liệu ')->withInput();
+                return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C',' Lỗi nhập liệu ')->withInput();
             }
             return redirect()->to('/them-lop-nien-khoa');
         }
