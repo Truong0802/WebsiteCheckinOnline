@@ -1090,6 +1090,12 @@ class TeacherController extends Controller
         {
             // dd(preg_match('/[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->startYears).'-'.preg_match('/[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->endYears).'-'.preg_match('/[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->KhoaHoc));
             // dd(preg_match('/[!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]/',$request->classid));
+            $validated = $request->validate([
+                'KhoaHoc' => 'required',
+                'startYears' => 'required',
+                'endYears' => 'required',
+                'classid' => 'required'
+            ]);
 
             if($request != null)
             {
@@ -1112,6 +1118,15 @@ class TeacherController extends Controller
                         // dd( preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->startYears));
                         return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C',' Lỗi nhập Niên khóa')->withInput();
                 }
+
+                //Kiểm tra tồn tại lớp hay chưa
+                $checkLopIsAvailable = DB::table('lop')->where('MaLop',$request->classid)->first();
+                if($checkLopIsAvailable != null)
+                {
+                    return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C','Đã tồn tại lớp '.$request->classid)->withInput();
+                }
+
+
                 $temp = 'Lop'.$request->classid.'KHOAHOC'.$request->KhoaHoc.'year'.$request->startYears.'-'.$request->endYears;
                 // dd($temp);
                 session()->push('DanhSachLopNKTam',$temp);
@@ -1155,12 +1170,15 @@ class TeacherController extends Controller
                         ]);
                     }
 
-                    //Thêm lớp học
-                    $insertNewLopNK = DB::table('lop')->insert([
-                        'MaLop' => $CutLop,
-                        'TenLop' => $CutLop,
-                        'KhoaHoc' => $CutKhoaHoc
-                    ]);
+
+                        //Thêm lớp học
+                        $insertNewLopNK = DB::table('lop')->insert([
+                            'MaLop' => $CutLop,
+                            'TenLop' => $CutLop,
+                            'KhoaHoc' => $CutKhoaHoc
+                        ]);
+
+
                 }
                 session()->forget('DanhSachLopNKTam');
                 return redirect()->to('/them-lop-nien-khoa')->with('success-Add-C','Thêm thành công');

@@ -35,6 +35,9 @@
                                 <div class="form-group">
                                 <label for="teacher-id">Lớp:</label>
                                 <input type="text" class="form-control" id="Classid" name="classid">
+                                @error('classid')
+                                    <div class="alert alert-danger">{{ $errors->first('classid') }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -44,18 +47,27 @@
                             <div class="form-group">
                                 <label for="student-name">Niên khóa:</label>
                                 <input type="text" class="form-control" id="KhoaHoc" name="KhoaHoc">
+                                @error('KhoaHoc')
+                                    <div class="alert alert-danger">{{ $errors->first('KhoaHoc') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Năm bắt đầu:</label>
                                 <input type="text" class="form-control" id="startYears" name="startYears">
+                                @error('startYears')
+                                    <div class="alert alert-danger">{{ $errors->first('startYears') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Năm kết thúc:</label>
                                 <input type="text" class="form-control" id="endYears" name="endYears">
+                                @error('endYears')
+                                    <div class="alert alert-danger">{{ $errors->first('endYears') }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
