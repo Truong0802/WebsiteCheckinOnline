@@ -66,7 +66,7 @@ class AdminController extends Controller
                 }
                 catch(Exception $ex)
                 {
-                    return back()->with('error-Add','lỗi nhập liệu!')->withInput();
+                    return redirect()->to('/quan-ly-sinh-vien')->with('error-Add','lỗi nhập liệu!')->withInput();
                 }
             }
             // $temp[] = session()->get('MSSV').'  '.session()->get('Name').' '.session()->get('ClassName').' '.session()->get('PassWord').' '.session()->get('Phuong').' '.session()->get('Quan').' '.session()->get('TP').' '.session()->get('DiaChi');
@@ -136,7 +136,7 @@ class AdminController extends Controller
         }
         else
         {
-            redirect()->to('/quan-ly-sinh-vien')->with('error-Add','Không tồn tại danh sách cần xác nhận')->withInput();
+           return redirect()->to('/quan-ly-sinh-vien')->with('error-Add','Không tồn tại danh sách cần xác nhận')->withInput();
         }
 
 
