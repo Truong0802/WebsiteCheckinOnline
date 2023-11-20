@@ -165,34 +165,44 @@ class AdminController extends Controller
             {
                 if($request->teacherid == null)
                 {
-                    return back()->with('error-AddClass','Không được bỏ trống giảng viên!')->withInput();
+                    return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không được bỏ trống giảng viên!')->withInput();
                 }
                 if($request->subjectname == null)
                 {
-                    return back()->with('error-AddClass','Không được bỏ trống môn học!')->withInput();
+                    return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không được bỏ trống môn học!')->withInput();
                 }
                 if($request->classname == null)
                 {
-                    return back()->with('error-AddClass','Không được bỏ trống Lớp học!')->withInput();
+                    return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không được bỏ trống Lớp học!')->withInput();
                 }
+                if($request->HKid == null)
+                {
+                    return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không được bỏ trống Học kỳ!')->withInput();
 
+                }
 
                 try
                 {
+                    //Kiểm tra thời gian bắt đầu có phù hợp
                     $time = Carbon::parse($request->timestart);
                     $formattedTime = $time->format('dmYHi');
                     $timeForTemp = $time->format('d-m-Y H:i');
+                    //Kiểm tra thời gian kết thúc có phù hợp
+                    $Anothertime = Carbon::parse($request->timeend);
+                    $formattedTimeEnd = $Anothertime->format('dmYHi');
+                    $timeEndForTemp = $Anothertime->format('d-m-Y H:i');
+
                     $SubjectInfo = DB::table('mon_hoc')->where('MaTTMH',$request->subjectname)->first();
-                    $temp= $timeForTemp.' MaMH'.$request->subjectname.'TenMH '.$SubjectInfo->TenMH.'Lop'.$request->classname.'GV'.$request->teacherid;
+                    $temp= $timeForTemp.' MaMH'.$request->subjectname.'TenMH '.$SubjectInfo->TenMH.'Lop'.$request->classname.'GV'.$request->teacherid.'TimeEnd'.$timeEndForTemp.'HK'.$request->HKid;
                     // dd($CutClass);
                     session()->push('DanhSachLopTam',$temp); //Thêm vào danh sách tạm
                 }
                 catch(Exception $ex)
                 {
-                    return back()->with('error-AddClass','lỗi nhập liệu!')->withInput();
+                    return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','lỗi nhập liệu!')->withInput();
                 }
             }
-            return view('admin/class-subject-add');
+            return redirect()->to('/quan-ly-lop-hoc');
         }
         else{
             return view('admin/class-subject-add')->with('error-AddClass','lỗi nhập liệu!');
@@ -223,10 +233,13 @@ class AdminController extends Controller
             foreach(session()->get('DanhSachLopTam') as $temp)
             {
                 $date = Str::before($temp,'MaMH');
+                $dateEnd = Str::between($temp,'TimeEnd','HK');
                 $datetimeConvert = Carbon::parse($date);
+                $dateEndConvert = Carbon::parse($dateEnd);
                 $formattedTime = $datetimeConvert->format('dmYHi');
+                $CutHK = Str::after($temp,'HK');
                 $CutClass = Str::between($temp,'Lop','GV');
-                $CutMSGV = Str::after($temp,'GV');
+                $CutMSGV = Str::between($temp,'GV','TimeEnd');
                 $MaTTMH = Str::between($temp,'MaMH','TenMH');
                 $checkLop = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaLop',$CutClass)
                             ->where('MaBuoi',1)->first();
@@ -238,6 +251,25 @@ class AdminController extends Controller
                     $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
                     if($checkTypeTime != null)
                     {
+                        $formatCheckDate1 = $dateEndConvert->format('d-m-y');
+                        $formatCheckDate = $datetimeConvert->format('d-m-y');
+
+                        if( $formatCheckDate1 != $formatCheckDate)
+                        {
+                            return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Thời gian diễn ra tiết học quá xa')->withInput();
+                        }
+
+                        $formatTimeEnd = $dateEndConvert->format('H:i');
+                        $checkTypeTimeEnd = DB::table('tiet_hoc')
+                                            ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
+                        if($checkTypeTimeEnd == null )
+                        {
+                            return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
+                        }
+
+
+                        $GetTimeForInsert = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)
+                                            ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
                         // dd($formatTime);
                         try
                         {
@@ -247,12 +279,14 @@ class AdminController extends Controller
                                 'MaTTMH' => $MaTTMH,
                                 'MSGV' =>  $CutMSGV,
                                 'MaLop' => $CutClass,
-                                'MaTietHoc' => $checkTypeTime->MaTietHoc,
+                                'MaHK' => $CutHK,
+                                'MaTietHoc' => $GetTimeForInsert->MaTietHoc,
                                 'MaBuoi' => $stt
                             ]);
                         }
                         catch(Exception $ex)
                         {
+                            // dd($formatTimeEnd);
                             // dd($ex);
                             return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
 
@@ -284,6 +318,25 @@ class AdminController extends Controller
                         $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
                         if($checkTypeTime != null)
                         {
+                            $formatCheckDate1 = $dateEndConvert->format('d-m-y');
+                            $formatCheckDate = $datetimeConvert->format('d-m-y');
+
+                            if( $formatCheckDate1 != $formatCheckDate)
+                            {
+                                return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Thời gian diễn ra tiết học quá xa')->withInput();
+                            }
+
+                            $formatTimeEnd = $dateEndConvert->format('H:i');
+                            $checkTypeTimeEnd = DB::table('tiet_hoc')
+                                                ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
+                            if($checkTypeTimeEnd == null )
+                            {
+                                return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
+                            }
+
+
+                            $GetTimeForInsert = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)
+                                                ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
                             // dd($formatTime);
                             try
                             {
@@ -293,13 +346,14 @@ class AdminController extends Controller
                                     'MaTTMH' => $MaTTMH,
                                     'MSGV' =>  $CutMSGV,
                                     'MaLop' => $CutClass,
-                                    'MaTietHoc' => $checkTypeTime->MaTietHoc,
+                                    'MaHK' => $CutHK,
+                                    'MaTietHoc' => $GetTimeForInsert->MaTietHoc,
                                     'MaBuoi' => $stt
                                 ]);
                             }
                             catch(Exception $ex)
                             {
-                                // dd($ex);
+                                //  dd($ex);
                                 return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu lớp'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
 
                             }

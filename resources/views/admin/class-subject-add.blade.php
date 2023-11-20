@@ -33,8 +33,14 @@
                     <div class="row">
                         <div class="col-md-4">
                                 <div class="form-group">
-                                <label for="student-id">Thời gian học:</label>
+                                <label for="student-id">Thời gian bắt đầu tiết:</label>
                                 <input type="datetime-local" class="form-control" id="time-start" name="timestart">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="student-id">Thời gian kết thúc tiết:</label>
+                                <input type="datetime-local" class="form-control" id="time-end" name="timeend">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -79,6 +85,21 @@
                                     <option value="">---Chọn Thông Tin---</option>
                                     @foreach($listClass as $AllClass)
                                         <option value="{{$AllClass->MaLop}}">{{$AllClass->TenLop}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="class-name">Học kỳ:</label>
+                                <?php
+                                    $listHK = DB::table('hoc_ky')->orderBy('NamHoc', 'ASC')->get();
+                                ?>
+                                <select class="form-control" id="HKid" name="HKid">
+                                    <option value="">---Chọn Thông Tin---</option>
+                                    @foreach($listHK as $AllHK)
+                                        <option value="{{$AllHK->MaHK}}">{{$AllHK->HocKy}} - {{$AllHK->NamHoc}}</option>
                                     @endforeach
                                 </select>
                             </div>
