@@ -71,4 +71,24 @@ class HomeController extends Controller
         // }
 
     }
+
+    public function backDay(Request $request)
+    {
+        // dd($request);
+        $startDay = Carbon::parse($request->day)->subWeek(1);
+        $endDay = Carbon::parse($request->toDay)->subWeek(1);
+        session()->put('BatDauTuan',$startDay);
+        session()->put('KetThucTuan',$endDay);
+        return redirect()->to('/');
+    }
+
+    public function nextDay(Request $request)
+    {
+        // dd($request);
+        $startDay = Carbon::parse($request->day)->addWeek(1);
+        $endDay = Carbon::parse($request->toDay)->addWeek(1);
+        session()->put('BatDauTuan',$startDay);
+        session()->put('KetThucTuan',$endDay);
+        return redirect()->to('/');
+    }
 }

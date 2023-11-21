@@ -38,6 +38,8 @@ Route::get('/logout',[AccountController::class,'logout']);
 //Trang thời khóa biểu sinh viên
 Route::get('/trang-chu',[HomeController::class,'trangchusv']);
 Route::get('/thoi-khoa-bieu',[HomeController::class,'trangchusv']);
+Route::get('/previous-week',[HomeController::class,'backDay']);
+Route::get('/next-week',[HomeController::class,'nextDay']);
 
 //Trang danh sách lớp của giảng viên
 Route::get('/danh-sach-lop',[TeacherController::class,'danhsachlop']);
