@@ -84,7 +84,7 @@
                         <span class="menu-item-parent">Trang chủ</span>
                     </a>
                 </li> -->
-            @if(session()->get('ChucVu') == 'AM')
+            @if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
                 <li>
                     <a title="Hồ sơ cá nhân" href="/quan-ly-sinh-vien">
                         <i class="fa fa-lg fa-fw fa-user"></i>
@@ -127,7 +127,6 @@
                         </b>
                     </a>
                 </li>
-            @endif
                 <li class="open">
                     <a href="/danh-sach-lop" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
@@ -137,6 +136,44 @@
                         </b>
                     </a>
                 </li>
+            @else
+
+                    <li>
+                        <a title="Trang chủ" href="/trang-chu">
+                            <i class="fa fa-lg fa-fw fa-home"></i>
+                            <span class="menu-item-parent">Trang chủ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a title="Hồ sơ cá nhân" href="/thong-tin-ca-nhan">
+                            <i class="fa fa-lg fa-fw fa-user"></i>
+                            <span class="menu-item-parent">Hồ sơ cá nhân</span>
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="/ho-so-tt-giang-day" title="Lịch trình">
+                            <i class="fa fa-lg fa-fw fa-book"></i>
+                            <span class="menu-item-parent">Hồ sơ giảng dạy </span>
+                            <b class="collapse-sign">
+                                <em class="fa fa-minus-square-o"></em>
+                            </b>
+                        </a>
+                    </li>
+                    <!--<li>
+                        <a href="/trang-thay-doi-thong-tin">
+                            <i class="fa fa-lg fa-fw fa-cog"></i>
+                            <span class="menu-item-parent"> Cài đặt tài khoản </span>
+                        </a>
+                    </li>-->
+                    <li>
+                        <a title="Hỗ trợ" href="/ho-tro">
+                            <i class="fa fa-lg fa-fw fa-phone"></i>
+                            <span class="menu-item-parent">Hỗ trợ</span>
+                        </a>
+                    </li>
+
+            @endif
+
 
                 <!-- <li>
                     <a href="">

@@ -809,31 +809,39 @@ class TeacherController extends Controller
 //Thêm danh sách
         public function frmAddStudentList(Request $request)
         {
-            if(session()->has('classAddId'))
+            if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
             {
-                if( session()->get('classAddId') != $request->lop)
+                if(session()->has('classAddId'))
                 {
+                    if( session()->get('classAddId') != $request->lop)
+                    {
 
-                    if(session()->has('DanhSachSinhVienTam'))
-                    {
-                        session()->forget('DanhSachSinhVienTam');
-                    }
-                }
-                else
-                {
-                    if(session()->has('HKid') && session()->get('HKid') != $request->HK)
-                    {
                         if(session()->has('DanhSachSinhVienTam'))
                         {
                             session()->forget('DanhSachSinhVienTam');
                         }
                     }
+                    else
+                    {
+                        if(session()->has('HKid') && session()->get('HKid') != $request->HK)
+                        {
+                            if(session()->has('DanhSachSinhVienTam'))
+                            {
+                                session()->forget('DanhSachSinhVienTam');
+                            }
+                        }
+                    }
                 }
-            }
-            session()->put('classAddId',$request->lop);
-            session()->put('HKid',$request->HK);
+                session()->put('classAddId',$request->lop);
+                session()->put('HKid',$request->HK);
 
-            return view('admin/student');
+                return view('admin/student');
+            }
+            else
+            {
+                return redirect()->to("/");
+            }
+
         }
 
         public function ThemDanhSachSV(Request $request)
@@ -1000,7 +1008,15 @@ class TeacherController extends Controller
 
         public function FrmThemGV()
         {
-            return view('admin/teacher-add');
+            if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
+            {
+                return view('admin/teacher-add');
+            }
+            else
+            {
+                return redirect()->to("/");
+            }
+
         }
 
         public function ThemGV(Request $request)
@@ -1083,7 +1099,15 @@ class TeacherController extends Controller
 
         public function FrmThemLopNienKhoa()
         {
-            return view('admin/class-add');
+            if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
+            {
+                return view('admin/class-add');
+
+            }
+            else
+            {
+                return redirect()->to("/");
+            }
         }
 
         public function ThemLop(Request $request)

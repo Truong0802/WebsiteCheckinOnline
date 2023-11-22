@@ -21,7 +21,14 @@ class AdminController extends Controller
 
     public function frmAddSV()
     {
-        return view('admin/student-add');
+        if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
+        {
+            return view('admin/student-add');
+        }
+        else
+        {
+            return redirect()->to("/");
+        }
     }
 
     public function themSinhVien(Request $request)
@@ -155,7 +162,14 @@ class AdminController extends Controller
     public function FrmThemLopHoc()
     {
         // dd($request);
-        return view('admin/class-subject-add');
+        if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
+        {
+            return view('admin/class-subject-add');
+        }
+        else
+        {
+            return redirect()->to("/");
+        }
     }
     public function ThemDanhSach(Request $request)
     {
@@ -426,7 +440,15 @@ class AdminController extends Controller
 
     public function addStudentToClass()
     {
-        return view('admin/student-add-to-class');
+        if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
+        {
+            return view('admin/student-add-to-class');
+        }
+        else
+        {
+            return redirect()->to("/");
+        }
+
     }
 
     public function addStudentToClassBack(Request $request)
