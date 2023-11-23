@@ -140,14 +140,19 @@ class AccountController extends Controller
                 'password.min' => 'Mật khẩu phải lớn hơn 4 ký tự',
                 'password.regex' => 'Mật khẩu nhập không hợp lệ',
                 'password.required' => 'Không được để trống Mật khẩu',
+                'passwordverify.required' => 'Không được bỏ trống',
 
             ];
             $validated = $request->validate([
                 'username' => 'required|max:20',
+                'passwordverify' => 'required',
                 'password' => 'required|min:4|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[@!$#%]).*$/',
                 //Thêm điều kiện nếu set validation cho đổi mật khẩu:|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/
             ], $messages);
-
+            if($request->password != $request->passwordverify)
+            {
+                return redirect()->to('/xac-nhan-nguoi-dung')->with('error-change','Mật khẩu xác nhận không chính xác!')->withInput();
+            }
             $UpdateHasConfirmed =  DB::table('sinh_vien')
                                  ->where('MSSV', session()->get('studentid'))
                                  ->update(['Confirmed' => 1, 'password' => md5($request->password)]);
@@ -164,13 +169,19 @@ class AccountController extends Controller
                 'password.min' => 'Mật khẩu phải lớn hơn 4 ký tự',
                 'password.regex' => 'Mật khẩu nhập không hợp lệ (Mật khẩu phải có viết thường, hoa, số và ký tự đặc biệt)',
                 'password.required' => 'Không được để trống Mật khẩu',
+                'passwordverify.required' => 'Không được bỏ trống',
 
             ];
             $validated = $request->validate([
                 'username' => 'required|max:20',
+                'passwordverify' => 'required',
                 'password' => 'required|min:4|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[@!$#%]).*$/',
                 //Thêm điều kiện nếu set validation cho đổi mật khẩu:|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/
             ], $messages);
+            if($request->password != $request->passwordverify)
+            {
+                return redirect()->to('/xac-nhan-nguoi-dung')->with('error-change','Mật khẩu xác nhận không chính xác!')->withInput();
+            }
             $UpdateHasConfirmed =  DB::table('giang_vien')
                                 ->where('MSGV', session()->get('teacherid'))
                                 ->update(['Confirmed' => 1, 'password' => md5($request->password)]);

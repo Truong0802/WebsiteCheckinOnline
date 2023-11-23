@@ -76,6 +76,10 @@
                     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
                         <div class="well no-padding">
                             <form action="/Confirmed" method="post" class="smart-form client-form ng-dirty ng-touched ng-valid" novalidate="">
+                                @if (session('error-change'))
+                                    {{-- {{dd(session('error'))}} --}}
+                                    <div class="alert alert-danger text-center">{{ session('error-change') }}</div>
+                                @endif
                                 <header>Xác thực & thay đổi mật khẩu</header>
                                     <fieldset>
                                         <section>
@@ -109,9 +113,9 @@
                                             <label class="label">Xác nhận mật mã</label>
                                             <label class="input">
                                                 <i class="icon-append fa fa-lock"></i>
-                                                <input class="form-control login-form ng-dirty ng-valid ng-touched" name="password" ngmodel="" required="" type="password">
-                                                @error('password')
-                                                         <div class="alert alert-danger">{{ $errors->first('password') }}</div>
+                                                <input class="form-control login-form ng-dirty ng-valid ng-touched" name="passwordverify" ngmodel="" required="" type="password">
+                                                @error('passwordverify')
+                                                         <div class="alert alert-danger">{{ $errors->first('passwordverify') }}</div>
                                                 @enderror
                                                 <b class="tooltip tooltip-top-right">
                                                     <i class="fa fa-lock txt-color-teal"></i> Nhập mật mã của bạn </b>
