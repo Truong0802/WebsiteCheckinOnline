@@ -282,8 +282,23 @@ class AdminController extends Controller
                         }
 
 
+
+                        $checkHKisAvailable = DB::table('hoc_ky')->where('MaHK',$CutHK)->first();
+                        $CutNamHoc = substr($temp,-4);
+                        $CutHocKy = Str::between($temp,'HK',$CutNamHoc);
+                        if($checkHKisAvailable == null)
+                        {
+                            //Nếu chưa tồn tại học kì đó thì sẽ insert vào trước
+                            $PutHK = DB::table('hoc_ky')->insert([
+                                'MaHK' => $CutHK,
+                                'HocKy' => $CutHocKy,
+                                'NamHoc'=>  $CutNamHoc,
+                            ]);
+                        }
+
                         $GetTimeForInsert = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)
-                                            ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
+                        ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
+
                         // dd($formatTime);
                         try
                         {

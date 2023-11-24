@@ -1,3 +1,6 @@
+<?php
+    use Carbon\Carbon;
+?>
 @extends('layouts.master-admin')
 
 @section('content')
@@ -94,13 +97,16 @@
                             <div class="form-group">
                                 <label for="class-name">Học kỳ:</label>
                                 <?php
-                                    $listHK = DB::table('hoc_ky')->orderBy('NamHoc', 'ASC')->get();
+                                    // $listHK = DB::table('hoc_ky')->orderBy('NamHoc', 'ASC')->get();
                                 ?>
                                 <select class="form-control" id="HKid" name="HKid">
                                     <option value="">---Chọn Thông Tin---</option>
-                                    @foreach($listHK as $AllHK)
-                                        <option value="{{$AllHK->MaHK}}">{{$AllHK->HocKy}} - {{$AllHK->NamHoc}}</option>
-                                    @endforeach
+
+                                        <option value="1A{{Carbon::now()->format('Y');}}">1A - {{Carbon::now()->format('Y');}}</option>
+                                        <option value="1B{{Carbon::now()->format('Y');}}">1B - {{Carbon::now()->format('Y');}}</option>
+                                        <option value="2A{{Carbon::now()->format('Y');}}">2A - {{Carbon::now()->format('Y');}}</option>
+                                        <option value="2B{{Carbon::now()->format('Y');}}">2B - {{Carbon::now()->format('Y');}}</option>
+                                        <option value="3{{Carbon::now()->format('Y');}}">3 - {{Carbon::now()->format('Y');}}</option>
                                 </select>
                             </div>
                         </div>
@@ -130,7 +136,7 @@
                                     <td>Mã Môn Học</td>
                                     <td>Nhóm Môn Học</td>
                                     <td>Lớp</td>
-                                    <td></td>
+                                    <td>Học kỳ</td>
                                     <td></td>
                                 </tr>
                             </thead>
@@ -147,6 +153,7 @@
                                     $MaMH = substr($MaTTMH, 0 ,-2);
                                     $NhomMH = substr($MaTTMH,-2);
                                     $TenMH = Str::between($temp,'TenMH','Lop');
+                                    $HK = Str::after($temp,'HK');
                                 ?>
                                 <tbody>
                                     <tr>
@@ -156,7 +163,7 @@
                                         <td>{{$TenMH}}</td>
                                         <td>{{$NhomMH}}</td>
                                         <td>{{$CutClass}}</td>
-                                        <td>Chỉnh sửa</td>
+                                        <td>{{$HK}}</td>
                                         <td><a href="/Delete-subject?id={{$temp}}">Xóa</a></td>
                                     </tr>
                                 </tbody>
