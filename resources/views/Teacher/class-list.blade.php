@@ -42,14 +42,14 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="school-year">Năm học:</label>
+                                <label for="school-year">Lớp theo niên khóa:</label>
                                 <select name="courselist" class="form-control" id="school-year">
                                     <?php
                                         $allcourse = DB::table('khoa_hoc')->distinct()->get();
                                     ?>
-                                    <option value="">--Chọn năm học--</option>
+                                    <option value="">--Chọn niên khóa--</option>
                                     @foreach($allcourse as $courselist)
-                                    <option value="<?php echo $courselist->KhoaHoc ?>">{{$courselist->NamHocDuKien}}</option>
+                                    <option value="<?php echo $courselist->KhoaHoc ?>">{{$courselist->KhoaHoc}}</option>
                                     {{-- <option value="2022-2023">2022-2023</option> --}}
                                     @endforeach
                                 </select>
