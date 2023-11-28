@@ -26,65 +26,67 @@
             </div>
 
             <div class="container">
-                <form action='/tim-kiem' method='get'>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="class-name">Tên lớp:</label>
-                                <input type="text" class="form-control" id="class-name" name="classname">
+                @if(session()->exists('teacherid'))
+                    <form action='/tim-kiem' method='get'>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="class-name">Tên lớp:</label>
+                                    <input type="text" class="form-control" id="class-name" name="classname">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="date-picker">Ngày:</label>
+                                    <input type="date" class="form-control" id="date-picker">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="school-year">Lớp theo niên khóa:</label>
+                                    <select name="courselist" class="form-control" id="school-year">
+                                        <?php
+                                            $allcourse = DB::table('khoa_hoc')->distinct()->get();
+                                        ?>
+                                        <option value="">--Chọn niên khóa--</option>
+                                        @foreach($allcourse as $courselist)
+                                        <option value="<?php echo $courselist->KhoaHoc ?>">{{$courselist->KhoaHoc}}</option>
+                                        {{-- <option value="2022-2023">2022-2023</option> --}}
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="date-picker">Ngày:</label>
-                                <input type="date" class="form-control" id="date-picker">
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="course-name">Khóa học:</label>
+                                    <input type="text" class="form-control" id="course-name" name="coursename">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="school-year">Lớp theo niên khóa:</label>
-                                <select name="courselist" class="form-control" id="school-year">
-                                    <?php
-                                        $allcourse = DB::table('khoa_hoc')->distinct()->get();
-                                    ?>
-                                    <option value="">--Chọn niên khóa--</option>
-                                    @foreach($allcourse as $courselist)
-                                    <option value="<?php echo $courselist->KhoaHoc ?>">{{$courselist->KhoaHoc}}</option>
-                                    {{-- <option value="2022-2023">2022-2023</option> --}}
-                                    @endforeach
-                                </select>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="subject-name">Môn học:</label>
+                                    <input type="text" class="form-control" id="subject-name" name="subjectname">
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="course-name">Khóa học:</label>
-                                <input type="text" class="form-control" id="course-name" name="coursename">
+                            @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="lecturer-name">Tên giảng viên:</label>
+                                    <input type="text" class="form-control" id="lecturer-name" name="lecturename">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="subject-name">Môn học:</label>
-                                <input type="text" class="form-control" id="subject-name" name="subjectname">
-                            </div>
-                        </div>
-                        @if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="lecturer-name">Tên giảng viên:</label>
-                                <input type="text" class="form-control" id="lecturer-name" name="lecturename">
-                            </div>
-                        </div>
-                        @endif
+                            @endif
 
-                    </div>
-                    <br>
-                    <button type="submit"  class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
-                    <a type="button" href="/xoa-tim-kiem" class="btn btn-primary" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
-                    @csrf
-                </form>
+                        </div>
+                        <br>
+                        <button type="submit"  class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
+                        <a type="button" href="/xoa-tim-kiem" class="btn btn-primary" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
+                        @csrf
+                    </form>
+                @endif
             </div>
 
 
@@ -171,8 +173,15 @@
                 </div>
             </div>
             @if($getallsubject != null)
-                {{-- Phân trang dùng laravel --}}
-                {{ $getallsubject->appends(request()->all())->links('pagination::bootstrap-4')}}
+            {{-- Phân trang dùng laravel --}}
+                @if(session()->exists('teacherid') )
+                    {{ $getallsubject->appends(request()->url())->links('pagination::bootstrap-4') }}
+
+                @else
+                    @if(session()->exists('studentid') )
+
+                    @endif
+                @endif
             @endif
                 {{-- <div class="text-center">
                     <div class="pagination">
@@ -190,6 +199,10 @@
                     if(session()->exists('teacherid') )
                     {
                         $checkConfirmOrNot = DB::table('giang_vien')->where('MSGV',session()->get('teacherid') )->first();
+                    }
+                    else if(session()->exists('studentid') )
+                    {
+                        $checkConfirmOrNot = DB::table('sinh_vien')->where('MSSV',session()->get('studentid') )->first();
                     }
                 ?>
                     @if($checkConfirmOrNot)

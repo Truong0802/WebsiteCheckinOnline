@@ -39,8 +39,16 @@ class TeacherController extends Controller
                     ->distinct()->paginate(5);
                 }
                 else{
-                    $teacherid = session()->get('teacherid');
-                    $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)->latest('NgayDay')->paginate(5);
+                    if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
+                    {
+                        $teacherid = session()->get('teacherid');
+                        $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)->latest('NgayDay')->paginate(5);
+                    }
+                    else
+                    {
+                        $teacherid = session()->get('teacherid');
+                        $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaBuoi',1)->latest('NgayDay')->distinct()->paginate(5);
+                    }
                     //Thêm điều kiện else cho trường hợp quản lý truy cập sẽ lọc ra những lớp thuộc khoa của quản lý đó
                 }
 
@@ -48,6 +56,33 @@ class TeacherController extends Controller
                 return view('Teacher/class-list',['getallsubject'=>$allsubject]);
             }
             else{
+                if(session()->exists('studentid'))
+                {
+                    $i = 0;
+                    $allsubjectofStudent = [];
+                    $checktkb = DB::table('tkb')->where('MSSV',session()->get('studentid'))->where('MaNgay','like','1%')->distinct()->get();
+                    foreach($checktkb as $key)
+                    {
+                        $allsubject = DB::table('lich_giang_day')->where('MaNgay',$key->MaNgay)->latest('NgayDay')->get();
+                        $allsubjectofStudent[$i] = $allsubject;
+                        $i++;
+                    }
+                    // Paginate the flattened array
+                    $allsubjectsFlattened = collect($allsubjectofStudent)->flatten();
+
+
+                    // // Paginate the flattened array
+                    // $perPage = 5;
+                    // $currentPage = Paginator::resolveCurrentPage('page');
+                    // $currentItems = $allsubjectsFlattened->slice(($currentPage - 1) * $perPage, $perPage)->all();
+                    // $paginatedItems = new Paginator($currentItems, count($allsubjectsFlattened), $perPage);
+
+                    // // Add the pagination links to the paginator
+                    // $paginatedItems->setPath(request()->url());
+                    //add($currentPage);
+                    // dd($allsubjectofStudent);
+                    return view('Teacher/class-list',['getallsubject'=>$allsubjectsFlattened]);
+                }
                 return redirect()->to('/');
             }
         }
@@ -184,6 +219,30 @@ class TeacherController extends Controller
 
             }
             else{
+                if(session()->exists('studentid'))
+                {
+                    $classlist = DB::table('danh_sach_sinh_vien')
+                    ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
+                    ->where('MSSV',session()->get('studentid'))
+                    ->distinct()->paginate(25);
+
+                    session()->put('danh-sach-sinh-vien-lop',$request->lop);
+                    session()->put('HKid',$request->HK);
+                    $datatemp = [];
+                    foreach($classlist as $checkData)
+                    {
+                        $datatemp = $checkData;
+                    }
+                    if($datatemp != null) //Nếu lớp có danh sách
+                    {
+                        return view('Teacher/student-list',['getinfoclass' => $classlist] );
+                    }
+                    else //Nếu lớp chưa có danh sách
+                    {
+                        return redirect()->to('/trang-chu')->with('errorClass1','Lớp chưa có danh sách!')->withInput();
+                        // return redirect()->to('/trang-chu');
+                    }
+                }
                 return redirect()->to('/');
             }
 

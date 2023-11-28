@@ -85,7 +85,7 @@ Route::get('/confirmToAdd',[AdminController::class,'confirmAddStudent']);
 Route::get('/Delete-id',[AdminController::class,'DeletSinhVien']);
 
 //Admin test thêm sinh viên vào lớp qua file excel
-Route::get('/test-excel',[AdminController::class,'addStudentToClass']);
+Route::get('/quet-danh-sach',[AdminController::class,'addStudentToClass']);
 Route::post('/test-excel-ctrl',[AdminController::class,'addStudentToClassBack']);
 
 //Admin thêm lớp
