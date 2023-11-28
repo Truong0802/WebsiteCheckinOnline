@@ -257,9 +257,12 @@ class TeacherController extends Controller
 
                         $classlist= DB::table('danh_sach_sinh_vien')
                         ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
-                        ->where('sinh_vien.MaLop', $getMaLop->MaLop)
+                        //set chỉ có bcs xem sinh viên thuộc lớp mình
+                        // ->where('sinh_vien.MaLop', $getMaLop->MaLop)
                         ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
                         ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
+                        session()->put('danh-sach-sinh-vien-lop',$request->lop);
+                        session()->put('HKid',$request->HK);
                         $datatemp = [];
                         foreach($classlist as $checkData)
                         {
