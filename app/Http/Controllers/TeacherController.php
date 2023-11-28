@@ -29,6 +29,15 @@ class TeacherController extends Controller
         //Của khoa Quản lý
         public function danhsachlop(Request $request)
         {
+            if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse(session()->get('clockUp'))))
+            {
+
+                          return redirect()->action([
+                              AccountController::class,
+                              'logout'
+                          ]);
+
+           }
             if(session()->exists('teacherid')){
                 if($request->lop){
                     $teacherid = session()->get('teacherid');
@@ -58,30 +67,38 @@ class TeacherController extends Controller
             else{
                 if(session()->exists('studentid'))
                 {
-                    $i = 0;
-                    $allsubjectofStudent = [];
-                    $checktkb = DB::table('tkb')->where('MSSV',session()->get('studentid'))->where('MaNgay','like','1%')->distinct()->get();
-                    foreach($checktkb as $key)
-                    {
-                        $allsubject = DB::table('lich_giang_day')->where('MaNgay',$key->MaNgay)->latest('NgayDay')->get();
-                        $allsubjectofStudent[$i] = $allsubject;
-                        $i++;
-                    }
-                    // Paginate the flattened array
-                    $allsubjectsFlattened = collect($allsubjectofStudent)->flatten();
 
 
-                    // // Paginate the flattened array
-                    // $perPage = 5;
-                    // $currentPage = Paginator::resolveCurrentPage('page');
-                    // $currentItems = $allsubjectsFlattened->slice(($currentPage - 1) * $perPage, $perPage)->all();
-                    // $paginatedItems = new Paginator($currentItems, count($allsubjectsFlattened), $perPage);
+                        $checkLeaderIs = DB::table('danh_sach_sinh_vien')
+                            ->join('lich_giang_day',function ($join){
+                                $join->on('danh_sach_sinh_vien.MaTTMH','=','lich_giang_day.MaTTMH')
+                                    ->on('danh_sach_sinh_vien.MaHK','=','lich_giang_day.MaHK');
+                            })
+                            ->where('lich_giang_day.MaBuoi',1)
+                            ->where(function ($query) {
+                                //Có hoặc không làm Ban cán sự
+                                    $query->whereNotNull('danh_sach_sinh_vien.BanCanSuLop')
+                                        ->orWhereNull('danh_sach_sinh_vien.BanCanSuLop');
+                                })
+                            ->where('danh_sach_sinh_vien.MSSV',session()->get('studentid'))
+                            ->distinct()->paginate(5);
+                            return view('Teacher/class-list',['getallsubject'=>$checkLeaderIs]);
+                        // if($checkLeaderIs != null)
+                        // {
+                        //     return view('Teacher/class-list',['getallsubject'=>$checkLeaderIs]);
+                        // }
+                        // else
+                        // {
+                        //     $checktkb = DB::table('tkb')
+                        //         ->select('*')
+                        //         ->join('lich_giang_day','tkb.MaNgay','=','lich_giang_day.MaNgay')
+                        //         ->where('tkb.MSSV',session()->get('studentid'))
+                        //         ->where('tkb.MaNgay','like','1%')->latest('NgayDay')->distinct()->paginate(5);
+                        //         dd($checktkb);
+                        //     return view('Teacher/class-list',['getallsubject'=>$checktkb]);
+                        // }
 
-                    // // Add the pagination links to the paginator
-                    // $paginatedItems->setPath(request()->url());
-                    //add($currentPage);
-                    // dd($allsubjectofStudent);
-                    return view('Teacher/class-list',['getallsubject'=>$allsubjectsFlattened]);
+
                 }
                 return redirect()->to('/');
             }
@@ -193,6 +210,15 @@ class TeacherController extends Controller
 
         public function danhsachsinhvien(Request $request)
         {
+            if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse(session()->get('clockUp'))))
+            {
+
+                          return redirect()->action([
+                              AccountController::class,
+                              'logout'
+                          ]);
+
+           }
             if(session()->exists('teacherid')){
                 // dd($request);
                 if($request->lop){
@@ -221,27 +247,58 @@ class TeacherController extends Controller
             else{
                 if(session()->exists('studentid'))
                 {
-                    $classlist = DB::table('danh_sach_sinh_vien')
-                    ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
-                    ->where('MSSV',session()->get('studentid'))
-                    ->distinct()->paginate(25);
+                    $getMaLop = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
 
-                    session()->put('danh-sach-sinh-vien-lop',$request->lop);
-                    session()->put('HKid',$request->HK);
-                    $datatemp = [];
-                    foreach($classlist as $checkData)
+                    $checkLeader = DB::table('danh_sach_sinh_vien')
+                    ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
+                    ->where('MSSV',session()->get('studentid'))->first();
+                    if($checkLeader->BanCanSuLop != null)
                     {
-                        $datatemp = $checkData;
+
+                        $classlist= DB::table('danh_sach_sinh_vien')
+                        ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
+                        ->where('sinh_vien.MaLop', $getMaLop->MaLop)
+                        ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
+                        ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
+                        $datatemp = [];
+                        foreach($classlist as $checkData)
+                        {
+                            $datatemp = $checkData;
+                        }
+                        if($datatemp != null) //Nếu lớp có danh sách
+                        {
+                            return view('Teacher/student-list',['getinfoclass' => $classlist] );
+                        }
+                        else //Nếu lớp chưa có danh sách
+                        {
+                            return redirect()->to('/trang-chu')->with('errorClass1','Lớp chưa có danh sách!')->withInput();
+                            // return redirect()->to('/trang-chu');
+                        }
                     }
-                    if($datatemp != null) //Nếu lớp có danh sách
+                    else
                     {
-                        return view('Teacher/student-list',['getinfoclass' => $classlist] );
+                        $classlist = DB::table('danh_sach_sinh_vien')
+                        ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
+                        ->where('MSSV',session()->get('studentid'))
+                        ->distinct()->paginate(25);
+                        session()->put('danh-sach-sinh-vien-lop',$request->lop);
+                        session()->put('HKid',$request->HK);
+                        $datatemp = [];
+                        foreach($classlist as $checkData)
+                        {
+                            $datatemp = $checkData;
+                        }
+                        if($datatemp != null) //Nếu lớp có danh sách
+                        {
+                            return view('Teacher/student-list',['getinfoclass' => $classlist] );
+                        }
+                        else //Nếu lớp chưa có danh sách
+                        {
+                            return redirect()->to('/trang-chu')->with('errorClass1','Lớp chưa có danh sách!')->withInput();
+                            // return redirect()->to('/trang-chu');
+                        }
                     }
-                    else //Nếu lớp chưa có danh sách
-                    {
-                        return redirect()->to('/trang-chu')->with('errorClass1','Lớp chưa có danh sách!')->withInput();
-                        // return redirect()->to('/trang-chu');
-                    }
+
                 }
                 return redirect()->to('/');
             }

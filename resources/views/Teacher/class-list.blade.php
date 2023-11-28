@@ -174,14 +174,9 @@
             </div>
             @if($getallsubject != null)
             {{-- Phân trang dùng laravel --}}
-                @if(session()->exists('teacherid') )
+
                     {{ $getallsubject->appends(request()->url())->links('pagination::bootstrap-4') }}
 
-                @else
-                    @if(session()->exists('studentid') )
-
-                    @endif
-                @endif
             @endif
                 {{-- <div class="text-center">
                     <div class="pagination">
