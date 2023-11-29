@@ -68,35 +68,52 @@ class TeacherController extends Controller
                 if(session()->exists('studentid'))
                 {
 
-
-                        $checkLeaderIs = DB::table('danh_sach_sinh_vien')
-                            ->join('lich_giang_day',function ($join){
-                                $join->on('danh_sach_sinh_vien.MaTTMH','=','lich_giang_day.MaTTMH')
-                                    ->on('danh_sach_sinh_vien.MaHK','=','lich_giang_day.MaHK');
+                    $checkLeaderIs = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                    if($checkLeaderIs->BanCanSu != null)
+                    {
+                        $MaLop = $checkLeaderIs->MaLop;
+                        $allsubject = DB::table('lich_giang_day')
+                            ->select('lich_giang_day.*', DB::raw('CASE WHEN EXISTS (SELECT 1 FROM danh_sach_sinh_vien
+                                JOIN sinh_vien ON danh_sach_sinh_vien.MSSV = sinh_vien.MSSV
+                                WHERE sinh_vien.MaLop = "'.$checkLeaderIs->MaLop.'" AND danh_sach_sinh_vien.MaTTMH = lich_giang_day.MaTTMH
+                                    AND danh_sach_sinh_vien.MaHK = lich_giang_day.MaHK
+                                    AND danh_sach_sinh_vien.MSGV = lich_giang_day.MSGV
+                                    AND lich_giang_day.MaBuoi = 1) THEN "Yes" ELSE "No" END AS ExistsInLop')) //Truyền tham số MaLop vào vị trí ? trên
+                            ->whereExists(function ($query) use ($MaLop) {
+                                $query->select(DB::raw(1))
+                                    ->from('danh_sach_sinh_vien')
+                                    ->join('sinh_vien', function ($join) use ($MaLop) {
+                                        $join->on('danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
+                                            ->where('sinh_vien.MaLop', '=', $MaLop);
+                                    })
+                                    ->whereColumn('danh_sach_sinh_vien.MaTTMH', '=', 'lich_giang_day.MaTTMH')
+                                    ->whereColumn('danh_sach_sinh_vien.MaHK', '=', 'lich_giang_day.MaHK')
+                                    ->whereColumn('danh_sach_sinh_vien.MSGV', '=', 'lich_giang_day.MSGV')
+                                    ->where('lich_giang_day.MaBuoi', '=', 1);
                             })
-                            ->where('lich_giang_day.MaBuoi',1)
-                            ->where(function ($query) {
-                                //Có hoặc không làm Ban cán sự
-                                    $query->whereNotNull('danh_sach_sinh_vien.BanCanSuLop')
-                                        ->orWhereNull('danh_sach_sinh_vien.BanCanSuLop');
-                                })
-                            ->where('danh_sach_sinh_vien.MSSV',session()->get('studentid'))
-                            ->distinct()->paginate(5);
-                            return view('Teacher/class-list',['getallsubject'=>$checkLeaderIs]);
-                        // if($checkLeaderIs != null)
-                        // {
-                        //     return view('Teacher/class-list',['getallsubject'=>$checkLeaderIs]);
-                        // }
-                        // else
-                        // {
-                        //     $checktkb = DB::table('tkb')
-                        //         ->select('*')
-                        //         ->join('lich_giang_day','tkb.MaNgay','=','lich_giang_day.MaNgay')
-                        //         ->where('tkb.MSSV',session()->get('studentid'))
-                        //         ->where('tkb.MaNgay','like','1%')->latest('NgayDay')->distinct()->paginate(5);
-                        //         dd($checktkb);
-                        //     return view('Teacher/class-list',['getallsubject'=>$checktkb]);
-                        // }
+                            ->latest('MaHK')
+                            ->paginate(5);
+                    }
+                    else
+                    {
+                        $allsubject = DB::table('danh_sach_sinh_vien')
+                        ->join('lich_giang_day',function ($join){
+                            $join->on('danh_sach_sinh_vien.MaTTMH','=','lich_giang_day.MaTTMH')
+                                ->on('danh_sach_sinh_vien.MaHK','=','lich_giang_day.MaHK');
+                        })
+                        ->where('lich_giang_day.MaBuoi',1)
+                        ->where(function ($query) {
+                            //Có hoặc không làm Ban cán sự
+                                $query->whereNotNull('danh_sach_sinh_vien.BanCanSuLop')
+                                    ->orWhereNull('danh_sach_sinh_vien.BanCanSuLop');
+                            })
+                        ->where('danh_sach_sinh_vien.MSSV',session()->get('studentid'))
+                        ->distinct()->paginate(5);
+                    }
+
+
+                    return view('Teacher/class-list',['getallsubject'=>$allsubject]);
+
 
 
                 }
@@ -248,17 +265,12 @@ class TeacherController extends Controller
                 if(session()->exists('studentid'))
                 {
                     $getMaLop = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
-
-                    $checkLeader = DB::table('danh_sach_sinh_vien')
-                    ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
-                    ->where('MSSV',session()->get('studentid'))->first();
-                    if($checkLeader->BanCanSuLop != null)
+                    if($getMaLop->BanCanSu != null)
                     {
-
                         $classlist= DB::table('danh_sach_sinh_vien')
                         ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
-                        //set chỉ có bcs xem sinh viên thuộc lớp mình
-                        // ->where('sinh_vien.MaLop', $getMaLop->MaLop)
+                        // set chỉ có bcs xem sinh viên thuộc lớp mình
+                        ->where('sinh_vien.MaLop', $getMaLop->MaLop)
                         ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
                         ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
                         session()->put('danh-sach-sinh-vien-lop',$request->lop);
@@ -280,27 +292,60 @@ class TeacherController extends Controller
                     }
                     else
                     {
-                        $classlist = DB::table('danh_sach_sinh_vien')
+                        $checkLeader = DB::table('danh_sach_sinh_vien')
                         ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
-                        ->where('MSSV',session()->get('studentid'))
-                        ->distinct()->paginate(25);
-                        session()->put('danh-sach-sinh-vien-lop',$request->lop);
-                        session()->put('HKid',$request->HK);
-                        $datatemp = [];
-                        foreach($classlist as $checkData)
+                        ->where('MSSV',session()->get('studentid'))->first();
+                        if($checkLeader->BanCanSuLop != null)
                         {
-                            $datatemp = $checkData;
+
+                            $classlist= DB::table('danh_sach_sinh_vien')
+                            ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
+                            //set chỉ có bcs xem sinh viên thuộc lớp mình
+                            // ->where('sinh_vien.MaLop', $getMaLop->MaLop)
+                            ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
+                            ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
+                            session()->put('danh-sach-sinh-vien-lop',$request->lop);
+                            session()->put('HKid',$request->HK);
+                            $datatemp = [];
+                            foreach($classlist as $checkData)
+                            {
+                                $datatemp = $checkData;
+                            }
+                            if($datatemp != null) //Nếu lớp có danh sách
+                            {
+                                return view('Teacher/student-list',['getinfoclass' => $classlist] );
+                            }
+                            else //Nếu lớp chưa có danh sách
+                            {
+                                return redirect()->to('/trang-chu')->with('errorClass1','Lớp chưa có danh sách!')->withInput();
+                                // return redirect()->to('/trang-chu');
+                            }
                         }
-                        if($datatemp != null) //Nếu lớp có danh sách
+                        else
                         {
-                            return view('Teacher/student-list',['getinfoclass' => $classlist] );
-                        }
-                        else //Nếu lớp chưa có danh sách
-                        {
-                            return redirect()->to('/trang-chu')->with('errorClass1','Lớp chưa có danh sách!')->withInput();
-                            // return redirect()->to('/trang-chu');
+                            $classlist = DB::table('danh_sach_sinh_vien')
+                            ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
+                            ->where('MSSV',session()->get('studentid'))
+                            ->distinct()->paginate(25);
+                            session()->put('danh-sach-sinh-vien-lop',$request->lop);
+                            session()->put('HKid',$request->HK);
+                            $datatemp = [];
+                            foreach($classlist as $checkData)
+                            {
+                                $datatemp = $checkData;
+                            }
+                            if($datatemp != null) //Nếu lớp có danh sách
+                            {
+                                return view('Teacher/student-list',['getinfoclass' => $classlist] );
+                            }
+                            else //Nếu lớp chưa có danh sách
+                            {
+                                return redirect()->to('/trang-chu')->with('errorClass1','Lớp chưa có danh sách!')->withInput();
+                                // return redirect()->to('/trang-chu');
+                            }
                         }
                     }
+
 
                 }
                 return redirect()->to('/');
