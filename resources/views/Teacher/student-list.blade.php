@@ -494,7 +494,7 @@
                                                 @if($CheckLeaderOfClass != null)
                                                     x
                                                 @else
-
+                                                {{-- Sinh viên thường --}}
                                                 @endif
                                             @else
                                             {{-- Nếu lớp chưa tồn tại ban cán sự, set điều kiện chỉ cho phép giảng viên click checkbox --}}
