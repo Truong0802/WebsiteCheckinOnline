@@ -287,6 +287,7 @@
                             <table id="student-table">
                                 <thead>
                                     <tr>
+                                        <td>LT</td>
                                         <td>STT</td>
                                         <td>Mã SV</td>
                                         <td>Họ tên</td>
@@ -470,14 +471,35 @@
                                     @endif
                                 @endif
                             @endif
+                            {{-- Xuất thông tin danh sách --}}
                                     @foreach($getinfoclass as $allstudentlist)
                                     <?php
-                                        // dd($getinfoclass);
-
                                         $studentname = DB::table('sinh_vien')->where('MSSV',$allstudentlist->MSSV)
                                                        ->first();
+                                        //Kiểm tra xem sinh viên đó có phải Ban cán sự hay không
+                                        $CheckLeaderOfClass = DB::table('danh_sach_sinh_vien')
+                                                                ->where('MSSV',$allstudentlist->MSSV)
+                                                                ->whereNotNull('BanCanSuLop')->first();
+                                        //Kiểm tra xem lớp có tồn tại ban cán sự hay chưa
+                                        $CheckLeaderOfClassIsAvailable = DB::table('danh_sach_sinh_vien')
+                                                                ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                                                                ->where('MaHK',session()->get('HKid'))
+                                                                ->where('BanCanSuLop',1)
+                                                                ->first();
                                     ?>
                                     <tr>
+                                        <td>
+                                            {{-- Nếu lớp có tồn tại ban cán sự --}}
+                                            @if($CheckLeaderOfClassIsAvailable != null)
+                                                @if($CheckLeaderOfClass != null)
+                                                    x
+                                                @else
+
+                                                @endif
+                                            @else
+                                            {{-- Nếu lớp chưa tồn tại ban cán sự, set điều kiện chỉ cho phép giảng viên click checkbox --}}
+                                            @endif
+                                        </td>
                                         <td>
                                             <?php
                                                 $stt+=1;
