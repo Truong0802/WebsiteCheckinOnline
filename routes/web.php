@@ -126,3 +126,6 @@ Route::post('/thay-doi-thong-tin',[InfoController::class,'ChangeInfoFunc'])->nam
 
 //Hồ sơ giảng dạy
 Route::get('/ho-so-tt-giang-day',[HomeController::class,'trangchusv']);
+
+//Giảng viên chọn ban cán sự lớp môn học
+Route::post('/chon-ban-can-su',[TeacherController::class,'CheckToPutLeader']);

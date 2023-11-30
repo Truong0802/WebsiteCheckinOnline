@@ -988,4 +988,9 @@ class TeacherController extends Controller
 
         }
 
+        public function CheckToPutLeader(Request $request)
+        {
+
+            return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->withInput();
+        }
 }

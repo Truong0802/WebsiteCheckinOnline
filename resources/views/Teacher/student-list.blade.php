@@ -459,18 +459,54 @@
                                     <?php
                                         $stt =0;
                                     ?>
-                            <form action="/nhap-diem" method="post">
-                            @if(session()->exists('teacherid'))
-                                @if($phanloailop == '1' || $phanloailop == '2')
-                                    @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
-                                        <button type="submit" class="btn btn-primary" >Xác nhận điểm</button>
+
+                        @if(session()->exists('teacherid'))
+                            <?php
+                                    //Kiểm tra xem lớp có tồn tại ban cán sự hay chưa
+                                    $CheckLeaderOfClassIsAvailable = DB::table('danh_sach_sinh_vien')
+                                            ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                                            ->where('MaHK',session()->get('HKid'))
+                                            ->where('BanCanSuLop',1)
+                                            ->first();
+
+                            ?>
+                            @if($CheckLeaderOfClassIsAvailable != null)
+                                <form action="/nhap-diem" method="post">
+                                    @if($phanloailop == '1' || $phanloailop == '2')
+                                        @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
+                                            <button type="submit" class="btn btn-primary" >Xác nhận điểm</button>
+                                        @endif
+                                    @elseif($phanloailop == '3')
+                                        @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',6)->exists())
+                                            <button type="submit" class="btn btn-primary" >Xác nhận điểm</button>
+                                        @endif
                                     @endif
-                                @elseif($phanloailop == '3')
-                                    @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',6)->exists())
-                                        <button type="submit" class="btn btn-primary" >Xác nhận điểm</button>
-                                    @endif
-                                @endif
+                            @else
+                                <div class="popup-container" id="popup1">
+                                    <div class="popup-content">
+                                        <h2>Thông báo</h2>
+                                        <p>Giảng viên cần xác nhận ban cán sự trước khi nhập điểm</p>
+                                        <button class="btn-primary" onclick = "closePopup1()">Đóng</button>
+                                    </div>
+
+                                    <script>
+                                        const popup = document.getElementById("popup1");
+                                        function showPopup()
+                                        {
+                                            popup.style.display = "flex";
+                                        }
+                                        function closePopup1()
+                                        {
+                                            popup.style.display = "none";
+                                        }
+                                        window.onload = showPopup;
+                                    </script>
+                                </div>
+
+                                <form action="/chon-ban-can-su" method="post">
+                                    <button type="submit" class="btn btn-primary" >Xác nhận LT</button>
                             @endif
+                        @endif
                             {{-- Xuất thông tin danh sách --}}
                                     @foreach($getinfoclass as $allstudentlist)
                                     <?php
@@ -480,12 +516,7 @@
                                         $CheckLeaderOfClass = DB::table('danh_sach_sinh_vien')
                                                                 ->where('MSSV',$allstudentlist->MSSV)
                                                                 ->whereNotNull('BanCanSuLop')->first();
-                                        //Kiểm tra xem lớp có tồn tại ban cán sự hay chưa
-                                        $CheckLeaderOfClassIsAvailable = DB::table('danh_sach_sinh_vien')
-                                                                ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
-                                                                ->where('MaHK',session()->get('HKid'))
-                                                                ->where('BanCanSuLop',1)
-                                                                ->first();
+
                                     ?>
                                     <tr>
                                         <td>
