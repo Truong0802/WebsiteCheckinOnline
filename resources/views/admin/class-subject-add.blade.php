@@ -4,20 +4,21 @@
 @extends('layouts.master-admin')
 
 @section('content')
-@if (session('error-AddClass'))
-            {{-- {{dd(session('error'))}} --}}
-    <div class="alert alert-danger text-center">{{ session('error-AddClass') }}</div>
-@endif
-@if(session('success-AddClass'))
-    <div class="alert alert-success text-center">{{ session('success-AddClass') }}</div>
-@endif
-<div id="ribbon">
+
+        <div id="ribbon">
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
                     <a>Quản lý lớp học</a>
                 </li>
             </ol>
         </div>
+        @if (session('error-AddClass'))
+            {{-- {{dd(session('error'))}} --}}
+            <div class="alert alert-danger text-center">{{ session('error-AddClass') }}</div>
+        @endif
+        @if(session('success-AddClass'))
+            <div class="alert alert-success text-center">{{ session('success-AddClass') }}</div>
+        @endif
         <div class="mt-4" id="content">
             <div class="  mx-4">
                 <div class="row mb-3">

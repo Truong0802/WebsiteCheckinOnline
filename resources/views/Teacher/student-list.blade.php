@@ -7,9 +7,6 @@
             session()->forget('row16');
         }
     ?>
-    @if(session('errorClassList1'))
-        <div class="alert alert-danger text-center">{{ session('errorClassList1') }}</div>
-    @endif
         <div id="ribbon">
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
@@ -17,6 +14,9 @@
                 </li>
             </ol>~
         </div>
+        @if(session('errorClassList1'))
+            <div class="alert alert-danger text-center">{{ session('errorClassList1') }}</div>
+        @endif
         <div class="mt-4" id="content">
             <div class="  mx-4">
                 <div class="row mb-3">

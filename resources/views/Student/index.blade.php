@@ -4,14 +4,7 @@
 @extends('layouts.master-student')
 
 @section('content')
-        @if (session('error'))
-            {{-- {{dd(session('error'))}} --}}
-            <div class="alert alert-danger text-center">Bạn đang thực hiện hành vi không cho phép</div>
-            @elseif(session('error2'))
-                <div class="alert alert-danger text-center">{{ session('error2') }}</div>
-            @elseif(session('success1'))
-                <div class="alert alert-success text-center">{{ session('success1') }}</div>
-        @endif
+
 
         <div id="ribbon">
             <ol class="breadcrumb">
@@ -20,6 +13,14 @@
                 </li>
             </ol>
         </div>
+        @if (session('error'))
+            {{-- {{dd(session('error'))}} --}}
+            <div class="alert alert-danger text-center">Bạn đang thực hiện hành vi không cho phép</div>
+            @elseif(session('error2'))
+                <div class="alert alert-danger text-center">{{ session('error2') }}</div>
+            @elseif(session('success1'))
+                <div class="alert alert-success text-center">{{ session('success1') }}</div>
+        @endif
         <div class="mt-4" id="content">
             <div class="  mx-4">
                 <div class="row mb-3">

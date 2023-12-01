@@ -2,9 +2,7 @@
 
 
 @section('content')
-        @if(session('errorClass1'))
-            <div class="alert alert-danger text-center">{{ session('errorClass1') }}</div>
-        @endif
+
         <div id="ribbon">
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
@@ -12,6 +10,9 @@
                 </li>
             </ol>
         </div>
+        @if(session('errorClass1'))
+            <div class="alert alert-danger text-center">{{ session('errorClass1') }}</div>
+        @endif
         <div class="mt-4" id="content">
             <div class="  mx-4">
                 <div class="row mb-3">

@@ -1,13 +1,7 @@
 @extends('layouts.master-admin')
 
 @section('content')
-@if (session('error-AddDSSV'))
-            {{-- {{dd(session('error'))}} --}}
-    <div class="alert alert-danger text-center">{{ session('error-AddDSSV') }}</div>
-@endif
-@if(session('success-AddDSSV'))
-    <div class="alert alert-success text-center">{{ session('success-AddDSSV') }}</div>
-@endif
+
         <div id="ribbon">
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
@@ -15,6 +9,13 @@
                 </li>
             </ol>
         </div>
+        @if (session('error-AddDSSV'))
+            {{-- {{dd(session('error'))}} --}}
+            <div class="alert alert-danger text-center">{{ session('error-AddDSSV') }}</div>
+        @endif
+        @if(session('success-AddDSSV'))
+            <div class="alert alert-success text-center">{{ session('success-AddDSSV') }}</div>
+        @endif
         <div class="mt-4" id="content">
             <div class="  mx-4">
                 <div class="row mb-3">
