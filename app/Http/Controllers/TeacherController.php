@@ -510,9 +510,6 @@ class TeacherController extends Controller
 
                 //Ràng buộc thời gian sử dụng để được insert không được vượt thời gian lúc bấm (session ở quyền giảng viên) là 3p
                 //Thực hiện hàm insert vào db theo MaDanhSach dối chiếu truy xuất theo MSSV a.k.a session()->get('studentid)
-
-
-
                     //lấy dữ liệu sau ?data=
                     $encryptedData = $request->data;
                     // dd($encryptedData);
@@ -548,7 +545,8 @@ class TeacherController extends Controller
                                         ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
                                         ->where('MaBuoi',$data["buoi"])->first();
 
-                                        // dd($checkrequest);
+
+                                        //Đã điểm danh trước đó/1 tk
                                         if($checkrequest != null)
                                         {
                                             if(session()->has('error2'))
@@ -564,11 +562,37 @@ class TeacherController extends Controller
                                         {
                                             if($data["buoi"] == $datafromdb["buoi"])
                                             {
-                                                $studentchecked = DB::table('diem_danh')->insert([
-                                                    'MaDanhSach' => $findlistidofstudent->MaDanhSach,
-                                                    'MaBuoi' => $data["buoi"],
-                                                    'NgayDiemDanh' => $timecheckin,
-                                                ]);
+                                                if(session()->has('checked'))
+                                                {
+                                                    //Tính từ lúc điểm danh 1 tiếng sau đó
+                                                    if(Carbon::now()->greaterThan(Carbon::parse(session()->get('checked'))) )
+                                                    {
+                                                        session()->forget('checked');
+                                                         //Điểm danh
+                                                        $studentchecked = DB::table('diem_danh')->insert([
+                                                            'MaDanhSach' => $findlistidofstudent->MaDanhSach,
+                                                            'MaBuoi' => $data["buoi"],
+                                                            'NgayDiemDanh' => $timecheckin,
+                                                        ]);
+                                                        return redirect()->to('/trang-chu')->with('success1','Điểm danh thành công')->withInput();
+                                                    }
+                                                    else
+                                                    {
+                                                        //Nếu thiết bị từng điểm danh trước đó chưa qua 30p
+                                                        return back()->with('error2','Không được điểm danh 2 lần trên 1 thiết bị!')->withInput();
+                                                    }
+                                                }
+                                                else{
+                                                    //Nếu thiết bị chưa điểm danh
+                                                    session()->put('checked',Carbon::now()->addMinutes(30));
+                                                     //Điểm danh
+                                                    $studentchecked = DB::table('diem_danh')->insert([
+                                                        'MaDanhSach' => $findlistidofstudent->MaDanhSach,
+                                                        'MaBuoi' => $data["buoi"],
+                                                        'NgayDiemDanh' => $timecheckin,
+                                                    ]);
+                                                    return redirect()->to('/trang-chu')->with('success1','Điểm danh thành công')->withInput();
+                                                }
 
                                             }
                                             else{
@@ -590,7 +614,7 @@ class TeacherController extends Controller
                                         return back()->with('error',$exception->getMessage())->withInput();
                                     }
 
-                                    return redirect()->to('/trang-chu')->with('success1','Điểm danh thành công')->withInput();
+
 
 
 
