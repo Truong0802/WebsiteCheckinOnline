@@ -467,7 +467,8 @@
                                     ?>
 
                         @if(session()->exists('teacherid'))
-                            <?php
+                        {{-- Nothing --}}
+                        <?php
                                     //Kiểm tra xem lớp có tồn tại ban cán sự hay chưa
                                     $CheckLeaderOfClassIsAvailable = DB::table('danh_sach_sinh_vien')
                                             ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
@@ -475,7 +476,7 @@
                                             ->where('BanCanSuLop',1)
                                             ->first();
 
-                            ?>
+                        ?>
                             @if($CheckLeaderOfClassIsAvailable != null)
                                 <form action="/nhap-diem" method="post">
                                     @if($phanloailop == '1' || $phanloailop == '2')
@@ -488,8 +489,6 @@
                                         @endif
                                     @endif
                             @else
-
-
                                 <form action="/chon-ban-can-su" method="post">
                                     <button type="submit" class="btn btn-primary" >Xác nhận LT</button>
                             @endif
@@ -504,6 +503,12 @@
                                                                 ->where('MSSV',$allstudentlist->MSSV)
                                                                 ->whereNotNull('BanCanSuLop')->first();
 
+                                        //Kiểm tra xem lớp có tồn tại ban cán sự hay không
+                                        $CheckLeaderOfClassIsAvailable = DB::table('danh_sach_sinh_vien')
+                                            ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                                            ->where('MaHK',session()->get('HKid'))
+                                            ->where('BanCanSuLop',1)
+                                            ->first();
                                     ?>
                                     <tr>
                                         <td>

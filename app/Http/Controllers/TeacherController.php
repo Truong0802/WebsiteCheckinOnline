@@ -265,24 +265,39 @@ class TeacherController extends Controller
                 if(session()->exists('studentid'))
                 {
                     $getMaLop = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
-                    if($getMaLop->BanCanSu != null)
+                    if($getMaLop->BanCanSu != null || $getMaLop->BanCanSu != 0)
                     {
                         $checkLeader = DB::table('danh_sach_sinh_vien')
                         ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
                         ->where('MSSV',session()->get('studentid'))->first();
-                        if($checkLeader->BanCanSuLop != null) //Nếu ban cán sự lớp tổng cũng là ban cán sự lớp môn của 1 môn nào đó
+                        if($checkLeader != null)
                         {
-                            //Cho phép thấy tất cả thành viên trong lớp
-                            $classlist= DB::table('danh_sach_sinh_vien')
-                            ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
-                            ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
-                            ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
-                            session()->put('danh-sach-sinh-vien-lop',$request->lop);
-                            session()->put('HKid',$request->HK);
+                            if($checkLeader->BanCanSuLop != null) //Nếu ban cán sự lớp tổng cũng là ban cán sự lớp môn của 1 môn nào đó
+                            {
+                                //Cho phép thấy tất cả thành viên trong lớp
+                                $classlist= DB::table('danh_sach_sinh_vien')
+                                ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
+                                ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
+                                ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
+                                session()->put('danh-sach-sinh-vien-lop',$request->lop);
+                                session()->put('HKid',$request->HK);
+                            }
+                            else
+                            {
+                                //Nếu ban cán sự lớp tổng không phải ban cán sự lớp môn
+                                $classlist= DB::table('danh_sach_sinh_vien')
+                                ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
+                                // set chỉ có bcs xem sinh viên thuộc lớp mình
+                                ->where('sinh_vien.MaLop', $getMaLop->MaLop)
+                                ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
+                                ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
+                                session()->put('danh-sach-sinh-vien-lop',$request->lop);
+                                session()->put('HKid',$request->HK);
+                            }
                         }
-                        else
+                        else //Nếu sinh viên có chức ban cán sự lớp tổng không học trong lớp môn đó
                         {
-                            //Nếu ban cán sự lớp tổng không phải ban cán sự lớp môn
+                            //Thực hiện chức năng thông thường của ban cán sự lớp niên khóa
                             $classlist= DB::table('danh_sach_sinh_vien')
                             ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
                             // set chỉ có bcs xem sinh viên thuộc lớp mình
@@ -340,6 +355,7 @@ class TeacherController extends Controller
                         }
                         else
                         {
+                            //Sinh viên thường -  chỉ xem được bản thân
                             $classlist = DB::table('danh_sach_sinh_vien')
                             ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
                             ->where('MSSV',session()->get('studentid'))
