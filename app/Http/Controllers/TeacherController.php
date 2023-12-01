@@ -371,11 +371,16 @@ class TeacherController extends Controller
         }
         public function timkiemsinhvien(Request $request)
         {
+            $validated = $request->validate([
+                'studentname' => 'required',
+                'mssv' => 'required',
+            ]);
             if (session()->has('teacherid')) {
                 $searchlist = DB::table('danh_sach_sinh_vien')
                 ->when($request->studentname, function ($query) use ($request) {
                     return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
                         ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
+                        ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
                         ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
                 })
                 ->when($request->mssv, function ($query) use ($request) {
@@ -384,6 +389,7 @@ class TeacherController extends Controller
                 })
                 ->paginate(10);
                 //Kiểm tra tìm kiếm có rỗng không
+
                 $checkTemp = [];
                 foreach( $searchlist as $ResultData)
                 {
