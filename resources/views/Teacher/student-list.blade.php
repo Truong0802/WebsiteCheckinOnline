@@ -785,6 +785,7 @@
                             function closePopup()
                             {
                                 popup.style.display = "none";
+                                console.log("none");
                             }
                             window.onload = showPopup;
                         </script>
