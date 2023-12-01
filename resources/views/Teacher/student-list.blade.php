@@ -482,26 +482,7 @@
                                         @endif
                                     @endif
                             @else
-                                <div class="popup-container" id="popup1">
-                                    <div class="popup-content">
-                                        <h2>Thông báo</h2>
-                                        <p>Giảng viên cần xác nhận ban cán sự trước khi nhập điểm</p>
-                                        <button class="btn-primary" onclick = "closePopup1()">Đóng</button>
-                                    </div>
 
-                                    <script>
-                                        const popup = document.getElementById("popup1");
-                                        function showPopup()
-                                        {
-                                            popup.style.display = "flex";
-                                        }
-                                        function closePopup1()
-                                        {
-                                            popup.style.display = "none";
-                                        }
-                                        window.onload = showPopup;
-                                    </script>
-                                </div>
 
                                 <form action="/chon-ban-can-su" method="post">
                                     <button type="submit" class="btn btn-primary" >Xác nhận LT</button>
@@ -529,6 +510,8 @@
                                                 @endif
                                             @else
                                             {{-- Nếu lớp chưa tồn tại ban cán sự, set điều kiện chỉ cho phép giảng viên click checkbox --}}
+                                                @if(session()->exists('teacherid'))
+                                                @endif
                                             @endif
                                         </td>
                                         <td>
@@ -778,6 +761,30 @@
                     <input type="hidden" name="limitstart" value="0">
                 </div>
             </div> --}}
+            @if(session()->exists('teacherid'))
+                @if($CheckLeaderOfClassIsAvailable == null)
+                    <div class="popup-container" id="popup">
+                        <div class="popup-content" style="max-width: 500px;">
+                            <h2>Thông báo</h2>
+                            <p>Giảng viên cần xác nhận ban cán sự trước khi nhập điểm</p>
+                            <button class="btn-primary" onclick = "closePopup()" id="btn-close-2">Đóng</button>
+                        </div>
+
+                        <script>
+                            const popup = document.getElementById("popup");
+                            function showPopup()
+                            {
+                                popup.style.display = "flex";
+                            }
+                            function closePopup()
+                            {
+                                popup.style.display = "none";
+                            }
+                            window.onload = showPopup;
+                        </script>
+                    </div>
+                @endif
+            @endif
         </div>
 
 

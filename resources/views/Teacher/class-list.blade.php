@@ -1,6 +1,5 @@
 @extends('layouts.master-teacher')
 
-
 @section('content')
 
         <div id="ribbon">
