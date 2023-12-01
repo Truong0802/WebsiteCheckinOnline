@@ -371,23 +371,62 @@ class TeacherController extends Controller
         }
         public function timkiemsinhvien(Request $request)
         {
-            $validated = $request->validate([
-                'studentname' => 'required',
-                'mssv' => 'required',
-            ]);
+            // $validated = $request->validate([
+            //     'studentname' => 'required',
+            //     'mssv' => 'required',
+            // ]);
             if (session()->has('teacherid')) {
-                $searchlist = DB::table('danh_sach_sinh_vien')
-                ->when($request->studentname, function ($query) use ($request) {
-                    return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
-                        ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
-                        ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
-                        ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
-                })
-                ->when($request->mssv, function ($query) use ($request) {
-                    return $query->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
-                    ->where('danh_sach_sinh_vien.MSSV', $request->mssv);
-                })
-                ->paginate(10);
+                if($request->studentname != null)
+                {
+                    $searchlist = DB::table('danh_sach_sinh_vien')
+                    ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
+                    ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
+                    ->when($request->studentname != null, function ($query) use ($request) {
+                        return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
+                            ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
+                    }) ->paginate(10);
+                }
+                else if($request->mssv != null)
+                {
+                    $searchlist = DB::table('danh_sach_sinh_vien')
+                    ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
+                    ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
+                    ->when($request->mssv != null, function ($query) use ($request) {
+                        return $query
+                        ->where('danh_sach_sinh_vien.MSSV', $request->mssv);
+                    }) ->paginate(10);
+                }
+                else if($request->mssv != null && $request->mssv != null)
+                {
+                    $searchlist = DB::table('danh_sach_sinh_vien')
+                    ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
+                    ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
+                    ->when($request->mssv != null, function ($query) use ($request) {
+                        return $query
+                        ->where('danh_sach_sinh_vien.MSSV', $request->mssv);
+                    })
+                    ->when($request->studentname != null, function ($query) use ($request) {
+                        return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
+                            ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
+                    }) ->paginate(10);
+                }
+                else
+                {
+                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->studentname.' với mã số '.$request->mssv)->withInput();
+                }
+                // $searchlist = DB::table('danh_sach_sinh_vien')
+                // ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
+                // ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
+                // ->when($request->studentname != null, function ($query) use ($request) {
+                //     return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
+                //         ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
+                // })
+                // ->when($request->mssv != null, function ($query) use ($request) {
+                //     return $query
+                //     ->where('danh_sach_sinh_vien.MSSV', $request->mssv);
+                // })
+
                 //Kiểm tra tìm kiếm có rỗng không
 
                 $checkTemp = [];
