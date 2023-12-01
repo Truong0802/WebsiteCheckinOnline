@@ -22,7 +22,7 @@ function handleFileSelect(evt)
         let headerRow = document.createElement('tr');
 
         //Hiển thị header
-        for (let i = 0; i < 3; i++)
+        for (let i = 0; i < 4; i++)
         {
             let th = document.createElement('th');
             th.textContent = jsonData[0][i];

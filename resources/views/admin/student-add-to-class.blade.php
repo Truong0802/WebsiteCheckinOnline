@@ -66,25 +66,25 @@
                 let headerRow = document.createElement('tr');
 
                 //Hiển thị header
-                for (let i = 0; i < 3; i++)
+                for (let i = 0; i < 5; i++)
                 {
                     let th = document.createElement('th');
                     th.textContent = jsonData[0][i];
                     headerRow.appendChild(th);
                 }
-                let th4 = document.createElement('th');
-                let th5 = document.createElement('th');
-                let th6 = document.createElement('th');
-                let th7 = document.createElement('th');
-                th4.textContent = 'Ngày bắt đầu';
-                th5.textContent = 'Ngày kết thúc';
-                th6.textContent = 'Ngày học';
-                th7.textContent = 'Giờ học';
-                headerRow.appendChild(th4);
-                headerRow.appendChild(th5);
-                headerRow.appendChild(th6);
-                headerRow.appendChild(th7);
-                table.appendChild(headerRow);
+                // let th4 = document.createElement('th');
+                // let th5 = document.createElement('th');
+                // let th6 = document.createElement('th');
+                // let th7 = document.createElement('th');
+                // th4.textContent = 'Ngày bắt đầu';
+                // th5.textContent = 'Ngày kết thúc';
+                // th6.textContent = 'Ngày học';
+                // th7.textContent = 'Giờ học';
+                // headerRow.appendChild(th4);
+                // headerRow.appendChild(th5);
+                // headerRow.appendChild(th6);
+                // headerRow.appendChild(th7);
+                // table.appendChild(headerRow);
 
                 // for (let i = 1; i < jsonData.length; i++)
                 // {
