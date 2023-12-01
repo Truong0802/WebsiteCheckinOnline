@@ -1,13 +1,7 @@
 @extends('layouts.master-admin')
 
 @section('content')
-@if (session('error-AddDSSV'))
-            {{-- {{dd(session('error'))}} --}}
-    <div class="alert alert-danger text-center">{{ session('error-AddDSSV') }}</div>
-@endif
-@if(session('success-AddDSSV'))
-    <div class="alert alert-success text-center">{{ session('success-AddDSSV') }}</div>
-@endif
+
         <div id="ribbon">
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
@@ -15,6 +9,13 @@
                 </li>
             </ol>
         </div>
+        @if (session('error-AddDSSV'))
+            {{-- {{dd(session('error'))}} --}}
+            <div class="alert alert-danger text-center">{{ session('error-AddDSSV') }}</div>
+        @endif
+        @if(session('success-AddDSSV'))
+            <div class="alert alert-success text-center">{{ session('success-AddDSSV') }}</div>
+        @endif
         <div class="mt-4" id="content">
             <div class="  mx-4">
                 <div class="row mb-3">
@@ -117,7 +118,18 @@
                                 @foreach(session()->get('DanhSachSinhVienTam') as $key)
                                 <?php
                                     $Mssv = Str::between($key,'MSSV','MaTTMH');
+
                                     $findStudentName = DB::table('sinh_vien')->where('MSSV',$Mssv)->first();
+
+                                    if($findStudentName == null)
+                                    {
+                                        $array = session('DanhSachSinhVienTam');
+                                        $position = array_search($key, $array);
+                                        unset($array[$position]);
+                                        session(['DanhSachSinhVienTam' => $array]);
+
+                                    }
+
                                     $CutClass = Str::before($key,'HocKy');
                                     $findSubjectName = DB::table('mon_hoc')->where('MaTTMH',$CutClass)->first();
                                     $CutHK = Str::between($key,'HocKy','NamHoc');

@@ -1,20 +1,24 @@
+<?php
+    use Carbon\Carbon;
+?>
 @extends('layouts.master-admin')
 
 @section('content')
-@if (session('error-AddClass'))
-            {{-- {{dd(session('error'))}} --}}
-    <div class="alert alert-danger text-center">{{ session('error-AddClass') }}</div>
-@endif
-@if(session('success-AddClass'))
-    <div class="alert alert-success text-center">{{ session('success-AddClass') }}</div>
-@endif
-<div id="ribbon">
+
+        <div id="ribbon">
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
                     <a>Quản lý lớp học</a>
                 </li>
             </ol>
         </div>
+        @if (session('error-AddClass'))
+            {{-- {{dd(session('error'))}} --}}
+            <div class="alert alert-danger text-center">{{ session('error-AddClass') }}</div>
+        @endif
+        @if(session('success-AddClass'))
+            <div class="alert alert-success text-center">{{ session('success-AddClass') }}</div>
+        @endif
         <div class="mt-4" id="content">
             <div class="  mx-4">
                 <div class="row mb-3">
@@ -33,8 +37,14 @@
                     <div class="row">
                         <div class="col-md-4">
                                 <div class="form-group">
-                                <label for="student-id">Thời gian học:</label>
+                                <label for="student-id">Thời gian bắt đầu tiết:</label>
                                 <input type="datetime-local" class="form-control" id="time-start" name="timestart">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="student-id">Thời gian kết thúc tiết:</label>
+                                <input type="datetime-local" class="form-control" id="time-end" name="timeend">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -83,6 +93,24 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="class-name">Học kỳ:</label>
+                                <?php
+                                    // $listHK = DB::table('hoc_ky')->orderBy('NamHoc', 'ASC')->get();
+                                ?>
+                                <select class="form-control" id="HKid" name="HKid">
+                                    <option value="">---Chọn Thông Tin---</option>
+
+                                        <option value="1A{{Carbon::now()->format('Y');}}">1A - {{Carbon::now()->format('Y');}}</option>
+                                        <option value="1B{{Carbon::now()->format('Y');}}">1B - {{Carbon::now()->format('Y');}}</option>
+                                        <option value="2A{{Carbon::now()->format('Y');}}">2A - {{Carbon::now()->format('Y');}}</option>
+                                        <option value="2B{{Carbon::now()->format('Y');}}">2B - {{Carbon::now()->format('Y');}}</option>
+                                        <option value="3{{Carbon::now()->format('Y');}}">3 - {{Carbon::now()->format('Y');}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm Lớp</button>
@@ -109,7 +137,7 @@
                                     <td>Mã Môn Học</td>
                                     <td>Nhóm Môn Học</td>
                                     <td>Lớp</td>
-                                    <td></td>
+                                    <td>Học kỳ</td>
                                     <td></td>
                                 </tr>
                             </thead>
@@ -126,6 +154,7 @@
                                     $MaMH = substr($MaTTMH, 0 ,-2);
                                     $NhomMH = substr($MaTTMH,-2);
                                     $TenMH = Str::between($temp,'TenMH','Lop');
+                                    $HK = Str::after($temp,'HK');
                                 ?>
                                 <tbody>
                                     <tr>
@@ -135,7 +164,7 @@
                                         <td>{{$TenMH}}</td>
                                         <td>{{$NhomMH}}</td>
                                         <td>{{$CutClass}}</td>
-                                        <td>Chỉnh sửa</td>
+                                        <td>{{$HK}}</td>
                                         <td><a href="/Delete-subject?id={{$temp}}">Xóa</a></td>
                                     </tr>
                                 </tbody>

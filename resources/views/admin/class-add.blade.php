@@ -1,13 +1,7 @@
 @extends('layouts.master-admin')
 
 @section('content')
-@if (session('error-Add-C'))
-            {{-- {{dd(session('error'))}} --}}
-    <div class="alert alert-danger text-center">{{ session('error-Add-C') }}</div>
-@endif
-@if(session('success-Add-C'))
-    <div class="alert alert-success text-center">{{ session('success-Add-C') }}</div>
-@endif
+
         <div id="ribbon">
             <ol class="breadcrumb">
                 <li class="ng-star-inserted">
@@ -15,6 +9,13 @@
                 </li>
             </ol>
         </div>
+        @if (session('error-Add-C'))
+            {{-- {{dd(session('error'))}} --}}
+            <div class="alert alert-danger text-center">{{ session('error-Add-C') }}</div>
+        @endif
+        @if(session('success-Add-C'))
+            <div class="alert alert-success text-center">{{ session('success-Add-C') }}</div>
+        @endif
         <div class="mt-4" id="content">
             <div class="  mx-4">
                 <div class="row mb-3">
@@ -35,6 +36,9 @@
                                 <div class="form-group">
                                 <label for="teacher-id">Lớp:</label>
                                 <input type="text" class="form-control" id="Classid" name="classid">
+                                @error('classid')
+                                    <div class="alert alert-danger">{{ $errors->first('classid') }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -44,18 +48,27 @@
                             <div class="form-group">
                                 <label for="student-name">Niên khóa:</label>
                                 <input type="text" class="form-control" id="KhoaHoc" name="KhoaHoc">
+                                @error('KhoaHoc')
+                                    <div class="alert alert-danger">{{ $errors->first('KhoaHoc') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Năm bắt đầu:</label>
                                 <input type="text" class="form-control" id="startYears" name="startYears">
+                                @error('startYears')
+                                    <div class="alert alert-danger">{{ $errors->first('startYears') }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Năm kết thúc:</label>
                                 <input type="text" class="form-control" id="endYears" name="endYears">
+                                @error('endYears')
+                                    <div class="alert alert-danger">{{ $errors->first('endYears') }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>

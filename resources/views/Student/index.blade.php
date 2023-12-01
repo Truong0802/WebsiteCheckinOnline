@@ -4,14 +4,7 @@
 @extends('layouts.master-student')
 
 @section('content')
-        @if (session('error'))
-            {{-- {{dd(session('error'))}} --}}
-            <div class="alert alert-danger text-center">Bạn đang thực hiện hành vi không cho phép</div>
-            @elseif(session('error2'))
-                <div class="alert alert-danger text-center">{{ session('error2') }}</div>
-            @elseif(session('success1'))
-                <div class="alert alert-success text-center">{{ session('success1') }}</div>
-        @endif
+
 
         <div id="ribbon">
             <ol class="breadcrumb">
@@ -20,6 +13,14 @@
                 </li>
             </ol>
         </div>
+        @if (session('error'))
+            {{-- {{dd(session('error'))}} --}}
+            <div class="alert alert-danger text-center">Bạn đang thực hiện hành vi không cho phép</div>
+            @elseif(session('error2'))
+                <div class="alert alert-danger text-center">{{ session('error2') }}</div>
+            @elseif(session('success1'))
+                <div class="alert alert-success text-center">{{ session('success1') }}</div>
+        @endif
         <div class="mt-4" id="content">
             <div class="  mx-4">
                 <div class="row mb-3">
@@ -34,16 +35,27 @@
                     </div>
                     <div class="col-md-6  mt-3 chon-tuan-p">
                         <?php
+                                if(session()->has('BatDauTuan'))
+                                {
+                                    $startOfWeek = Carbon::parse(session()->pull('BatDauTuan'));
+                                    if(session()->has('KetThucTuan'))
+                                    {
+                                        $endOfWeek = Carbon::parse(session()->pull('KetThucTuan'));
+                                    }
+                                }
+                                else {
                                     $startOfWeek = Carbon::now()->startOfWeek();
                                     $endOfWeek = Carbon::now()->endOfWeek();
-                                    $nextweek1 = $startOfWeek;
-                                    $nextweek2 = $endOfWeek;
+                                }
+
+                                    // $nextweek1 = $startOfWeek;
+                                    // $nextweek2 = $endOfWeek;
                         ?>
                         <div class="doi-tuan">
                             <div class="text-left">
-                                <button class="btn btn-primary ">
+                                <a href="/previous-week?day={{$startOfWeek}}&toDay={{$endOfWeek}}" type="button" class="btn btn-primary ">
                                     <i aria-hidden="true" class="fa fa-chevron-left"></i>
-                                </button>
+                                </a>
                             </div>
                             <div class="col-xs-8 text-center">
                                 <label class="text-filter"> Từ ngày
@@ -52,7 +64,7 @@
                                 </label>
                             </div>
                             <div class="text-right">
-                                <a href="" type="button" class="btn btn-primary ">
+                                <a href="/next-week?day={{$startOfWeek}}&toDay={{$endOfWeek}}" type="button" class="btn btn-primary ">
                                     <i aria-hidden="true" class="fa fa-chevron-right"></i>
                                 </a>
                             </div>

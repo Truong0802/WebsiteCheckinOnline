@@ -1,7 +1,9 @@
 
 <?php
  use Carbon\Carbon;
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +86,61 @@
                 </a>
             </span>
         </div>
+        @if(session()->exists('studentid'))
+            <nav>
+                <ul>
+                    <li>
+                        <a title="Trang chủ" href="/trang-chu">
+                            <i class="fa fa-lg fa-fw fa-home"></i>
+                            <span class="menu-item-parent">Trang chủ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a title="Hồ sơ cá nhân" href="/thong-tin-ca-nhan">
+                            <i class="fa fa-lg fa-fw fa-user"></i>
+                            <span class="menu-item-parent">Hồ sơ cá nhân</span>
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="/thoi-khoa-bieu" title="Học tập">
+                            <i class="fa fa-lg fa-fw fa-book"></i>
+                            <span class="menu-item-parent">Thời khóa biểu </span>
+                            <b class="collapse-sign">
+                                <em class="fa fa-minus-square-o"></em>
+                            </b>
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="/danh-sach-lop" title="Học tập">
+                            <i class="fa fa-lg fa-fw fa-book"></i>
+                            <span class="menu-item-parent">Danh sách lớp</span>
+                            <b class="collapse-sign">
+                                <em class="fa fa-minus-square-o"></em>
+                            </b>
+                        </a>
+                    </li>
+                <!-- <li>
+                        <a href="/trang-thay-doi-thong-tin">
+                            <i class="fa fa-lg fa-fw fa-cog"></i>
+                            <span class="menu-item-parent"> Cài đặt tài khoản </span>
+                        </a>
+                    </li>-->
+                    <li>
+                        <a title="Hỗ trợ" href="/ho-tro">
+                            <i class="fa fa-lg fa-fw fa-phone"></i>
+                            <span class="menu-item-parent">Hỗ trợ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a  href="/logout"  title="Đăng xuất" href="">
+                            <i class="fa fa-arrow-circle-left hit"></i>
+                            <span class="menu-item-parent">Đăng xuất</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        @endif
+        @if(session()->exists('teacherid'))
         <nav>
             <ul>
                 <li>
@@ -99,15 +156,15 @@
                     </a>
                 </li>
                 <li class="open">
-                    <a href="/thoi-khoa-bieu" title="Học tập">
+                    <a href="/ho-so-tt-giang-day" title="Lịch trình">
                         <i class="fa fa-lg fa-fw fa-book"></i>
-                        <span class="menu-item-parent">Thời khóa biểu </span>
+                        <span class="menu-item-parent">Hồ sơ giảng dạy </span>
                         <b class="collapse-sign">
                             <em class="fa fa-minus-square-o"></em>
                         </b>
                     </a>
                 </li>
-               <!-- <li>
+                <!--<li>
                     <a href="/trang-thay-doi-thong-tin">
                         <i class="fa fa-lg fa-fw fa-cog"></i>
                         <span class="menu-item-parent"> Cài đặt tài khoản </span>
@@ -119,14 +176,26 @@
                         <span class="menu-item-parent">Hỗ trợ</span>
                     </a>
                 </li>
+
+                {{-- <li class="open">
+                    <a href="/quan-ly-sinh-vien" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Danh Mục Quản lý</span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li> --}}
+
                 <li>
-                    <a  href="/logout"  title="Đăng xuất" href="">
+                    <a  href="/logout"  title="Đăng xuất" >
                         <i class="fa fa-arrow-circle-left hit"></i>
                         <span class="menu-item-parent">Đăng xuất</span>
                     </a>
                 </li>
             </ul>
         </nav>
+        @endif
     </aside>
 
     <div id="main" role="main">

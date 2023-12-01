@@ -55,6 +55,10 @@
                         {
                             $getInfoFromObject = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
                         }
+                        else if(session()->exists('studentid'))
+                        {
+                            $getInfoFromObject = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                        }
 
                         if($getInfoFromObject->HinhDaiDien == null)
                         {
@@ -172,7 +176,7 @@
                             </b>
                         </a>
                     </li>
-                    <li class="open">
+                    {{-- <li class="open">
                         <a href="/test-excel" title="Học tập">
                             <i class="fa fa-lg fa-fw fa-book"></i>
                             <span class="menu-item-parent">Thêm vào danh sách lớp</span>
@@ -180,7 +184,7 @@
                                 <em class="fa fa-minus-square-o"></em>
                             </b>
                         </a>
-                    </li>
+                    </li> --}}
                 @endif
                 <li class="open">
                     <a href="/danh-sach-lop" title="Học tập">
@@ -193,6 +197,60 @@
                 </li>
                 <li>
                     <a  href="/logout"  title="Đăng xuất" >
+                        <i class="fa fa-arrow-circle-left hit"></i>
+                        <span class="menu-item-parent">Đăng xuất</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        @endif
+        @if(session()->exists('studentid'))
+        <nav>
+            <ul>
+                <li>
+                    <a title="Trang chủ" href="/trang-chu">
+                        <i class="fa fa-lg fa-fw fa-home"></i>
+                        <span class="menu-item-parent">Trang chủ</span>
+                    </a>
+                </li>
+                <li>
+                    <a title="Hồ sơ cá nhân" href="/thong-tin-ca-nhan">
+                        <i class="fa fa-lg fa-fw fa-user"></i>
+                        <span class="menu-item-parent">Hồ sơ cá nhân</span>
+                    </a>
+                </li>
+                <li class="open">
+                    <a href="/thoi-khoa-bieu" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Thời khóa biểu </span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li>
+                <li class="open">
+                    <a href="/danh-sach-lop" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Danh sách lớp</span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li>
+               <!-- <li>
+                    <a href="/trang-thay-doi-thong-tin">
+                        <i class="fa fa-lg fa-fw fa-cog"></i>
+                        <span class="menu-item-parent"> Cài đặt tài khoản </span>
+                    </a>
+                </li>-->
+                <li>
+                    <a title="Hỗ trợ" href="/ho-tro">
+                        <i class="fa fa-lg fa-fw fa-phone"></i>
+                        <span class="menu-item-parent">Hỗ trợ</span>
+                    </a>
+                </li>
+                <li>
+                    <a  href="/logout"  title="Đăng xuất" href="">
                         <i class="fa fa-arrow-circle-left hit"></i>
                         <span class="menu-item-parent">Đăng xuất</span>
                     </a>

@@ -15,12 +15,14 @@ class InfoController extends Controller
         {
             $InfoOfStudent = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
             //dd($InfoOfStudent);
-            return view('Student/student-info',['getInfoFromObject' => $InfoOfStudent]);
+            $InforAddress = DB::table('dia_chi')->where('MaDiaChi', $InfoOfStudent->MSSV. $InfoOfStudent->MaLop)->first();
+            return view('Student/student-info',['getInfoFromObject' => $InfoOfStudent, 'getInforAddress' => $InforAddress]);
         }
         elseif(session()->exists('teacherid')){
             $InfoOfteacher = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
             //dd( $InfoOfteacher);
-            return view('Student/student-info',['getInfoFromObject' => $InfoOfteacher]);
+            $InforAddress = DB::table('dia_chi')->where('MaDiaChi',session()->get('teacherid'))->first();
+            return view('Student/student-info',['getInfoFromObject' => $InfoOfteacher ,'getInforAddress' => $InforAddress]);
         }
     }
 
@@ -95,18 +97,60 @@ class InfoController extends Controller
 
             }
 
-            if(session()->exists('studentid'))
+            //Địa chỉ cần thay đổi
+            $updateAddress = [];
+            if($request->has('city') && $request->city != null)
             {
-                $checkAccountOf = DB::table('sinh_vien')
-                ->where('MSSV',session()->get('studentid'))->update($updateData);
-
+                $updateAddress['ThanhPho'] = $request->city;
             }
-            else if(session()->exists('teacherid'))
+            if($request->has('district') && $request->district != null)
             {
-                $checkAccountOf = DB::table('giang_vien')
-                ->where('MSGV',session()->get('teacherid'))
-                ->update($updateData);
+                $updateAddress['Quan'] = $request->district;
+            }
+            if($request->has('ward') && $request->ward != null)
+            {
+                $updateAddress['Phuong'] = $request->ward;
+            }
+            if($request->has('address') && $request->address != null)
+            {
+                $updateAddress['DiaChi'] = $request->address;
+            }
 
+            if($updateData != null)
+            {
+                if(session()->exists('studentid'))
+                {
+                    $checkAccountOf = DB::table('sinh_vien')
+                    ->where('MSSV',session()->get('studentid'))->update($updateData);
+
+                }
+                else if(session()->exists('teacherid'))
+                {
+                    $checkAccountOf = DB::table('giang_vien')
+                    ->where('MSGV',session()->get('teacherid'))
+                    ->update($updateData);
+
+                }
+            }
+
+            if($updateAddress != null)
+            {
+                if(session()->exists('studentid'))
+                {
+                    $findClassOfStudent = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                    $MaDiaChi = $findClassOfStudent->MSSV.$findClassOfStudent->MaLop;
+                    $checkAccountOf = DB::table('dia_chi')
+                    ->where('MaDiaChi',$MaDiaChi)->update($updateAddress);
+
+                }
+                else if(session()->exists('teacherid'))
+                {
+                    $MaDiaChi = session()->get('teacherid');
+                    $checkAccountOf = DB::table('dia_chi')
+                    ->where('MaDiaChi',$MaDiaChi)->update($updateAddress);
+
+
+                }
             }
             return redirect()->to('/thong-tin-ca-nhan');
         }

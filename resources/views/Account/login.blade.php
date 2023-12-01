@@ -175,6 +175,6 @@
             </div>
         </div>
     </div>
-    {{-- <script src="<?php echo asset('/js/location.js')?>"></script> --}}
+    {{-- <script src="<?php echo asset('/js/location.js') ?>"></script> --}}
 </body>
 </html>
