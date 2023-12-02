@@ -509,12 +509,14 @@ class TeacherController extends Controller
                 // $data = decrypt($encryptedData);
                 // dd($data["lop"]);
                 $timestart = Carbon::now();
+                // dd($timestart);
 
                 $UpPathIntoDB = DB::table('checklog')->insert([
                     'MSGV' => session()->get('teacherid'),
                     'URL' => $encryptedData,
                     'TimeOpenLink' => $timestart
                 ]);
+
                 return redirect()->to('/form-diem-danh');
             }
             elseif(session()->has('studentid'))
@@ -580,7 +582,7 @@ class TeacherController extends Controller
                                             {
                                                 if(session()->has('checked'))
                                                 {
-                                                    //Tính từ lúc điểm danh 1 tiếng sau đó
+                                                    //Kiểm tra hiện tại đã vượt quá thời gian điểm danh hay chưa
                                                     if(Carbon::now()->greaterThan(Carbon::parse(session()->get('checked'))) )
                                                     {
                                                         session()->forget('checked');
@@ -594,13 +596,14 @@ class TeacherController extends Controller
                                                     }
                                                     else
                                                     {
-                                                        //Nếu thiết bị từng điểm danh trước đó chưa qua 30p
+                                                        //Nếu thiết bị từng điểm danh trước đó chưa qua thời gian điểm danh
                                                         return back()->with('error2','Không được điểm danh 2 lần trên 1 thiết bị!')->withInput();
                                                     }
                                                 }
                                                 else{
                                                     //Nếu thiết bị chưa điểm danh
-                                                    session()->put('checked',Carbon::now()->addMinutes(30));
+                                                    //Gán vào session thời gian kết thúc buổi điểm danh
+                                                    session()->put('checked',Carbon::parse($findPath->TimeOpenLink)->addMinutes(5));
                                                      //Điểm danh
                                                     $studentchecked = DB::table('diem_danh')->insert([
                                                         'MaDanhSach' => $findlistidofstudent->MaDanhSach,
@@ -612,11 +615,13 @@ class TeacherController extends Controller
 
                                             }
                                             else{
-                                                    if(session()->has('error2'))
+                                                if(session()->has('error2'))
                                                 {
                                                     session()->forget('error2');
                                                 }
                                                 else{
+                                                    //Hết giờ điểm danh, xóa trực tiếp
+                                                    session()->forget('checked');
                                                     return back()->with('error2','Điểm danh thất bại')->withInput();
                                                 }
                                             }
@@ -629,11 +634,6 @@ class TeacherController extends Controller
 
                                         return back()->with('error',$exception->getMessage())->withInput();
                                     }
-
-
-
-
-
 
                                 }
                                 elseif( $diff->i > 5){
