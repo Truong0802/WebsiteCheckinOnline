@@ -242,11 +242,11 @@
                         grid-template-columns: 15fr
                     }
                 </style>
-                @if (session('error-row16'))
-                    <div class="alert alert-danger text-center">{{ session('error-row16') }}</div>
-                @endif
-                <div class="class-list">
 
+                <div class="class-list">
+                    @if (session('error-row16'))
+                        <div class="alert alert-danger text-center">{{ session('error-row16') }}</div>
+                    @endif
                         <span><strong>HỌC PHẦN:</strong>
                             {{-- Lập trình ứng dụng với Java  --}}
                             <?php
@@ -290,6 +290,7 @@
                                 }
 
                             </style>
+
                             <table id="student-table">
                                 <thead>
                                     <tr>
@@ -511,6 +512,10 @@
                                             ->first();
                                     ?>
                                     <tr>
+                                        <?php
+                                        //Tạo biến đếm số lượng sinh viên
+                                                $stt+=1;
+                                        ?>
                                         <td>
                                             {{-- Nếu lớp có tồn tại ban cán sự --}}
                                             @if($CheckLeaderOfClassIsAvailable != null)
@@ -522,14 +527,14 @@
                                             @else
                                             {{-- Nếu lớp chưa tồn tại ban cán sự, set điều kiện chỉ cho phép giảng viên click checkbox --}}
                                                 @if(session()->exists('teacherid'))
+                                                    <input type="checkbox" id="LTnum{{$stt}}" name="LTnum" value="{{$allstudentlist->MaDanhSach}}">
+                                                @else
+                                                {{-- Nothing for Student choose --}}
                                                 @endif
                                             @endif
                                         </td>
                                         <td>
-                                            <?php
-                                                $stt+=1;
-                                                echo $stt;
-                                            ?>
+                                            {{$stt;}}
                                         </td>
 
                                         <td>{{$studentname->MSSV}}</td>

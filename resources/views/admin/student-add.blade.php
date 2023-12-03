@@ -63,7 +63,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Mật khẩu:</label>
                                 <input type="text" class="form-control" id="password" name="password">
@@ -71,7 +71,7 @@
                                     <div class="alert alert-danger">{{ $errors->first('password') }}</div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     {{-- <div class="row">

@@ -45,7 +45,7 @@ class AdminController extends Controller
             'mssv' => 'required',
             'studentname' => 'required',
             'classname' => 'required',
-            'password' => 'required'
+            // 'password' => 'required'
         ]);
         if(preg_match('/^[0-9]*$/',$request->mssv) == 0 && preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->mssv) == 0)
         {
@@ -64,7 +64,7 @@ class AdminController extends Controller
                     session()->put('MSSV',$request->mssv);
                     session()->put('Name',$request->studentname);
                     session()->put('ClassName',$request->classname);
-                    session()->put('PassWord',$request->password);
+                    session()->put('PassWord',$request->mssv); //Mật khẩu tạo mặc định == MSSV
                     // session()->put('Phuong',$request->phuong);
                     // session()->put('Quan',$request->quan);
                     // session()->put('TP',$request->TP);
@@ -526,7 +526,6 @@ class AdminController extends Controller
                 $CutYearOfClass = Str::after(session()->get('HKid'),$cutHK);
 
                 $checkSVisAvailable = DB::table('sinh_vien')->where('MSSV',$request->mssv)->first();
-                    // dd($checkSVisAvailable);
                 if($checkSVisAvailable == null)
                 {
                     return redirect()->to('/quan-ly-sinh-vien')->with('error-Add','Không tồn tại sinh viên mã'.$request->mssv)->withInput();

@@ -1075,7 +1075,18 @@ class TeacherController extends Controller
 
         public function CheckToPutLeader(Request $request)
         {
-
-            return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->withInput();
+            // dd($request);
+            if($request->LTnum)
+            {
+                $ChooseClassManage = DB::table('danh_sach_sinh_vien')
+                                        ->where('MaDanhSach',$request->LTnum)
+                                        ->update(['BanCanSuLop' => 1]);
+                return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->withInput();
+            }
+            else
+            {
+                return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                ->with('error-row16','Không được để trống lựa chọn!')->withInput();
+            }
         }
 }
