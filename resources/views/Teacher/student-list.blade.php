@@ -501,6 +501,8 @@
                                                        ->first();
                                         //Kiểm tra xem sinh viên đó có phải Ban cán sự hay không
                                         $CheckLeaderOfClass = DB::table('danh_sach_sinh_vien')
+                                                                ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                                                                ->where('MaHK',session()->get('HKid'))
                                                                 ->where('MSSV',$allstudentlist->MSSV)
                                                                 ->whereNotNull('BanCanSuLop')->first();
 
@@ -527,7 +529,15 @@
                                             @else
                                             {{-- Nếu lớp chưa tồn tại ban cán sự, set điều kiện chỉ cho phép giảng viên click checkbox --}}
                                                 @if(session()->exists('teacherid'))
-                                                    <input type="checkbox" id="LTnum{{$stt}}" name="LTnum" value="{{$allstudentlist->MaDanhSach}}">
+                                                    <input type="radio" id="LTnum" name="LTnum" value="{{$allstudentlist->MaDanhSach}}">
+                                                <script>
+                                                    var chooseLT = document.getElementById("LTnum");
+                                                     chooseLT.addEventListener("change", function() {
+                                                            if (this.checked) {
+                                                                divide3.checked = false;
+                                                            }
+                                                        });
+                                                </script>
                                                 @else
                                                 {{-- Nothing for Student choose --}}
                                                 @endif
