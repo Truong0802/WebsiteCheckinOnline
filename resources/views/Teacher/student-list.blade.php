@@ -530,14 +530,7 @@
                                             {{-- Nếu lớp chưa tồn tại ban cán sự, set điều kiện chỉ cho phép giảng viên click checkbox --}}
                                                 @if(session()->exists('teacherid'))
                                                     <input type="radio" id="LTnum" name="LTnum" value="{{$allstudentlist->MaDanhSach}}">
-                                                <script>
-                                                    var chooseLT = document.getElementById("LTnum");
-                                                     chooseLT.addEventListener("change", function() {
-                                                            if (this.checked) {
-                                                                divide3.checked = false;
-                                                            }
-                                                        });
-                                                </script>
+
                                                 @else
                                                 {{-- Nothing for Student choose --}}
                                                 @endif
