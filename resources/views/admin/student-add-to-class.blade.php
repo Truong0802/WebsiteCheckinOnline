@@ -47,14 +47,11 @@
                                 <td>Tên lớp</td>
                             </tr>
                         </thead>
-
-
                         <tbody id="tableBody"></tbody>
-
                         </style>
                     </table>
+                    <br>
                     <button type="submit" class="btn btn-success" name="submit_button">Thêm danh sách</button>
-
                     @csrf
                 </form>
 			</div>

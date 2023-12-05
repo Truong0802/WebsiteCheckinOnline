@@ -12178,7 +12178,7 @@ aside {
     top: 0;
     left: 0;
     z-index: 904;
-    padding-top: 49px
+    padding-top: 54.5px
 }
 
 #main {
@@ -12360,9 +12360,9 @@ nav ul span.menu-item-parent {
     padding: 0
 }
 
-nav ul li.open>a,nav ul li.open>a b {
+/* nav ul li.open>a,nav ul li.open>a b {
     color: #fff!important
-}
+} */
 
 nav>ul>li>a b {
     position: absolute!important;
