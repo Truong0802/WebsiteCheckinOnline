@@ -142,5 +142,8 @@ function displayTable(column1Data, column2Data, column3Data, column4Data)
 		}
 
 		tableBody.appendChild(newRow);
+            // After generating the table, update the form action
+        const form = document.querySelector('form');
+        form.action = "/Confirm-to-scan";
 	}
 }
