@@ -60,6 +60,7 @@
                             $Name = $getInfoFromObject->HoTenSV;
                             $MS = $getInfoFromObject->MSSV;
                             $ClassId = $getInfoFromObject->MaLop;
+                            $Birth = $getInfoFromObject->NgaySinh;
                             $getIdNienKhoa = DB::table('lop')->where('MaLop',$ClassId)->first();
 
                             $NienKhoa = DB::table('khoa_hoc')->where('KhoaHoc',$getIdNienKhoa->KhoaHoc)->first();
@@ -72,6 +73,7 @@
                                 $Name = $getInfoFromObject->HoTenGV;
                                 $MS = $getInfoFromObject->MSGV;
                                 $getDepartmentId = $getInfoFromObject->MaKhoa;
+                                $Birth = $getInfoFromObject->NgaySinhGV;
                                 $getNameOfDepartment = DB::table('khoa')->where('MaKhoa',$getDepartmentId)->first();
                                 //dd($getNameOfDepartment);
                                 $NienKhoa = null;
@@ -138,6 +140,14 @@
                             @endif
                         </li>
 
+                        <li>Ngày tháng năm sinh:
+                            @if($Birth == null)
+                                <span class="info">Chưa cập nhật</span>
+                            @else
+                                <span class="info">{{$Birth}}</span>
+                            @endif
+                        </li>
+
                         <li>Địa chỉ:
                             @if($getInforAddress->DiaChi == null)
                                 <span class="info">Chưa cập nhật</span>
@@ -145,6 +155,8 @@
                                 <span class="info">{{$getInforAddress->DiaChi.', '.$getInforAddress->Phuong.', '.$getInforAddress->Quan.', '.$getInforAddress->ThanhPho}}</span>
                             @endif
                         </li>
+
+
 
                         @if($NienKhoa != null)
                             <li> Niên khóa:

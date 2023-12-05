@@ -51,7 +51,7 @@ class InfoController extends Controller
         {
             //Dữ liệu update
             $updateData = [];
-
+            // dd($request);
             if($request->has('imagePath'))
             {
                 $dataFile = $request->imagePath;
@@ -97,6 +97,19 @@ class InfoController extends Controller
 
             }
 
+            if($request->has('birthday') && $request->birthday != null)
+            {
+                $birth = $request->birthday;
+                // dd(Carbon::parse($birth)->format('d/m/Y'));
+                if(session()->exists('studentid'))
+                {
+                    $updateData['NgaySinh'] = Carbon::parse($birth)->format('d/m/Y');
+                }
+                else if(session()->exists('teacherid'))
+                {
+                    $updateData['NgaySinhGV'] = Carbon::parse($birth)->format('d/m/Y');
+                }
+            }
             //Địa chỉ cần thay đổi
             $updateAddress = [];
             if($request->has('city') && $request->city != null)

@@ -143,6 +143,21 @@
                                     <div class="alert alert-danger">{{ $errors->first('phoneNum') }}</div>
                                 @enderror
                             </li>
+                            <li>Ngày tháng năm sinh:
+                                @if(session()->exists('studentid'))
+                                    @if($dataBefore->NgaySinh == null)
+                                        <input type="date" class="info" name="birthday"  >
+                                    @else
+                                        <input type="date" class="info" name="birthday"  value="{{Carbon::parse($dataBefore->NgaySinh)->toDateString();}}">
+                                    @endif
+                                @elseif(session()->exists('teacherid'))
+                                    @if($dataBefore->NgaySinhGV == null)
+                                            <input type="date" class="info" name="birthday" >
+                                    @else
+                                            <input type="date" class="info" name="birthday"  value="{{Carbon::parse($dataBefore->NgaySinhGV)->toDateString();}}">
+                                    @endif
+                                @endif
+                            </li>
                             @if(session()->exists('studentid'))
                                 <li> Niên khóa:
                                     <span class="info">{{$NienKhoa->NamHocDuKien}}</span>
