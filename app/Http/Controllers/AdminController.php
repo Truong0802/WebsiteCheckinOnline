@@ -475,6 +475,7 @@ class AdminController extends Controller
         {
             // dd($request);
             $MonthCheck = Carbon::now()->month;
+            //Kiểm tra xem tháng hiện tại thuộc học kỳ mấy
             switch($MonthCheck)
             {
                 case 1:
