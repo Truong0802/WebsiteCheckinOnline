@@ -469,11 +469,11 @@ class AdminController extends Controller
     public function addStudentToClassBack(Request $request)
     {
         // $limit = count($request->mssv);
-
-        if($request->student_info1 != null && $request->student_info2 != null
-            && $request->student_info3 != null && $request->student_info4 != null)
+        // dd($request);
+        if($request->student_info_MSSV != null && $request->student_info_Student_Name != null
+            && $request->student_info_Birthday != null && $request->student_info_Class != null)
         {
-            // dd($request);
+            dd($request);
             $MonthCheck = Carbon::now()->month;
             switch($MonthCheck)
             {

@@ -696,3 +696,8 @@ tbody tr td input:focus
 {
     border-radius: 0.375rem;
 }
+
+button
+{
+    border-radius: 0.375rem;
+}
