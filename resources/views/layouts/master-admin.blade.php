@@ -119,15 +119,15 @@
                         </b>
                     </a>
                 </li>
-               <li class="open">
+               {{-- <li class="open">
                     <a href="/quet-danh-sach" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
-                        <span class="menu-item-parent">Thêm vào danh sách lớp</span>
+                        <span class="menu-item-parent">Thêm danh sách lớp</span>
                         <b class="collapse-sign">
                             <em class="fa fa-minus-square-o"></em>
                         </b>
                     </a>
-                </li>
+                </li> --}}
                 <li class="open">
                     <a href="/danh-sach-lop" title="Học tập">
                         <i class="fa fa-lg fa-fw fa-book"></i>
@@ -155,6 +155,15 @@
                         <a href="/ho-so-tt-giang-day" title="Lịch trình">
                             <i class="fa fa-lg fa-fw fa-book"></i>
                             <span class="menu-item-parent">Hồ sơ giảng dạy </span>
+                            <b class="collapse-sign">
+                                <em class="fa fa-minus-square-o"></em>
+                            </b>
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="/quet-danh-sach" title="Học tập">
+                            <i class="fa fa-lg fa-fw fa-book"></i>
+                            <span class="menu-item-parent">Thêm danh sách lớp</span>
                             <b class="collapse-sign">
                                 <em class="fa fa-minus-square-o"></em>
                             </b>

@@ -108,6 +108,15 @@
                         </b>
                     </a>
                 </li>
+                <li class="open">
+                    <a href="/quet-danh-sach" title="Học tập">
+                        <i class="fa fa-lg fa-fw fa-book"></i>
+                        <span class="menu-item-parent">Thêm danh sách lớp</span>
+                        <b class="collapse-sign">
+                            <em class="fa fa-minus-square-o"></em>
+                        </b>
+                    </a>
+                </li>
                 <!--<li>
                     <a href="/trang-thay-doi-thong-tin">
                         <i class="fa fa-lg fa-fw fa-cog"></i>
@@ -178,9 +187,9 @@
                         </a>
                     </li>
                     {{-- <li class="open">
-                        <a href="/test-excel" title="Học tập">
+                        <a href="/quet-danh-sach" title="Học tập">
                             <i class="fa fa-lg fa-fw fa-book"></i>
-                            <span class="menu-item-parent">Thêm vào danh sách lớp</span>
+                            <span class="menu-item-parent">Thêm danh sách lớp</span>
                             <b class="collapse-sign">
                                 <em class="fa fa-minus-square-o"></em>
                             </b>

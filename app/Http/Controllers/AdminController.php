@@ -469,7 +469,17 @@ class AdminController extends Controller
     public function addStudentToClassBack(Request $request)
     {
         // $limit = count($request->mssv);
-        dd($request);
+
+        if($request->student_info1 != null && $request->student_info2 != null
+            && $request->student_info3 != null && $request->student_info4 != null)
+        {
+            dd($request);
+
+            //Lấy học kỳ dựa trên ngày tháng hiện tại
+            // $temp = $request->classid.'HocKy'.$cutHK.'NamHoc'.$CutYearOfClass.'MSGV'.session()->get('teacherid').'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
+            // session()->put('textByScan');
+            // session()->push('DanhSachSinhVienTam',$temp);
+        }
     }
 
 //Thêm danh sách
