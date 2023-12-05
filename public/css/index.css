@@ -13,15 +13,7 @@ a {
     color: #fff;
 }
 
-#left-panel
-{
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    padding-top: 49px;
-    /* min-height: 120vh; */
-}
+
 
 header
 {
@@ -339,10 +331,10 @@ nav ul li a:hover
 
 #main
 {
-    padding-bottom: 120px;
+    /* padding-bottom: 120px; */
     margin-left: 220px;
     padding: 0;
-    padding-bottom: 52px;
+    /* padding-bottom: 52px; */
     position: relative;
 }
 
