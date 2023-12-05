@@ -20,6 +20,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="col-md-12 detail">
 		<style>
 			.detail
@@ -45,19 +46,27 @@
 							<td>Tên lớp</td>
 						</tr>
 					</thead>
-					<tbody id="tableBody"></tbody>
+                    <form method="post" action="/Confirm-to-scan">
+
+					    <tbody id="tableBody"></tbody>
+                        <button type="submit" class="btn btn-success" name="submit_button">Thêm danh sách</button>
+                        @csrf
+                    </form>
 					</style>
 				</table>
 			</div>
+
+
 		</div>
         <div class="container">
             </style>
             <button class="btn btn-primary" onclick="exportToExcel()">Xuất Excel</button>
             <input type="file" id="uploadInput" accept="image/*">
             <button class="btn btn-primary" onclick="uploadAndConvert()">Chuyển đổi</button>
-            <button class="btn btn-success" onclick="uploadAndConvert()">Thêm danh sách</button>
+            {{-- <button class="btn btn-success" onclick="uploadAndConvert()">Thêm danh sách</button> --}}
         </div>
 	</div>
+
 </div>
 <script src="<?php echo asset('/js/scan-img.js')?>"></script>
 @stop

@@ -99,7 +99,7 @@ function displayTable(column1Data, column2Data, column3Data, column4Data)
 		const input1 = document.createElement('input');
 		input1.type = 'text';
 		input1.value = column1Data[i];
-		input1.name = 'student_info[]';
+		input1.name = 'student_info1[]';
 		input1.style = 'text-align: center';
 		maSVCell.appendChild(input1);
 		newRow.appendChild(maSVCell);
@@ -108,7 +108,7 @@ function displayTable(column1Data, column2Data, column3Data, column4Data)
 		const input2 = document.createElement('input');
 		input2.type = 'text';
 		input2.value = column2Data[i];
-		input2.name = 'student_info[]';
+		input2.name = 'student_info2[]';
 		input2.style = 'width:210px; text-align: center;';
 		hoTenCell.appendChild(input2);
 		newRow.appendChild(hoTenCell);
@@ -117,7 +117,7 @@ function displayTable(column1Data, column2Data, column3Data, column4Data)
 		const input3 = document.createElement('input');
 		input3.type = 'text';
 		input3.value = column3Data[i];
-		input3.name = 'student_info[]';
+		input3.name = 'student_info3[]';
 		input3.style = 'text-align: center';
 		ngaySinhCell.appendChild(input3);
 		newRow.appendChild(ngaySinhCell);
@@ -126,7 +126,7 @@ function displayTable(column1Data, column2Data, column3Data, column4Data)
 		const input4 = document.createElement('input');
 		input4.type = 'text';
 		input4.value = column4Data[i];
-		input4.name = 'student_info[]';
+		input4.name = 'student_info4[]';
 		input4.style = 'text-align: center';
 		tenLopCell.appendChild(input4);
 		newRow.appendChild(tenLopCell);

@@ -455,7 +455,7 @@ class AdminController extends Controller
 
     public function addStudentToClass()
     {
-        if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
+        if(session()->has('teacherid'))
         {
             return view('admin/student-add-to-class');
         }
