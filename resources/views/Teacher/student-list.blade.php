@@ -86,8 +86,9 @@
             }
 
             ?>
+
             @endforeach
-            <br><br>
+
 
         @if(isset($listid) && isset($classname))
             @if(session()->exists('teacherid'))
@@ -234,7 +235,7 @@
                         </script>
                     </div>
 
-            <br><br>
+            {{-- <br><br> --}}
             <div class="col-md-12 detail">
                 <style>
                     .detail
@@ -294,7 +295,7 @@
                             <table id="student-table">
                                 <thead>
                                     <tr>
-                                        <td>LT</td>
+                                        <td>Ban cán sự</td>
                                         <td>STT</td>
                                         <td>Mã SV</td>
                                         <td>Họ tên</td>
