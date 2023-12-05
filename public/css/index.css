@@ -20,6 +20,7 @@ a {
     left: 0;
     z-index: 1;
     padding-top: 49px;
+    /* min-height: 120vh; */
 }
 
 header
@@ -342,7 +343,6 @@ nav ul li a:hover
     margin-left: 220px;
     padding: 0;
     padding-bottom: 52px;
-    min-height: 500px;
     position: relative;
 }
 
@@ -674,12 +674,6 @@ button
   color: #fff;
 }
 
-.btn-primary
-{
-  background-color: #28a745;
-  color: #fff;
-}
-
 .login-info span
 {
     cursor: pointer;
@@ -696,3 +690,17 @@ button
     text-align: center;
 }
 
+tbody tr td input
+{
+    border: none;
+}
+
+tbody tr td input:focus
+{
+    outline: none;
+}
+
+#uploadInput
+{
+    border-radius: 0.375rem;
+}
