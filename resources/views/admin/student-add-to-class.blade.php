@@ -48,8 +48,11 @@
                 }
             </style>
             <div class="class-list">
+                @if (session('error-input'))
+                    <div class="alert alert-danger text-center">{{ session('error-input') }}</div>
+                @endif
                 <span>
-                    <strong>HỌC PHẦN:</strong> Lập trình ứng dụng với Java <strong>( <input id="class-name" name="class-name" placeholder="VD: CMP0000"> )</strong> - Nhóm: <input id="class-group" name="class-group" placeholder="VD: 80"> - Số tín chỉ: 3
+                    <strong>HỌC PHẦN:</strong> <input id="class-name" name="subjectname" placeholder="VD: Lập trình ứng dụng với java"> <strong>( <input id="class-name" name="classname" placeholder="VD: CMP0000"> )</strong> - Nhóm: <input id="class-group" name="classgroup" placeholder="VD: 80"> - Số tín chỉ: <input id="class-name" name="STC" placeholder="VD: 3">
                     <i class="fa-regular fa-circle-question help" id="open"></i>
                     <div id="myModal1" class="modal">
                         <div class="modal-content1">

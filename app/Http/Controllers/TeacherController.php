@@ -951,7 +951,7 @@ class TeacherController extends Controller
 
                             if(is_numeric($resultConvert) == false )
                             {
-                                if(preg_match('/^ [0-9]*$/',$resultConvert) == 1 && preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$resultConvert) == 0) //Kiểm tra có tồn tại số bên trong hay không
+                                if(preg_match('/^ [0-9]*$/',$resultConvert) == 1 && preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$resultConvert) != 1) //Kiểm tra có tồn tại số bên trong hay không
                                 {
                                     if(str_contains($request->row16[$i],",") == true || str_contains($request->row16[$i],".") == true) //Nếu ký tự nhập vào là số thập phân
                                     {

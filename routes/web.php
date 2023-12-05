@@ -30,7 +30,7 @@ use Google\Service\AdExchangeBuyer\Account;
 Route::get('/',[AccountController::class,'index']);
 
 //Đăng nhập
-Route::post('/account-login',[AccountController::class,'login']);
+Route::post('/account-login',[AccountController::class,'login'])->name('login');
 
 //Đăng xuất
 Route::get('/logout',[AccountController::class,'logout']);
