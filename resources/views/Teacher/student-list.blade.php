@@ -253,7 +253,7 @@
                                 echo $classname->TenMH;
                             ?>
                         <strong> <?php echo $classname->MaMH ?> </strong> - (Nhóm <?php echo $classname->NhomMH ?>) - Số tín chỉ: <?php echo $classname->STC ?></span>
-                        <br><br>
+                        <br>
                         <div class="table">
                             <style>
                                 .detail .class-list table tr .score-input
@@ -491,7 +491,7 @@
                                     @endif
                             @else
                                 <form action="/chon-ban-can-su" method="post">
-                                    <button type="submit" class="btn btn-primary" >Xác nhận LT</button>
+                                    <button type="submit" class="btn btn-primary" >Xác nhận ban cán sự</button>
                             @endif
                         @endif
                             {{-- Xuất thông tin danh sách --}}

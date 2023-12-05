@@ -131,9 +131,9 @@ function displayTable(column1Data, column2Data, column3Data, column4Data)
 		tenLopCell.appendChild(input4);
 		newRow.appendChild(tenLopCell);
 
-		for (let j = 4; j < 10; j++)
+		for (let j = 3; j < 10; j++)
         {
-            if(j === 3)
+            if(j === 2)
             {
                 const cell = document.createElement('td');
                 cell.textContent = '';
