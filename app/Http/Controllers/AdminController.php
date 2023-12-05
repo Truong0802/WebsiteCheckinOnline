@@ -594,14 +594,21 @@ class AdminController extends Controller
             $checkSubjectClassIsVailable = DB::table('mon_hoc')->where('MaMH',$MaMH)->where('NhomMH',$NMH)->first();
             if($checkSubjectClassIsVailable == null)
             {
-                //Chưa tồn tại lớp, tạo mới
-                $insertSubjectClass = DB::table('mon_hoc')->insert([
-                    'MaTTMH' => $MaTTMH,
-                    'MaMH' => $MaMH,
-                    'NhomMH' => $NMH,
-                    'TenMH' => $request->subjectname,
-                    'STC' => $STC
-                ]);
+                if($request->subjectname)
+                {
+                    //Chưa tồn tại lớp, tạo mới
+                    $insertSubjectClass = DB::table('mon_hoc')->insert([
+                        'MaTTMH' => $MaTTMH,
+                        'MaMH' => $MaMH,
+                        'NhomMH' => $NMH,
+                        'TenMH' => $request->subjectname,
+                        'STC' => $STC
+                    ]);
+                }
+                else
+                {
+                    return redirect()->back()->with('error-input','Nhóm học hoặc môn học chưa tồn tại, xin hãy nhập tên')->withInput();;
+                }
             }
 
             //Kiểm tra xem lớp đã tồn tại chưa
@@ -686,6 +693,11 @@ class AdminController extends Controller
                     {
                         session()->forget('DanhSachSinhVienTam');
                     }
+                    elseif(session()->has('textByScan'))
+                    {
+                            session()->forget('DanhSachSinhVienTam');
+                            session()->forget('textByScan');
+                    }
                 }
                 else
                 {
@@ -694,6 +706,11 @@ class AdminController extends Controller
                         if(session()->has('DanhSachSinhVienTam'))
                         {
                             session()->forget('DanhSachSinhVienTam');
+                        }
+                        elseif(session()->has('textByScan'))
+                        {
+                            session()->forget('DanhSachSinhVienTam');
+                            session()->forget('textByScan');
                         }
                     }
                 }
