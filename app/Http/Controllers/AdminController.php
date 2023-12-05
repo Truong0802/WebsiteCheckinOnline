@@ -473,12 +473,71 @@ class AdminController extends Controller
         if($request->student_info1 != null && $request->student_info2 != null
             && $request->student_info3 != null && $request->student_info4 != null)
         {
-            dd($request);
+            // dd($request);
+            $MonthCheck = Carbon::now()->month;
+            switch($MonthCheck)
+            {
+                case 1:
+                    $hocky = "1B";
+                    break;
+                case 2:
+                    $hocky = "2A";
+                    break;
+                case 3:
+                    $hocky = "2A";
+                    break;
+                case 4:
+                    $hocky = "2A";
+                    break;
+                case 5:
+                    $hocky = "2B";
+                    break;
+                case 6:
+                    $hocky = "2B";
+                    break;
+                case 7:
+                    $hocky = "2B";
+                    break;
+                case 8:
+                    $hocky = "1A";
+                    break;
+                case 9:
+                    $hocky = "1A";
+                    break;
+                case 10:
+                    $hocky = "1A";
+                    break;
+                case 11:
+                    $hocky = "1B";
+                    break;
+                case 12:
+                    $hocky = "1B";
+                    break;
+            }
+            $HocKyCheck = $hocky.Carbon::now()->year;
+            $CheckHKIsAvailableOrNot = DB::table('hoc_ky')->where('MaHK',$HocKyCheck)->first();
+            if($CheckHKIsAvailableOrNot == null )
+            {
+                //Thêm học kỳ nếu chưa tồn tại
+               $insertHK = DB::table('hoc_ky')->insert([
+                'MaHK'=>$HocKyCheck,
+                'HocKy' => $hocky,
+                'NamHoc' => Carbon::now()->year
+               ]);
+            }
+            else
+            {
+                //Nothing
+            }
 
             //Lấy học kỳ dựa trên ngày tháng hiện tại
-            // $temp = $request->classid.'HocKy'.$cutHK.'NamHoc'.$CutYearOfClass.'MSGV'.session()->get('teacherid').'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
-            // session()->put('textByScan');
+            // $temp = $request->classid.'HocKy'.$hocky.'NamHoc'.Carbon::now()->year.'MSGV'.session()->get('teacherid').'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
+            // session()->put('textByScan',"true");
             // session()->push('DanhSachSinhVienTam',$temp);
+        }
+        else
+        {
+            return redirect()->back();
         }
     }
 
