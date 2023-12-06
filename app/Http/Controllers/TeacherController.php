@@ -14,6 +14,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 // use Jenssegers\Agent\Facades\Agent;
 // use Stevebauman\Location\Facades\Location;
+use hisorange\BrowserDetect\Parser as Browser;
 use App\Http\Controllers\HomeController;
 class TeacherController extends Controller
 {
@@ -528,6 +529,7 @@ class TeacherController extends Controller
 
         public function DiemDanh(Request $request)
         {
+
             if(session()->get('teacherid'))
             {
                 //tạo session lưu thời gian sau khi parse từ Carbo để đối chiếu so sánh với quyền học sinh lúc bấm
@@ -618,6 +620,8 @@ class TeacherController extends Controller
                                                             'MaDanhSach' => $findlistidofstudent->MaDanhSach,
                                                             'MaBuoi' => $data["buoi"],
                                                             'NgayDiemDanh' => $timecheckin,
+                                                            "IpAddress" => $request->ip(),
+                                                            "Browser" => Browser::browserName()
                                                         ]);
                                                         return redirect()->to('/trang-chu')->with('success1','Điểm danh thành công')->withInput();
                                                     }
@@ -628,16 +632,78 @@ class TeacherController extends Controller
                                                     }
                                                 }
                                                 else{
-                                                    //Nếu thiết bị chưa điểm danh
-                                                    //Gán vào session thời gian kết thúc buổi điểm danh
-                                                    session()->put('checked',Carbon::parse($findPath->TimeOpenLink)->addMinutes(5));
-                                                     //Điểm danh
-                                                    $studentchecked = DB::table('diem_danh')->insert([
-                                                        'MaDanhSach' => $findlistidofstudent->MaDanhSach,
-                                                        'MaBuoi' => $data["buoi"],
-                                                        'NgayDiemDanh' => $timecheckin,
-                                                    ]);
-                                                    return redirect()->to('/trang-chu')->with('success1','Điểm danh thành công')->withInput();
+                                                    //Kiểm tra xem thiết bị có từng sử dụng
+                                                    $CheckIsCheating = DB::table('diem_danh')->where('IpAddress',$request->ip())->latest('NgayDiemDanh')->first();
+                                                    if($CheckIsCheating == null)
+                                                    {
+                                                        //Nếu chưa từng tồn tại
+                                                         //Gán vào session thời gian kết thúc buổi điểm danh
+                                                        session()->put('checked',Carbon::parse($findPath->TimeOpenLink)->addMinutes(5));
+                                                        //Điểm danh
+                                                        $studentchecked = DB::table('diem_danh')->insert([
+                                                            'MaDanhSach' => $findlistidofstudent->MaDanhSach,
+                                                            'MaBuoi' => $data["buoi"],
+                                                            'NgayDiemDanh' => $timecheckin,
+                                                            "IpAddress" => $request->ip(),
+                                                            "Browser" => Browser::browserName()
+                                                        ]);
+                                                        return redirect()->to('/trang-chu')->with('success1','Điểm danh thành công')->withInput();
+                                                    }
+                                                    else
+                                                    {
+                                                        //Thuật toán Ban 5 phút sau mỗi lần điểm danh trên thiết bị
+                                                        //Nếu thiết bị từng tồn tại điểm danh
+                                                        if(Carbon::parse($CheckIsCheating->NgayDiemDanh)->isToday() == true)
+                                                        {
+                                                            //Nếu vẫn trong ngày
+                                                            //
+                                                            if(Carbon::parse($CheckIsCheating->NgayDiemDanh)->greaterThan(Carbon::parse($CheckIsCheating->NgayDiemDanh)->addMinutes(5)) == false)
+                                                            {
+                                                                //Nếu vẫn chưa vượt quá 5 phút từ lần điểm danh trước đó
+                                                                if($CheckIsCheating != Browser::browserName())
+                                                                {
+                                                                    //Nếu sử dụng ứng dụng khác với ứng dụng lần trước sử dụng
+                                                                    session()->put('checked',Carbon::parse($findPath->TimeOpenLink)->addMinutes(5));
+                                                                    return back()->with('error2','Không được điểm danh 2 lần trên 1 thiết bị!')->withInput();
+                                                                }
+                                                                else
+                                                                {
+                                                                    //Nếu vẫn dùng ứng dụng lần trước sử dụng
+                                                                    session()->put('checked',Carbon::parse($findPath->TimeOpenLink)->addMinutes(5));
+                                                                    return back()->with('error2','Không được điểm danh 2 lần trên 1 thiết bị!')->withInput();
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                //Nếu đã qua 5phut - tiếp tục kiểm tra và cho điểm danh bình thường
+                                                                if(session()->has('checked'))
+                                                                {
+                                                                    //Kiểm tra hiện tại đã vượt quá thời gian điểm danh hay chưa
+                                                                    if(Carbon::now()->greaterThan(Carbon::parse(session()->get('checked'))) )
+                                                                    {
+                                                                        session()->forget('checked');
+                                                                         //Điểm danh
+                                                                        $studentchecked = DB::table('diem_danh')->insert([
+                                                                            'MaDanhSach' => $findlistidofstudent->MaDanhSach,
+                                                                            'MaBuoi' => $data["buoi"],
+                                                                            'NgayDiemDanh' => $timecheckin,
+                                                                            "IpAddress" => $request->ip(),
+                                                                            "Browser" => Browser::browserName()
+                                                                        ]);
+                                                                        return redirect()->to('/trang-chu')->with('success1','Điểm danh thành công')->withInput();
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        //Nếu thiết bị từng điểm danh trước đó chưa qua thời gian điểm danh
+                                                                        return back()->with('error2','Không được điểm danh 2 lần trên 1 thiết bị!')->withInput();
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }
+
+
                                                 }
 
                                             }
