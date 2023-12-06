@@ -428,8 +428,22 @@ class TeacherController extends Controller
                 }
                 else
                 {
-                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
-                    ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->studentname.' với mã số '.$request->mssv)->withInput();
+                    if($request->studentname == null && $request->mssv != null)
+                    {
+                        return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                        ->with('errorClassList1','Lớp không tồn tại đối tượng với mã số '.$request->mssv)->withInput();
+                    }
+                    elseif($request->studentname != null && $request->mssv == null)
+                    {
+                        return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                        ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->studentname)->withInput();
+                    }
+                    elseif($request->studentname == null && $request->mssv == null)
+                    {
+                        return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                        ->with('errorClassList1','Không có đối tượng tìm kiếm!')->withInput();
+                    }
+
                 }
                 // $searchlist = DB::table('danh_sach_sinh_vien')
                 // ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
@@ -452,8 +466,21 @@ class TeacherController extends Controller
                 }
                 if($checkTemp == null)
                 {
-                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
-                                        ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->studentname.' với mã số '.$request->mssv)->withInput();
+                    if($request->studentname == null && $request->mssv != null)
+                    {
+                        return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                        ->with('errorClassList1','Lớp không tồn tại đối tượng với mã số '.$request->mssv)->withInput();
+                    }
+                    elseif($request->studentname != null && $request->mssv == null)
+                    {
+                        return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                        ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->studentname)->withInput();
+                    }
+                    elseif($request->studentname == null && $request->mssv == null)
+                    {
+                        return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                        ->with('errorClassList1','Không có đối tượng tìm kiếm!')->withInput();
+                    }
                 }
                 return view('Teacher/student-list', ['getinfoclass' => $searchlist]);
             }
