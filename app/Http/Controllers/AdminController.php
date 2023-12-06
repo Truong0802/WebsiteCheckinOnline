@@ -774,7 +774,7 @@ class AdminController extends Controller
     }
     public function XoaKhoiDanhSach(Request $request)
     {
-        // dd($request->id);
+
         $array = session('DanhSachSinhVienTam');
         $position = array_search($request->id, $array);
         unset($array[$position]);
@@ -1192,4 +1192,62 @@ class AdminController extends Controller
             return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C','Không tồn tại danh sách cần xác nhận')->withInput();
         }
     }
+
+    public function FrmAddClassManage()
+    {
+        if(session()->has('teacherid'))
+        {
+            return view('admin/class-manager-add');
+
+        }
+
+    }
+
+    public function ConfirmAddClassManage(Request $request)
+    {
+        // dd($request);
+        if($request->student_info_MSSV != null && $request->student_info_Student_Name != null
+        && $request->student_info_Birthday != null && $request->student_info_Class != null)
+        {
+            $i=0;
+            $limit = count($request->student_info_MSSV);
+            while($i<$limit)
+            {
+                $MaLop = $request->student_info_Class[$i];
+                //Kiểm tra sinh viên có tồn tại hay không
+                $checkSVIsAvailable = DB::table('sinh_vien')->where('MSSV',$request->student_info_MSSV[$i])->first();
+                if($checkSVIsAvailable != null)
+                {
+                    //Kiểm tra xem lớp đó đã tồn tại Ban cán sự chưa
+                    $CheckManageOfClassIsAvailable = DB::table('sinh_vien')->where('MaLop', $MaLop )
+                    ->where('BanCanSu',1)->first();
+                    if($CheckManageOfClassIsAvailable == null)
+                    {
+                        //Chưa có ban cán sự => thêm mới
+                        $AddClassManage = DB::table('sinh_vien')->where('MSSV',$request->student_info_MSSV[$i])->where('MaLop', $MaLop )
+                                        ->update([
+                                            'BanCanSu' => 1
+                                        ]);
+                    }
+                    else
+                    {
+                        return redirect()->back()->with('error-inputLeader','Lớp '.$MaLop.' đã có ban cán sự!')->withInput();
+                    }
+                    $i++;
+                }
+                else
+                {
+                    return redirect()->back()->with('error-inputLeader','Không tồn tại sinh viên '.$request->student_info_MSSV[$i].' - '.$request->student_info_Student_Name[$i])->withInput();
+                }
+            }
+            return redirect()->back()->with('success-AddLeader','Thêm thành công!')->withInput();;
+        }
+        else
+        {
+            // dd('nothing');
+            return redirect()->back();
+        }
+
+    }
+
 }
