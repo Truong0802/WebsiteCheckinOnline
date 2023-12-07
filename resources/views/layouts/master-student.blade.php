@@ -231,12 +231,6 @@
         <div class="row">
             <div class="col-xs-12 col-sm-6">
                 <span class="txt-color-white">
-                    <style>
-                        .page-footer a
-                        {
-                            text-decoration: none;
-                        }
-                    </style>
                     <a class="txt-color-white" href="http://www.hutech.edu.vn/">HUTECH</a>
                 </span>
             </div>

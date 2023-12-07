@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function()
     const toggleButton = document.getElementById("toggleButton");
     const leftPanel = document.getElementById("left-panel");
     const main = document.getElementById("main");
+    const footer = document.getElementById("page-footer");
 
     toggleButton.addEventListener("click", function()
     {
