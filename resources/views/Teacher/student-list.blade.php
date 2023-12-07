@@ -728,6 +728,14 @@
                 </div>
             </div>
 
+            <?php
+                $isInClass = DB::table('danh_sach_sinh_vien')
+                            ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                            ->where('MaHK',session()->get('HKid'))
+                            ->where('MSSV',session()->get('studentid'))
+                            ->first();
+            ?>
+        @if($isInClass != null)
             <div class="col-md-12 detail">
                 <div class="class-list">
                     <?php
@@ -748,20 +756,64 @@
                             $imgAvatar = $getInfoFromObject->HinhDaiDien;
                         }
                         ?>
-                    <div class="comment-container" id="comment-container">
-                        <div id="comments-list" class="comments-list">
-                            <img src="{{asset('img/Avatar/'.$imgAvatar)}}" alt="Avatar" class="online avatar">
-                            <span id="comments-content">hello bô</span>
+
+
+                    <?php
+
+                        $getComments = DB::table('comments')
+                            ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                            ->leftJoin('sinh_vien', 'comments.MSSV', '=', 'sinh_vien.MSSV')
+                            ->leftJoin('giang_vien', 'comments.MSGV', '=', 'giang_vien.MSGV')
+                            ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                            ->where('MaHK',session()->get('HKid'))->orderBy('NgayComment','ASC')->get();
+
+                    ?>
+                    @foreach($getComments as $comment)
+                        <div class="comment-container" id="comment-container">
+
+                            <div id="comments-list" class="comments-list">
+                                        <?php
+                                            //
+
+
+                                            if($comment->HoTenSV != null)
+                                            {
+                                                $HoTen = $comment->HoTenSV;
+                                            }
+                                            else {
+                                                $HoTen = $comment->HoTenGV;
+                                            }
+
+                                        ?>
+
+                                <img src="{{asset('img/Avatar/'.$comment->HinhDaiDien)}}"  alt="Avatar" class="online avatar">
+                                <span id="comments-content"><strong>{{$HoTen}}</strong></span> &ensp;
+                                <span id="comments-content">{{$comment->NoiDung}}</span>
+
+                            </div>
+
+
+
                         </div>
-                    </div>
+                        <br/> <br/>
+                    @endforeach
                     <hr class="solid">
-                    <div class="comment-container" id="comment-container">
-                        <img src="{{asset('img/Avatar/'.$imgAvatar)}}" alt="Avatar" class="online avatar">
-                        <textarea type="text" placeholder="Thêm nhận xét vào lớp học..." id="comment-input" class="comment-input" onfocus="expandContainer(true)" onblur="expandContainer(false)"></textarea>
-                        <img onclick="addComment()" src="{{asset('/img/send.png')}}" alt="">
-                    </div>
+                        <form action="/comment" method="POST">
+                            <div class="comment-container" id="comment-container">
+                                <img src="{{asset('img/Avatar/'.$imgAvatar)}}"  alt="Avatar" class="online avatar">
+                                <textarea type="text" name="inputcomments" placeholder="Thêm nhận xét vào lớp học..." id="comment-input" class="comment-input" onfocus="expandContainer(true)" onblur="expandContainer(false)"></textarea>
+                                @error('inputcomments')
+                                    <div class="alert alert-danger">{{ $errors->first('inputcomments') }}</div>
+                                @enderror
+                                {{-- <img onclick="addComment()" src="{{asset('/img/send.png')}}" alt=""> --}}
+                                <button  src="{{asset('/img/send.png')}}" alt="">Gửi</button>
+                            </div>
+                            @csrf
+                        </form>
+
                 </div>
             </div>
+        @endif
 
             @if(session()->exists('teacherid'))
                 <button style="margin-left: 20px;" id="export-excel" class="btn btn-primary" onclick="exportToExcel()">Xuất Excel</button>

@@ -276,6 +276,7 @@ class TeacherController extends Controller
             else{
                 if(session()->exists('studentid'))
                 {
+                    //Kiểm tra trong lớp có sinh viên đang truy cập hay không
                     $getMaLop = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
                     if($getMaLop->BanCanSu != null || $getMaLop->BanCanSu != 0)
                     {
@@ -1216,5 +1217,42 @@ class TeacherController extends Controller
                 return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
                 ->with('error-row16','Không được để trống lựa chọn!')->withInput();
             }
+        }
+
+        public function AddnewComment(Request $request){
+            // dd($request);
+            $messages = [
+                'inputcomments.required' => 'Không được để trống nội dung',
+            ];
+            $validated = $request->validate([
+                'inputcomments' => 'required',
+                ], $messages);
+            if($request->inputcomments)
+            {
+                if(session()->has('studentid'))
+                {
+                    $addnewcomment = DB::table('comments')->insert([
+                        'MSSV' => session()->get('studentid'),
+                        'MSGV'=>null,
+                        'NoiDung' =>$request->inputcomments,
+                        'MaTTMH' => session()->get('danh-sach-sinh-vien-lop'),
+                        'MaHK' => session()->get('HKid'),
+                        'NgayComment' => Carbon::now()
+                    ]);
+                }
+                else if(session()->has('teacherid'))
+                {
+                    $addnewcomment = DB::table('comments')->insert([
+                        'MSSV'=>null,
+                        'MSGV' => session()->get('teacherid'),
+                        'NoiDung' =>$request->inputcomments,
+                        'MaTTMH' => session()->get('danh-sach-sinh-vien-lop'),
+                        'MaHK' => session()->get('HKid'),
+                        'NgayComment' => Carbon::now(),
+                    ]);
+                }
+            }
+
+            return redirect()->back();
         }
 }

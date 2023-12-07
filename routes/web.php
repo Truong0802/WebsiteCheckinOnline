@@ -133,3 +133,7 @@ Route::post('/chon-ban-can-su',[TeacherController::class,'CheckToPutLeader']);
 //Admin thêm ban cán sự cho lớp niên khóa
 Route::get('/bo-sung-ban-can-su',[AdminController::class,'FrmAddClassManage']);
 Route::post('/Add-ban-can-su',[AdminController::class,'ConfirmAddClassManage'])->name('addClassManage');
+
+//Phản hồi ý kiến
+
+Route::post('/comment',[TeacherController::class,'AddnewComment']);
