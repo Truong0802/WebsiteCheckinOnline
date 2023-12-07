@@ -125,17 +125,19 @@ class TeacherController extends Controller
         public function timkiem(Request $request)
         {
             if(session()->exists('teacherid') && session()->get('ChucVu') == 'GV'){
-                $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
-                $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
+                // $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
+                // $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
                 $coursename = DB::table('khoa_hoc')->where('KhoaHoc', $request->coursename)->first();
                 $courselist = DB::table('khoa_hoc')->where('KhoaHoc', $request->courselist)->first();
-
+                if($request->lecturename == null && $request->subjectname == null &&  $request->coursename == null
+                    &&$request->courselist == null && $request->classname == null)
+                {
+                    return redirect()->to('/trang-chu')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
+                }
                     $allsubject = DB::table('lich_giang_day')->where('MSGV',session()->get('teacherid'))->where('MaBuoi',1)
-                    ->when($teacherid, function ($query) use ($teacherid) {
-                        return $query->where('MSGV', $teacherid->MSGV)->distinct();
-                    })
-                    ->when($subjectname, function ($query) use ($subjectname) {
-                        return $query->where('MaTTMH', $subjectname->MaTTMH)->distinct();
+                    ->when($request->subjectname, function ($query) use ($request) {
+                        return $query->join('mon_hoc', 'mon_hoc.MaTTMH', '=', 'lich_giang_day.MaTTMH')
+                        ->where('mon_hoc.TenMH', 'like', '%'.$request->subjectname.'%')->distinct();
                     })
                     ->when($coursename, function ($query) use ($coursename) {
                         $class = DB::table('lop')->where('KhoaHoc', $coursename->KhoaHoc)->first();
@@ -145,11 +147,12 @@ class TeacherController extends Controller
                         $findclass = DB::table('lop')->where('KhoaHoc', $courselist->KhoaHoc)->first();
                         return $query->where('MaLop', $findclass->MaLop);
                     })
-                    ->when(!$teacherid && !$subjectname && !$coursename && !$courselist, function ($query) use ($request) {
-                        return $query->where('MaLop', $request->classname)->distinct();
+                    ->when($request->classname, function ($query) use ($request) {
+                        return $query->where('MaLop','like','%'.$request->classname.'%')->distinct();
                     })
                     ->paginate(5);
 
+                    // dd($allsubject);
                     $checkTemp = [];
                     foreach($allsubject as $Try)
                     {
@@ -167,17 +170,23 @@ class TeacherController extends Controller
             }
             elseif(session()->exists('teacherid') && session()->get('ChucVu') != 'GV')
             {
-                $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
-                $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
+                // $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
+                // $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
                 $coursename = DB::table('khoa_hoc')->where('KhoaHoc', $request->coursename)->first();
                 $courselist = DB::table('khoa_hoc')->where('KhoaHoc', $request->courselist)->first();
-
+                if($request->lecturename == null && $request->subjectname == null &&  $request->coursename == null
+                &&$request->courselist == null && $request->classname == null)
+                {
+                    return redirect()->to('/trang-chu')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
+                }
                     $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)
-                    ->when($teacherid, function ($query) use ($teacherid) {
-                        return $query->where('MSGV', $teacherid->MSGV)->distinct();
+                    ->when($request->lecturename, function ($query) use ($request) {
+                        return $query->join('giang_vien', 'giang_vien.MSGV', '=', 'lich_giang_day.MSGV')
+                                ->where('giang_vien.HoTenGV', 'like', '%'.$request->lecturename.'%')->distinct();
                     })
-                    ->when($subjectname, function ($query) use ($subjectname) {
-                        return $query->where('MaTTMH', $subjectname->MaTTMH)->distinct();
+                    ->when($request->subjectname, function ($query) use ($request) {
+                        return $query->join('mon_hoc', 'mon_hoc.MaTTMH', '=', 'lich_giang_day.MaTTMH')
+                        ->where('mon_hoc.TenMH', 'like', '%'.$request->subjectname.'%')->distinct();
                     })
                     ->when($coursename, function ($query) use ($coursename) {
                         $class = DB::table('lop')->where('KhoaHoc', $coursename->KhoaHoc)->first();
@@ -187,8 +196,8 @@ class TeacherController extends Controller
                         $findclass = DB::table('lop')->where('KhoaHoc', $courselist->KhoaHoc)->first();
                         return $query->where('MaLop', $findclass->MaLop);
                     })
-                    ->when(!$teacherid && !$subjectname && !$coursename && !$courselist, function ($query) use ($request) {
-                        return $query->where('MaLop', $request->classname)->distinct();
+                    ->when($request->classname, function ($query) use ($request) {
+                        return $query->where('MaLop','like','%'.$request->classname.'%')->distinct();
                     })
                     ->paginate(5);
 
