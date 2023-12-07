@@ -30,7 +30,7 @@ use Google\Service\AdExchangeBuyer\Account;
 Route::get('/',[AccountController::class,'index']);
 
 //Đăng nhập
-Route::post('/account-login',[AccountController::class,'login']);
+Route::post('/account-login',[AccountController::class,'login'])->name('login');
 
 //Đăng xuất
 Route::get('/logout',[AccountController::class,'logout']);
@@ -129,3 +129,7 @@ Route::get('/ho-so-tt-giang-day',[HomeController::class,'trangchusv']);
 
 //Giảng viên chọn ban cán sự lớp môn học
 Route::post('/chon-ban-can-su',[TeacherController::class,'CheckToPutLeader']);
+
+//Admin thêm ban cán sự cho lớp niên khóa
+Route::get('/bo-sung-ban-can-su',[AdminController::class,'FrmAddClassManage']);
+Route::post('/Add-ban-can-su',[AdminController::class,'ConfirmAddClassManage'])->name('addClassManage');

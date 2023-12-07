@@ -14,14 +14,14 @@
 			<div class="col-md-6 pr-0">
 				<div>
 					<h1 class="page-title txt-color-blueDark">
-						<i class="fa fa-lg fa-fw fa-book"></i> Danh sách sinh viên
+						<i class="fa-fw fa fa-graduation-cap"></i> Danh sách ban cán sự
 					</h1>
 				</div>
 			</div>
 		</div>
 	</div>
 
-    <form method="post" action="{{route('scanPost')}}">
+    <form method="post" action="{{route('addClassManage')}}">
         <div class="col-md-12 detail">
             <style>
                 .detail
@@ -48,43 +48,12 @@
                 }
             </style>
             <div class="class-list">
-                @if (session('error-input'))
-                    <div class="alert alert-danger text-center">{{ session('error-input') }}</div>
+                @if (session('error-inputLeader'))
+                    <div class="alert alert-danger text-center">{{ session('error-inputLeader') }}</div>
                 @endif
-                <span>
-                    <strong>HỌC PHẦN:</strong> <input id="class-name" name="subjectname" placeholder="VD: Lập trình ứng dụng với java"> <strong>( <input id="class-name" name="classname" placeholder="VD: CMP0000"> )</strong> - Nhóm: <input id="class-group" name="classgroup" placeholder="VD: 80"> - Số tín chỉ: <input id="class-name" name="STC" placeholder="VD: 3">
-                    <i class="fa-regular fa-circle-question help" id="open"></i>
-                    <div id="myModal1" class="modal">
-                        <div class="modal-content1">
-                            <span class="close"><i class="fa-solid fa-xmark"></i></span>
-                            <br>
-                            <h2>Nhập mã môn và nhóm môn vào ô</h2>
-                        </div>
-                    </div>
-                    <script>
-                        var modal = document.getElementById("myModal1");
-                        var btn1 = document.getElementById("open");
-                        var closeBtn1 = document.getElementsByClassName("close")[0];
-
-                        btn1.addEventListener("click", function()
-                        {
-                            modal.style.display = "block";
-                        });
-
-                        closeBtn1.addEventListener("click", function()
-                        {
-                            modal.style.display = "none";
-                        });
-
-                        window.addEventListener("click", function(event)
-                        {
-                            if (event.target == modal)
-                            {
-                                modal.style.display = "none";
-                            }
-                        });
-                    </script>
-                </span>
+                @if(session('success-AddLeader'))
+                    <div class="alert alert-success text-center">{{ session('success-AddLeader') }}</div>
+                @endif
                 <div class="table">
                     <table class="student-table" id="student-table">
                         <thead>
@@ -96,7 +65,7 @@
                                 <td>Tên lớp</td>
                             </tr>
                         </thead>
-                        <tbody id="tableBody"></tbody>
+                        <tbody id="tableBody2"></tbody>
                     </table>
                 </div>
             </div>
@@ -111,7 +80,7 @@
     <div class="container">
         <button class="btn btn-primary" onclick="exportToExcel()">Xuất Excel</button>
         <input type="file" id="uploadInput" accept="image/*">
-        <button class="btn btn-primary" onclick="uploadAndConvert()">Chuyển đổi</button>
+        <button class="btn btn-primary" onclick="uploadAndConvert2()">Chuyển đổi</button>
         {{-- <button class="btn btn-success" onclick="uploadAndConvert()">Thêm danh sách</button> --}}
     </div>
     <br><br><br>

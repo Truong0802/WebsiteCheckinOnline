@@ -468,13 +468,71 @@ class AdminController extends Controller
 
     public function addStudentToClassBack(Request $request)
     {
+        // dd(session()->forget('DanhSachSinhVienTam'));
         // $limit = count($request->mssv);
         // dd($request);
+        $messages = [
+            'classname.required' => 'Không được bỏ trống Mã môn học',
+            'classgroup.required' => 'Không được bỏ trống Nhóm môn học',
+        ];
+        $validated = $request->validate([
+            'classname' => 'required',
+            'classgroup' => 'required',
+        ], $messages);
+        //Mã MH
+        if(preg_match('/^[a-zA-Z0-9]*$/',$request->classname) == 1 && preg_match('/^[!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->classname) != 1)
+        {
+            $MaMH = $request->classname;
+        }
+        else
+        {
+            return redirect()->back()->with('error-input','Nhập sai mã môn học')->withInput();
+        }
+        //Nhóm MH
+        if(preg_match('/^[1-9]*$/',$request->classgroup) == 1 && preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->classgroup) != 1)
+        {
+            $NMH = $request->classgroup;
+
+        }
+        else
+        {
+            return redirect()->back()->with('error-input','Nhập sai nhóm môn học')->withInput();
+        }
+
+        //Số tín chỉ
+        if($request->STC)
+        {
+            if(preg_match('/^[1-9]*$/',$request->STC) == 1 && preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->STC) != 1)
+            {
+                $STC = $request->STC;
+
+            }
+            else
+            {
+                return redirect()->back()->with('error-input','Nhập sai số tín chỉ môn học')->withInput();
+            }
+        }
+
+
+        if($request->subjectname)
+        {
+            $tenMH = $request->subjectname;
+        }
+
+
+        if ($NMH >= 1 && $NMH <= 9) {
+            $NMH = "0".$NMH;
+        }
+        if($MaMH != null && $NMH != null)
+        {
+            $MaTTMH = $MaMH.$NMH;
+        }
         if($request->student_info_MSSV != null && $request->student_info_Student_Name != null
             && $request->student_info_Birthday != null && $request->student_info_Class != null)
         {
-            dd($request);
+            // dd($request);
             $MonthCheck = Carbon::now()->month;
+            //Kiểm tra xem tháng hiện tại thuộc học kỳ mấy
             switch($MonthCheck)
             {
                 case 1:
@@ -514,8 +572,10 @@ class AdminController extends Controller
                     $hocky = "1B";
                     break;
             }
+
             $HocKyCheck = $hocky.Carbon::now()->year;
             $CheckHKIsAvailableOrNot = DB::table('hoc_ky')->where('MaHK',$HocKyCheck)->first();
+
             if($CheckHKIsAvailableOrNot == null )
             {
                 //Thêm học kỳ nếu chưa tồn tại
@@ -530,13 +590,103 @@ class AdminController extends Controller
                 //Nothing
             }
 
-            //Lấy học kỳ dựa trên ngày tháng hiện tại
-            // $temp = $request->classid.'HocKy'.$hocky.'NamHoc'.Carbon::now()->year.'MSGV'.session()->get('teacherid').'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
-            // session()->put('textByScan',"true");
-            // session()->push('DanhSachSinhVienTam',$temp);
+            //Kiểm tra xem lớp (môn + nhóm môn có tồn tại?)
+            $checkSubjectClassIsVailable = DB::table('mon_hoc')->where('MaMH',$MaMH)->where('NhomMH',$NMH)->first();
+            if($checkSubjectClassIsVailable == null)
+            {
+                if($request->subjectname)
+                {
+                    if($request->STC)
+                    {
+                        //Chưa tồn tại lớp, tạo mới
+                        $insertSubjectClass = DB::table('mon_hoc')->insert([
+                                'MaTTMH' => $MaTTMH,
+                                'MaMH' => $MaMH,
+                                'NhomMH' => $NMH,
+                                'TenMH' => $request->subjectname,
+                                'STC' => $STC
+                            ]);
+                    }
+                    else
+                    {
+                        return redirect()->back()->with('error-input','Nhóm học hoặc môn học chưa tồn tại, xin hãy số tín chỉ')->withInput();;
+                    }
+
+                }
+                else
+                {
+                    return redirect()->back()->with('error-input','Nhóm học hoặc môn học chưa tồn tại, xin hãy nhập tên')->withInput();;
+                }
+            }
+
+            //Kiểm tra xem lớp đã tồn tại chưa
+            $checkClassIsAvailable = DB::table('lop')->where('MaLop',$request->student_info_Class[0])
+                ->first();
+            if($checkClassIsAvailable == null)
+            {
+                $NamHoc = "20".substr($request->student_info_Class[0],0,2);
+                //Kiểm tra khóa học
+                $CheckKHIsAvailable= DB::table('khoa_hoc')->where('KhoaHoc',$NamHoc)->first();
+                if($CheckKHIsAvailable == null)
+                {
+                    $insertKhoaHOC = DB::table('khoa_hoc')->insert([
+                        'KhoaHoc' => $NamHoc,
+                        'NamHocDuKien' => $NamHoc.'-'.Carbon::parse($NamHoc)->addYears(3)->year
+                    ]);
+                }
+                //Insert
+                $insertClassINDB = DB::table('lop')->insert([
+                    'MaLop' => $request->student_info_Class[0],
+                    'TenLop' => $request->student_info_Class[0],
+                    'KhoaHoc' => $NamHoc
+                ]);
+            }
+
+
+            //Kiểm tra lịch giảng dạy môn A HK B đã tồn tại hay chưa
+            $checkScheduleIsAvailable = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaHK',$HocKyCheck)->first();
+            if($checkScheduleIsAvailable == null)
+            {
+                //Nếu chưa tồn tại tạo lịch buổi 1 cho lớp
+                $stt='1';
+                $formatTime = Carbon::parse('07:30')->format('H:i');
+                $formatedTime = Carbon::now()->format('dmYHi');
+                $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
+                $insertTheClassList = DB::table('lich_giang_day')->insert([
+                    'MaNgay' => $stt.$MaTTMH.$formatedTime,
+                    'NgayDay' => Carbon::now(),
+                    'MaTTMH' => $MaTTMH,
+                    'MSGV' =>  session()->get('teacherid'),
+                    'MaLop' => $request->student_info_Class[0],
+                    'MaHK' => $HocKyCheck,
+                    'MaTietHoc' => $checkTypeTime->MaTietHoc,
+                    'MaBuoi' => $stt
+                ]);
+            }
+
+            $limit = count($request->student_info_MSSV);
+            // dd($limit);
+            $i =0;
+            while($i<$limit)
+            {
+                if($request->student_info_MSSV[$i] != null && $request->student_info_Student_Name[$i] != null
+                    && $request->student_info_Birthday[$i] != null && $request->student_info_Class[$i] != null)
+                {
+                    $temp = $MaTTMH.'HocKy'.$hocky.'NamHoc'.Carbon::now()->year.'MSGV'.session()->get('teacherid').'MSSV'.$request->student_info_MSSV[$i].'MaTTMH'.$MaTTMH.'HoTenSV'.$request->student_info_Student_Name[$i].'NgayThangNamSinh'.$request->student_info_Birthday[$i].'MaLop'.$request->student_info_Class[$i];
+                    session()->push('DanhSachSinhVienTam',$temp);
+                }
+                $i++;
+            }
+            // dd($i);
+            session()->put('textByScan',"true");
+            // dd(session()->forget('DanhSachSinhVienTam'));
+            session()->put('classAddId',$MaTTMH);
+            session()->put('HKid',$HocKyCheck);
+            return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'));
         }
         else
         {
+
             return redirect()->back();
         }
     }
@@ -544,7 +694,7 @@ class AdminController extends Controller
 //Thêm danh sách
     public function frmAddStudentList(Request $request)
     {
-        if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
+        if(session()->has('teacherid'))
         {
             if(session()->has('classAddId'))
             {
@@ -555,6 +705,11 @@ class AdminController extends Controller
                     {
                         session()->forget('DanhSachSinhVienTam');
                     }
+                    elseif(session()->has('textByScan'))
+                    {
+                            session()->forget('DanhSachSinhVienTam');
+                            session()->forget('textByScan');
+                    }
                 }
                 else
                 {
@@ -563,6 +718,11 @@ class AdminController extends Controller
                         if(session()->has('DanhSachSinhVienTam'))
                         {
                             session()->forget('DanhSachSinhVienTam');
+                        }
+                        elseif(session()->has('textByScan'))
+                        {
+                            session()->forget('DanhSachSinhVienTam');
+                            session()->forget('textByScan');
                         }
                     }
                 }
@@ -602,7 +762,7 @@ class AdminController extends Controller
 
 
 
-                $temp = $request->classid.'HocKy'.$cutHK.'NamHoc'.$CutYearOfClass.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname;
+                $temp = $request->classid.'HocKy'.$cutHK.'NamHoc'.$CutYearOfClass.'MSGV'.$checkfindnameTeacher->MSGV.'MSSV'.$request->mssv.'MaTTMH'.$MaTTMH.'HoTenSV'.$request->studentname.'NgayThangNamSinh';
                 session()->push('DanhSachSinhVienTam',$temp);
                 return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'));
             }
@@ -618,7 +778,7 @@ class AdminController extends Controller
     }
     public function XoaKhoiDanhSach(Request $request)
     {
-        // dd($request->id);
+
         $array = session('DanhSachSinhVienTam');
         $position = array_search($request->id, $array);
         unset($array[$position]);
@@ -639,100 +799,190 @@ class AdminController extends Controller
             $arrayTemp = session()->get('DanhSachSinhVienTam');
             $collection = collect($arrayTemp);
 
-            // Sắp xếp theo giá trị ASCII của phần tử sau dấu "|"
-            $sortedCollection = $collection->sortBy(function ($item) {
-                // Tách chuỗi thành mảng sử dụng dấu "|", và lấy phần tử thứ 1 (sau dấu "|") để sắp xếp
-                $parts = explode('HoTenSV', $item);
-                return $parts[1];
-            })->values();
+            // // Sắp xếp theo giá trị ASCII của phần tử sau dấu "|"
+            // $sortedCollection = $collection->sortBy(function ($item) {
+            //     // Tách chuỗi thành mảng sử dụng dấu "|", và lấy phần tử thứ 1 (sau dấu "|") để sắp xếp
+            //     $parts = explode('HoTenSV', $item);
+            //     return $parts[1];
+            // })->values();
 
-            // Chuyển Collection đã sắp xếp trở lại thành mảng
-            $sortedArray = $sortedCollection->all();
+            // // Chuyển Collection đã sắp xếp trở lại thành mảng
+            // $sortedArray = $sortedCollection->all();
 
-            // dd($sortedArray);
+            if(session()->has('textByScan'))
+            {
+                foreach(session()->get('DanhSachSinhVienTam') as $key)
+                {
+                    //Lấy Mã SV
+                    $Mssv = Str::between($key,'MSSV','MaTTMH');
+                    //Lấy họ tên SV
+                    $findStudentName = Str::between($key,'HoTenSV','NgayThangNamSinh');
+                    //Lấy Mã môn
+                    $CutClass = Str::before($key,'HocKy');
+                    //Lấy MSGV
+                    $CutMSGV = Str::between($key,'MSGV','MSSV');
+                    //Lấy Học kỳ & năm học
+                    $CutHK = Str::between($key,'HocKy','NamHoc');
+                    $CutNamHoc = Str::between($key,'NamHoc','MSGV');
+                    $MaHK = $CutHK.$CutNamHoc;
+                    $CutClassId = Str::after($key,'MaLop');
 
-            foreach(session('DanhSachSinhVienTam') as $key)
+                    //Kiểm tra sinh viên đã tồn tại tài khoản hay chưa
+                    $CheckUserIsAvailableOrNot = DB::table('sinh_vien')->where('MSSV',$Mssv)->first();
+                    if($CheckUserIsAvailableOrNot == null)
+                    {
+                        $insertDiaChi = DB::table('dia_chi')->insert([
+                            "MaDiaChi" => $Mssv.$CutClassId
+                        ]);
+
+                        $CreateNewUser = DB::table('sinh_vien')->insert([
+                            "MSSV" => $Mssv,
+                            "password" => $Mssv,
+                            "HoTenSV" => $findStudentName,
+                            "MaLop" => $CutClassId,
+                            "MaDiaChi" => $Mssv.$CutClassId,
+                            "BanCanSu" => 0
+                        ]);
+                    }
+
+
+                    //Tạo Mã Danh sách
+                    //Kiểm tra đã tồn tại danh sách hay chưa
+                    $MaDanhSachTam = $CutClass.$MaHK;
+                    $checkDBDSSV = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')
+                    ->where('MaTTMH',session()->get('classAddId'))->where('MaHK',session()->get('HKid'))->first();
+                    if($checkDBDSSV != null)
+                    {
+                        $countValidList = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')
+                        ->where('MaTTMH',session()->get('classAddId'))->where('MaHK',session()->get('HKid'))->distinct()->count('MaDanhSach');
+                        $stt = $countValidList+1;
+                    }
+                    else
+                    {
+                        //Lấy số thứ tự nếu chưa tồn tại danh sách trong học kỳ
+                        $array = session('DanhSachSinhVienTam');
+                        $position = array_search($key, $array);
+                        $stt = $position +1;
+                    }
+                    $MaDanhSach = $CutClass.$MaHK.$stt;
+
+                    //Tạo MaKQSV
+                    $MaKQSV = $Mssv.$CutClass.$MaHK;
+                    try
+                    {
+                        $InsertDanhSachKetQua = DB::table('ket_qua')->insert([
+                            'MaKQSV' => $MaKQSV
+                        ]);
+                        $InsertDanhSachSV = DB::table('danh_sach_sinh_vien')->insert([
+                            'MaDanhSach' => $MaDanhSach,
+                            'MaTTMH' => $CutClass,
+                            'MSSV' => $Mssv,
+                            'MSGV' => $CutMSGV,
+                            'MaHK' => $MaHK,
+                            'MaKQSV' => $MaKQSV
+                        ]);
+                    }
+                    catch(Exception $ex)
+                    {
+                        return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Đã tồn tại danh sách sinh viên '.$Mssv.' trong lớp này! ')->withInput();
+                    }
+
+                    //Insert TKB:
+                    $getAllLichGiangDay = DB::table('lich_giang_day')->where('MaTTMH',$CutClass)->where('MaHK',$MaHK)->get();
+                    foreach($getAllLichGiangDay as $getList)
+                    {
+                        $InsertTKB = DB::table('tkb')->insert([
+                            'MaNgay' => $getList->MaNgay,
+                            'MSSV' => $Mssv
+                        ]);
+                    }
+                }
+                session()->forget('DanhSachSinhVienTam');
+                session()->forget('textByScan');
+                return redirect()->to('/')->with('SuccessClass1','Thêm danh sách thành công!')->withInput();
+            }
+            else
             {
 
-                //Lấy Mã SV
-                $Mssv = Str::between($key,'MSSV','MaTTMH');
-                //Lấy Mã môn
-                $CutClass = Str::before($key,'HocKy');
-                //Lấy MSGV
-                $CutMSGV = Str::between($key,'MSGV','MSSV');
-                //Lấy Học kỳ & năm học
-                $CutHK = Str::between($key,'HocKy','NamHoc');
-                $CutNamHoc = Str::between($key,'NamHoc','MSGV');
-                $MaHK = $CutHK.$CutNamHoc;
-                $findHK = DB::table('hoc_ky')->where('MaHK',$MaHK)->first();
+                foreach(session()->get('DanhSachSinhVienTam') as $key)
+                {
 
-                if($findHK == null)
-                {
-                    //Nếu tìm không có thì thêm mới Học kỳ
-                    $InsertNewHK = DB::table('hoc_ky')->insert([
-                        'MaHK' => $MaHK,
-                        'HocKy' => $CutHK,
-                        'NamHoc' => $CutNamHoc
-                    ]);
-                }
+                    //Lấy Mã SV
+                    $Mssv = Str::between($key,'MSSV','MaTTMH');
+                    //Lấy Mã môn
+                    $CutClass = Str::before($key,'HocKy');
+                    //Lấy MSGV
+                    $CutMSGV = Str::between($key,'MSGV','MSSV');
+                    //Lấy Học kỳ & năm học
+                    $CutHK = Str::between($key,'HocKy','NamHoc');
+                    $CutNamHoc = Str::between($key,'NamHoc','MSGV');
+                    $MaHK = $CutHK.$CutNamHoc;
+                    $findHK = DB::table('hoc_ky')->where('MaHK',$MaHK)->first();
 
-                //Tạo Mã Danh sách
-                //Kiểm tra đã tồn tại danh sách hay chưa
-                $MaDanhSachTam = $CutClass.$MaHK;
-                $checkDBDSSV = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')->first();
-                if($checkDBDSSV != null)
-                {
-                    $countValidList = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')->distinct()->count('MaDanhSach');
-                    $stt = $countValidList+1;
-                }
-                else
-                {
-                     //Lấy số thứ tự nếu chưa tồn tại danh sách trong học kỳ
-                    $array = session('DanhSachSinhVienTam');
-                    $position = array_search($key, $array);
-                    $stt = $position +1;
-                }
-                $MaDanhSach = $CutClass.$MaHK.$stt;
+                    if($findHK == null)
+                    {
+                        //Nếu tìm không có thì thêm mới Học kỳ
+                        $InsertNewHK = DB::table('hoc_ky')->insert([
+                            'MaHK' => $MaHK,
+                            'HocKy' => $CutHK,
+                            'NamHoc' => $CutNamHoc
+                        ]);
+                    }
 
-                //Tạo MaKQSV
-                $MaKQSV = $Mssv.$CutClass.$MaHK;
-                try
-                {
-                    $InsertDanhSachKetQua = DB::table('ket_qua')->insert([
-                        'MaKQSV' => $MaKQSV
-                    ]);
+                    //Tạo Mã Danh sách
+                    //Kiểm tra đã tồn tại danh sách hay chưa
+                    $MaDanhSachTam = $CutClass.$MaHK;
+                    $checkDBDSSV = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')->first();
+                    if($checkDBDSSV != null)
+                    {
+                        $countValidList = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')->distinct()->count('MaDanhSach');
+                        $stt = $countValidList+1;
+                    }
+                    else
+                    {
+                        //Lấy số thứ tự nếu chưa tồn tại danh sách trong học kỳ
+                        $array = session('DanhSachSinhVienTam');
+                        $position = array_search($key, $array);
+                        $stt = $position +1;
+                    }
+                    $MaDanhSach = $CutClass.$MaHK.$stt;
+
+                    //Tạo MaKQSV
+                    $MaKQSV = $Mssv.$CutClass.$MaHK;
+                    try
+                    {
+                        $InsertDanhSachKetQua = DB::table('ket_qua')->insert([
+                            'MaKQSV' => $MaKQSV
+                        ]);
+                        $InsertDanhSachSV = DB::table('danh_sach_sinh_vien')->insert([
+                            'MaDanhSach' => $MaDanhSach,
+                            'MaTTMH' => $CutClass,
+                            'MSSV' => $Mssv,
+                            'MSGV' => $CutMSGV,
+                            'MaHK' => $MaHK,
+                            'MaKQSV' => $MaKQSV
+                        ]);
+                    }
+                    catch(Exception $ex)
+                    {
+                        return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Đã tồn tại danh sách sinh viên '.$Mssv.' trong lớp này! ')->withInput();
+                    }
+
+                    //Insert TKB:
+                    $getAllLichGiangDay = DB::table('lich_giang_day')->where('MaTTMH',$CutClass)->where('MaHK',$MaHK)->get();
+                    foreach($getAllLichGiangDay as $getList)
+                    {
+                        $InsertTKB = DB::table('tkb')->insert([
+                            'MaNgay' => $getList->MaNgay,
+                            'MSSV' => $Mssv
+                        ]);
+                    }
                 }
-                catch(Exception $ex)
-                {
-                    return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Đã tồn tại danh sách sinh viên '.$Mssv.' trong lớp này! ')->withInput();
-                }
-                //Insert danh sách
-                try{
-                    $InsertDanhSachSV = DB::table('danh_sach_sinh_vien')->insert([
-                        'MaDanhSach' => $MaDanhSach,
-                        'MaTTMH' => $CutClass,
-                        'MSSV' => $Mssv,
-                        'MSGV' => $CutMSGV,
-                        'MaHK' => $MaHK,
-                        'MaKQSV' => $MaKQSV
-                    ]);
-                }
-                catch(Exception $ex)
-                {
-                    return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('error-AddDSSV','Đã tồn tại danh sách sinh viên '.$Mssv.' trong lớp này! ')->withInput();
-                }
-                //Insert TKB:
-                $getAllLichGiangDay = DB::table('lich_giang_day')->where('MaTTMH',$CutClass)->where('MaHK',$MaHK)->get();
-                foreach($getAllLichGiangDay as $getList)
-                {
-                    $InsertTKB = DB::table('tkb')->insert([
-                        'MaNgay' => $getList->MaNgay,
-                        'MSSV' => $Mssv
-                    ]);
-                }
+                session()->forget('DanhSachSinhVienTam');
+                return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('success-AddDSSV','Thêm thành công');
+
             }
-            session()->forget('DanhSachSinhVienTam');
-            return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'))->with('success-AddDSSV','Thêm thành công');
+
         }
         else
         {
@@ -946,4 +1196,67 @@ class AdminController extends Controller
             return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C','Không tồn tại danh sách cần xác nhận')->withInput();
         }
     }
+
+    public function FrmAddClassManage()
+    {
+        if(session()->has('teacherid'))
+        {
+            return view('admin/class-manager-add');
+
+        }
+
+    }
+
+    public function ConfirmAddClassManage(Request $request)
+    {
+        // dd($request);
+        if($request->student_info_MSSV != null && $request->student_info_Student_Name != null
+        && $request->student_info_Birthday != null && $request->student_info_Class != null)
+        {
+            $i=0;
+            $limit = count($request->student_info_MSSV);
+            while($i<$limit)
+            {
+                if($request->student_info_MSSV[$i] != null && $request->student_info_Student_Name[$i] != null
+                    && $request->student_info_Birthday[$i] != null && $request->student_info_Class[$i] != null)
+                {
+                    $MaLop = $request->student_info_Class[$i];
+                    //Kiểm tra sinh viên có tồn tại hay không
+                    $checkSVIsAvailable = DB::table('sinh_vien')->where('MSSV',$request->student_info_MSSV[$i])->first();
+                    if($checkSVIsAvailable != null)
+                    {
+                        //Kiểm tra xem lớp đó đã tồn tại Ban cán sự chưa
+                        $CheckManageOfClassIsAvailable = DB::table('sinh_vien')->where('MaLop', $MaLop )
+                        ->where('BanCanSu',1)->first();
+                        if($CheckManageOfClassIsAvailable == null)
+                        {
+                            //Chưa có ban cán sự => thêm mới
+                            $AddClassManage = DB::table('sinh_vien')->where('MSSV',$request->student_info_MSSV[$i])->where('MaLop', $MaLop )
+                                            ->update([
+                                                'BanCanSu' => 1
+                                            ]);
+                        }
+                        else
+                        {
+                            return redirect()->back()->with('error-inputLeader','Lớp '.$MaLop.' đã có ban cán sự!')->withInput();
+                        }
+
+                    }
+                    else
+                    {
+                        return redirect()->back()->with('error-inputLeader','Không tồn tại sinh viên '.$request->student_info_MSSV[$i].' - '.$request->student_info_Student_Name[$i])->withInput();
+                    }
+                }
+                $i++;
+            }
+            return redirect()->back()->with('success-AddLeader','Đã thêm toàn bộ danh sách')->withInput();;
+        }
+        else
+        {
+
+            return redirect()->back();
+        }
+
+    }
+
 }

@@ -19,7 +19,7 @@ return [
     */
 
     'driver' => env('SESSION_DRIVER', 'file'),
-
+    // 'driver' => 'database',
     /*
     |--------------------------------------------------------------------------
     | Session Lifetime
@@ -73,6 +73,7 @@ return [
     */
 
     'connection' => env('SESSION_CONNECTION'),
+    // 'connection' => 'mysql',
 
     /*
     |--------------------------------------------------------------------------
@@ -197,5 +198,6 @@ return [
     */
 
     'same_site' => 'lax',
+    // 'same_site' => 'none',
 
 ];

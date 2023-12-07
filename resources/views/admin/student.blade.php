@@ -115,40 +115,72 @@
                                 $stt=0;
                             ?>
                             @if(session()->get('DanhSachSinhVienTam'))
-                                @foreach(session()->get('DanhSachSinhVienTam') as $key)
-                                <?php
-                                    $Mssv = Str::between($key,'MSSV','MaTTMH');
 
-                                    $findStudentName = DB::table('sinh_vien')->where('MSSV',$Mssv)->first();
+                                    @foreach(session()->get('DanhSachSinhVienTam') as $key)
+                                        @if(session()->has('textByScan'))
 
-                                    if($findStudentName == null)
-                                    {
-                                        $array = session('DanhSachSinhVienTam');
-                                        $position = array_search($key, $array);
-                                        unset($array[$position]);
-                                        session(['DanhSachSinhVienTam' => $array]);
+                                            <?php
 
-                                    }
+                                                $Mssv = Str::between($key,'MSSV','MaTTMH');
 
-                                    $CutClass = Str::before($key,'HocKy');
-                                    $findSubjectName = DB::table('mon_hoc')->where('MaTTMH',$CutClass)->first();
-                                    $CutHK = Str::between($key,'HocKy','NamHoc');
-                                    $CutNamHoc = Str::between($key,'NamHoc','MSGV');
-                                    $CutMSGV = Str::between($key,'MSGV','MSSV');
-                                    $findNameofTeacher = DB::table('giang_vien')->where('MSGV',$CutMSGV)->first();
-                                ?>
-                                    <tr>
-                                        <td>{{++$stt;}}</td>
-                                        <td>{{$Mssv}}</td>
-                                        <td>{{$findStudentName->HoTenSV}}</td>
-                                        <td>{{$findNameofTeacher->HoTenGV}}</td>
-                                        <td>{{$CutHK}} - {{$CutNamHoc}}</td>
-                                        <td>{{$findSubjectName->TenMH}}</td>
-                                        <td><a href=""><i class="fa-regular fa-eye"></a></i></td>
-                                        <td><a href="/DeleteSV?id={{$key}}">Xóa sinh viên</a></td>
-                                    </tr>
-                                @endforeach
+                                                $findStudentName = Str::between($key,'HoTenSV','NgayThangNamSinh');
 
+
+                                                $CutClass = Str::before($key,'HocKy');
+                                                $findSubjectName = DB::table('mon_hoc')->where('MaTTMH',$CutClass)->first();
+                                                $CutHK = Str::between($key,'HocKy','NamHoc');
+                                                $CutNamHoc = Str::between($key,'NamHoc','MSGV');
+                                                $CutMSGV = Str::between($key,'MSGV','MSSV');
+                                                $findNameofTeacher = DB::table('giang_vien')->where('MSGV',$CutMSGV)->first();
+                                            ?>
+                                                <tr>
+                                                    <td>{{++$stt;}}</td>
+                                                    <td>{{$Mssv}}</td>
+                                                    <td>{{$findStudentName}}</td>
+                                                    <td>{{$findNameofTeacher->HoTenGV}}</td>
+                                                    <td>{{$CutHK}} - {{$CutNamHoc}}</td>
+                                                    <td>{{$findSubjectName->TenMH}}</td>
+                                                    <td><a href=""><i class="fa-regular fa-eye"></a></i></td>
+                                                    <td><a href="/DeleteSV?id={{$key}}">Xóa sinh viên</a></td>
+                                                </tr>
+
+
+                                        @else
+
+                                            <?php
+
+                                                $Mssv = Str::between($key,'MSSV','MaTTMH');
+
+                                                $findStudentName = DB::table('sinh_vien')->where('MSSV',$Mssv)->first();
+
+                                                if($findStudentName == null)
+                                                {
+                                                    $array = session('DanhSachSinhVienTam');
+                                                    $position = array_search($key, $array);
+                                                    unset($array[$position]);
+                                                    session(['DanhSachSinhVienTam' => $array]);
+
+                                                }
+
+                                                $CutClass = Str::before($key,'HocKy');
+                                                $findSubjectName = DB::table('mon_hoc')->where('MaTTMH',$CutClass)->first();
+                                                $CutHK = Str::between($key,'HocKy','NamHoc');
+                                                $CutNamHoc = Str::between($key,'NamHoc','MSGV');
+                                                $CutMSGV = Str::between($key,'MSGV','MSSV');
+                                                $findNameofTeacher = DB::table('giang_vien')->where('MSGV',$CutMSGV)->first();
+                                            ?>
+                                            <tr>
+                                                <td>{{++$stt;}}</td>
+                                                <td>{{$Mssv}}</td>
+                                                <td>{{$findStudentName->HoTenSV}}</td>
+                                                <td>{{$findNameofTeacher->HoTenGV}}</td>
+                                                <td>{{$CutHK}} - {{$CutNamHoc}}</td>
+                                                <td>{{$findSubjectName->TenMH}}</td>
+                                                <td><a href=""><i class="fa-regular fa-eye"></a></i></td>
+                                                <td><a href="/DeleteSV?id={{$key}}">Xóa sinh viên</a></td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
                             @endif
                         </tbody>
                     </table>
