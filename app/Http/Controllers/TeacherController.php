@@ -421,7 +421,7 @@ class TeacherController extends Controller
                     ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
                     ->when($request->mssv != null, function ($query) use ($request) {
                         return $query
-                        ->where('danh_sach_sinh_vien.MSSV', $request->mssv);
+                        ->where('danh_sach_sinh_vien.MSSV', 'like', '%' .$request->mssv. '%');
                     }) ->paginate(10);
                 }
                 else if($request->mssv != null && $request->mssv != null)
@@ -431,7 +431,7 @@ class TeacherController extends Controller
                     ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
                     ->when($request->mssv != null, function ($query) use ($request) {
                         return $query
-                        ->where('danh_sach_sinh_vien.MSSV', $request->mssv);
+                        ->where('danh_sach_sinh_vien.MSSV','like', '%' . $request->mssv. '%');
                     })
                     ->when($request->studentname != null, function ($query) use ($request) {
                         return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
