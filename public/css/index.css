@@ -349,6 +349,7 @@ nav ul li a:hover
     padding: 0;
     /* padding-bottom: 52px; */
     position: relative;
+    transition: 0.05s;
 }
 
 #ribbon {
@@ -799,4 +800,44 @@ button
     {
         transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
     }
+}
+
+.toggle
+{
+    display: inline-block;
+    font-size: 25px;
+    margin: 8px 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+#left-panel
+{
+    transition: 0.05s;
+    overflow: hidden;
+}
+
+#left-panel.collapsed .login-info .name,
+#left-panel.collapsed .login-info .fa,
+#left-panel.collapsed nav ul li a span
+{
+    display: none;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+#left-panel.collapsed
+{
+    width: 50px;
+
+}
+
+#main.collapsed
+{
+    margin-left: 50px;
+}
+
+.page-footer a
+{
+    text-decoration: none;
 }

@@ -23,29 +23,32 @@
                 <img src="<?php echo asset('/img/logo2.png')?>" alt="">
             </span>
         </div>
-            <div class="project-context hidden-xs dropdown" id="dropdown">
-                <span class="label">Liên kết</span>
-                <span class="project-selector" for="dropdown-toggle" > Trang thông tin <i class="fa fa-angle-down"></i>
-                </span>
-                <ul class="dropdown-menu ng-star-inserted" id="dropdown-menu">
-                    <li>
-                      <a href="https://www.hutech.edu.vn/" target="_blank">
-                        <i class="fa-solid fa-earth-asia"></i> Trang chủ HUTECH</a>
-                    </li>
-                    <li>
-                      <a href="http://qlcntt.hutech.edu.vn/ITHUTECH/Index" target="_blank"><i class="fa-solid fa-earth-asia"></i> Trung tâm QLCNTT</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                      <a href="https://www.facebook.com/hutechuniversity" target="_blank">
-                        <i class="fa-brands fa-facebook"></i>  HUTECH</a>
-                    </li>
-                    <li>
-                      <a href="https://www.facebook.com/hutech.itcenter/" target="_blank">
-                        <i class="fa-brands fa-facebook"></i>  Trung tâm QLCNTT</a>
-                    </li>
-                </ul>
-            </div>
+        <div class="project-context hidden-xs dropdown" id="dropdown">
+            <span class="label">Liên kết</span>
+            <span class="project-selector" for="dropdown-toggle" > Trang thông tin <i class="fa fa-angle-down"></i>
+            </span>
+            <ul class="dropdown-menu ng-star-inserted" id="dropdown-menu">
+                <li>
+                  <a href="https://www.hutech.edu.vn/" target="_blank">
+                    <i class="fa-solid fa-earth-asia"></i> Trang chủ HUTECH</a>
+                </li>
+                <li>
+                  <a href="http://qlcntt.hutech.edu.vn/ITHUTECH/Index" target="_blank"><i class="fa-solid fa-earth-asia"></i> Trung tâm QLCNTT</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a href="https://www.facebook.com/hutechuniversity" target="_blank">
+                    <i class="fa-brands fa-facebook"></i>  HUTECH</a>
+                </li>
+                <li>
+                  <a href="https://www.facebook.com/hutech.itcenter/" target="_blank">
+                    <i class="fa-brands fa-facebook"></i>  Trung tâm QLCNTT</a>
+                </li>
+            </ul>
+        </div>
+        <div class="toggle pull-right" id="toggleButton">
+            <i class="fa-solid fa-bars"></i>
+        </div>
     </header>
     <aside id="left-panel">
         <div class="login-info">
@@ -65,7 +68,7 @@
                         }
                     ?>
                     <img alt="" class="online" src="{{asset('img/Avatar/'.$imgAvatar)}}">
-                    <span>
+                    <span class="name">
                         <?php
                             $studentname =session()->get('name');
                             if($studentname)
@@ -223,16 +226,10 @@
         @yield('content')
     </div>
 
-    <div class="page-footer">
+    <div class="page-footer" id="page-footer">
         <div class="row">
             <div class="col-xs-12 col-sm-6">
                 <span class="txt-color-white">
-                    <style>
-                        .page-footer a
-                        {
-                            text-decoration: none;
-                        }
-                    </style>
                     <a class="txt-color-white" href="http://www.hutech.edu.vn/">HUTECH</a>
                 </span>
             </div>

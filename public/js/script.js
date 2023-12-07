@@ -16,3 +16,17 @@ document.addEventListener('click', function(event) {
         dropdownMenu.classList.remove('show');
     }
 });
+
+document.addEventListener("DOMContentLoaded", function()
+{
+    const toggleButton = document.getElementById("toggleButton");
+    const leftPanel = document.getElementById("left-panel");
+    const main = document.getElementById("main");
+
+    toggleButton.addEventListener("click", function()
+    {
+        leftPanel.classList.toggle("collapsed");
+        main.classList.toggle("collapsed");
+        footer.classList.toggle("collapsed");
+    });
+});
