@@ -14,7 +14,7 @@
 			<div class="col-md-6 pr-0">
 				<div>
 					<h1 class="page-title txt-color-blueDark">
-						<i class="fa-fw fa fa-graduation-cap"></i> Danh sách sinh viên
+						<i class="fa fa-lg fa-fw fa-book"></i> Danh sách sinh viên
 					</h1>
 				</div>
 			</div>

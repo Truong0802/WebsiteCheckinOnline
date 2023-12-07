@@ -12,10 +12,22 @@
     <link rel="stylesheet" href="<?php echo asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')?>">
     <link href="<?php echo asset('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet')?>" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="<?php echo asset('/css/smartadmin-production.min.css')?>">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>HUTECH | DIEM DANH</title>
 </head>
 <body onload="getLocation()">
-    <div id="extr-page">
+    <div class="loader-container">
+        <div class="inner one"></div>
+        <div class="inner two"></div>
+        <div class="inner three"></div>
+    </div>
+    <script>
+        $(window).on('load', function () {
+            $(".loader-container").fadeOut(1000);
+            $(".extr-page").fadeIn(1000);
+        })
+    </script>
+    <div class="extr-page" id="extr-page">
         <header class="animated fadeInDown" id="header">
             <div id="logo-group">
                 <span id="logo">

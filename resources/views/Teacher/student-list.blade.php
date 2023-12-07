@@ -70,7 +70,7 @@
                         </div> --}}
                         <br>
                         <button type="submit" class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
-                        <a type="button" href="/xoa-tim-kiem-sv" class="btn btn-primary" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
+                        <a type="button" href="/xoa-tim-kiem-sv" class="btn btn-danger" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
                         @csrf
                     </form>
                 @endif
@@ -94,6 +94,7 @@
             @if(session()->exists('teacherid'))
                 @if($phanloailop == '1' || $phanloailop == '2')
                     @if(DB::table('diem_danh')->where('MaDanhSach','like',$listid.'%')->where('MaBuoi',9)->exists())
+                        <br>
                         <div class="container">
                             <strong>Hãy lựa chọn cách tính điểm chuyên cần:</strong>
                             <form action="/option-row-14" method="post">

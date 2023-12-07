@@ -18,7 +18,7 @@
                     <div class="col-md-6 pr-0">
                         <div>
                             <h1 class="page-title txt-color-blueDark">
-                                <i class="fa-fw fa fa-graduation-cap"></i> Danh sách lớp học
+                                <i class="fa fa-lg fa-fw fa-book"></i></i> Danh sách lớp học
                             </h1>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         </div>
                         <br>
                         <button type="submit"  class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
-                        <a type="button" href="/xoa-tim-kiem" class="btn btn-primary" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
+                        <a type="button" href="/xoa-tim-kiem" class="btn btn-danger" onclick="removeFilterData()">Xóa tất cả bộ lọc</a>
                         @csrf
                     </form>
                 @endif
