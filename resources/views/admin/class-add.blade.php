@@ -73,12 +73,9 @@
                         </div>
                     </div>
                     <br>
-                    <div class="btn-container">
-                        <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm Lớp</button>
-                        <input type="file" id="fileInput" class="custom-file-input">
-                        <a type="button" href="/confirmToAddClass" class="btn btn-primary" onclick="removeFilterData()">Xác nhận thêm</a>
-                    </div>
-
+                    <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm Lớp</button>
+                    {{-- <input type="file" id="fileInput" class="custom-file-input"> --}}
+                    <a type="button" href="/confirmToAddClass" class="btn btn-success" onclick="removeFilterData()">Xác nhận thêm</a>
                     @csrf
                 </form>
                 <div class="col-md-12 detail">
@@ -90,7 +87,6 @@
                 </style>
                 <div class="class-list">
                     {{-- <span><strong>HỌC PHẦN:</strong> Lập trình ứng dụng với Java <strong> (CMP3025) </strong> - Nhóm 2 - Số tín chỉ: 3</span> --}}
-                    <br><br>
                     <div class="table">
                         <table>
                             <thead>
