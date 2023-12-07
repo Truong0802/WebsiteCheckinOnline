@@ -31,3 +31,12 @@ document.addEventListener("DOMContentLoaded", function()
         footer.classList.toggle("collapsed");
     });
 });
+
+function expandContainer(isForcused)
+{
+    var container = document.getElementById("comment-container");
+    if(isForcused)
+        container.style.alignItems = "flex-start";
+    else
+        container.style.alignItems = "center";
+}

@@ -726,10 +726,46 @@
 
                 @endif
                 </div>
-
             </div>
+
+            <div class="col-md-12 detail">
+                <div class="class-list">
+                    <?php
+                        if(session()->exists('teacherid'))
+                        {
+                            $getInfoFromObject = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+                        }
+                        else if(session()->exists('studentid'))
+                        {
+                            $getInfoFromObject = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                        }
+
+                        if($getInfoFromObject->HinhDaiDien == null)
+                        {
+                            $imgAvatar = 'ori-ava.png';
+                        }
+                        else{
+                            $imgAvatar = $getInfoFromObject->HinhDaiDien;
+                        }
+                        ?>
+                    <div class="comment-container" id="comment-container">
+                        <div id="comments-list" class="comments-list">
+                            <img src="{{asset('img/Avatar/'.$imgAvatar)}}" alt="Avatar" class="online avatar">
+                            <span id="comments-content">hello bô</span>
+                        </div>
+                    </div>
+                    <hr class="solid">
+                    <div class="comment-container" id="comment-container">
+                        <img src="{{asset('img/Avatar/'.$imgAvatar)}}" alt="Avatar" class="online avatar">
+                        <textarea type="text" placeholder="Thêm nhận xét vào lớp học..." id="comment-input" class="comment-input" onfocus="expandContainer(true)" onblur="expandContainer(false)"></textarea>
+                        <img onclick="addComment()" src="{{asset('/img/send.png')}}" alt="">
+                    </div>
+                </div>
+            </div>
+
             @if(session()->exists('teacherid'))
                 <button style="margin-left: 20px;" id="export-excel" class="btn btn-primary" onclick="exportToExcel()">Xuất Excel</button>
+                <br><br><br><br><br><br><br>
             @endif
             <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
             <script>

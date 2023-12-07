@@ -87,14 +87,15 @@
     <form action="{{ route('ChangeInfo') }}" method="post" enctype="multipart/form-data">
         <div class="inner-class">
             <div class="row well m-3">
-
                 <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
-                    <img alt="" class="online" style = "width: 150px;" src="{{asset('img/Avatar/'.$imgAvatar)}}">
-                    <input class="img-upload" type="file" name="imagePath" size="30"/>
+                    <div class="custom-line">
+                        <img alt="" class="online" style = "width: 150px;" src="{{asset('img/Avatar/'.$imgAvatar)}}">
+                        <input class="img-upload" type="file" name="imagePath" size="30"/>
+                    </div>
+                    <div class="vertical-line"></div>
                 </div>
                 <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
                     <ul class="list-unstyled custom-list-li">
-
                         <li>Họ tên:
                             <span class="info">{{$Name}}</span>
                         </li>

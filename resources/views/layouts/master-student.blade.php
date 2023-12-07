@@ -225,13 +225,14 @@
     </script>
     <div class="main" id="main" role="main">
         @yield('content')
+
     </div>
 
     <div class="page-footer">
         <div class="row">
             <div class="col-xs-12 col-sm-6">
                 <span class="txt-color-white">
-                    <a class="txt-color-white" href="http://www.hutech.edu.vn/">HUTECH</a>
+                    <a class="txt-color-white" href="http://www.hutech.edu.vn/">HUTECH</a> - Demo điểm danh và quản lý sinh viên
                 </span>
             </div>
         </div>
