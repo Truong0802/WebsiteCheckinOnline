@@ -150,6 +150,7 @@ class TeacherController extends Controller
                     ->when($request->classname, function ($query) use ($request) {
                         return $query->where('MaLop','like','%'.$request->classname.'%')->distinct();
                     })
+                    ->latest('NgayDay')
                     ->paginate(5);
 
                     // dd($allsubject);
@@ -199,6 +200,7 @@ class TeacherController extends Controller
                     ->when($request->classname, function ($query) use ($request) {
                         return $query->where('MaLop','like','%'.$request->classname.'%')->distinct();
                     })
+                    ->latest('NgayDay')
                     ->paginate(5);
 
                     $checkTemp = [];
