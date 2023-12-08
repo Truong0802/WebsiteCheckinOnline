@@ -69,7 +69,14 @@ class InfoController extends Controller
 
                 $dataFile->move(public_path('img/Avatar'), $file_name);
 
-                $updateData['HinhDaiDien'] = $file_name;
+                if(session()->exists('studentid'))
+                {
+                    $updateData['HinhDaiDienSV'] = $file_name;
+                }
+                else if(session()->exists('teacherid'))
+                {
+                    $updateData['HinhDaiDienGV'] = $file_name;
+                }
             }
 
             $messages = [
