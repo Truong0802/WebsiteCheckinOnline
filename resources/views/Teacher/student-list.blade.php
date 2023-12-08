@@ -699,31 +699,30 @@
                             ->where('MSSV',session()->get('studentid'))
                             ->first();
             ?>
-        @if($isInClass != null || session()->has('teacherid') && session()->get('ChucVu') != 'AM')
+        @if($isInClass != null || session()->has('teacherid'))
             <div class="col-md-12 detail">
                 <div class="class-list">
                     <?php
                         if(session()->exists('teacherid'))
                         {
                             $getInfoFromObject = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+                            $imgAva= $getInfoFromObject->HinhDaiDienGV;
                         }
                         else if(session()->exists('studentid'))
                         {
                             $getInfoFromObject = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                            $imgAva= $getInfoFromObject->HinhDaiDienSV;
                         }
 
-                        if($getInfoFromObject->HinhDaiDien == null)
+                        if($imgAva == null)
                         {
                             $imgAvatar = 'ori-ava.png';
                         }
                         else{
-                            $imgAvatar = $getInfoFromObject->HinhDaiDien;
+                            $imgAvatar = $imgAva;
                         }
                         ?>
-
-
                     <?php
-
                         $getComments = DB::table('comments')
                             ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
                             ->leftJoin('sinh_vien', 'comments.MSSV', '=', 'sinh_vien.MSSV')
@@ -735,41 +734,43 @@
                     @foreach($getComments as $comment)
                         <div class="comment-container" id="comment-container">
                             <?php
-                                if($comment->HoTenSV != null)
+                                if($comment->MSSV != null)
                                 {
-                                    $Maso = $comment->MSSV;
+                                    $img = $comment->HinhDaiDienSV;
                                     $HoTen = $comment->HoTenSV;
                                 }
-                                else
+                                else if($comment->MSGV != null)
                                 {
-                                    $Maso = $comment->MSGV;
+                                    $img = $comment->HinhDaiDienGV;
                                     $HoTen = $comment->HoTenGV;
                                 }
+                                // dd($img);
                             ?>
-                            {{-- <img src="{{asset('img/Avatar/'.$comment->HinhDaiDien)}}"  alt="Avatar" class="online avatar"> --}}
+                            <img src="{{asset('img/Avatar/'.$img)}}"  alt="Avatar" class="online avatar">
                             <div class="comments-list">
-                                <span id="userName"><i class="fa-regular fa-user" style="font-size:25px; margin-right:20px; background-color:orange; border-radius: 20px;"></i><strong>{{$HoTen}}</strong> - <span id="userId">{{$Maso}}</span></span> &ensp;
+                                <span id="userName"><strong>{{$HoTen}}</strong></span> &ensp;
                                 <span id="comments-content">{{$comment->NoiDung}}</span>
                             </div>
                         </div>
                     @endforeach
                     <hr class="solid">
-                        <form action="/comment" method="POST">
-                            <div class="comment-container" id="comment-container">
-                                <img src="{{asset('img/Avatar/'.$imgAvatar)}}"  alt="Avatar" class="online avatar">
-                                <textarea type="text" name="inputcomments" placeholder="Thêm nhận xét vào lớp học..." id="comment-input" class="comment-input" onfocus="expandContainer(true)" onblur="expandContainer(false)"></textarea>
-                                @error('inputcomments')
-                                    <div class="alert alert-danger">{{ $errors->first('inputcomments') }}</div>
-                                @enderror
-                                {{-- <img onclick="addComment()" src="{{asset('/img/send.png')}}" alt=""> --}}
-                                <button  alt=""><img id="send-button" addComment()" src="{{asset('/img/send.png')}}" alt=""></button>
-                            </div>
-                            @csrf
-                        </form>
-
+                    <form action="/comment" method="POST">
+                        <div class="comment-container" id="comment-container">
+                            <img src="{{asset('img/Avatar/'.$imgAvatar)}}"  alt="Avatar" class="online avatar">
+                            <textarea type="text" name="inputcomments" placeholder="Thêm nhận xét vào lớp học..." id="comment-input" class="comment-input" onfocus="expandContainer(true)" onblur="expandContainer(false)"></textarea>
+                            @error('inputcomments')
+                                <div class="alert alert-danger">{{ $errors->first('inputcomments') }}</div>
+                            @enderror
+                            {{-- <img onclick="addComment()" src="{{asset('/img/send.png')}}" alt=""> --}}
+                            <button  alt=""><img id="send-button" addComment()" src="{{asset('/img/send.png')}}" alt=""></button>
+                        </div>
+                        @csrf
+                    </form>
                 </div>
+                <br><br><br><br><br>
             </div>
         @endif
+
 
             @if(session()->exists('teacherid'))
                 <button style="margin-left: 20px;" id="export-excel" class="btn btn-primary" onclick="exportToExcel()">Xuất Excel</button>

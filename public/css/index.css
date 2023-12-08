@@ -1004,7 +1004,6 @@ hr.solid
     align-self: center;
 }
 
-.bcs-detail .class-list,
 .class-list-detail .class-list,
 .student-list-detail .class-list,
 .class-subject-detail .class-list,
@@ -1012,6 +1011,15 @@ hr.solid
 .teacher-detail .class-list
 {
     width: 100%;
+}
+
+.bcs-detail .class-list
+{
+    width: 95%;
+}
+
+{
+    width: 90%;
 }
 
 .detail .class-list table tr .score-input
