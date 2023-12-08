@@ -65,11 +65,9 @@
                         </div>
                         {{-- <div class="col-md-4">
                             <div class="form-group">
-                                <label for="student-name">Mật khẩu:</label>
-                                <input type="text" class="form-control" id="password" name="password">
-                                @error('password')
-                                    <div class="alert alert-danger">{{ $errors->first('password') }}</div>
-                                @enderror
+                                <label for="student-name">Ngày tháng năm sinh:</label>
+                                <input type="date" class="form-control" id="birth" name="birth">
+
                             </div>
                         </div> --}}
                     </div>
