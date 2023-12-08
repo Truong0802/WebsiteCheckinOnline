@@ -837,7 +837,7 @@ class AdminController extends Controller
 
                         $CreateNewUser = DB::table('sinh_vien')->insert([
                             "MSSV" => $Mssv,
-                            "password" => $Mssv,
+                            "password" => md5($Mssv),
                             "HoTenSV" => $findStudentName,
                             "MaLop" => $CutClassId,
                             "MaDiaChi" => $Mssv.$CutClassId,
