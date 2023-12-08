@@ -984,3 +984,65 @@ hr.solid
     cursor: pointer;
     color: #adadad;
 }
+
+.active>.page-link,
+.disabled>.page-link
+{
+    padding: 0.375rem 0.75rem;
+    width: 34px;
+    height: 31px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #dee2e6
+}
+
+.pagination
+{
+    display: flex;
+    align-self: center;
+}
+
+.bcs-detail .class-list,
+.class-list-detail .class-list,
+.student-list-detail .class-list,
+.class-subject-detail .class-list,
+.class-detail .class-list,
+.teacher-detail .class-list
+{
+    width: 100%;
+}
+
+.detail .class-list table tr .score-input
+{
+    padding: 0;
+    margin: -10px;
+}
+
+.table tbody tr td input
+{
+    padding: 10px;
+    width: 51px;
+    border: none;
+}
+
+td.score-input
+{
+    position: relative;
+}
+
+.score-input input[type="text"]
+{
+    display: block;
+    padding: 10px;
+    margin: 0;
+    border: none;
+    background: transparent;
+}
+
+td.score-input input[type="text"]:focus
+{
+    outline: none;
+    border: none;
+}

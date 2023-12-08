@@ -117,7 +117,7 @@
                     <a type="button" href="/confirmToAddSubject" class="btn btn-success" onclick="removeFilterData()">Xác nhận thêm</a>
                     @csrf
                 </form>
-                <div class="col-md-12 detail">
+                <div class="col-md-12 detail class-subject-detail">
                 <style>
                     .detail
                     {

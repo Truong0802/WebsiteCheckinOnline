@@ -78,7 +78,7 @@
                     <a type="button" href="/confirmToAddClass" class="btn btn-success" onclick="removeFilterData()">Xác nhận thêm</a>
                     @csrf
                 </form>
-                <div class="col-md-12 detail">
+                <div class="col-md-12 detail class-detail">
                 <style>
                     .detail
                     {

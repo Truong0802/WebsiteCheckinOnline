@@ -237,7 +237,7 @@
                     </div>
 
             {{-- <br><br> --}}
-            <div class="col-md-12 detail">
+            <div class="col-md-12 detail bcs-detail">
                 <style>
                     .detail
                     {
@@ -257,42 +257,6 @@
                         <strong> <?php echo $classname->MaMH ?> </strong> - (Nhóm <?php echo $classname->NhomMH ?>) - Số tín chỉ: <?php echo $classname->STC ?></span>
                         <br>
                         <div class="table">
-                            <style>
-                                .detail .class-list table tr .score-input
-                                {
-                                    padding: 0;
-                                    margin: -10px;
-                                }
-
-                                .table tbody tr td input
-                                {
-                                    padding: 10px;
-                                    width: 51px;
-                                    border: none;
-                                }
-
-                                td.score-input
-                                {
-                                    position: relative;
-                                }
-
-                                .score-input input[type="text"]
-                                {
-                                    display: block;
-                                    padding: 10px;
-                                    margin: 0;
-                                    border: none;
-                                    background: transparent;
-                                }
-
-                                td.score-input input[type="text"]:focus
-                                {
-                                    outline: none;
-                                    border: none;
-                                }
-
-                            </style>
-
                             <table id="student-table">
                                 <thead>
                                     <tr>
@@ -735,7 +699,7 @@
                             ->where('MSSV',session()->get('studentid'))
                             ->first();
             ?>
-        @if($isInClass != null || session()->has('teacherid'))
+        @if($isInClass != null || session()->has('teacherid') && session()->get('ChucVu') != 'AM')
             <div class="col-md-12 detail">
                 <div class="class-list">
                     <?php
@@ -773,20 +737,21 @@
                             <?php
                                 if($comment->HoTenSV != null)
                                 {
+                                    $Maso = $comment->MSSV;
                                     $HoTen = $comment->HoTenSV;
                                 }
                                 else
                                 {
+                                    $Maso = $comment->MSGV;
                                     $HoTen = $comment->HoTenGV;
                                 }
                             ?>
-                            <img src="{{asset('img/Avatar/'.$comment->HinhDaiDien)}}"  alt="Avatar" class="online avatar">
+                            {{-- <img src="{{asset('img/Avatar/'.$comment->HinhDaiDien)}}"  alt="Avatar" class="online avatar"> --}}
                             <div class="comments-list">
-                                <span id="userName"><strong>{{$HoTen}}</strong></span> &ensp;
+                                <span id="userName"><i class="fa-regular fa-user" style="font-size:25px; margin-right:20px; background-color:orange; border-radius: 20px;"></i><strong>{{$HoTen}}</strong> - <span id="userId">{{$Maso}}</span></span> &ensp;
                                 <span id="comments-content">{{$comment->NoiDung}}</span>
                             </div>
                         </div>
-                        <br/> <br/>
                     @endforeach
                     <hr class="solid">
                         <form action="/comment" method="POST">
