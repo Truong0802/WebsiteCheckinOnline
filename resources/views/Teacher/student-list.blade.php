@@ -742,18 +742,20 @@
                         if(session()->exists('teacherid'))
                         {
                             $getInfoFromObject = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+                            $imgAva= $getInfoFromObject->HinhDaiDienGV;
                         }
                         else if(session()->exists('studentid'))
                         {
                             $getInfoFromObject = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                            $imgAva= $getInfoFromObject->HinhDaiDienSV;
                         }
 
-                        if($getInfoFromObject->HinhDaiDien == null)
+                        if($imgAva == null)
                         {
                             $imgAvatar = 'ori-ava.png';
                         }
                         else{
-                            $imgAvatar = $getInfoFromObject->HinhDaiDien;
+                            $imgAvatar = $imgAva;
                         }
                         ?>
 
@@ -771,16 +773,19 @@
                     @foreach($getComments as $comment)
                         <div class="comment-container" id="comment-container">
                             <?php
-                                if($comment->HoTenSV != null)
+                                if($comment->MSSV != null)
                                 {
+                                    $img = $comment->HinhDaiDienSV;
                                     $HoTen = $comment->HoTenSV;
                                 }
-                                else
+                                else if($comment->MSGV != null)
                                 {
+                                    $img = $comment->HinhDaiDienGV;
                                     $HoTen = $comment->HoTenGV;
                                 }
+                                // dd($img);
                             ?>
-                            <img src="{{asset('img/Avatar/'.$comment->HinhDaiDien)}}"  alt="Avatar" class="online avatar">
+                            <img src="{{asset('img/Avatar/'.$img)}}"  alt="Avatar" class="online avatar">
                             <div class="comments-list">
                                 <span id="userName"><strong>{{$HoTen}}</strong></span> &ensp;
                                 <span id="comments-content">{{$comment->NoiDung}}</span>

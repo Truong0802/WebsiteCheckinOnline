@@ -59,18 +59,20 @@
                         if(session()->exists('teacherid'))
                         {
                             $getInfoFromObject = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+                            $imgAva= $getInfoFromObject->HinhDaiDienGV;
                         }
                         else if(session()->exists('studentid'))
                         {
                             $getInfoFromObject = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                            $imgAva= $getInfoFromObject->HinhDaiDienSV;
                         }
 
-                        if($getInfoFromObject->HinhDaiDien == null)
+                        if($imgAva == null)
                         {
                             $imgAvatar = 'ori-ava.png';
                         }
                         else{
-                            $imgAvatar = $getInfoFromObject->HinhDaiDien;
+                            $imgAvatar = $imgAva;
                         }
                     ?>
                     <img alt="" class="online" src="{{asset('img/Avatar/'.$imgAvatar)}}">
