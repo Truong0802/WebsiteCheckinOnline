@@ -944,3 +944,41 @@ hr.solid
     position: relative;
     top: 21px;
 }
+
+.detail
+{
+    grid-template-columns: 15fr;
+}
+
+.class-list
+{
+    width: 80%;
+}
+
+#class-name
+{
+    border: none;
+    width: 290px;
+}
+
+#class-id
+{
+    border: none;
+    width: 11%;
+}
+
+#class-group
+{
+    border: none;
+    width: 5.5%;
+}
+#class-num
+{
+    border: none;
+    width: 8%;
+}
+.help
+{
+    cursor: pointer;
+    color: #adadad;
+}

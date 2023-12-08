@@ -38,7 +38,7 @@
     </style>
 
     <div class="inner-class">
-        <div class="row well m-3">
+        <div class="row well m-3 info-container">
             <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
                 <?php
 
@@ -50,7 +50,7 @@
                         $imgAvatar = $getInfoFromObject->HinhDaiDien;
                     }
                 ?>
-                <img alt="" class="online img-responsive" style = "width: 150px;" style="margin:auto" src="{{asset('img/Avatar/'.$imgAvatar)}}">
+                <img alt="" class="online img-responsive" style = "width: 250px;" style="margin:auto" src="{{asset('img/Avatar/'.$imgAvatar)}}">
             </div>
             <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
                 <ul class="list-unstyled custom-list-li">
