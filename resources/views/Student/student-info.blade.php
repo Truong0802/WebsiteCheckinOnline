@@ -42,13 +42,27 @@
             <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
                 <?php
 
-                    if($getInfoFromObject->HinhDaiDien == null)
+                    if(session()->exists('studentid'))
                     {
-                        $imgAvatar = 'ori-ava.png';
+                        if($getInfoFromObject->HinhDaiDienSV == null)
+                        {
+                            $imgAvatar = 'ori-ava.png';
+                        }
+                        else{
+                            $imgAvatar = $getInfoFromObject->HinhDaiDienSV;
+                        }
                     }
-                    else{
-                        $imgAvatar = $getInfoFromObject->HinhDaiDien;
+                    else if(session()->exists('teacherid'))
+                    {
+                        if($getInfoFromObject->HinhDaiDienGV == null)
+                        {
+                            $imgAvatar = 'ori-ava.png';
+                        }
+                        else{
+                            $imgAvatar = $getInfoFromObject->HinhDaiDienGV;
+                        }
                     }
+
                 ?>
                 <img alt="" class="online img-responsive" style = "width: 250px;" style="margin:auto" src="{{asset('img/Avatar/'.$imgAvatar)}}">
             </div>

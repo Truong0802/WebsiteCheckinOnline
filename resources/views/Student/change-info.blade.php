@@ -53,12 +53,12 @@
 
                 $NienKhoa = DB::table('khoa_hoc')->where('KhoaHoc',$getIdNienKhoa->KhoaHoc)->first();
                 $getNameOfDepartment = null;
-                if($dataBefore->HinhDaiDien ==null )
+                if($dataBefore->HinhDaiDienSV ==null )
                 {
                     $imgAvatar = 'ori-ava.png';
                 }
                 else {
-                    $imgAvatar = $dataBefore->HinhDaiDien;
+                    $imgAvatar = $dataBefore->HinhDaiDienSV;
                 }
 
             }
@@ -72,12 +72,12 @@
                     //dd($getNameOfDepartment);
                     $NienKhoa = null;
                     $ClassId = null;
-                    if($dataBefore->HinhDaiDien ==null )
+                    if($dataBefore->HinhDaiDienGV ==null )
                     {
                         $imgAvatar = 'ori-ava.png';
                     }
                     else {
-                        $imgAvatar = $dataBefore->HinhDaiDien;
+                        $imgAvatar = $dataBefore->HinhDaiDienGV;
                     }
                 }
 
