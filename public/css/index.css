@@ -892,7 +892,7 @@ button
     background-color: #0056b3;
 }
 
-.comment-container img
+.comment-container #send-button
 {
     cursor: pointer;
     margin-left: 15px;
@@ -924,4 +924,23 @@ hr.solid
 {
     display: flex;
     align-self: center;
+    flex-direction: column;
+}
+
+.comments-list span
+{
+    padding-top: 0;
+}
+
+.comment-container button
+{
+    background-color: #fff;
+    color: white;
+    border: none;
+}
+
+#userName
+{
+    position: relative;
+    top: 21px;
 }
