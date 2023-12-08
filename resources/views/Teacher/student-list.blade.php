@@ -237,7 +237,7 @@
                     </div>
 
             {{-- <br><br> --}}
-            <div class="col-md-12 detail">
+            <div class="col-md-12 detail bcs-detail">
                 <style>
                     .detail
                     {
@@ -257,42 +257,6 @@
                         <strong> <?php echo $classname->MaMH ?> </strong> - (Nhóm <?php echo $classname->NhomMH ?>) - Số tín chỉ: <?php echo $classname->STC ?></span>
                         <br>
                         <div class="table">
-                            <style>
-                                .detail .class-list table tr .score-input
-                                {
-                                    padding: 0;
-                                    margin: -10px;
-                                }
-
-                                .table tbody tr td input
-                                {
-                                    padding: 10px;
-                                    width: 51px;
-                                    border: none;
-                                }
-
-                                td.score-input
-                                {
-                                    position: relative;
-                                }
-
-                                .score-input input[type="text"]
-                                {
-                                    display: block;
-                                    padding: 10px;
-                                    margin: 0;
-                                    border: none;
-                                    background: transparent;
-                                }
-
-                                td.score-input input[type="text"]:focus
-                                {
-                                    outline: none;
-                                    border: none;
-                                }
-
-                            </style>
-
                             <table id="student-table">
                                 <thead>
                                     <tr>
@@ -758,10 +722,7 @@
                             $imgAvatar = $imgAva;
                         }
                         ?>
-
-
                     <?php
-
                         $getComments = DB::table('comments')
                             ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
                             ->leftJoin('sinh_vien', 'comments.MSSV', '=', 'sinh_vien.MSSV')
@@ -791,25 +752,25 @@
                                 <span id="comments-content">{{$comment->NoiDung}}</span>
                             </div>
                         </div>
-                        <br/> <br/>
                     @endforeach
                     <hr class="solid">
-                        <form action="/comment" method="POST">
-                            <div class="comment-container" id="comment-container">
-                                <img src="{{asset('img/Avatar/'.$imgAvatar)}}"  alt="Avatar" class="online avatar">
-                                <textarea type="text" name="inputcomments" placeholder="Thêm nhận xét vào lớp học..." id="comment-input" class="comment-input" onfocus="expandContainer(true)" onblur="expandContainer(false)"></textarea>
-                                @error('inputcomments')
-                                    <div class="alert alert-danger">{{ $errors->first('inputcomments') }}</div>
-                                @enderror
-                                {{-- <img onclick="addComment()" src="{{asset('/img/send.png')}}" alt=""> --}}
-                                <button  alt=""><img id="send-button" addComment()" src="{{asset('/img/send.png')}}" alt=""></button>
-                            </div>
-                            @csrf
-                        </form>
-
+                    <form action="/comment" method="POST">
+                        <div class="comment-container" id="comment-container">
+                            <img src="{{asset('img/Avatar/'.$imgAvatar)}}"  alt="Avatar" class="online avatar">
+                            <textarea type="text" name="inputcomments" placeholder="Thêm nhận xét vào lớp học..." id="comment-input" class="comment-input" onfocus="expandContainer(true)" onblur="expandContainer(false)"></textarea>
+                            @error('inputcomments')
+                                <div class="alert alert-danger">{{ $errors->first('inputcomments') }}</div>
+                            @enderror
+                            {{-- <img onclick="addComment()" src="{{asset('/img/send.png')}}" alt=""> --}}
+                            <button  alt=""><img id="send-button" addComment()" src="{{asset('/img/send.png')}}" alt=""></button>
+                        </div>
+                        @csrf
+                    </form>
                 </div>
+                <br><br><br><br><br>
             </div>
         @endif
+
 
             @if(session()->exists('teacherid'))
                 <button style="margin-left: 20px;" id="export-excel" class="btn btn-primary" onclick="exportToExcel()">Xuất Excel</button>

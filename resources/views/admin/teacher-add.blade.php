@@ -110,7 +110,7 @@
 
                     @csrf
                 </form>
-                <div class="col-md-12 detail">
+                <div class="col-md-12 detail teacher-detail">
                 <style>
                     .detail
                     {

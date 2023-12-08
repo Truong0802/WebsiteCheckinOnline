@@ -35,7 +35,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="class-name">Tên lớp:</label>
-                                    <input type="text" class="form-control" id="class-name" name="classname">
+                                    <input type="text" class="form-control" id="class-Name" name="classname">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -92,8 +92,7 @@
                 @endif
             </div>
 
-
-            <div class="col-md-12 detail">
+            <div class="col-md-12 detail class-list-detail">
                 <div class="class-list">
                     <table>
                         <thead>
@@ -177,9 +176,8 @@
             </div>
             @if($getallsubject != null)
             {{-- Phân trang dùng laravel --}}
-
-                    {{ $getallsubject->appends(request()->url())->links('pagination::bootstrap-4') }}
-
+                {{ $getallsubject->appends(request()->url())->links('pagination::bootstrap-4') }}
+                <br><br><br><br><br><br>
             @endif
                 {{-- <div class="text-center">
                     <div class="pagination">
@@ -192,7 +190,6 @@
                         <input type="hidden" name="limitstart" value="0">
                     </div>
                 </div> --}}
-
                 <?php
                     if(session()->exists('teacherid') )
                     {
@@ -214,7 +211,6 @@
                                     <a class="btn-change" type="button" href="/xac-nhan-nguoi-dung">Đi thay đổi</a>
                                     <button class="btn-primary" onclick = "closePopup()">Đóng</button>
                                 </div>
-
                                 <script>
                                     const popup = document.getElementById("popup");
                                     function showPopup()
@@ -229,9 +225,7 @@
                                 </script>
                             </div>
                         @else
-
                         @endif
-
                     @endif
 
         </div>

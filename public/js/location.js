@@ -7,7 +7,7 @@ const getLocation = () =>
             {
                 if (permissionStatus.state === 'granted')
                 {
-                    alert('Trình duyệt đã được cấp quyền truy cập vị trí.');
+                    // alert('Trình duyệt đã được cấp quyền truy cập vị trí.');
                     }
                     else if (permissionStatus.state === 'prompt')
                     {
