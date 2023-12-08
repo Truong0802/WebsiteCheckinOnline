@@ -158,8 +158,8 @@
                                         </section>
                                     </fieldset>
                                     <footer>
-                                        {{-- <button disabled id="login-btn" class="btn btn-primary" type="submit"> Đăng nhập </button> --}}
-                                        <button id="login-btn" class="btn btn-primary" type="submit"> Đăng nhập </button>
+                                        <button disabled id="login-btn" class="btn btn-primary" type="submit"> Đăng nhập </button>
+                                        {{-- <button id="login-btn" class="btn btn-primary" type="submit"> Đăng nhập </button> --}}
                                     </footer>
                                     @csrf
                             </form>
@@ -187,6 +187,6 @@
             </div>
         </div>
     </div>
-    {{-- <script src="<?php echo asset('/js/location.js') ?>"></script> --}}
+    <script src="<?php echo asset('/js/location.js') ?>"></script>
 </body>
 </html>

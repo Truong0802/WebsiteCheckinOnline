@@ -785,9 +785,6 @@
                                 <span id="userName"><strong>{{$HoTen}}</strong></span> &ensp;
                                 <span id="comments-content">{{$comment->NoiDung}}</span>
                             </div>
-
-
-
                         </div>
                         <br/> <br/>
                     @endforeach
