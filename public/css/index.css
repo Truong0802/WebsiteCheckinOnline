@@ -972,11 +972,13 @@ hr.solid
     border: none;
     width: 5.5%;
 }
+
 #class-num
 {
     border: none;
     width: 8%;
 }
+
 .help
 {
     cursor: pointer;
