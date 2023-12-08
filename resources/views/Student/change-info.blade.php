@@ -89,7 +89,7 @@
             <div class="row well m-3">
                 <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
                     <div class="custom-line">
-                        <img alt="" class="online" style = "width: 150px;" src="{{asset('img/Avatar/'.$imgAvatar)}}">
+                        <img alt="" class="online" style = "width: 200px;" src="{{asset('img/Avatar/'.$imgAvatar)}}">
                         <input class="img-upload" type="file" name="imagePath" size="30"/>
                     </div>
                     <div class="vertical-line"></div>

@@ -40,3 +40,25 @@ function expandContainer(isForcused)
     else
         container.style.alignItems = "center";
 }
+
+var modal = document.getElementById("myModal1");
+var btn1 = document.getElementById("open");
+var closeBtn1 = document.getElementsByClassName("close")[0];
+
+btn1.addEventListener("click", function()
+{
+	modal.style.display = "block";
+});
+
+closeBtn1.addEventListener("click", function()
+{
+	modal.style.display = "none";
+});
+
+window.addEventListener("click", function(event)
+{
+	if (event.target == modal)
+    {
+		modal.style.display = "none";
+	}
+});

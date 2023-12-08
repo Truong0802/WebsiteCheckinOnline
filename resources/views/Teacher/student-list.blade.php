@@ -735,7 +735,7 @@
                             ->where('MSSV',session()->get('studentid'))
                             ->first();
             ?>
-        @if($isInClass != null)
+        @if($isInClass != null || session()->has('teacherid'))
             <div class="col-md-12 detail">
                 <div class="class-list">
                     <?php
@@ -770,26 +770,20 @@
                     ?>
                     @foreach($getComments as $comment)
                         <div class="comment-container" id="comment-container">
-
-                            <div id="comments-list" class="comments-list">
-                                        <?php
-                                            //
-
-
-                                            if($comment->HoTenSV != null)
-                                            {
-                                                $HoTen = $comment->HoTenSV;
-                                            }
-                                            else {
-                                                $HoTen = $comment->HoTenGV;
-                                            }
-
-                                        ?>
-
-                                <img src="{{asset('img/Avatar/'.$comment->HinhDaiDien)}}"  alt="Avatar" class="online avatar">
-                                <span id="comments-content"><strong>{{$HoTen}}</strong></span> &ensp;
+                            <?php
+                                if($comment->HoTenSV != null)
+                                {
+                                    $HoTen = $comment->HoTenSV;
+                                }
+                                else
+                                {
+                                    $HoTen = $comment->HoTenGV;
+                                }
+                            ?>
+                            <img src="{{asset('img/Avatar/'.$comment->HinhDaiDien)}}"  alt="Avatar" class="online avatar">
+                            <div class="comments-list">
+                                <span id="userName"><strong>{{$HoTen}}</strong></span> &ensp;
                                 <span id="comments-content">{{$comment->NoiDung}}</span>
-
                             </div>
 
 
@@ -806,7 +800,7 @@
                                     <div class="alert alert-danger">{{ $errors->first('inputcomments') }}</div>
                                 @enderror
                                 {{-- <img onclick="addComment()" src="{{asset('/img/send.png')}}" alt=""> --}}
-                                <button  src="{{asset('/img/send.png')}}" alt="">Gửi</button>
+                                <button  alt=""><img id="send-button" addComment()" src="{{asset('/img/send.png')}}" alt=""></button>
                             </div>
                             @csrf
                         </form>
