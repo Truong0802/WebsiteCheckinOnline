@@ -271,9 +271,7 @@ class AdminController extends Controller
                 {
                     $stt='1';
                     $formatTime = $datetimeConvert->format('H:i');
-                    $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
-                    if($checkTypeTime != null)
-                    {
+
                         $formatCheckDate1 = $dateEndConvert->format('d-m-y');
                         $formatCheckDate = $datetimeConvert->format('d-m-y');
 
@@ -283,12 +281,6 @@ class AdminController extends Controller
                         }
 
                         $formatTimeEnd = $dateEndConvert->format('H:i');
-                        $checkTypeTimeEnd = DB::table('tiet_hoc')
-                                            ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
-                        if($checkTypeTimeEnd == null )
-                        {
-                            return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
-                        }
 
 
 
@@ -324,16 +316,11 @@ class AdminController extends Controller
                         }
                         catch(Exception $ex)
                         {
-                            // dd($formatTimeEnd);
-                            // dd($ex);
+
                             return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
 
                         }
-                    }
-                    else
-                    {
-                        return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
-                    }
+
 
                 }
                 else{
