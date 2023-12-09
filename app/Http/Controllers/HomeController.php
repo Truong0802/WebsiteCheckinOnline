@@ -41,7 +41,7 @@ class HomeController extends Controller
                     {
 
                         // dd($firstsubjectid);
-                            $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaBuoi',1)->latest('NgayDay')->distinct()->paginate(5);
+                            $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaBuoi',1)->latest('NgayDay')->distinct()->paginate(15);
                             if($allsubject != null)
                             {
                                 return view('Teacher/class-list',['getallsubject' => $allsubject]);

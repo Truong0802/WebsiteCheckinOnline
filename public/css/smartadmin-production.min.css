@@ -12186,7 +12186,8 @@ aside {
     padding: 0;
     padding-bottom: 150px;
     min-height: 500px;
-    position: relative
+    position: relative;
+    transition: all 0.25s ease;
 }
 
 #ribbon {

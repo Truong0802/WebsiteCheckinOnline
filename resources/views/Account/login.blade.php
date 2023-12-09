@@ -203,6 +203,7 @@
             </div>
         </div>
         <script src="<?php echo asset('/js/location.js'); ?>"></script>
+        <script src="<?php echo asset('/js/script.js'); ?>"></script>
         <script>
             function showPassword() {
                 const passwordField = document.getElementById('passwordInput');

@@ -817,6 +817,14 @@ button
     transition: all 0.2s ease;
 }
 
+#left-panel .login-info .name,
+#left-panel .login-info .fa,
+#left-panel nav ul li a span
+{
+    overflow: auto;
+    transition: all 0.002s ease;
+}
+
 #left-panel.collapsed .login-info .name,
 #left-panel.collapsed .login-info .fa,
 #left-panel.collapsed nav ul li a span

@@ -46,13 +46,13 @@ class TeacherController extends Controller
                     ->where('MSGV',$teacherid)
                     ->where('MaTTMH',$request->lop)
                     ->latest('NgayDay')
-                    ->distinct()->paginate(5);
+                    ->distinct()->paginate(15);
                 }
                 else{
                     if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
                     {
                         $teacherid = session()->get('teacherid');
-                        $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)->latest('NgayDay')->paginate(5);
+                        $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)->latest('NgayDay')->paginate(15);
                     }
                     else
                     {
@@ -93,7 +93,7 @@ class TeacherController extends Controller
                                     ->where('lich_giang_day.MaBuoi', '=', 1);
                             })
                             ->latest('MaHK')
-                            ->paginate(5);
+                            ->paginate(15);
                     }
                     else
                     {
@@ -109,7 +109,7 @@ class TeacherController extends Controller
                                     ->orWhereNull('danh_sach_sinh_vien.BanCanSuLop');
                             })
                         ->where('danh_sach_sinh_vien.MSSV',session()->get('studentid'))
-                        ->distinct()->paginate(5);
+                        ->distinct()->paginate(15);
                     }
 
 
@@ -151,7 +151,7 @@ class TeacherController extends Controller
                         return $query->where('MaLop','like','%'.$request->classname.'%')->distinct();
                     })
                     ->latest('NgayDay')
-                    ->paginate(5);
+                    ->paginate(15);
 
                     // dd($allsubject);
                     $checkTemp = [];
@@ -201,7 +201,7 @@ class TeacherController extends Controller
                         return $query->where('MaLop','like','%'.$request->classname.'%')->distinct();
                     })
                     ->latest('NgayDay')
-                    ->paginate(5);
+                    ->paginate(15);
 
                     $checkTemp = [];
                     foreach($allsubject as $Try)
@@ -417,7 +417,7 @@ class TeacherController extends Controller
                     ->when($request->studentname != null, function ($query) use ($request) {
                         return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
                             ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
-                    }) ->paginate(10);
+                    }) ->paginate(15);
                 }
                 else if($request->mssv != null)
                 {
@@ -427,7 +427,7 @@ class TeacherController extends Controller
                     ->when($request->mssv != null, function ($query) use ($request) {
                         return $query
                         ->where('danh_sach_sinh_vien.MSSV', 'like', '%' .$request->mssv. '%');
-                    }) ->paginate(10);
+                    }) ->paginate(15);
                 }
                 else if($request->mssv != null && $request->mssv != null)
                 {
@@ -441,7 +441,7 @@ class TeacherController extends Controller
                     ->when($request->studentname != null, function ($query) use ($request) {
                         return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
                             ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
-                    }) ->paginate(10);
+                    }) ->paginate(15);
                 }
                 else
                 {

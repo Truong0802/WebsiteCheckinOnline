@@ -62,3 +62,11 @@ window.addEventListener("click", function(event)
 		modal.style.display = "none";
 	}
 });
+
+const inputs = document.querySelectorAll('input');
+
+inputs.forEach(input =>
+{
+    input.setAttribute('autocomplete', 'off')
+    input.setAttribute('autocapitalize', 'off')
+})
