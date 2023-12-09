@@ -699,7 +699,7 @@
                             ->where('MSSV',session()->get('studentid'))
                             ->first();
             ?>
-        @if($isInClass != null || session()->has('teacherid'))
+        @if($isInClass != null || session()->has('teacherid') && session()->get('ChucVu') != 'AM')
             <div class="col-md-12 detail">
                 <div class="class-list">
                     <?php
