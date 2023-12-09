@@ -595,13 +595,20 @@ class AdminController extends Controller
                     if($request->STC)
                     {
                         //Chưa tồn tại lớp, tạo mới
-                        $insertSubjectClass = DB::table('mon_hoc')->insert([
+                        try{
+                            $insertSubjectClass = DB::table('mon_hoc')->insert([
                                 'MaTTMH' => $MaTTMH,
                                 'MaMH' => $MaMH,
                                 'NhomMH' => $NMH,
                                 'TenMH' => $request->subjectname,
                                 'STC' => $STC
                             ]);
+                        }
+                        catch(Exception $ex)
+                        {
+                            return redirect()->back()->with('error-input','Lỗi nhập liệu thông tin môn học')->withInput();
+                        }
+
                     }
                     else
                     {
