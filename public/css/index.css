@@ -838,6 +838,11 @@ button
     transition: all 0.05s ease;
 }
 
+.page-footer
+{
+    margin-top: 50px;
+}
+
 .page-footer a
 {
     text-decoration: none;
@@ -852,6 +857,7 @@ button
 
 .comment-container
 {
+    position: relative;
     display: flex;
     align-items: center;
     margin-bottom: 20px;
@@ -867,7 +873,7 @@ button
 
 .comment-input
 {
-    width: 900px;
+    width: 700px;
     height: 46px;
     padding: 12px;
     border-radius: 50px;
@@ -894,8 +900,9 @@ button
 
 .comment-container #send-button
 {
+    display: inline-block;
     cursor: pointer;
-    margin-left: 15px;
+    margin-left: 5px;
     width: 30px;
     height: 30px;
 }
@@ -903,6 +910,7 @@ button
 .comment-container .avatar
 {
     border: 1px solid #000;
+    transition: all 0.3s ease;
 }
 
 .comment-input:focus
@@ -910,6 +918,7 @@ button
     border: 2px solid #ff2727;
     height: 100px;
     border-radius: 20px;
+    transition: all 0.3s ease;
 }
 
 hr.solid
@@ -942,7 +951,13 @@ hr.solid
 #userName
 {
     position: relative;
-    top: 21px;
+    top: 10px;
+}
+
+#comments-content
+{
+    position: relative;
+    top: -15px;
 }
 
 .detail
@@ -952,6 +967,7 @@ hr.solid
 
 .class-list
 {
+    position: absolute;
     width: 80%;
 }
 
@@ -1053,4 +1069,68 @@ td.score-input input[type="text"]:focus
 {
     outline: none;
     border: none;
+}
+
+.comment-group
+{
+    display: flex;
+    align-items: center;
+    margin-left: 50px;
+}
+
+@media (max-width: 992px)
+{
+    #main
+    {
+        width: 90%;
+    }
+
+    table
+    {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    table tbody
+    {
+        display: table;
+        width: 100%;
+    }
+
+    .class-list
+    {
+        width: 80%;
+    }
+
+    .bcs-detail .class-list
+    {
+        width: 75%;
+    }
+
+    .comment-input
+    {
+        width: 500px;
+    }
+
+    .student-table
+    {
+        width: 65%;
+    }
+
+    .comment-container .comment-input,
+    hr .solid
+    {
+        width: 50%;
+    }
+}
+
+@media (max-width: 768px)
+{
+
+}
+
+@media (max-width: 480px)
+{
+
 }

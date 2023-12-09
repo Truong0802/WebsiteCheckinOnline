@@ -141,3 +141,9 @@
         transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
     }
 }
+
+.alert-danger
+{
+    font-weight: normal;
+    align-items: flex-start;
+}

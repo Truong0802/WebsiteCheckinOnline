@@ -1,5 +1,5 @@
 <?php
-    use Carbon\carbon;
+use Carbon\carbon;
 ?>
 
 @extends('layouts.master-student')
@@ -32,180 +32,179 @@
         </div>
 
         <style>
-            .inner-class .custom-info
-            {
+            .inner-class .custom-info {
                 margin-left: 20px;
             }
 
-            .custom-info .custom-list-li .info
-            {
+            .custom-info .custom-list-li .info {
                 font-weight: bold;
             }
         </style>
 
         <?php
-            if(session()->exists('studentid'))
-            {
-                $Name = $dataBefore->HoTenSV;
-                $MS = $dataBefore->MSSV;
-                $ClassId = $dataBefore->MaLop;
-                $getIdNienKhoa = DB::table('lop')->where('MaLop',$ClassId)->first();
+        if (session()->exists('studentid')) {
+            $Name = $dataBefore->HoTenSV;
+            $MS = $dataBefore->MSSV;
+            $ClassId = $dataBefore->MaLop;
+            $getIdNienKhoa = DB::table('lop')
+                ->where('MaLop', $ClassId)
+                ->first();
 
-                $NienKhoa = DB::table('khoa_hoc')->where('KhoaHoc',$getIdNienKhoa->KhoaHoc)->first();
-                $getNameOfDepartment = null;
-                if($dataBefore->HinhDaiDienSV ==null )
-                {
+            $NienKhoa = DB::table('khoa_hoc')
+                ->where('KhoaHoc', $getIdNienKhoa->KhoaHoc)
+                ->first();
+            $getNameOfDepartment = null;
+            if ($dataBefore->HinhDaiDienSV == null) {
+                $imgAvatar = 'ori-ava.png';
+            } else {
+                $imgAvatar = $dataBefore->HinhDaiDienSV;
+            }
+        } else {
+            if (session()->exists('teacherid')) {
+                $Name = $dataBefore->HoTenGV;
+                $MS = $dataBefore->MSGV;
+                $getDepartmentId = $dataBefore->MaKhoa;
+                $getNameOfDepartment = DB::table('khoa')
+                    ->where('MaKhoa', $getDepartmentId)
+                    ->first();
+                //dd($getNameOfDepartment);
+                $NienKhoa = null;
+                $ClassId = null;
+                if ($dataBefore->HinhDaiDienGV == null) {
                     $imgAvatar = 'ori-ava.png';
+                } else {
+                    $imgAvatar = $dataBefore->HinhDaiDienGV;
                 }
-                else {
-                    $imgAvatar = $dataBefore->HinhDaiDienSV;
-                }
-
             }
-            else
-            {
-                if(session()->exists('teacherid')){
-                    $Name = $dataBefore->HoTenGV;
-                    $MS = $dataBefore->MSGV;
-                    $getDepartmentId = $dataBefore->MaKhoa;
-                    $getNameOfDepartment = DB::table('khoa')->where('MaKhoa',$getDepartmentId)->first();
-                    //dd($getNameOfDepartment);
-                    $NienKhoa = null;
-                    $ClassId = null;
-                    if($dataBefore->HinhDaiDienGV ==null )
-                    {
-                        $imgAvatar = 'ori-ava.png';
-                    }
-                    else {
-                        $imgAvatar = $dataBefore->HinhDaiDienGV;
-                    }
-                }
-
-            }
+        }
         ?>
 
-    <form action="{{ route('ChangeInfo') }}" method="post" enctype="multipart/form-data">
-        <div class="inner-class">
-            <div class="row well m-3">
-                <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
-                    <div class="custom-line">
-                        <img alt="" class="online" style = "width: 200px;" src="{{asset('img/Avatar/'.$imgAvatar)}}">
-                        <input class="img-upload" type="file" name="imagePath" size="30"/>
+        <form action="{{ route('ChangeInfo') }}" method="post" enctype="multipart/form-data">
+            <div class="inner-class">
+                <div class="row well m-3">
+                    <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
+                        <div class="custom-line">
+                            <img alt="" class="online" style = "width: 200px;"
+                                src="{{ asset('img/Avatar/' . $imgAvatar) }}">
+                            <input class="img-upload" type="file" name="imagePath" size="30" />
+                        </div>
+                        <div class="vertical-line"></div>
                     </div>
-                    <div class="vertical-line"></div>
-                </div>
-                <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
-                    <ul class="list-unstyled custom-list-li">
-                        <li>Họ tên:
-                            <span class="info">{{$Name}}</span>
-                        </li>
-                        @if(session()->exists('studentid'))
-                            <li>Mã số sinh viên:
-                                <span class="info">{{$MS}}</span>
+                    <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
+                        <ul class="list-unstyled custom-list-li">
+                            <li>Họ tên:
+                                <span class="info">{{ $Name }}</span>
                             </li>
-                        @else
-                            @if(session()->exists('teacherid'))
-                                <li>Mã số giảng viên:
-                                    <span class="info">{{$MS}}</span>
+                            @if (session()->exists('studentid'))
+                                <li>Mã số sinh viên:
+                                    <span class="info">{{ $MS }}</span>
+                                </li>
+                            @else
+                                @if (session()->exists('teacherid'))
+                                    <li>Mã số giảng viên:
+                                        <span class="info">{{ $MS }}</span>
+                                    </li>
+                                @endif
+                            @endif
+                            <li>Chương trình:
+                                <span class="info">Chưa cập nhật</span>
+                            </li>
+                            <li>Hệ đào tạo:
+                                <span class="info">Chưa cập nhật</span>
+                            </li>
+                            <li>Khoa:
+                                <span class="info">Khoa Công Nghệ Thông Tin</span>
+                            </li>
+                            @if (session()->exists('studentid'))
+                                <li>Lớp:
+                                    <span class="info">{{ $ClassId }}</span>
                                 </li>
                             @endif
-                        @endif
-                        <li>Chương trình:
-                            <span class="info">Chưa cập nhật</span>
-                        </li>
-                        <li>Hệ đào tạo:
-                            <span class="info">Chưa cập nhật</span>
-                        </li>
-                        <li>Khoa:
-                            <span class="info">Khoa Công Nghệ Thông Tin</span>
-                        </li>
-                        @if(session()->exists('studentid'))
-                            <li>Lớp:
-                                <span class="info">{{$ClassId}}</span>
-                            </li>
-                        @endif
                             <li>Email:
-                                @if($dataBefore->Email == null)
+                                @if ($dataBefore->Email == null)
                                     <input class="info" name="mailDetail" type="text" placeholder="abc@gmail.com">
                                 @else
-                                    <input class="info" name="mailDetail" type="text" placeholder="{{$dataBefore->Email}}">
+                                    <input class="info" name="mailDetail" type="text"
+                                        placeholder="{{ $dataBefore->Email }}">
                                 @endif
                                 @error('mailDetail')
                                     <div class="alert alert-danger">{{ $errors->first('mailDetail') }}</div>
                                 @enderror
                             </li>
                             <li>Số điện thoại:
-                                @if($dataBefore->SDT == null)
+                                @if ($dataBefore->SDT == null)
                                     <input class="info" name="phoneNum" type="text" placeholder="09xxxxxx99">
                                 @else
-                                    <input class="info" name="phoneNum" type="text" placeholder="{{$dataBefore->SDT}}">
+                                    <input class="info" name="phoneNum" type="text"
+                                        placeholder="{{ $dataBefore->SDT }}">
                                 @endif
                                 @error('phoneNum')
                                     <div class="alert alert-danger">{{ $errors->first('phoneNum') }}</div>
                                 @enderror
                             </li>
                             <li>Ngày tháng năm sinh:
-                                @if(session()->exists('studentid'))
-                                    @if($dataBefore->NgaySinh == null)
-                                        <input type="date" class="info" name="birthday"  >
+                                @if (session()->exists('studentid'))
+                                    @if ($dataBefore->NgaySinh == null)
+                                        <input type="date" class="info" name="birthday">
                                     @else
-                                        <input type="date" class="info" name="birthday"  value="{{Carbon::parse($dataBefore->NgaySinh)->toDateString();}}">
+                                        <input type="date" class="info" name="birthday"
+                                            value="{{ Carbon::parse($dataBefore->NgaySinh)->toDateString() }}">
                                     @endif
                                 @elseif(session()->exists('teacherid'))
-                                    @if($dataBefore->NgaySinhGV == null)
-                                            <input type="date" class="info" name="birthday" >
+                                    @if ($dataBefore->NgaySinhGV == null)
+                                        <input type="date" class="info" name="birthday">
                                     @else
-                                            <input type="date" class="info" name="birthday"  value="{{Carbon::parse($dataBefore->NgaySinhGV)->toDateString();}}">
+                                        <input type="date" class="info" name="birthday"
+                                            value="{{ Carbon::parse($dataBefore->NgaySinhGV)->toDateString() }}">
                                     @endif
                                 @endif
                             </li>
-                            @if(session()->exists('studentid'))
+                            @if (session()->exists('studentid'))
                                 <li> Niên khóa:
-                                    <span class="info">{{$NienKhoa->NamHocDuKien}}</span>
+                                    <span class="info">{{ $NienKhoa->NamHocDuKien }}</span>
                                 </li>
-
                             @endif
-                        <li>Địa chỉ:
-                            <ul>
-                                <li>Thành phố / Tỉnh:
-                                    <select class="info" id="city" name="city">
-                                        <option value="" selected></option>
-                                    </select>
-                                </li>
+                            <li>Địa chỉ:
+                                <ul>
+                                    <li>Thành phố / Tỉnh:
+                                        <select class="info" id="city" name="city">
+                                            <option value="" selected></option>
+                                        </select>
+                                    </li>
 
-                                <li>Quận / Huyện:
-                                    <select class="info" id="district" name="district">
-                                        <option value="" selected></option>
-                                    </select>
-                                </li>
+                                    <li>Quận / Huyện:
+                                        <select class="info" id="district" name="district">
+                                            <option value="" selected></option>
+                                        </select>
+                                    </li>
 
-                                <li>Phường / Xã:
-                                    <select class="info" id="ward" name="ward">
-                                        <option value="" selected></option>
-                                    </select>
-                                </li>
+                                    <li>Phường / Xã:
+                                        <select class="info" id="ward" name="ward">
+                                            <option value="" selected></option>
+                                        </select>
+                                    </li>
 
-                                <li>Số nhà:
-                                    <input class="info" name="address" type="text">
-                                </li>
+                                    <li>Số nhà:
+                                        <input class="info" name="address" type="text">
+                                    </li>
 
-                                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-                                <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-                                <script src="<?php echo asset('/js/provinces.js')?>"></script>
-                            </ul>
-                        </li>
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+                                    <script src="<?php echo asset('/js/provinces.js'); ?>"></script>
+                                </ul>
+                            </li>
 
 
-                        <li>
-                            <br>
-                            <button type="submit" class="btn btn-success" id="page-back">Xác nhận</button>
-                        </li>
-                    </ul>
-                </section>
+                            <li>
+                                <br>
+                                <button type="submit" class="btn btn-success" id="page-back">Xác nhận</button>
+                            </li>
+                        </ul>
+                    </section>
 
+                </div>
             </div>
-        </div>
-    @csrf
-    </form>
+            @csrf
+        </form>
     </div>
 @stop

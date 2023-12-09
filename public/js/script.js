@@ -32,14 +32,14 @@ document.addEventListener("DOMContentLoaded", function()
     });
 });
 
-function expandContainer(isForcused)
-{
-    var container = document.getElementById("comment-container");
-    if(isForcused)
-        container.style.alignItems = "flex-start";
-    else
-        container.style.alignItems = "center";
-}
+// function expandContainer(isForcused)
+// {
+//     var container = document.getElementById("comment-container");
+//     if(isForcused)
+//         container.style.alignItems = "flex-start";
+//     else
+//         container.style.alignItems = "center";
+// }
 
 var modal = document.getElementById("myModal1");
 var btn1 = document.getElementById("open");
