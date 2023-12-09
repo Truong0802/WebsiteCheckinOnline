@@ -173,6 +173,7 @@ class AdminController extends Controller
     }
     public function ThemDanhSach(Request $request)
     {
+        // dd($request);
         if($request != null)
         {
             if(session()->has('teacherid') && session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
@@ -194,21 +195,29 @@ class AdminController extends Controller
                     return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không được bỏ trống Học kỳ!')->withInput();
 
                 }
+                if($request->tiethocid == null)
+                {
+                    return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không được bỏ trống Tiết học!')->withInput();
+
+                }
 
                 try
                 {
+                    //Bổ sung thời gian tiết học
+                    $checkclasstime = DB::table('tiet_hoc')->where('MaTietHoc',$request->tiethocid)->first();
                     //Kiểm tra thời gian bắt đầu có phù hợp
-                    $time = Carbon::parse($request->timestart);
+                    // dd(Carbon::parse($request->timestart.' '.$checkclasstime->ThoiGianBatDau)->format('d-m-Y H:i'));
+                    $time = Carbon::parse(Carbon::parse($request->timestart.' '.$checkclasstime->ThoiGianBatDau));
                     $formattedTime = $time->format('dmYHi');
                     $timeForTemp = $time->format('d-m-Y H:i');
                     //Kiểm tra thời gian kết thúc có phù hợp
-                    $Anothertime = Carbon::parse($request->timeend);
+                    $Anothertime = Carbon::parse($request->timestart.' '.$checkclasstime->ThoiGianKetThuc);
                     $formattedTimeEnd = $Anothertime->format('dmYHi');
                     $timeEndForTemp = $Anothertime->format('d-m-Y H:i');
 
                     $SubjectInfo = DB::table('mon_hoc')->where('MaTTMH',$request->subjectname)->first();
                     $temp= $timeForTemp.' MaMH'.$request->subjectname.'TenMH '.$SubjectInfo->TenMH.'Lop'.$request->classname.'GV'.$request->teacherid.'TimeEnd'.$timeEndForTemp.'HK'.$request->HKid;
-                    // dd($CutClass);
+
                     session()->push('DanhSachLopTam',$temp); //Thêm vào danh sách tạm
                 }
                 catch(Exception $ex)
