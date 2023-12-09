@@ -691,9 +691,100 @@
                                         <td></td>
                                         <td></td>
                                     @endif
+<<<<<<< HEAD
                                 @endif
                             </tr>
                         @endforeach
+=======
+                                </tr>
+                                @endforeach
+                                @csrf
+                            </form>
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+
+                @endif
+                </div>
+            </div>
+
+            <?php
+                $isInClass = DB::table('danh_sach_sinh_vien')
+                            ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                            ->where('MaHK',session()->get('HKid'))
+                            ->where('MSSV',session()->get('studentid'))
+                            ->first();
+            ?>
+        @if($isInClass != null || session()->has('teacherid') && session()->get('ChucVu') != 'AM')
+            <div class="col-md-12 detail">
+                <div class="class-list">
+                    <?php
+                        if(session()->exists('teacherid'))
+                        {
+                            $getInfoFromObject = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+                            $imgAva= $getInfoFromObject->HinhDaiDienGV;
+                        }
+                        else if(session()->exists('studentid'))
+                        {
+                            $getInfoFromObject = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                            $imgAva= $getInfoFromObject->HinhDaiDienSV;
+                        }
+
+                        if($imgAva == null)
+                        {
+                            $imgAvatar = 'ori-ava.png';
+                        }
+                        else{
+                            $imgAvatar = $imgAva;
+                        }
+                        ?>
+                    <?php
+                        $getComments = DB::table('comments')
+                            ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                            ->leftJoin('sinh_vien', 'comments.MSSV', '=', 'sinh_vien.MSSV')
+                            ->leftJoin('giang_vien', 'comments.MSGV', '=', 'giang_vien.MSGV')
+                            ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
+                            ->where('MaHK',session()->get('HKid'))->orderBy('NgayComment','ASC')->get();
+
+                    ?>
+                    @foreach($getComments as $comment)
+                        <div class="comment-container" id="comment-container">
+                            <?php
+                                if($comment->MSSV != null)
+                                {
+                                    $img = $comment->HinhDaiDienSV;
+                                    $HoTen = $comment->HoTenSV;
+                                }
+                                else if($comment->MSGV != null)
+                                {
+                                    $img = $comment->HinhDaiDienGV;
+                                    $HoTen = $comment->HoTenGV;
+                                }
+                                // dd($img);
+                            ?>
+                            <img src="{{asset('img/Avatar/'.$img)}}"  alt="Avatar" class="online avatar">
+                            <div class="comments-list">
+                                <span id="userName"><strong>{{$HoTen}}</strong></span> &ensp;
+                                <span id="comments-content">{{$comment->NoiDung}}</span>
+                            </div>
+                        </div>
+                    @endforeach
+                    <hr class="solid">
+                    <form action="/comment" method="POST">
+                        <div class="comment-container" id="comment-container">
+                            <img src="{{asset('img/Avatar/'.$imgAvatar)}}"  alt="Avatar" class="online avatar">
+                            <textarea type="text" name="inputcomments" placeholder="Thêm nhận xét vào lớp học..." id="comment-input" class="comment-input" onfocus="expandContainer(true)" onblur="expandContainer(false)"></textarea>
+                            @error('inputcomments')
+                                <div class="alert alert-danger">{{ $errors->first('inputcomments') }}</div>
+                            @enderror
+                            {{-- <img onclick="addComment()" src="{{asset('/img/send.png')}}" alt=""> --}}
+                            <button  alt=""><img id="send-button" addComment()" src="{{asset('/img/send.png')}}" alt=""></button>
+                        </div>
+>>>>>>> 6aeb6e29f8642eae88a9255e2ddaf5e7a2f67dad
                         @csrf
                         </form>
                     </tbody>

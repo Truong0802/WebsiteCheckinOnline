@@ -265,7 +265,7 @@ class TeacherController extends Controller
                     }
                     else //Nếu lớp chưa có danh sách
                     {
-                        return redirect()->to('/trang-chu')->with('errorClass1','Lớp chưa có danh sách!')->withInput();
+                        return redirect()->back()->with('errorClass1','Lớp chưa có danh sách!')->withInput();
                         // return redirect()->to('/trang-chu');
                     }
 
@@ -394,7 +394,11 @@ class TeacherController extends Controller
 
 
                 }
-                return redirect()->to('/');
+                else
+                {
+                    return redirect()->to('/');
+                }
+
             }
 
         }
