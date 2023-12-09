@@ -526,6 +526,7 @@ class AdminController extends Controller
         if($request->student_info_MSSV != null && $request->student_info_Student_Name != null
             && $request->student_info_Birthday != null && $request->student_info_Class != null)
         {
+
             // dd($request);
             $MonthCheck = Carbon::now()->month;
             //Kiểm tra xem tháng hiện tại thuộc học kỳ mấy
@@ -675,6 +676,11 @@ class AdminController extends Controller
                 if($request->student_info_MSSV[$i] != null && $request->student_info_Student_Name[$i] != null
                     && $request->student_info_Birthday[$i] != null && $request->student_info_Class[$i] != null)
                 {
+                    $sttds = $i + 1 ;
+                    if(preg_match('/^[0-9]*$/',$request->student_info_MSSV[$i]) == 0 && preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->student_info_MSSV[$i]) == 0)
+                    {
+                        return redirect()->back()->with('error-input','Mã số sinh viên số thứ tự '.$sttds.' không hợp lệ')->withInput();
+                    }
                     $temp = $MaTTMH.'HocKy'.$hocky.'NamHoc'.Carbon::now()->year.'MSGV'.session()->get('teacherid').'MSSV'.$request->student_info_MSSV[$i].'MaTTMH'.$MaTTMH.'HoTenSV'.$request->student_info_Student_Name[$i].'NgayThangNamSinh'.$request->student_info_Birthday[$i].'MaLop'.$request->student_info_Class[$i];
                     session()->push('DanhSachSinhVienTam',$temp);
                 }
