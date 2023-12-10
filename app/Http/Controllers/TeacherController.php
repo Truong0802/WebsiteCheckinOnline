@@ -30,7 +30,7 @@ class TeacherController extends Controller
         //Của khoa Quản lý
         public function danhsachlop(Request $request)
         {
-            if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse(session()->get('clockUp'))))
+            if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse(session()->get('clockUp'))) == true)
             {
 
                           return redirect()->action([
@@ -39,6 +39,7 @@ class TeacherController extends Controller
                           ]);
 
            }
+
             if(session()->exists('teacherid')){
                 if($request->lop){
                     $teacherid = session()->get('teacherid');
@@ -153,7 +154,7 @@ class TeacherController extends Controller
                     ->latest('NgayDay')
                     ->paginate(15);
 
-                    // dd($allsubject);
+
                     $checkTemp = [];
                     foreach($allsubject as $Try)
                     {
@@ -239,7 +240,7 @@ class TeacherController extends Controller
 
         public function danhsachsinhvien(Request $request)
         {
-            if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse(session()->get('clockUp'))))
+            if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse(session()->get('clockUp'))) ==  true)
             {
 
                           return redirect()->action([
@@ -548,13 +549,26 @@ class TeacherController extends Controller
 
             if(session()->get('teacherid'))
             {
+
+                $checkUserIsActive = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+                if($checkUserIsActive->LastActive == null || Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == false)
+                {
+                    $upDateLastActiveData = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))
+                        ->update([
+                            'LastActive' => Carbon::now()->format('Y-m-d')
+                        ]);
+                }
+
+
                 //tạo session lưu thời gian sau khi parse từ Carbo để đối chiếu so sánh với quyền học sinh lúc bấm
                 $encryptedData = $request->input('data');
                 // dd($encryptedData);
                 // $data = decrypt($encryptedData);
                 // dd($data["lop"]);
                 $timestart = Carbon::now();
-                // dd($timestart);
+
+
+
 
                 $UpPathIntoDB = DB::table('checklog')->insert([
                     'MSGV' => session()->get('teacherid'),
@@ -644,6 +658,15 @@ class TeacherController extends Controller
                                                                 "IpAddress" => $request->ip(),
                                                                 "Browser" => Browser::browserName()
                                                             ]);
+
+                                                            $checkUserIsActive = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                                                            if($checkUserIsActive->LastActive == null || Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == false)
+                                                            {
+                                                                $upDateLastActiveData = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))
+                                                                                        ->update([
+                                                                                            'LastActive' => Carbon::now()->format('Y-m-d')
+                                                                                        ]);
+                                                            }
                                                             return redirect()->to('/trang-chu')->with('success1','Điểm danh thành công')->withInput();
                                                         }
                                                         else

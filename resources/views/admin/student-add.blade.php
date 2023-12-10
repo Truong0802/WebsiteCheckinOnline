@@ -66,7 +66,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="class-name">Tên lớp:</label>
-                            <input type="text" class="form-control" id="class-name" name="classname">
+                            <input type="text" class="form-control" id="" name="classname">
                             @error('classname')
                                 <div class="alert alert-danger">{{ $errors->first('classname') }}</div>
                             @enderror

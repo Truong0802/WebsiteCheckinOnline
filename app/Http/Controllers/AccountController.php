@@ -69,13 +69,23 @@ class AccountController extends Controller
         try{
             $studentLogin= DB::select('select * from sinh_vien where MSSV = ? and password = ?', $params)[0];
             if($studentLogin != null){
+                // dd(Carbon::now()->subMonths(12)->format('Y-m-d'));
+            //Kiểm tra tài khoản còn active hay không
+                //Nếu tài khoản chưa hoạt động gì trong 6 tháng == vô hiệu hóa
+                if( $studentLogin->LastActive != null)
+                {
+                    if(Carbon::now()->greaterThan(Carbon::parse($studentLogin->LastActive)->addMonths(6)))
+                    {
+                        return redirect()->back()->with('error-Login','Tài khoản của bạn đã bị vô hiệu hóa! Cần Liên hệ Admin để tái kích hoạt')->withInput();
+                    }
+                }
                 //Tạo thời gian giới hạn đăng nhập 30p
                 session()->put('clockUp',Carbon::now()->addMinutes(20));
                 session()->put('studentid',$studentLogin->MSSV);
                 session()->put('name',$studentLogin->HoTenSV);
                 session()->put('malop',$studentLogin->MaLop);
 
-                                return redirect()->to('/trang-chu');
+                return redirect()->to('/trang-chu');
             }
         }
         catch(Exception $ex){
@@ -83,6 +93,15 @@ class AccountController extends Controller
                     $teacherLogin = DB::select('select * from giang_vien where MSGV = ? and password = ?', $params)[0];
                     if($teacherLogin != null)
                     {
+                    //Kiểm tra tài khoản còn active hay không
+                        //Nếu tài khoản chưa hoạt động gì trong 12 tháng == vô hiệu hóa
+                        if( $teacherLogin->LastActive != null)
+                        {
+                            if(Carbon::now()->greaterThan(Carbon::parse($teacherLogin->LastActive)->addMonths(12)) == true)
+                            {
+                                return redirect()->back()->with('error-Login','Tài khoản của bạn đã bị vô hiệu hóa! Cần Liên hệ Admin để tái kích hoạt')->withInput();
+                            }
+                        }
                         //Tạo thời gian giới hạn đăng nhập 480p == 8 hours
                         session()->put('clockUp',Carbon::now()->addMinutes(480));
                         session()->put('teacherid',$teacherLogin->MSGV);

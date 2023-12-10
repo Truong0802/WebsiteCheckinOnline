@@ -13,7 +13,7 @@ class HomeController extends Controller
     //
     public function trangchusv(){
         //Giới hạn thời gian login
-            if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse( session()->get('clockUp'))))
+            if(session()->has('clockUp') && Carbon::now()->greaterThan(Carbon::parse( session()->get('clockUp'))) == true)
             {
                 return redirect()->action([
                     AccountController::class,
