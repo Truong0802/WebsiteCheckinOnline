@@ -112,6 +112,15 @@
                                         </label>
                                     </section>
                                     <section>
+                                        <label class="label">Gmail</label>
+                                        <label class="input">
+                                            <i class="icon-append fa-solid fa-envelope"></i>
+                                            <input class="form-control login-form" type="text" readonly>
+                                            <b class="tooltip tooltip-top-right">
+                                                <i class="fa-solid fa-envelope"></i> Vui lòng điền gmail của bạn </b>
+                                        </label>
+                                    </section>
+                                    <section>
                                         <label class="label">Mật mã</label>
                                         <label class="input">
                                             <i class="icon-append fa fa-lock"></i>

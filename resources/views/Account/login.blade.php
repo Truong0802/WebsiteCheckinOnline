@@ -163,10 +163,11 @@
                                             </select>
                                         </section> --}}
                                     <section>
-                                        <div class="note"> Đăng nhập không được ?
-                                            <a href="http://qlcntt.hutech.edu.vn/ho-tro?tieu_de=tai%20khoan">Xem hướng
-                                                dẫn tại đây</a>
-                                        </div>
+                                        <div class="note" style="font-size: 13px;"> Quên mật khẩu ?
+                                            {{-- <a href="http://qlcntt.hutech.edu.vn/ho-tro?tieu_de=tai%20khoan">Xem hướng
+                                                dẫn tại đây</a> --}}
+                                                <a href="">Thay đổi mật khẩu tại đây</a>
+                                            </div>
                                     </section>
                                 </fieldset>
                                 <footer>

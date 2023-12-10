@@ -37,35 +37,14 @@ use Carbon\Carbon;
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-<<<<<<< HEAD
                             <label for="student-id">Thời gian bắt đầu tiết:</label>
                             <input type="datetime-local" class="form-control datetime-local" id="time-start" name="timestart">
-=======
-                            <label for="student-id">Ngày giảng dạy:</label>
-                            <input type="date" class="form-control" id="time-start" name="timestart">
->>>>>>> 163d79637699f62abf65334bc2d3f5a5b7718c04
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-<<<<<<< HEAD
                             <label for="student-id">Thời gian kết thúc tiết:</label>
                             <input type="datetime-local" class="form-control datetime-local" id="time-end" name="timeend">
-=======
-                            <label for="student-id">Tiết học:</label>
-                            <?php
-                                $listTietHoc = DB::table('tiet_hoc')
-                                                ->get();
-
-
-                            ?>
-                            <select class="form-control" id="teacher" name="tiethocid">
-                                <option value="">---Chọn Thông Tin---</option>
-                                @foreach ($listTietHoc as $AllTiet)
-                                    <option value="{{ $AllTiet->MaTietHoc }}">{{ $AllTiet->MaTietHoc }}</option>
-                                @endforeach
-                            </select>
->>>>>>> 163d79637699f62abf65334bc2d3f5a5b7718c04
                         </div>
                     </div>
                     <div class="col-md-4">
