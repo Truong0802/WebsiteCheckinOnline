@@ -107,6 +107,8 @@ class AdminController extends Controller
                  $CutClass = substr($temp,-7);
                  $HoTen = Str::between($temp,$MSSVCut,'MK');
                  $Password = Str::between($temp,'MK',$CutClass);
+
+
                 try
                 {
                     $InsertDSDiaChi = DB::table('dia_chi')->insert([
@@ -123,7 +125,25 @@ class AdminController extends Controller
 
                 } catch(Exception $ex)
                 {
-                    // dd($ex);
+
+                    // dd($temp);
+                    $checkUserIsActive = DB::table('sinh_vien')->where('MSSV',$MSSVCut)->first();
+                    //Nếu tồn tại tk và người dùng đã qua 6 tháng chưa quay lại
+                    if($checkUserIsActive->MSSV != null && Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == true)
+                    {
+                        //Khôi phục người dùng
+                        $upDateLastActiveData = DB::table('sinh_vien')->where('MSSV',$MSSVCut)
+                                                                    ->update([
+                                                                        'LastActive' => Carbon::now()->format('Y-m-d')
+                                                                    ]);
+
+                        $array = session()->get('DanhSachTam');
+                        $position = array_search($temp, $array);
+                        unset($array[$position]);
+                        session(['DanhSachTam' => $array]);
+                        return redirect()->to('/quan-ly-sinh-vien')->with('success-Add','tái kích hoạt sinh viên '.$MSSVCut.' thành công');
+                    }
+
                     return redirect()->to('/quan-ly-sinh-vien')->with('error-Add','Đã tồn tại sinh viên'.' '.substr($temp,0,10).'')->withInput();
 
                 }
@@ -1077,6 +1097,21 @@ class AdminController extends Controller
                 }
                 catch(Exception $ex)
                 {
+                    $checkUserIsActive = DB::table('giang_vien')->where('MSGV',$MSGVCut)->first();
+                    //Nếu tồn tại tk và người dùng đã qua 6 tháng chưa quay lại
+                    if($checkUserIsActive->MSGV != null && Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == true)
+                    {
+                        //Khôi phục người dùng
+                        $upDateLastActiveData = DB::table('giang_vien')->where('MSGV',$MSGVCut)
+                                                                    ->update([
+                                                                        'LastActive' => Carbon::now()->format('Y-m-d')
+                                                                    ]);
+                            $array = session('DanhSachGVTam');
+                            $position = array_search($temp, $array);
+                            unset($array[$position]);
+                            session(['DanhSachGVTam' => $array]);
+                        return redirect()->to('/quan-ly-gv')->with('success-Add-T','tái kích hoạt giảng viên '.$MSGVCut.' thành công');
+                    }
                     return redirect()->to('/quan-ly-gv')->with('error-Add-T','Đã tồn tại giảng viên')->withInput();
                 }
             }
