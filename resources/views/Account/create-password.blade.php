@@ -94,9 +94,12 @@
                                         <label class="input">
                                             <i class="icon-append fa fa-user"></i>
                                             <?php
-                                            if (session()->exists('studentid')) {
+                                            if (session()->exists('studentid'))
+                                            {
                                                 $id = session()->get('studentid');
-                                            } elseif (session()->exists('teacherid')) {
+                                            }
+                                            elseif (session()->exists('teacherid'))
+                                            {
                                                 $id = session()->get('teacherid');
                                             }
                                             ?>
@@ -149,7 +152,8 @@
                         </div>
                         <ul class="list-inline text-center socials-list">
                             <style>
-                                .socials-list {
+                                .socials-list
+                                {
                                     display: flex;
                                     justify-content: center;
                                     margin-top: 10px;
