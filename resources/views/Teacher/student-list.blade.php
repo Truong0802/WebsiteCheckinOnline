@@ -858,7 +858,6 @@
 
                     function closePopup() {
                         popup.style.display = "none";
-
                     }
                     window.onload = showPopup;
                 </script>
@@ -866,7 +865,4 @@
         @endif
     @endif
     </div>
-
-
-
 @stop
