@@ -21,7 +21,7 @@
                 <div class="col-md-6 pr-0">
                     <div>
                         <h1 class="page-title txt-color-blueDark">
-                            <i class="fa fa-lg fa-fw fa-book"></i></i> Danh sách lớp học
+                            <i class="fa fa-lg fa-fw fa-book"></i> Danh sách lớp học
                         </h1>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="date-picker">Ngày:</label>
-                                <input type="date" class="form-control" id="date-picker">
+                                <input type="date" class="form-control datetime-local" id="date-picker">
                             </div>
                         </div>
                         <div class="col-md-4">

@@ -174,7 +174,7 @@ img
     color: #0d6efd;
 }
 
-aside
+/* aside
 {
     display: block;
     background: #3a3633;
@@ -186,6 +186,12 @@ aside
     background: -ms-linear-gradient(left,#3a3633 93%,#2a2725 100%);
     background: linear-gradient(to right,#3a3633 93%,#2a2725 100%);
     min-height: 200%;
+} */
+
+option,
+.datetime-local
+{
+    text-align:center;
 }
 
 .login-info
@@ -813,16 +819,8 @@ button
 
 #left-panel
 {
-    overflow: hidden;
+    /* overflow: hidden; */
     transition: all 0.2s ease;
-}
-
-#left-panel .login-info .name,
-#left-panel .login-info .fa,
-#left-panel nav ul li a span
-{
-    overflow: auto;
-    transition: all 0.002s ease;
 }
 
 #left-panel.collapsed .login-info .name,
@@ -830,8 +828,7 @@ button
 #left-panel.collapsed nav ul li a span
 {
     display: none;
-    overflow: hidden;
-    transition: all 0.2s ease;
+    /* overflow: hidden; */
 }
 
 #left-panel.collapsed
@@ -869,6 +866,7 @@ button
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    overflow: visible;
 }
 
 .avatar
@@ -909,9 +907,6 @@ button
 .comment-container #send-button
 {
     display: inline-block;
-    cursor: pointer;
-    margin-left: 5px;
-    width: 30px;
     height: 30px;
 }
 
@@ -951,9 +946,18 @@ hr.solid
 
 .comment-container button
 {
-    background-color: #fff;
+    background-color: transparent;
     color: white;
-    border: none;
+    border: #1A1817;
+    width: 60px;
+    height: 60px;
+    border-radius: 200px;
+    align-items: center;
+}
+
+.comment-detail .class-list
+{
+    position: absolute;
 }
 
 #userName
@@ -977,6 +981,11 @@ hr.solid
 {
     position: absolute;
     width: 80%;
+}
+
+.form-comment-container
+{
+    overflow: auto;
 }
 
 #class-name
@@ -1042,9 +1051,46 @@ hr.solid
     width: 95%;
 }
 
+.table
 {
-    width: 90%;
+    overflow-x: scroll;
 }
+
+/* ::-webkit-scrollbar
+{
+    display: none;
+} */
+
+::-webkit-scrollbar-track:horizontal
+{
+    display: none;
+}
+
+::-webkit-scrollbar-button:start
+{
+    display: none;
+}
+
+::-webkit-scrollbar-button:end
+{
+    display: none;
+}
+
+::-webkit-scrollbar-button:horizontal
+{
+    display: none;
+    background-color: transparent !important;
+}
+
+::-webkit-scrollbar-thumb:horizontal
+{
+    display: none;
+}
+
+::-webkit-scrollbar-track
+{
+    background: #f1f1f1;
+  }
 
 .detail .class-list table tr .score-input
 {
@@ -1130,6 +1176,11 @@ td.score-input input[type="text"]:focus
     hr .solid
     {
         width: 50%;
+    }
+
+    #left-panel.collapsed
+    {
+        width: 70%;
     }
 }
 

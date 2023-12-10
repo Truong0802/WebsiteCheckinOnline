@@ -710,7 +710,7 @@
         ->first();
     ?>
     @if ($isInClass != null || session()->has('teacherid'))
-        <div class="col-md-12 detail">
+        <div class="col-md-12 detail comment-detail">
             <div class="class-list">
                 <?php
                 if (session()->exists('teacherid')) {

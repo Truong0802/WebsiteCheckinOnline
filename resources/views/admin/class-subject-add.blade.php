@@ -38,13 +38,13 @@ use Carbon\Carbon;
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="student-id">Thời gian bắt đầu tiết:</label>
-                            <input type="datetime-local" class="form-control" id="time-start" name="timestart">
+                            <input type="datetime-local" class="form-control datetime-local" id="time-start" name="timestart">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="student-id">Thời gian kết thúc tiết:</label>
-                            <input type="datetime-local" class="form-control" id="time-end" name="timeend">
+                            <input type="datetime-local" class="form-control datetime-local" id="time-end" name="timeend">
                         </div>
                     </div>
                     <div class="col-md-4">
