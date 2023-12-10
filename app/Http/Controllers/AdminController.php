@@ -173,6 +173,7 @@ class AdminController extends Controller
     }
     public function ThemDanhSach(Request $request)
     {
+        // dd($request);
         if($request != null)
         {
             if(session()->has('teacherid') && session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
@@ -194,21 +195,29 @@ class AdminController extends Controller
                     return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không được bỏ trống Học kỳ!')->withInput();
 
                 }
+                if($request->tiethocid == null)
+                {
+                    return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không được bỏ trống Tiết học!')->withInput();
+
+                }
 
                 try
                 {
+                    //Bổ sung thời gian tiết học
+                    $checkclasstime = DB::table('tiet_hoc')->where('MaTietHoc',$request->tiethocid)->first();
                     //Kiểm tra thời gian bắt đầu có phù hợp
-                    $time = Carbon::parse($request->timestart);
+                    // dd(Carbon::parse($request->timestart.' '.$checkclasstime->ThoiGianBatDau)->format('d-m-Y H:i'));
+                    $time = Carbon::parse(Carbon::parse($request->timestart.' '.$checkclasstime->ThoiGianBatDau));
                     $formattedTime = $time->format('dmYHi');
                     $timeForTemp = $time->format('d-m-Y H:i');
                     //Kiểm tra thời gian kết thúc có phù hợp
-                    $Anothertime = Carbon::parse($request->timeend);
+                    $Anothertime = Carbon::parse($request->timestart.' '.$checkclasstime->ThoiGianKetThuc);
                     $formattedTimeEnd = $Anothertime->format('dmYHi');
                     $timeEndForTemp = $Anothertime->format('d-m-Y H:i');
 
                     $SubjectInfo = DB::table('mon_hoc')->where('MaTTMH',$request->subjectname)->first();
                     $temp= $timeForTemp.' MaMH'.$request->subjectname.'TenMH '.$SubjectInfo->TenMH.'Lop'.$request->classname.'GV'.$request->teacherid.'TimeEnd'.$timeEndForTemp.'HK'.$request->HKid;
-                    // dd($CutClass);
+
                     session()->push('DanhSachLopTam',$temp); //Thêm vào danh sách tạm
                 }
                 catch(Exception $ex)
@@ -262,9 +271,7 @@ class AdminController extends Controller
                 {
                     $stt='1';
                     $formatTime = $datetimeConvert->format('H:i');
-                    $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
-                    if($checkTypeTime != null)
-                    {
+
                         $formatCheckDate1 = $dateEndConvert->format('d-m-y');
                         $formatCheckDate = $datetimeConvert->format('d-m-y');
 
@@ -274,12 +281,6 @@ class AdminController extends Controller
                         }
 
                         $formatTimeEnd = $dateEndConvert->format('H:i');
-                        $checkTypeTimeEnd = DB::table('tiet_hoc')
-                                            ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
-                        if($checkTypeTimeEnd == null )
-                        {
-                            return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
-                        }
 
 
 
@@ -315,16 +316,11 @@ class AdminController extends Controller
                         }
                         catch(Exception $ex)
                         {
-                            // dd($formatTimeEnd);
-                            // dd($ex);
+
                             return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
 
                         }
-                    }
-                    else
-                    {
-                        return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
-                    }
+
 
                 }
                 else{
@@ -530,6 +526,7 @@ class AdminController extends Controller
         if($request->student_info_MSSV != null && $request->student_info_Student_Name != null
             && $request->student_info_Birthday != null && $request->student_info_Class != null)
         {
+
             // dd($request);
             $MonthCheck = Carbon::now()->month;
             //Kiểm tra xem tháng hiện tại thuộc học kỳ mấy
@@ -599,13 +596,20 @@ class AdminController extends Controller
                     if($request->STC)
                     {
                         //Chưa tồn tại lớp, tạo mới
-                        $insertSubjectClass = DB::table('mon_hoc')->insert([
+                        try{
+                            $insertSubjectClass = DB::table('mon_hoc')->insert([
                                 'MaTTMH' => $MaTTMH,
                                 'MaMH' => $MaMH,
                                 'NhomMH' => $NMH,
                                 'TenMH' => $request->subjectname,
                                 'STC' => $STC
                             ]);
+                        }
+                        catch(Exception $ex)
+                        {
+                            return redirect()->back()->with('error-input','Lỗi nhập liệu thông tin môn học')->withInput();
+                        }
+
                     }
                     else
                     {
@@ -672,6 +676,11 @@ class AdminController extends Controller
                 if($request->student_info_MSSV[$i] != null && $request->student_info_Student_Name[$i] != null
                     && $request->student_info_Birthday[$i] != null && $request->student_info_Class[$i] != null)
                 {
+                    $sttds = $i + 1 ;
+                    if(preg_match('/^[0-9]*$/',$request->student_info_MSSV[$i]) == 0 && preg_match('/^[a-zA-Z!@#$%^&*()_+\-=\[\]{};:\'"\<>\/?\\|~]*$/',$request->student_info_MSSV[$i]) == 0)
+                    {
+                        return redirect()->back()->with('error-input','Mã số sinh viên số thứ tự '.$sttds.' không hợp lệ')->withInput();
+                    }
                     $temp = $MaTTMH.'HocKy'.$hocky.'NamHoc'.Carbon::now()->year.'MSGV'.session()->get('teacherid').'MSSV'.$request->student_info_MSSV[$i].'MaTTMH'.$MaTTMH.'HoTenSV'.$request->student_info_Student_Name[$i].'NgayThangNamSinh'.$request->student_info_Birthday[$i].'MaLop'.$request->student_info_Class[$i];
                     session()->push('DanhSachSinhVienTam',$temp);
                 }
