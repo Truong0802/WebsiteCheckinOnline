@@ -81,21 +81,22 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
                         <div class="well no-padding">
-                            <form action="/Confirmed" method="post"
+                            <form action="/Confirmed-change-password" method="post"
                                 class="smart-form client-form ng-dirty ng-touched ng-valid" novalidate="">
+
+                                <header>Xác thực & thay đổi mật khẩu</header>
                                 @if (session('error-change'))
                                     {{-- {{dd(session('error'))}} --}}
                                     <div class="alert alert-danger text-center">{{ session('error-change') }}</div>
                                 @endif
-                                <header>Xác thực & thay đổi mật khẩu</header>
                                 <fieldset>
                                     <section>
                                         <label class="label">Tài khoản</label>
                                         <label class="input">
                                             <i class="icon-append fa fa-user"></i>
                                             <input class="form-control login-form ng-dirty ng-valid ng-touched"
-                                                name="username" value="{{ $id }}" ngmodel=""
-                                                required="" type="text" readonly>
+                                                name="username" ngmodel=""
+                                                required="" type="text">
                                             <b class="tooltip tooltip-top-right">
                                                 <i class="fa fa-user txt-color-teal"></i> Vui lòng điền tài khoản đăng
                                                 nhập </b>
@@ -105,7 +106,7 @@
                                         <label class="label">Gmail</label>
                                         <label class="input">
                                             <i class="icon-append fa-solid fa-envelope"></i>
-                                            <input class="form-control login-form" type="text" readonly>
+                                            <input class="form-control login-form" type="text" name="mail">
                                             <b class="tooltip tooltip-top-right">
                                                 <i class="fa-solid fa-envelope"></i> Vui lòng điền gmail của bạn </b>
                                         </label>

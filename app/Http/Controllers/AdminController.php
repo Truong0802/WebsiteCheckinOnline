@@ -76,8 +76,16 @@ class AdminController extends Controller
                     return redirect()->to('/quan-ly-sinh-vien')->with('error-Add','lỗi nhập liệu!')->withInput();
                 }
             }
+            if($request->reset == null)
+            {
+                $resetkey = 0;
+            }
+            else
+            {
+                $resetkey = $request->reset;
+            }
             // $temp[] = session()->get('MSSV').'  '.session()->get('Name').' '.session()->get('ClassName').' '.session()->get('PassWord').' '.session()->get('Phuong').' '.session()->get('Quan').' '.session()->get('TP').' '.session()->get('DiaChi');
-            $temp= session()->get('MSSV').session()->get('Name').'MK'.session()->get('PassWord').session()->get('ClassName');
+            $temp= session()->get('MSSV').session()->get('Name').'MK'.session()->get('PassWord').'ResetKey'.$resetkey.session()->get('ClassName');
             session()->push('DanhSachTam',$temp); //Thêm vào danh sách tạm
             // dd(session()->get('DanhSachTam')); //Cắt chuỗi
             // $MSSVCut = substr($temp,0,10);
@@ -96,7 +104,7 @@ class AdminController extends Controller
 
     }
 
-    public function confirmAddStudent()
+    public function confirmAddStudent(Request $request)
     {
         //Xử lý insert
         if(session()->get('DanhSachTam') != null)
@@ -106,7 +114,8 @@ class AdminController extends Controller
                  $MSSVCut = substr($temp,0,10);
                  $CutClass = substr($temp,-7);
                  $HoTen = Str::between($temp,$MSSVCut,'MK');
-                 $Password = Str::between($temp,'MK',$CutClass);
+                 $Password = Str::between($temp,'MK','ResetKey');
+                 $IsResetPassReq = Str::between($temp,'ResetKey',$CutClass);
 
 
                 try
@@ -125,6 +134,21 @@ class AdminController extends Controller
 
                 } catch(Exception $ex)
                 {
+                    if($IsResetPassReq != 0)
+                    {
+                        $ResetToDefaultPass = DB::table('sinh_vien')->where('MSSV',$MSSVCut)
+                                            ->update([
+                                                'Password' => md5($Password),
+                                                'Confirmed' => 0,
+                                                'LastActive' => Carbon::now()->format('Y-m-d')
+                                            ]);
+
+                        $array = session()->get('DanhSachTam');
+                        $position = array_search($temp, $array);
+                        unset($array[$position]);
+                        session(['DanhSachTam' => $array]);
+                        return redirect()->to('/quan-ly-sinh-vien')->with('success-Add','Reset tài khoản '.$MSSVCut.' thành công');
+                    }
 
                     // dd($temp);
                     $checkUserIsActive = DB::table('sinh_vien')->where('MSSV',$MSSVCut)->first();
@@ -1049,7 +1073,15 @@ class AdminController extends Controller
             {
                 return redirect()->to('/quan-ly-gv')->with('error-Add-T',' Không được bỏ trống Khoa')->withInput();
             }
-            $temp = 'MSGV'.$request->msgv.'HoTen'.$request->teachername.'Pass'.$request->password.'Role'.$request->role.'KHOA'.$request->khoa;
+            if($request->reset == null)
+            {
+                $resetkey = 0;
+            }
+            else
+            {
+                $resetkey = $request->reset;
+            }
+            $temp = 'ResetKey'.$resetkey.'MSGV'.$request->msgv.'HoTen'.$request->teachername.'Pass'.$request->password.'Role'.$request->role.'KHOA'.$request->khoa;
             session()->push('DanhSachGVTam',$temp);
             return redirect()->to('/quan-ly-gv');
         }
@@ -1080,7 +1112,7 @@ class AdminController extends Controller
                     $CutRoleid = Str::between($temp,'Role','KHOA');
                     // $FindCV = DB::table('chuc_vu')->where('MaChucVu',$CutRoleid)->first();
                     $CutKhoa = Str::after($temp,'KHOA');
-
+                    $keyToReset = Str::between($temp,'ResetKey','MSGV');
                 try{
                     $InsertDSDiaChi = DB::table('dia_chi')->insert([
                         'MaDiaChi' =>  $MSGVCut
@@ -1097,7 +1129,25 @@ class AdminController extends Controller
                 }
                 catch(Exception $ex)
                 {
+
                     $checkUserIsActive = DB::table('giang_vien')->where('MSGV',$MSGVCut)->first();
+                    if($checkUserIsActive->MSGV != null)
+                    {
+                        if($keyToReset != 0)
+                        {
+                            $upDateAnotherPass = DB::table('giang_vien')->where('MSGV',$MSGVCut)
+                                                        ->update([
+                                                            'LastActive' => Carbon::now()->format('Y-m-d'),
+                                                            'Confirmed' => 0,
+                                                            'Password' => md5($Password)
+                                                        ]);
+                            $array = session('DanhSachGVTam');
+                            $position = array_search($temp, $array);
+                            unset($array[$position]);
+                            session(['DanhSachGVTam' => $array]);
+                            return redirect()->to('/quan-ly-gv')->with('success-Add-T','Reset mật khẩu tài khoản '.$MSGVCut.' thành công');
+                        }
+                    }
                     //Nếu tồn tại tk và người dùng đã qua 6 tháng chưa quay lại
                     if($checkUserIsActive->MSGV != null && Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == true)
                     {

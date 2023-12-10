@@ -72,6 +72,12 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="checkbox" id="" name="reset" value="1">
+                            <label for="reset">Reset password</label>
+                        </div>
+                    </div>
                     {{-- <div class="col-md-4">
                             <div class="form-group">
                                 <label for="student-name">Ngày tháng năm sinh:</label>

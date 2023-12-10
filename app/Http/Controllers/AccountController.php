@@ -213,8 +213,90 @@ class AccountController extends Controller
         }
     }
 
+    public function FrmForgotPassword()
+    {
+        return view('Account/change-password');
+    }
+    public function FuncForgotPassword(Request $request)
+    {
+        if($request)
+        {
+            $messages = [
+                'username.required' => 'Không được để trống Tài khoản đăng nhập',
+                'username.max' => 'Tài khoản nhập vào không hợp lệ.
+                            Vui lòng nhập Mã sinh viên/ Mã giảng viên để tiếp tục',
+                //Dành cho phần đổi mật khẩu
+                'password.min' => 'Mật khẩu phải lớn hơn 4 ký tự',
+                'password.regex' => 'Mật khẩu nhập không hợp lệ (Mật khẩu phải có viết thường, hoa, số và ký tự đặc biệt)',
+                'password.required' => 'Không được để trống Mật khẩu',
+                'passwordverify.required' => 'Không được bỏ trống',
 
+            ];
+            $validated = $request->validate([
+                'username' => 'required|max:20',
+                'passwordverify' => 'required',
+                'password' => 'required|min:4|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[@!$#%]).*$/',
+                //Thêm điều kiện nếu set validation cho đổi mật khẩu:|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/
+                'mail' => 'required|email'
+            ], $messages);
 
+            try{
+                $checkAccount = DB::table('sinh_vien')->where('MSSV',$request->username)->first();
+                if($checkAccount->MSSV != null)
+                {
+                    if($checkAccount->Email != null && $checkAccount->Email == $request->mail)
+                    {
+                        if($request->password != $request->passwordverify)
+                        {
+                            return redirect()->back()->with('error-change','Mật khẩu xác nhận không chính xác!')->withInput();
+                        }
+                        $UpdateAnotherPass =  DB::table('sinh_vien')
+                                 ->where('MSSV', $checkAccount->MSSV)
+                                 ->update(['password' => md5($request->password)]);
+                    }
+                    else if($checkAccount->Email == null)
+                    {
+                        return redirect()->back()->with('error-change','Tài khoản chưa xác nhận email, vui lòng liên hệ Khoa để chỉnh sửa!')->withInput();
+                    }
+                    else if($checkAccount->Email != $request->mail)
+                    {
+                        return redirect()->back()->with('error-change','Mail nhập vào không đồng nhất Mail đã xác nhận')->withInput();
+                    }
+                }
+            }
+            catch(Exception $ex){
+                try{
+                    $checkAccount = DB::table('giang_vien')->where('MSGV',$request->username)->first();
+                    if($checkAccount->MSGV != null)
+                    {
+                        if($checkAccount->Email != null && $checkAccount->Email == $request->mail)
+                        {
+                            if($request->password != $request->passwordverify)
+                            {
+                                return redirect()->back()->with('error-change','Mật khẩu xác nhận không chính xác!')->withInput();
+                            }
+                            $UpdateAnotherPass =  DB::table('giang_vien')
+                            ->where('MSGV', $checkAccount->MSGV)
+                            ->update(['password' => md5($request->password)]);
+                        }
+                        else if($checkAccount->Email == null)
+                        {
+                            return redirect()->back()->with('error-change','Tài khoản chưa xác nhận email, vui lòng liên hệ Khoa để chỉnh sửa!')->withInput();
+                        }
+                        else if($checkAccount->Email != $request->mail)
+                        {
+                            return redirect()->back()->with('error-change','Mail nhập vào không đồng nhất Mail đã xác nhận')->withInput();
+                        }
 
+                    }
+                }
+                catch(Exception $ex)
+                {
+                    return redirect()->back()->with('error-change','Tài khoản hoặc Email không hợp lệ')->withInput();
+                }
+            }
+            return redirect()->to('/');
+        }
 
+    }
 }

@@ -137,3 +137,8 @@ Route::post('/Add-ban-can-su',[AdminController::class,'ConfirmAddClassManage'])-
 //Phản hồi ý kiến
 
 Route::post('/comment',[TeacherController::class,'AddnewComment']);
+
+
+//Quên mật khẩu
+Route::get('/forgot-password',[AccountController::class,'FrmForgotPassword']);
+Route::post('/Confirmed-change-password',[AccountController::class,'FuncForgotPassword']);
