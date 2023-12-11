@@ -155,9 +155,9 @@ use Carbon\carbon;
                                                     </div>
                                                     <div class="col-md-4">
                                                         @if ($dataBefore->Email == null)
-                                                            <input class="info form-control" style="max-width: 250px" name="mailDetail" type="text" placeholder="abc@gmail.com">
+                                                            <input class="info form-control" style="max-width: 250px; height: 30px" name="mailDetail" type="text" placeholder="abc@gmail.com">
                                                         @else
-                                                            <input class="info form-control" style="max-width: 250px" name="mailDetail" type="text"
+                                                            <input class="info form-control" style="max-width: 250px; height: 30px" name="mailDetail" type="text"
                                                                 placeholder="{{ $dataBefore->Email }}">
                                                         @endif
                                                         @error('mailDetail')
@@ -169,9 +169,9 @@ use Carbon\carbon;
                                                     </div>
                                                     <div class="col-md-4">
                                                         @if ($dataBefore->SDT == null)
-                                                            <input class="info form-control" style="max-width: 250px" name="phoneNum" type="text" placeholder="09xxxxxx99">
+                                                            <input class="info form-control" style="max-width: 250px; height: 30px" name="phoneNum" type="text" placeholder="09xxxxxx99">
                                                         @else
-                                                            <input class="info form-control" style="max-width: 250px" name="phoneNum" type="text"
+                                                            <input class="info form-control" style="max-width: 250px; height: 30px" name="phoneNum" type="text"
                                                                 placeholder="{{ $dataBefore->SDT }}">
                                                         @endif
                                                         @error('phoneNum')
@@ -189,16 +189,16 @@ use Carbon\carbon;
                                                     <div class="col-md-4">
                                                         @if (session()->exists('studentid'))
                                                             @if ($dataBefore->NgaySinh == null)
-                                                                <input type="date" style="max-width: 250px" class="info form-control" name="birthday">
+                                                                <input type="date" style="max-width: 250px; height: 30px" class="info form-control" name="birthday">
                                                             @else
-                                                                <input type="date" style="max-width: 250px" class="info form-control" name="birthday"
+                                                                <input type="date" style="max-width: 250px; height: 30px" class="info form-control" name="birthday"
                                                                     value="{{ Carbon::parse($dataBefore->NgaySinh)->toDateString() }}">
                                                             @endif
                                                         @elseif(session()->exists('teacherid'))
                                                             @if ($dataBefore->NgaySinhGV == null)
-                                                                <input type="date" style="max-width: 250px" class="info form-control" name="birthday">
+                                                                <input type="date" style="max-width: 250px; height: 30px" class="info form-control" name="birthday">
                                                             @else
-                                                                <input type="date" style="max-width: 250px" class="info form-control" name="birthday"
+                                                                <input type="date" style="max-width: 250px; height: 30px" class="info form-control" name="birthday"
                                                                     value="{{ Carbon::parse($dataBefore->NgaySinhGV)->toDateString() }}">
                                                             @endif
                                                         @endif
@@ -217,14 +217,14 @@ use Carbon\carbon;
                                                     <label for="info" class="control-label">Số nhà: </label>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input class="info form-control" name="address" style="max-width: 250px" type="text">
+                                                    <input class="info form-control" name="address" style="max-width: 250px; height: 30px" type="text">
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="info" class="control-label">Tỉnh / Thành phố:</label>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <select class="info form-control" style="max-width: 250px" id="city" name="city">
-                                                        <option style="max-width: 250px"  value="" selected></option>
+                                                    <select class="info form-control" style="max-width: 250px; height: 30px" id="city" name="city">
+                                                        <option style="max-width: 250px; height: 30px"  value="" selected></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -234,16 +234,16 @@ use Carbon\carbon;
                                                     <label for="info" class="control-label">Quận / Huyện:</label>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <select class="info form-control" style="max-width: 250px" id="district" name="district">
-                                                        <option style="max-width: 250px"  value="" selected></option>
+                                                    <select class="info form-control" style="max-width: 250px; height: 30px" id="district" name="district">
+                                                        <option style="max-width: 250px; height: 30px"  value="" selected></option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="info" class="control-label">Phường / Xã:</label>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <select class="info form-control" style="max-width: 250px" id="ward" name="ward">
-                                                        <option style="max-width: 250px"  value="" selected></option>
+                                                    <select class="info form-control" style="max-width: 250px; height: 30px" id="ward" name="ward">
+                                                        <option style="max-width: 250px; height: 30px"  value="" selected></option>
                                                     </select>
                                                 </div>
                                             </div>

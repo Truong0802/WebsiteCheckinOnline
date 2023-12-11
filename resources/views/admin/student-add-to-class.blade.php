@@ -23,6 +23,11 @@
 
         <form method="post" action="{{ route('scanPost') }}">
             <div class="col-md-12 detail">
+                <style>
+                    .detail {
+                        grid-template-columns: 15fr
+                    }
+                </style>
                 <div class="class-list">
                     @if (session('error-input'))
                         <div class="alert alert-danger text-center">{{ session('error-input') }}</div>
@@ -41,7 +46,7 @@
                             </div>
                         </div>
                     </span>
-                    <div class="table">
+                    <div class="table-add">
                         <table class="student-table" id="student-table">
                             <thead>
                                 <tr>

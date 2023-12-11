@@ -54,7 +54,7 @@ const getLocation = () =>
                         if(!isNaN(inputValue))
                         {
                             console.log("là kiểu số");
-                            document.getElementById("login-btn").disabled = true;
+                            // document.getElementById("login-btn").disabled = true;
                             // Bật cho phép sv truy cập từ xa
                             document.getElementById("login-btn").disabled = false;
                         }

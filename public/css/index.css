@@ -1111,6 +1111,12 @@ hr.solid
     border: none;
 }
 
+.table-add tbody tr td input
+{
+    padding: 10px;
+    border: none;
+}
+
 td.score-input
 {
     position: relative;
@@ -1136,22 +1142,6 @@ td.score-input input[type="text"]:focus
     display: flex;
     align-items: center;
     margin-left: 50px;
-}
-
-select
-{
-    max-width: 250px;
-    height: 32px;
-}
-
-input
-{
-    height: 30px;
-}
-
-input::placeholder
-{
-    color: #727171;
 }
 
 @media (max-width: 992px)
