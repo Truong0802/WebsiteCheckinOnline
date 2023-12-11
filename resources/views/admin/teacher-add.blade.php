@@ -50,12 +50,6 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <input type="checkbox" id="" name="reset" value="1">
-                            <label for="reset">Reset password</label>
-                    </div>
-
                 </div>
                 <br>
                 <div class="row">
@@ -105,13 +99,19 @@
                     </div>
                 </div>
                 <br>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="checkbox" id="" name="reset" value="1">
+                        <label for="reset"><b style="font-size: 17px;">Reset password</b></label>
+                    </div>
+                </div>
+                <br>
                 <div class="btn-container">
                     <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm Giảng Viên</button>
                     {{-- <input type="file" id="fileInput" class="custom-file-input"> --}}
                     <a type="button" href="/confirmToAddGV" class="btn btn-success" onclick="removeFilterData()">Xác nhận
                         thêm</a>
                 </div>
-
                 @csrf
             </form>
             <div class="col-md-12 detail teacher-detail">

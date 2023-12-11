@@ -83,4 +83,15 @@
     </div>
     <script src="<?php echo asset('/js/scan-img.js'); ?>"></script>
     <script src="<?php echo asset('/js/script.js'); ?>"></script>
+    <script>
+        btn1.addEventListener("click", function()
+        {
+            modal.style.display = "block";
+        });
+
+        closeBtn1.addEventListener("click", function()
+        {
+            modal.style.display = "none";
+        });
+    </script>
 @stop

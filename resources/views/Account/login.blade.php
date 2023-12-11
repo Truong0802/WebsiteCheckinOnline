@@ -204,14 +204,18 @@
             </div>
         </div>
         <script src="<?php echo asset('/js/location.js'); ?>"></script>
-        <script src="<?php echo asset('/js/script.js'); ?>"></script>
+        {{-- <script src="<?php echo asset('/js/script.js'); ?>"></script> --}}
         <script>
-            function showPassword() {
+            function showPassword()
+            {
                 const passwordField = document.getElementById('passwordInput');
                 const showPassword = document.getElementById('show-password');
-                if (showPassword.checked) {
+                if (showPassword.checked)
+                {
                     passwordField.type = "text";
-                } else {
+                }
+                else
+                {
                     passwordField.type = "password";
                 }
             }

@@ -54,15 +54,6 @@
                 </div>
                 <br>
                 <div class="row">
-                    {{-- <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="class-name">Tên lớp:</label>
-                            <input type="text" class="form-control" id="class-name" name="classname">
-                            @error('classname')
-                                <div class="alert alert-danger">{{ $errors->first('classname') }}</div>
-                            @enderror
-                        </div>
-                    </div> --}}
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="class-name">Tên lớp:</label>
@@ -72,49 +63,14 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <input type="checkbox" id="" name="reset" value="1">
-                            <label for="reset">Reset password</label>
-                        </div>
-                    </div>
-                    {{-- <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="student-name">Ngày tháng năm sinh:</label>
-                                <input type="date" class="form-control" id="birth" name="birth">
-
-                            </div>
-                        </div> --}}
                 </div>
-
-                {{-- <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="class-name">Phường:</label>
-                                <input type="text" class="form-control" id="phuong" name="phuong">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="class-name">Quận:</label>
-                                <input type="text" class="form-control" id="quan" name="quan">
-                            </div>
-                        </div>
+                <br>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="checkbox" id="" name="reset" value="1">
+                        <label for="reset"><b style="font-size: 17px;">Reset password</b></label>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="class-name">Thành Phố:</label>
-                                <input type="text" class="form-control" id="TP" name="TP">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="class-name">Địa chỉ chi tiết:</label>
-                                <input type="text" class="form-control" id="DiaChi" name="DiaChi">
-                            </div>
-                        </div>
-                    </div> --}}
+                </div>
                 <br>
                 <div class="btn-container">
                     <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>

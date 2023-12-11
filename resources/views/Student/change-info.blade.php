@@ -90,116 +90,175 @@ use Carbon\carbon;
                         </div>
                         <div class="vertical-line"></div>
                     </div>
-                    <section class="col-md-9 custom-info mt-4 mb-4 mx-4">
-                        <ul class="list-unstyled custom-list-li">
-                            <li>Họ tên:
-                                <span class="info">{{ $Name }}</span>
-                            </li>
-                            @if (session()->exists('studentid'))
-                                <li>Mã số sinh viên:
-                                    <span class="info">{{ $MS }}</span>
-                                </li>
-                            @else
-                                @if (session()->exists('teacherid'))
-                                    <li>Mã số giảng viên:
-                                        <span class="info">{{ $MS }}</span>
+                    <section class="col-md-9 jarviswidget custom-info mt-4 mb-4 mx-4">
+                        <div class="widget-body">
+                            <div class="form-horizontal">
+                                <ul class="list-unstyled custom-list-li">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <li>Họ tên:
+                                                <span class="info">{{ $Name }}</span>
+                                            </li>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <li>Hệ đào tạo:
+                                                <span class="info">Chưa cập nhật</span>
+                                            </li>
+                                        </div>
+                                        <div class="col-md-6">
+                                            @if (session()->exists('studentid'))
+                                                <li>Lớp:
+                                                    <span class="info">{{ $ClassId }}</span>
+                                                </li>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6">
+                                            <li>Chương trình:
+                                                <span class="info">Chưa cập nhật</span>
+                                            </li>
+                                        </div>
+                                        <div class="col-md-6">
+                                            @if (session()->exists('studentid'))
+                                                <li>Mã số sinh viên:
+                                                    <span class="info">{{ $MS }}</span>
+                                                </li>
+                                            @else
+                                                @if (session()->exists('teacherid'))
+                                                    <li>Mã số giảng viên:
+                                                        <span class="info">{{ $MS }}</span>
+                                                    </li>
+                                                @endif
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6">
+                                            <li>Khoa:
+                                                <span class="info">Khoa Công Nghệ Thông Tin</span>
+                                            </li>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <li>Niên khóa:
+                                                @if (session()->exists('studentid'))
+                                                    <span class="info">{{ $NienKhoa->NamHocDuKien }}</span>
+                                                @endif
+                                            </li>
+                                        </div>
+                                    </div>
+                                    <li>
+                                        <legend>
+                                            <h6 class="font-weight-bold" style="font-size: 18px">Thông tin cá nhân</h6>
+                                        </legend>
+                                        <ul>
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-2">
+                                                        <label for="info" class="control-label">Email: </label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        @if ($dataBefore->Email == null)
+                                                            <input class="info form-control" style="max-width: 250px" name="mailDetail" type="text" placeholder="abc@gmail.com">
+                                                        @else
+                                                            <input class="info form-control" style="max-width: 250px" name="mailDetail" type="text"
+                                                                placeholder="{{ $dataBefore->Email }}">
+                                                        @endif
+                                                        @error('mailDetail')
+                                                            <div class="alert alert-danger">{{ $errors->first('mailDetail') }}</div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="info" class="control-label">Số điện thoại: </label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        @if ($dataBefore->SDT == null)
+                                                            <input class="info form-control" style="max-width: 250px" name="phoneNum" type="text" placeholder="09xxxxxx99">
+                                                        @else
+                                                            <input class="info form-control" style="max-width: 250px" name="phoneNum" type="text"
+                                                                placeholder="{{ $dataBefore->SDT }}">
+                                                        @endif
+                                                        @error('phoneNum')
+                                                            <div class="alert alert-danger">{{ $errors->first('phoneNum') }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-2">
+                                                        <label for="info" class="control-label">Ngày tháng năm sinh: </label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        @if (session()->exists('studentid'))
+                                                            @if ($dataBefore->NgaySinh == null)
+                                                                <input type="date" style="max-width: 250px" class="info form-control" name="birthday">
+                                                            @else
+                                                                <input type="date" style="max-width: 250px" class="info form-control" name="birthday"
+                                                                    value="{{ Carbon::parse($dataBefore->NgaySinh)->toDateString() }}">
+                                                            @endif
+                                                        @elseif(session()->exists('teacherid'))
+                                                            @if ($dataBefore->NgaySinhGV == null)
+                                                                <input type="date" style="max-width: 250px" class="info form-control" name="birthday">
+                                                            @else
+                                                                <input type="date" style="max-width: 250px" class="info form-control" name="birthday"
+                                                                    value="{{ Carbon::parse($dataBefore->NgaySinhGV)->toDateString() }}">
+                                                            @endif
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ul>
                                     </li>
-                                @endif
-                            @endif
-                            <li>Chương trình:
-                                <span class="info">Chưa cập nhật</span>
-                            </li>
-                            <li>Hệ đào tạo:
-                                <span class="info">Chưa cập nhật</span>
-                            </li>
-                            <li>Khoa:
-                                <span class="info">Khoa Công Nghệ Thông Tin</span>
-                            </li>
-                            @if (session()->exists('studentid'))
-                                <li>Lớp:
-                                    <span class="info">{{ $ClassId }}</span>
-                                </li>
-                            @endif
-                            <li>Email:
-                                @if ($dataBefore->Email == null)
-                                    <input class="info" name="mailDetail" type="text" placeholder="abc@gmail.com">
-                                @else
-                                    <input class="info" name="mailDetail" type="text"
-                                        placeholder="{{ $dataBefore->Email }}">
-                                @endif
-                                @error('mailDetail')
-                                    <div class="alert alert-danger">{{ $errors->first('mailDetail') }}</div>
-                                @enderror
-                            </li>
-                            <li>Số điện thoại:
-                                @if ($dataBefore->SDT == null)
-                                    <input class="info" name="phoneNum" type="text" placeholder="09xxxxxx99">
-                                @else
-                                    <input class="info" name="phoneNum" type="text"
-                                        placeholder="{{ $dataBefore->SDT }}">
-                                @endif
-                                @error('phoneNum')
-                                    <div class="alert alert-danger">{{ $errors->first('phoneNum') }}</div>
-                                @enderror
-                            </li>
-                            <li>Ngày tháng năm sinh:
-                                @if (session()->exists('studentid'))
-                                    @if ($dataBefore->NgaySinh == null)
-                                        <input type="date" class="info" name="birthday">
-                                    @else
-                                        <input type="date" class="info" name="birthday"
-                                            value="{{ Carbon::parse($dataBefore->NgaySinh)->toDateString() }}">
-                                    @endif
-                                @elseif(session()->exists('teacherid'))
-                                    @if ($dataBefore->NgaySinhGV == null)
-                                        <input type="date" class="info" name="birthday">
-                                    @else
-                                        <input type="date" class="info" name="birthday"
-                                            value="{{ Carbon::parse($dataBefore->NgaySinhGV)->toDateString() }}">
-                                    @endif
-                                @endif
-                            </li>
-                            @if (session()->exists('studentid'))
-                                <li> Niên khóa:
-                                    <span class="info">{{ $NienKhoa->NamHocDuKien }}</span>
-                                </li>
-                            @endif
-                            <li>Địa chỉ:
-                                <ul>
-                                    <li>Thành phố / Tỉnh:
-                                        <select class="info" id="city" name="city">
-                                            <option value="" selected></option>
-                                        </select>
+                                    <li>
+                                        <legend>
+                                            <h6 class="font-weight-bold" style="font-size: 18px">Địa chỉ</h6>
+                                        </legend>
+                                        <ul>
+                                            <div class="row form-group">
+                                                <div class="col-md-2">
+                                                    <label for="info" class="control-label">Số nhà: </label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input class="info form-control" name="address" style="max-width: 250px" type="text">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="info" class="control-label">Tỉnh / Thành phố:</label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="info form-control" style="max-width: 250px" id="city" name="city">
+                                                        <option style="max-width: 250px"  value="" selected></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row form-group">
+                                                <div class="col-md-2">
+                                                    <label for="info" class="control-label">Quận / Huyện:</label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="info form-control" style="max-width: 250px" id="district" name="district">
+                                                        <option style="max-width: 250px"  value="" selected></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="info" class="control-label">Phường / Xã:</label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="info form-control" style="max-width: 250px" id="ward" name="ward">
+                                                        <option style="max-width: 250px"  value="" selected></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+                                            <script src="<?php echo asset('/js/provinces.js'); ?>"></script>
+                                        </ul>
                                     </li>
-
-                                    <li>Quận / Huyện:
-                                        <select class="info" id="district" name="district">
-                                            <option value="" selected></option>
-                                        </select>
+                                    <li>
+                                        <br>
+                                        <button type="submit" class="btn btn-success" id="page-back">Xác nhận</button>
                                     </li>
-
-                                    <li>Phường / Xã:
-                                        <select class="info" id="ward" name="ward">
-                                            <option value="" selected></option>
-                                        </select>
-                                    </li>
-
-                                    <li>Số nhà:
-                                        <input class="info" name="address" type="text">
-                                    </li>
-
-                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-                                    <script src="<?php echo asset('/js/provinces.js'); ?>"></script>
                                 </ul>
-                            </li>
-
-
-                            <li>
-                                <br>
-                                <button type="submit" class="btn btn-success" id="page-back">Xác nhận</button>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
                     </section>
 
                 </div>

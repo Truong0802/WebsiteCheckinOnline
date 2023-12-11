@@ -284,10 +284,16 @@ ul
     padding-inline-start: 40px;
 }
 
+ul li
+{
+    list-style: none;
+}
+
 li
 {
     display: list-item;
     text-align: -webkit-match-parent;
+    text-decoration: none;
 }
 
 nav ul ul
@@ -1130,6 +1136,22 @@ td.score-input input[type="text"]:focus
     display: flex;
     align-items: center;
     margin-left: 50px;
+}
+
+select
+{
+    max-width: 250px;
+    height: 32px;
+}
+
+input
+{
+    height: 30px;
+}
+
+input::placeholder
+{
+    color: #727171;
 }
 
 @media (max-width: 992px)

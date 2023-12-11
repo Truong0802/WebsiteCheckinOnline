@@ -9964,7 +9964,7 @@ textarea.clone {
 }
 
 #extr-page .hero {
-    background-image: url(../img/gradient/login.png);
+    /* background-image: url(../img/gradient/login.png); */
     background-repeat: no-repeat;
     background-position: 0 137px;
     height: 360px;
@@ -11727,7 +11727,7 @@ html {
     margin: 0;
     padding: 0;
     min-height: 100%;
-    background: url(../img/mybg.png) #fff;
+    /* background: url(../img/mybg.png) #fff; */
     position: relative
 }
 
@@ -11735,7 +11735,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100%;
-    background: url(../img/mybg.png) #fff;
+    /* background: url(../img/mybg.png) #fff; */
     direction: ltr
 }
 
