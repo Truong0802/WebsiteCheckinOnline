@@ -106,11 +106,11 @@ use Carbon\carbon;
                                             </li>
                                         </div>
                                         <div class="col-md-6">
-                                            @if (session()->exists('studentid'))
-                                                <li>Lớp:
-                                                    <span class="info">{{ $ClassId }}</span>
-                                                </li>
-                                            @endif
+                                            <li>Niên khóa:
+                                                @if (session()->exists('studentid'))
+                                                    <span class="info">{{ $NienKhoa->NamHocDuKien }}</span>
+                                                @endif
+                                            </li>
                                         </div>
                                         <div class="col-md-6">
                                             <li>Chương trình:
@@ -136,18 +136,18 @@ use Carbon\carbon;
                                             </li>
                                         </div>
                                         <div class="col-md-6">
-                                            <li>Niên khóa:
-                                                @if (session()->exists('studentid'))
-                                                    <span class="info">{{ $NienKhoa->NamHocDuKien }}</span>
-                                                @endif
-                                            </li>
+                                            @if (session()->exists('studentid'))
+                                                <li>Lớp:
+                                                    <span class="info">{{ $ClassId }}</span>
+                                                </li>
+                                            @endif
                                         </div>
                                     </div>
                                     <li>
                                         <legend>
                                             <h6 class="font-weight-bold" style="font-size: 18px">Thông tin cá nhân</h6>
                                         </legend>
-                                        <ul>
+                                        <ul class="user-info">
                                             <div class="col-md-12">
                                                 <div class="row form-group">
                                                     <div class="col-md-2">
@@ -155,9 +155,9 @@ use Carbon\carbon;
                                                     </div>
                                                     <div class="col-md-4">
                                                         @if ($dataBefore->Email == null)
-                                                            <input class="info form-control" style="max-width: 250px; height: 30px" name="mailDetail" type="text" placeholder="abc@gmail.com">
+                                                            <input class="info form-control" style="max-width: 250px; height: 38px" name="mailDetail" type="text" placeholder="abc@gmail.com">
                                                         @else
-                                                            <input class="info form-control" style="max-width: 250px; height: 30px" name="mailDetail" type="text"
+                                                            <input class="info form-control" style="max-width: 250px; height: 38px" name="mailDetail" type="text"
                                                                 placeholder="{{ $dataBefore->Email }}">
                                                         @endif
                                                         @error('mailDetail')
@@ -169,9 +169,9 @@ use Carbon\carbon;
                                                     </div>
                                                     <div class="col-md-4">
                                                         @if ($dataBefore->SDT == null)
-                                                            <input class="info form-control" style="max-width: 250px; height: 30px" name="phoneNum" type="text" placeholder="09xxxxxx99">
+                                                            <input class="info form-control" style="max-width: 250px; height: 38px" name="phoneNum" type="text" placeholder="09xxxxxx99">
                                                         @else
-                                                            <input class="info form-control" style="max-width: 250px; height: 30px" name="phoneNum" type="text"
+                                                            <input class="info form-control" style="max-width: 250px; height: 38px" name="phoneNum" type="text"
                                                                 placeholder="{{ $dataBefore->SDT }}">
                                                         @endif
                                                         @error('phoneNum')
@@ -189,16 +189,16 @@ use Carbon\carbon;
                                                     <div class="col-md-4">
                                                         @if (session()->exists('studentid'))
                                                             @if ($dataBefore->NgaySinh == null)
-                                                                <input type="date" style="max-width: 250px; height: 30px" class="info form-control" name="birthday">
+                                                                <input type="date" style="max-width: 250px; height: 38px" class="info form-control" name="birthday">
                                                             @else
-                                                                <input type="date" style="max-width: 250px; height: 30px" class="info form-control" name="birthday"
+                                                                <input type="date" style="max-width: 250px; height: 38px" class="info form-control" name="birthday"
                                                                     value="{{ Carbon::parse($dataBefore->NgaySinh)->toDateString() }}">
                                                             @endif
                                                         @elseif(session()->exists('teacherid'))
                                                             @if ($dataBefore->NgaySinhGV == null)
-                                                                <input type="date" style="max-width: 250px; height: 30px" class="info form-control" name="birthday">
+                                                                <input type="date" style="max-width: 250px; height: 38px" class="info form-control" name="birthday">
                                                             @else
-                                                                <input type="date" style="max-width: 250px; height: 30px" class="info form-control" name="birthday"
+                                                                <input type="date" style="max-width: 250px; height: 38px" class="info form-control" name="birthday"
                                                                     value="{{ Carbon::parse($dataBefore->NgaySinhGV)->toDateString() }}">
                                                             @endif
                                                         @endif
@@ -211,40 +211,44 @@ use Carbon\carbon;
                                         <legend>
                                             <h6 class="font-weight-bold" style="font-size: 18px">Địa chỉ</h6>
                                         </legend>
-                                        <ul>
-                                            <div class="row form-group">
-                                                <div class="col-md-2">
-                                                    <label for="info" class="control-label">Số nhà: </label>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <input class="info form-control" name="address" style="max-width: 250px; height: 30px" type="text">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="info" class="control-label">Tỉnh / Thành phố:</label>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <select class="info form-control" style="max-width: 250px; height: 30px" id="city" name="city">
-                                                        <option style="max-width: 250px; height: 30px"  value="" selected></option>
-                                                    </select>
+                                        <ul class="user-info">
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-2">
+                                                        <label for="info" class="control-label">Số nhà: </label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input class="info form-control" name="address" style="max-width: 250px; height: 38px" type="text">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="info" class="control-label">Tỉnh / Thành phố:</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <select class="info form-control" style="max-width: 250px; height: 38px" id="city" name="city">
+                                                            <option style="max-width: 250px; height: 38px" value="" selected>Chọn tỉnh / thành phố</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <br>
-                                            <div class="row form-group">
-                                                <div class="col-md-2">
-                                                    <label for="info" class="control-label">Quận / Huyện:</label>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <select class="info form-control" style="max-width: 250px; height: 30px" id="district" name="district">
-                                                        <option style="max-width: 250px; height: 30px"  value="" selected></option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="info" class="control-label">Phường / Xã:</label>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <select class="info form-control" style="max-width: 250px; height: 30px" id="ward" name="ward">
-                                                        <option style="max-width: 250px; height: 30px"  value="" selected></option>
-                                                    </select>
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-2">
+                                                        <label for="info" class="control-label">Quận / Huyện:</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <select class="info form-control" style="max-width: 250px; height: 38px" id="district" name="district">
+                                                            <option style="max-width: 250px; height: 38px"  value="" selected></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="info" class="control-label">Phường / Xã:</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <select class="info form-control" style="max-width: 250px; height: 38px" id="ward" name="ward">
+                                                            <option style="max-width: 250px; height: 38px"  value="" selected></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>

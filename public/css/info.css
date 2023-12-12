@@ -22,7 +22,7 @@
 
 #city, #district, #ward
 {
-    width: 250px;
+    max-width: 250px;
     height: 30px;
     font-size: 16px;
 }
@@ -49,4 +49,15 @@
 {
     display: flex;
     align-items: flex-start;
+}
+
+.user-info .form-group input::placeholder,
+.user-info .form-group input[type="date"]
+{
+    color: #acabab;
+}
+
+select option:first-child
+{
+    display: block;
 }
