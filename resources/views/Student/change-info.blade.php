@@ -79,9 +79,24 @@ use Carbon\carbon;
                 <div class="row well m-3">
                     <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
                         <div class="custom-line">
-                            <img alt="" class="online" style = "width: 200px;"
-                                src="{{ asset('img/Avatar/' . $imgAvatar) }}">
-                            <input class="img-upload" type="file" name="imagePath" size="30" />
+                            <img alt="" class="online img-show" style = "width: 200px;" src="{{ asset('img/Avatar/' . $imgAvatar) }}">
+                            <input class="img-upload" type="file" name="imagePath" size="30" onchange="previewImage(event)"/>
+                            <script>
+                                function previewImage(event)
+                                {
+                                    const input = event.target;
+                                    if (input.files && input.files[0])
+                                    {
+                                        const reader = new FileReader();
+                                        reader.onload = function (e)
+                                        {
+                                            const imgShow = document.querySelector('.img-show');
+                                            imgShow.src = e.target.result;
+                                        };
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                            </script>
                         </div>
                         <div class="vertical-line"></div>
                     </div>
