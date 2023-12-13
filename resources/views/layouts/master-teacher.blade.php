@@ -283,7 +283,8 @@ use Carbon\Carbon;
         <div class="inner three"></div>
     </div>
     <script>
-        $(window).on('load', function() {
+        $(window).on('load', function()
+        {
             $(".loader-container").fadeOut(1000);
             $(".main").fadeIn(1500);
         })

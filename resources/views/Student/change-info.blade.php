@@ -80,7 +80,7 @@ use Carbon\carbon;
                     <div class="col-md-3 custom-avatar p-0 m-0 mt-4 mb-4 mx-4" style = "width: 150px;">
                         <div class="custom-line">
                             <img alt="" class="online img-show" style = "width: 200px;" src="{{ asset('img/Avatar/' . $imgAvatar) }}">
-                            <input class="img-upload" type="file" name="imagePath" size="30" onchange="previewImage(event)"/>
+                            <input class="img-upload" type="file" accept="image/*" name="imagePath" size="30" onchange="previewImage(event)"/>
                             <script>
                                 function previewImage(event)
                                 {

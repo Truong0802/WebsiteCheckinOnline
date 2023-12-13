@@ -1,7 +1,6 @@
 @extends('layouts.master-teacher')
 
 @section('content')
-
     <div id="ribbon">
         <ol class="breadcrumb">
             <li class="ng-star-inserted">
@@ -210,7 +209,6 @@
         }
         ?>
         @if ($checkConfirmOrNot)
-
             @if ($checkConfirmOrNot->Confirmed != 1 && session()->get('ChucVu') != 'QL' && session()->get('ChucVu') != 'AM')
                 <!--Xuất popup để chuyển qua trang xác thực khi bấm Ok-->
                 <div class="popup-container" id="popup">
@@ -236,6 +234,5 @@
             @else
             @endif
         @endif
-
     </div>
 @stop
