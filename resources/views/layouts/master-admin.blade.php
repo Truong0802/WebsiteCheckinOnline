@@ -126,7 +126,7 @@ use Carbon\Carbon;
                     <li class="open">
                         <a href="/them-lop-nien-khoa" title="Lớp niên khóa">
                             <i class="fa fa-lg fa-fw fa-book"></i>
-                            <span class="menu-item-parent">Thêm Lớp Niên Khóa</span>
+                            <span class="menu-item-parent">Thêm lớp niên khóa</span>
                             <b class="collapse-sign">
                                 <em class="fa fa-minus-square-o"></em>
                             </b>

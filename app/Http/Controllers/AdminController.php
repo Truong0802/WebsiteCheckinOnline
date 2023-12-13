@@ -217,7 +217,6 @@ class AdminController extends Controller
     }
     public function ThemDanhSach(Request $request)
     {
-        // dd($request);
         if($request != null)
         {
             if(session()->has('teacherid') && session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
@@ -250,7 +249,6 @@ class AdminController extends Controller
                     //Bổ sung thời gian tiết học
                     $checkclasstime = DB::table('tiet_hoc')->where('MaTietHoc',$request->tiethocid)->first();
                     //Kiểm tra thời gian bắt đầu có phù hợp
-                    // dd(Carbon::parse($request->timestart.' '.$checkclasstime->ThoiGianBatDau)->format('d-m-Y H:i'));
                     $time = Carbon::parse(Carbon::parse($request->timestart.' '.$checkclasstime->ThoiGianBatDau));
                     $formattedTime = $time->format('dmYHi');
                     $timeForTemp = $time->format('d-m-Y H:i');
@@ -286,7 +284,6 @@ class AdminController extends Controller
 
         $array = session('DanhSachLopTam');
         $position = array_search($request->id, $array);
-        // dd($position);
         unset($array[$position]);
         session(['DanhSachLopTam' => $array]);
         return redirect()->to('/quan-ly-lop-hoc');
@@ -364,14 +361,16 @@ class AdminController extends Controller
                             return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
 
                         }
-
+                        $array = session('DanhSachLopTam');
+                        $position = array_search($temp, $array);
+                        unset($array[$position]);
+                        session(['DanhSachLopTam' => $array]);
 
                 }
                 else{
                     $date = Str::before($temp,'MaMH');
                     $datetimeConvert = Carbon::parse($date);
                     $formattedDateTime = $datetimeConvert->format('d-m-Y');
-
                     $cutNgay = substr($checkLop->MaNgay,-12);
                     $CutNgayConvert = Carbon::createFromFormat('dmYHi',$cutNgay);
                     $formattedDate = $CutNgayConvert->format('d-m-Y');
@@ -384,9 +383,7 @@ class AdminController extends Controller
                         //Bắt đầu lại từ buổi số 1
                         $stt='1';
                         $formatTime = $datetimeConvert->format('H:i');
-                        $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
-                        if($checkTypeTime != null)
-                        {
+
                             $formatCheckDate1 = $dateEndConvert->format('d-m-y');
                             $formatCheckDate = $datetimeConvert->format('d-m-y');
 
@@ -396,17 +393,25 @@ class AdminController extends Controller
                             }
 
                             $formatTimeEnd = $dateEndConvert->format('H:i');
-                            $checkTypeTimeEnd = DB::table('tiet_hoc')
-                                                ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
-                            if($checkTypeTimeEnd == null )
+
+
+
+                            $checkHKisAvailable = DB::table('hoc_ky')->where('MaHK',$CutHK)->first();
+                            $CutNamHoc = substr($temp,-4);
+                            $CutHocKy = Str::between($temp,'HK',$CutNamHoc);
+                            if($checkHKisAvailable == null)
                             {
-                                return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
+                                //Nếu chưa tồn tại học kì đó thì sẽ insert vào trước
+                                $PutHK = DB::table('hoc_ky')->insert([
+                                    'MaHK' => $CutHK,
+                                    'HocKy' => $CutHocKy,
+                                    'NamHoc'=>  $CutNamHoc,
+                                ]);
                             }
 
-
                             $GetTimeForInsert = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)
-                                                ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
-                            // dd($formatTime);
+                            ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
+
                             try
                             {
                                 $insertTheClassList = DB::table('lich_giang_day')->insert([
@@ -422,33 +427,41 @@ class AdminController extends Controller
                             }
                             catch(Exception $ex)
                             {
-                                //  dd($ex);
-                                return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu lớp'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
+
+                                return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
 
                             }
-                        }
-                        else
-                        {
-                            return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Không tồn tại tiết học này')->withInput();
-                        }
 
+                            $array = session('DanhSachLopTam');
+                            $position = array_search($temp, $array);
+                            unset($array[$position]);
+                            session(['DanhSachLopTam' => $array]);
                     }
                     else
                     {
                     //Thêm tiếp các buổi 2,3,4,5 theo stt lấy từ db +1
-                        $stt = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaLop',$CutClass)->distinct()->count('MaNgay');
-                        // dd(++$stt);
+                        $stt = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaHK',$CutHK)->distinct()->count('MaNgay');
+
+                        $phanloailop = substr($CutClass, 3, 1);
+                        if ($phanloailop == '1' || $phanloailop == '2')
+                        {
+                            if($stt >= 9 )
+                            {
+                                return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lớp '.' '.Str::between($temp,'TenMH','Lop').' đã đủ số buổi')->withInput();
+                            }
+                        }
+                        else if($phanloailop == '3')
+                        {
+                            if($stt >= 6 )
+                            {
+                                return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lớp '.' '.Str::between($temp,'TenMH','Lop').' đã đủ số buổi')->withInput();
+                            }
+                        }
                         if($stt != 0)
                         {
                             ++$stt;
-                        }else
-                        {
-                            $array = session('DanhSachLopTam');
-                            $position = array_search($temp,$array);
-                            $stt= $position+1;
-                            //Lấy stt buổi
                         }
-
+                        // dd($stt);
                         $formatTime = $datetimeConvert->format('H:i');
                         $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
                         if($checkTypeTime != null)
@@ -462,17 +475,21 @@ class AdminController extends Controller
                                     'MaTTMH' => $MaTTMH,
                                     'MSGV' =>  $CutMSGV,
                                     'MaLop' => $CutClass,
+                                    'MaHK' => $CutHK,
                                     'MaTietHoc' => $checkTypeTime->MaTietHoc,
                                     'MaBuoi' => $stt
                                 ]);
                             }
                             catch(Exception $ex)
                             {
-                                // dd($ex);
+
                                 return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách lớp '.' '.Str::between($temp,'MaMH','TenMH').' đã tồn tại')->withInput();
 
                             }
-
+                            $array = session('DanhSachLopTam');
+                            $position = array_search($temp, $array);
+                            unset($array[$position]);
+                            session(['DanhSachLopTam' => $array]);
                         }
                         else
                         {
@@ -696,24 +713,132 @@ class AdminController extends Controller
             if($checkScheduleIsAvailable == null)
             {
                 //Nếu chưa tồn tại tạo lịch buổi 1 cho lớp
-                $stt='1';
+                //Tạo lịch tự động cho 9 buổi
+
                 $formatTime = Carbon::parse('07:30')->format('H:i');
-                $formatedTime = Carbon::now()->format('dmYHi');
-                $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
-                $insertTheClassList = DB::table('lich_giang_day')->insert([
-                    'MaNgay' => $stt.$MaTTMH.$formatedTime,
-                    'NgayDay' => Carbon::now(),
-                    'MaTTMH' => $MaTTMH,
-                    'MSGV' =>  session()->get('teacherid'),
-                    'MaLop' => $request->student_info_Class[0],
-                    'MaHK' => $HocKyCheck,
-                    'MaTietHoc' => $checkTypeTime->MaTietHoc,
-                    'MaBuoi' => $stt
-                ]);
+                $TimeToAdd = Carbon::now();
+                $phanloailop = substr($MaTTMH, 3, 1);
+                if ($phanloailop == '1' || $phanloailop == '2') //Môn lý thuyết
+                {
+                    for($i = 0;$i<9;$i++)
+                    {
+                        $stt=$i+1;
+                        if($stt != 1)
+                        {
+                            $TimeToAdd = $TimeToAdd->addWeeks(1);
+                        }
+                        $formatedTime = $TimeToAdd->format('dmYHi');
+                        $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
+                        $insertTheClassList = DB::table('lich_giang_day')->insert([
+                            'MaNgay' => $stt.$MaTTMH.$formatedTime,
+                            'NgayDay' => $TimeToAdd,
+                            'MaTTMH' => $MaTTMH,
+                            'MSGV' =>  session()->get('teacherid'),
+                            'MaLop' => $request->student_info_Class[0],
+                            'MaHK' => $HocKyCheck,
+                            'MaTietHoc' => $checkTypeTime->MaTietHoc,
+                            'MaBuoi' => $stt
+                        ]);
+                    }
+                }
+                else if($phanloailop == '3') //Môn thực hành
+                {
+                    for($i = 0;$i<6;$i++)
+                    {
+                        $stt=$i+1;
+                        if($stt != 1)
+                        {
+                            $TimeToAdd = $TimeToAdd->addWeeks(1);
+                        }
+                        $formatedTime = $TimeToAdd->format('dmYHi');
+                        $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
+                        $insertTheClassList = DB::table('lich_giang_day')->insert([
+                            'MaNgay' => $stt.$MaTTMH.$formatedTime,
+                            'NgayDay' => $TimeToAdd,
+                            'MaTTMH' => $MaTTMH,
+                            'MSGV' =>  session()->get('teacherid'),
+                            'MaLop' => $request->student_info_Class[0],
+                            'MaHK' => $HocKyCheck,
+                            'MaTietHoc' => $checkTypeTime->MaTietHoc,
+                            'MaBuoi' => $stt
+                        ]);
+                    }
+                }
+            }
+            else
+            {
+                $formatTime = Carbon::parse('07:30')->format('H:i');
+                $TimeToAdd = Carbon::now();
+                $stt = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaHK',$HocKyCheck)->distinct()->count('MaNgay');
+                        $phanloailop = substr($MaTTMH, 3, 1);
+                        if ($phanloailop == '1' || $phanloailop == '2')
+                        {
+                            if($stt >= 9 )
+                            {
+                                return redirect()->back()->with('error-input','Lớp '.$MaMH.' đã đủ số buổi')->withInput();
+                            }
+                            else
+                            {
+                                $limit = 9-$stt; //Kiểm tra xem lớp còn lại bao nhiêu buổi
+
+                                for($i = 0;$i<$limit;$i++)
+                                {
+                                    $stt=$stt+1;
+                                    if($stt != 1)
+                                    {
+                                        $TimeToAdd = $TimeToAdd->addWeeks(1);
+                                    }
+                                    $formatedTime = $TimeToAdd->format('dmYHi');
+                                    $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
+                                    $insertTheClassList = DB::table('lich_giang_day')->insert([
+                                        'MaNgay' => $stt.$MaTTMH.$formatedTime,
+                                        'NgayDay' => $TimeToAdd,
+                                        'MaTTMH' => $MaTTMH,
+                                        'MSGV' =>  session()->get('teacherid'),
+                                        'MaLop' => $request->student_info_Class[0],
+                                        'MaHK' => $HocKyCheck,
+                                        'MaTietHoc' => $checkTypeTime->MaTietHoc,
+                                        'MaBuoi' => $stt
+                                    ]);
+                                }
+                            }
+                        }
+                        else if($phanloailop == '3')
+                        {
+                            if($stt >= 6 )
+                            {
+                                return redirect()->back()->with('error-input','Lớp '.$MaMH.' đã đủ số buổi')->withInput();
+                            }
+                            else
+                            {
+                                $limit = 6-$stt; //Kiểm tra xem lớp còn lại bao nhiêu buổi
+                                for($i = 0;$i<$limit;$i++)
+                                {
+                                    $stt=$stt+1;
+                                    if($stt != 1)
+                                    {
+                                        $TimeToAdd = $TimeToAdd->addWeeks(1);
+                                    }
+                                    $formatedTime = $TimeToAdd->format('dmYHi');
+                                    $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
+                                    $insertTheClassList = DB::table('lich_giang_day')->insert([
+                                        'MaNgay' => $stt.$MaTTMH.$formatedTime,
+                                        'NgayDay' => $TimeToAdd,
+                                        'MaTTMH' => $MaTTMH,
+                                        'MSGV' =>  session()->get('teacherid'),
+                                        'MaLop' => $request->student_info_Class[0],
+                                        'MaHK' => $HocKyCheck,
+                                        'MaTietHoc' => $checkTypeTime->MaTietHoc,
+                                        'MaBuoi' => $stt
+                                    ]);
+                                }
+                            }
+                        }
+
             }
 
             $limit = count($request->student_info_MSSV);
-            // dd($limit);
+
             $i =0;
             while($i<$limit)
             {
