@@ -78,7 +78,10 @@
         @foreach ($getinfoclass as $key)
             <?php
             if ($key != null) {
-                $listid = substr($key->MaDanhSach, 0, -1);
+                $findMaTT = DB::table('danh_sach_sinh_vien')
+                ->where('MaHK',$key->MaHK)
+                ->where('MaTTMH', $key->MaTTMH)->first();
+                $listid = substr($findMaTT->MaDanhSach, 0, -1);
                 $phanloailop = substr($key->MaDanhSach, 3, 1);
                 $classname = DB::table('mon_hoc')
                     ->where('MaTTMH', $key->MaTTMH)
@@ -363,7 +366,7 @@
                                 @endif
                                 {{-- Buoi7 --}}
                                 @if ($phanloailop == '1' || $phanloailop == '2')
-                                    @if (DB::table('diem_danh')->where('MaDanhSach', 'like', $listid . '%')->where('MaBuoi', 7)->exists())
+                                    @if (DB::table('diem_danh')->where('MaDanhSach', 'like', $listid. '%')->where('MaBuoi', 7)->exists())
                                         <td>7</td>
                                     @else
                                         <?php

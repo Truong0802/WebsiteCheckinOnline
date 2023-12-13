@@ -357,7 +357,7 @@ class AdminController extends Controller
                         }
                         catch(Exception $ex)
                         {
-
+                            // dd($ex);
                             return redirect()->to('/quan-ly-lop-hoc')->with('error-AddClass','Lỗi nhập liệu danh sách'.' '.Str::between($temp,'MaMH','TenMH').'')->withInput();
 
                         }
@@ -514,6 +514,13 @@ class AdminController extends Controller
     {
         if(session()->has('teacherid'))
         {
+            if(session()->has('TimeAddDSTam'))
+            {
+                if(Carbon::now()->greaterThan(Carbon::parse(session()->get('TimeAddDSTam'))->addMinutes(1)) == true)
+                {
+                    dd('đã xóa');
+                }
+            }
             return view('admin/student-add-to-class');
         }
         else
@@ -668,6 +675,7 @@ class AdminController extends Controller
                         }
                         catch(Exception $ex)
                         {
+                            dd($ex);
                             return redirect()->back()->with('error-input','Lỗi nhập liệu thông tin môn học')->withInput();
                         }
 
@@ -767,7 +775,8 @@ class AdminController extends Controller
             }
             else
             {
-                $formatTime = Carbon::parse('07:30')->format('H:i');
+                $getTimeFromClass = DB::table('tiet_hoc')->where('MaTietHoc',$checkScheduleIsAvailable->MaTietHoc)->first();
+                $formatTime = Carbon::parse($getTimeFromClass->ThoiGianBatDau)->format('H:i');
                 $TimeToAdd = Carbon::now();
                 $stt = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaHK',$HocKyCheck)->distinct()->count('MaNgay');
                         $phanloailop = substr($MaTTMH, 3, 1);
@@ -855,11 +864,15 @@ class AdminController extends Controller
                 }
                 $i++;
             }
+
+
+
             // dd($i);
             session()->put('textByScan',"true");
             // dd(session()->forget('DanhSachSinhVienTam'));
             session()->put('classAddId',$MaTTMH);
             session()->put('HKid',$HocKyCheck);
+            session()->put('TimeAddDSTam',Carbon::now());
             return redirect()->to('/Them-danh-sach-sv?lop='.session()->get('classAddId').'&HK='.session()->get('HKid'));
         }
         else
@@ -973,19 +986,19 @@ class AdminController extends Controller
         if(session('DanhSachSinhVienTam') != null)
         {
             //Xử lý sắp xếp trước khi add vào danh sách db
-            $arrayTemp = [];
-            $arrayTemp = session()->get('DanhSachSinhVienTam');
-            $collection = collect($arrayTemp);
-
-            // // Sắp xếp theo giá trị ASCII của phần tử sau dấu "|"
+            // $arrayTemp = [];
+            // $arrayTemp = session()->get('DanhSachSinhVienTam');
+            // $collection = collect($arrayTemp);
+            //  // Sắp xếp theo giá trị ASCII của phần tử
             // $sortedCollection = $collection->sortBy(function ($item) {
             //     // Tách chuỗi thành mảng sử dụng dấu "|", và lấy phần tử thứ 1 (sau dấu "|") để sắp xếp
-            //     $parts = explode('HoTenSV', $item);
-            //     return $parts[1];
+            //     $between = Str::between($item, 'NgayThangNamSinh', 'HoTenSV');
+            //     return $between;
             // })->values();
 
             // // Chuyển Collection đã sắp xếp trở lại thành mảng
             // $sortedArray = $sortedCollection->all();
+
 
             if(session()->has('textByScan'))
             {

@@ -252,7 +252,7 @@ class TeacherController extends Controller
             if(session()->exists('teacherid')){
                 // dd($request);
                 if($request->lop){
-                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)->distinct()->paginate(25);
+                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)->orderby('MaKQSV','ASC')->distinct()->paginate(25);
                     session()->put('danh-sach-sinh-vien-lop',$request->lop);
                     session()->put('HKid',$request->HK);
                     $datatemp = [];
@@ -292,7 +292,7 @@ class TeacherController extends Controller
                                 $classlist= DB::table('danh_sach_sinh_vien')
                                 ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
                                 ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
-                                ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
+                                ->where('danh_sach_sinh_vien.MaHK', $request->HK)->orderby('MaKQSV','ASC')->paginate(25);
                                 session()->put('danh-sach-sinh-vien-lop',$request->lop);
                                 session()->put('HKid',$request->HK);
                             }
@@ -304,7 +304,7 @@ class TeacherController extends Controller
                                 // set chỉ có bcs xem sinh viên thuộc lớp mình
                                 ->where('sinh_vien.MaLop', $getMaLop->MaLop)
                                 ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
-                                ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
+                                ->where('danh_sach_sinh_vien.MaHK', $request->HK)->orderby('MaKQSV','ASC')->paginate(25);
                                 session()->put('danh-sach-sinh-vien-lop',$request->lop);
                                 session()->put('HKid',$request->HK);
                             }
@@ -317,7 +317,7 @@ class TeacherController extends Controller
                             // set chỉ có bcs xem sinh viên thuộc lớp mình
                             ->where('sinh_vien.MaLop', $getMaLop->MaLop)
                             ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
-                            ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
+                            ->where('danh_sach_sinh_vien.MaHK', $request->HK)->orderby('MaKQSV','ASC')->paginate(25);
                             session()->put('danh-sach-sinh-vien-lop',$request->lop);
                             session()->put('HKid',$request->HK);
                         }
@@ -349,7 +349,7 @@ class TeacherController extends Controller
                             //set chỉ có bcs xem sinh viên thuộc lớp mình
                             // ->where('sinh_vien.MaLop', $getMaLop->MaLop)
                             ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
-                            ->where('danh_sach_sinh_vien.MaHK', $request->HK)->paginate(25);
+                            ->where('danh_sach_sinh_vien.MaHK', $request->HK)->orderby('MaKQSV','ASC')->paginate(25);
                             session()->put('danh-sach-sinh-vien-lop',$request->lop);
                             session()->put('HKid',$request->HK);
                             $datatemp = [];
@@ -373,7 +373,7 @@ class TeacherController extends Controller
                             $classlist = DB::table('danh_sach_sinh_vien')
                             ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
                             ->where('MSSV',session()->get('studentid'))
-                            ->distinct()->paginate(25);
+                            ->distinct()->orderby('MaKQSV','ASC')->paginate(25);
                             session()->put('danh-sach-sinh-vien-lop',$request->lop);
                             session()->put('HKid',$request->HK);
                             $datatemp = [];
