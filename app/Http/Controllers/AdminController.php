@@ -675,7 +675,6 @@ class AdminController extends Controller
                         }
                         catch(Exception $ex)
                         {
-                            dd($ex);
                             return redirect()->back()->with('error-input','Lỗi nhập liệu thông tin môn học')->withInput();
                         }
 
