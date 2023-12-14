@@ -819,21 +819,24 @@ class TeacherController extends Controller
             if($request->input('divideall'))
             {
                 $option1 = $request->input('divideall');
-                $findlop = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like', $option1.'%')->distinct()->first();
+                $findlop = DB::table('danh_sach_sinh_vien')->where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
+                    ->where('MaHK',session()->get('HKid'))->distinct()->first();
 
-                $listUpToRow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like', $option1.'%')->distinct()->get();
+                $listUpToRow14 = DB::table('danh_sach_sinh_vien')->where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
+                ->where('MaHK',session()->get('HKid'))->distinct()->get();
                 // dd($listUpToRow14);
                 foreach($listUpToRow14 as $resultCheck)
                 {
 
                     $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
+                    // dd($countChecked);
                     $TongSoBuoiUpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$findlop->MaDanhSach)
+                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['TongSoBuoi' => $countChecked]);
                     //Đối với môn thực hành
                     $phanloailop = substr($resultCheck->MaDanhSach,3,1);
-
+                    //
                     if($phanloailop == '3')
                     {
                         $latestpoint = $countChecked * 3/6;
@@ -843,12 +846,12 @@ class TeacherController extends Controller
                         if($countChecked  >= 5)
                         {
                             $row14UpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$findlop->MaDanhSach)
+                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $latestpoint]);
 
-                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->first();
-                            if($checkDQT)
+                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$resultCheck->MaKQSV)->first();
+                            if($checkDQT != null)
                             {
 
                                 if($findlop->Diem16 != null)
@@ -856,7 +859,7 @@ class TeacherController extends Controller
                                     $result = $latestpoint + $findlop->Diem16;
 
                                     $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
                                 else{
@@ -864,7 +867,7 @@ class TeacherController extends Controller
                                     $result = $latestpoint;
 
                                     $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
 
@@ -872,35 +875,37 @@ class TeacherController extends Controller
 
                         }
                     }
-                    else{
+                    else if($phanloailop == '1' || $phanloailop == '2')
+                    {
                             //Đối với môn lý thuyết
                         $latestpoint = $countChecked * 3/9;
                         $latestpoint = round($latestpoint, 2);
                         $latestpoint = ceil($latestpoint * 10) / 10; //Làm tròn lên số gần nhất
+                        // dd($latestpoint);
                         if($countChecked  >= 7)
                         {
 
                             $row14UpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$findlop->MaDanhSach)
+                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $latestpoint]);
 
 
-                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->first();
+                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$resultCheck->MaKQSV)->first();
                             if($checkDQT)
                             {
                                 if($findlop->Diem16 != null)
                                 {
-                                    $result = $latestpoint + $findlop->Diem16;
+                                    $result = $latestpoint + $resultCheck->Diem16;
 
                                     $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
                                 else{
                                     $result = $latestpoint;
                                     $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
 
@@ -922,11 +927,14 @@ class TeacherController extends Controller
                 // }
                 return redirect('/danh-sach-sinh-vien?lop='.$findlop->MaTTMH.'&HK='.session()->get('HKid'));
             }
-            elseif($request->input('divide3'))
+            else if($request->input('divide3'))
             {
                 $option2 = $request->input('divide3');
-                $findlop = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like', $option2.'%')->distinct()->first();
-                $listUpToRow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like', $option2.'%')->distinct()->get();
+
+                $findlop = DB::table('danh_sach_sinh_vien')->where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
+                ->where('MaHK',session()->get('HKid'))->distinct()->first();
+                $listUpToRow14 = DB::table('danh_sach_sinh_vien')->where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
+                ->where('MaHK',session()->get('HKid'))->distinct()->get();
                 // dd($listUpToRow14);
                 foreach($listUpToRow14 as $resultCheck)
                 {
@@ -934,6 +942,7 @@ class TeacherController extends Controller
                     $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
                     //Đối với môn thực hành
                     $phanloailop = substr($resultCheck->MaDanhSach,3,1);
+
                     if($phanloailop == '3')
                     {
                         if($countChecked  >= 5)
@@ -968,32 +977,34 @@ class TeacherController extends Controller
                             }
 
                             $row14UpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$findlop->MaDanhSach)
+                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $result]);
 
-                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->first();
+                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$resultCheck->MaKQSV)->first();
                             if($checkDQT)
                             {
                                 if($findlop->Diem16 != null)
                                 {
-                                    $resultlatest = $result + $findlop->Diem16;
+                                    $resultlatest = $result + $resultCheck->Diem16;
 
                                     $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $resultlatest]);
                                 }
                                 else{
                                     // $result = $findlop->Diem14;
                                     $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
 
                             }
                         }
                     }
-                    else{ //Nếu là môn lý thuyết
+                    else if($phanloailop == '1' || $phanloailop == '2')
+                    {
+                        //Nếu là môn lý thuyết
                         if($countChecked  >= 7)
                         {
                             $input = $countChecked; // Tổng số buổi đã điểm danh
@@ -1026,25 +1037,25 @@ class TeacherController extends Controller
                             }
 
                             $row14UpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$findlop->MaDanhSach)
+                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $result]);
 
-                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$findlop->MaKQSV)->first();
+                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$resultCheck->MaKQSV)->first();
                             if($checkDQT)
                             {
                                 if($findlop->Diem16 != null)
                                 {
-                                    $resultlatest = $result + $findlop->Diem16;
+                                    $resultlatest = $result + $resultCheck->Diem16;
 
                                     $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $resultlatest]);
                                 }
                                 else{
                                     // $result = $findlop->Diem14;
                                     $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$findlop->MaKQSV)
+                                                ->where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
 
@@ -1137,31 +1148,31 @@ class TeacherController extends Controller
                                     return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->with('error-row16','Điểm tổng không vượt quá 10')->withInput();
                                 }
 
-                                //Điều kiện kiểm tra thời gian thỏa để sửa điểm hay không
-                                if(session()->has('timeForChange') && Carbon::now()->greaterThan(Carbon::parse( session()->get('timeForChange'))))
-                                {
-                                    session()->forget('timeForChange');
-                                    $setNullTimeForChange = DB::table('danh_sach_sinh_vien')
-                                    ->where('MaDanhSach',$findrow14->MaDanhSach)
-                                    ->where('MSSV',$GetInfoStudent)
-                                    ->update([
-                                        'TimeForChangeRow16'=> null
-                                    ]);
-                                    return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->with('error-row16','Quá thời gian sửa điểm')->withInput();
-                                }
-                                else
-                                {
-                                    if($findrow14->Diem16 == null)
-                                    {
-                                        session()->put('timeForChange',Carbon::now()->addWeeks(2)); //Nếu chưa nhập điểm thì set thời gian cho phép sửa điểm là 2 tuần kế từ lúc nhập điểm
-                                        $setNullTimeForChange = DB::table('danh_sach_sinh_vien')
-                                                ->where('MaDanhSach',$findrow14->MaDanhSach)
-                                                ->where('MSSV',$GetInfoStudent)
-                                                ->update([
-                                                    'TimeForChangeRow16'=> session()->get('timeForChange')
-                                                ]);
-                                    }
-                                }
+                            //Điều kiện kiểm tra thời gian thỏa để sửa điểm hay không
+                                // if(session()->has('timeForChange') && Carbon::now()->greaterThan(Carbon::parse( session()->get('timeForChange'))))
+                                // {
+                                //     session()->forget('timeForChange');
+                                //     $setNullTimeForChange = DB::table('danh_sach_sinh_vien')
+                                //     ->where('MaDanhSach',$findrow14->MaDanhSach)
+                                //     ->where('MSSV',$GetInfoStudent)
+                                //     ->update([
+                                //         'TimeForChangeRow16'=> null
+                                //     ]);
+                                //     return redirect('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->with('error-row16','Quá thời gian sửa điểm')->withInput();
+                                // }
+                                // else
+                                // {
+                                //     if($findrow14->Diem16 == null)
+                                //     {
+                                //         session()->put('timeForChange',Carbon::now()->addWeeks(2)); //Nếu chưa nhập điểm thì set thời gian cho phép sửa điểm là 2 tuần kế từ lúc nhập điểm
+                                //         $setNullTimeForChange = DB::table('danh_sach_sinh_vien')
+                                //                 ->where('MaDanhSach',$findrow14->MaDanhSach)
+                                //                 ->where('MSSV',$GetInfoStudent)
+                                //                 ->update([
+                                //                     'TimeForChangeRow16'=> session()->get('timeForChange')
+                                //                 ]);
+                                //     }
+                                // }
 
                             // else
                             // {
