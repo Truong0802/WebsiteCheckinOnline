@@ -782,11 +782,7 @@ class AdminController extends Controller
                         $phanloailop = substr($MaTTMH, 3, 1);
                         if ($phanloailop == '1' || $phanloailop == '2')
                         {
-                            if($stt >= 9 )
-                            {
-                                return redirect()->back()->with('error-input','Lớp '.$MaMH.' đã đủ số buổi')->withInput();
-                            }
-                            else
+                            if($stt < 9 )
                             {
                                 $limit = 9-$stt; //Kiểm tra xem lớp còn lại bao nhiêu buổi
 
@@ -816,10 +812,7 @@ class AdminController extends Controller
                         {
                             if($stt >= 6 )
                             {
-                                return redirect()->back()->with('error-input','Lớp '.$MaMH.' đã đủ số buổi')->withInput();
-                            }
-                            else
-                            {
+
                                 $limit = 6-$stt; //Kiểm tra xem lớp còn lại bao nhiêu buổi
                                 for($i = 0;$i<$limit;$i++)
                                 {
