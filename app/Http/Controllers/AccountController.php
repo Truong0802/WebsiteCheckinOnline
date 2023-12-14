@@ -347,8 +347,6 @@ class AccountController extends Controller
                         $UpdateAnotherPass =  DB::table('giang_vien')
                                 ->where('MSGV', $checkAccount->MSGV)
                                 ->update(['password' => md5($request->password)]);
-
-
                     }
                 }
                 catch(Exception $ex)
