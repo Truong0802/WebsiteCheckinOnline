@@ -111,15 +111,7 @@ use Carbon\Carbon;
                             <span class="menu-item-parent">Quản lý sinh viên</span>
                         </a>
                     </li>
-                    <li class="open">
-                        <a href="/quan-ly-lop-hoc" title="Học tập">
-                            <i class="fa fa-lg fa-fw fa-book"></i>
-                            <span class="menu-item-parent">Quản lý lớp học</span>
-                            <b class="collapse-sign">
-                                <em class="fa fa-minus-square-o"></em>
-                            </b>
-                        </a>
-                    </li>
+
                     <li class="open">
                         <a href="/quan-ly-gv" title="Giảng viên">
                             <i class="fa fa-lg fa-fw fa-user"></i>
@@ -133,6 +125,15 @@ use Carbon\Carbon;
                         <a href="/teacher-list" title="Giảng viên">
                             <i class="fa fa-lg fa-fw fa-user"></i>
                             <span class="menu-item-parent">Danh sách giảng viên</span>
+                            <b class="collapse-sign">
+                                <em class="fa fa-minus-square-o"></em>
+                            </b>
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="/quan-ly-lop-hoc" title="Học tập">
+                            <i class="fa fa-lg fa-fw fa-book"></i>
+                            <span class="menu-item-parent">Quản lý lớp học</span>
                             <b class="collapse-sign">
                                 <em class="fa fa-minus-square-o"></em>
                             </b>

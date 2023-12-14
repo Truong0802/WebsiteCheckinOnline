@@ -90,7 +90,7 @@
                                        @if( $key->LastActive != null)
 
                                             @if(Carbon::now()->greaterThan(Carbon::parse($key->LastActive)->addMonths(6)) == true)
-                                                <td>InActive</td>
+                                                <td>Đã vô hiệu hóa</td>
                                             @else
                                                 <td>Active</td>
                                             @endif
