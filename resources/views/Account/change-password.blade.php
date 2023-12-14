@@ -151,7 +151,7 @@
                                     </section>
                                 </fieldset>
                                 <footer>
-                                    <button class="btn btn-primary" type="submit"> Xác nhận thay đổi </button>
+                                    <button class="btn btn-primary" type="submit"> Gửi yêu cầu </button>
                                 </footer>
                                 @csrf
                             </form>
