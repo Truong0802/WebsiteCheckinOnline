@@ -90,12 +90,12 @@
                                        @if( $key->LastActive != null)
 
                                             @if(Carbon::now()->greaterThan(Carbon::parse($key->LastActive)->addMonths(6)) == true)
-                                                <td>Đã vô hiệu hóa</td>
+                                                <td style="color: red">Đã vô hiệu hóa</td>
                                             @else
-                                                <td>Active</td>
+                                                <td style="color: green">Active</td>
                                             @endif
                                         @else
-                                            <td>Active</td>
+                                            <td style="color: green">Active</td>
                                         @endif
                                         <td><a href="/quan-ly-sinh-vien?mssv={{$key->MSSV}}">Đặt lại mật khẩu</a></td>
                                         <?php

@@ -69,7 +69,7 @@
                 @csrf
             </form>
 
-            <style>
+            <style> 
                 .detail {
                     grid-template-columns: 15fr
                 }

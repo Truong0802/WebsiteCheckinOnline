@@ -455,16 +455,16 @@
                                 <form action="/nhap-diem" method="post">
                                     @if ($phanloailop == '1' || $phanloailop == '2')
                                         @if (DB::table('diem_danh')->where('MaDanhSach', 'like', $listid . '%')->where('MaBuoi', 9)->exists())
-                                            <button type="submit" class="btn btn-primary">Xác nhận điểm</button>
+                                            <button type="submit" class="btn btn-success" onclick="moveData()">Xác nhận điểm</button>
                                         @endif
                                     @elseif($phanloailop == '3')
                                         @if (DB::table('diem_danh')->where('MaDanhSach', 'like', $listid . '%')->where('MaBuoi', 6)->exists())
-                                            <button type="submit" class="btn btn-primary">Xác nhận điểm</button>
+                                            <button type="submit" class="btn btn-success" onclick="moveData()">Xác nhận điểm</button>
                                         @endif
                                     @endif
                                 @else
                                     <form action="/chon-ban-can-su" method="post">
-                                        <button type="submit" class="btn btn-primary">Xác nhận ban cán sự</button>
+                                        <button type="submit" class="btn btn-success">Xác nhận ban cán sự</button>
                             @endif
                         @endif
                         {{-- Xuất thông tin danh sách --}}
@@ -605,7 +605,7 @@
                                                 {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
                                                 @if (DB::table('diem_danh')->where('MaDanhSach', $allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
                                                     {{-- Nhập điểm --}}
-                                                    <td class="score-input"><input type="text" id="row16"
+                                                    <td class="score-input" id="score-input"><input type="text" id="row16"
                                                             name="row16[]">{{ session()->push('row16', $allstudentlist->MaDanhSach . '/' . $allstudentlist->MSSV) }}
                                                     </td>
                                                 @else
@@ -791,45 +791,44 @@
     @endif
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script>
-        function exportToExcel() {
+        function exportToExcel()
+        {
             var table = document.getElementById('student-table');
             var workbook = XLSX.utils.table_to_book(table);
             var today = new Date();
             var fileName = 'data_' + today.getFullYear() + '_' + (today.getMonth() + 1) + '_' + today.getDate() + '.xlsx';
 
-            // Chuẩn bị dữ liệu để xuất file Excel
-            var wopts = {
+            var wopts =
+            {
                 bookType: 'xlsx',
                 bookSST: false,
                 type: 'binary'
             };
             var wbout = XLSX.write(workbook, wopts);
 
-            function s2ab(s) {
+            function s2ab(s)
+            {
                 var buf = new ArrayBuffer(s.length);
                 var view = new Uint8Array(buf);
                 for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
                 return buf;
             }
 
-            // Tạo đối tượng blob từ dữ liệu Excel
-            var blob = new Blob([s2ab(wbout)], {
+            var blob = new Blob([s2ab(wbout)],
+            {
                 type: 'application/octet-stream'
             });
 
-            // Tạo URL tạm thời cho blob
             var url = URL.createObjectURL(blob);
 
-            // Tạo một thẻ a ẩn để kích hoạt việc tải xuống
             var a = document.createElement('a');
             a.href = url;
             a.download = fileName;
 
-            // Simulate click để tải xuống file
             a.click();
 
-            // Xóa URL tạm thời
-            setTimeout(function() {
+            setTimeout(function()
+            {
                 URL.revokeObjectURL(url);
             }, 1000);
         }
