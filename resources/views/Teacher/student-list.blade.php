@@ -592,14 +592,15 @@
                                         <!-- Điểm 16 -->
                                         @if (session()->exists('teacherid'))
                                             @if ($allstudentlist->Diem16 != null)
-                                                @if ($allstudentlist->TimeForChangeRow16 != null)
-                                                    <td class="score-input" id="score-input"><input type="text" id="row16"
+                                                <!-- Cho chỉnh điểm -->
+                                                {{-- @if ($allstudentlist->TimeForChangeRow16 != null)
+                                                    <td class="score-input"><input type="text" id="row16"
                                                             name="row16[]"
                                                             value="{{ $allstudentlist->Diem16 }}">{{ session()->push('row16', $allstudentlist->MaDanhSach . '/' . $allstudentlist->MSSV) }}
                                                     </td>
-                                                @else
+                                                @else --}}
                                                     <td>{{ $allstudentlist->Diem16 }}</td>
-                                                @endif
+                                                {{-- @endif --}}
                                             @else
                                                 {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
                                                 @if (DB::table('diem_danh')->where('MaDanhSach', $allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 7)
@@ -650,14 +651,15 @@
                                         <!-- Điểm 16 -->
                                         @if (session()->exists('teacherid'))
                                             @if ($allstudentlist->Diem16 != null)
-                                                @if ($allstudentlist->TimeForChangeRow16 != null)
+                                                <!-- Cho chỉnh sửa điểm -->
+                                                {{-- @if ($allstudentlist->TimeForChangeRow16 != null)
                                                     <td class="score-input"><input type="text" id="row16"
                                                             name="row16[]"
                                                             value="{{ $allstudentlist->Diem16 }}">{{ session()->push('row16', $allstudentlist->MaDanhSach . '/' . $allstudentlist->MSSV) }}
                                                     </td>
-                                                @else
+                                                @else --}}
                                                     <td>{{ $allstudentlist->Diem16 }}</td>
-                                                @endif
+                                                {{-- @endif --}}
                                             @else
                                                 {{-- Yêu cầu phải đi học hơn 70% số buổi --}}
                                                 @if (DB::table('diem_danh')->where('MaDanhSach', $allstudentlist->MaDanhSach)->distinct()->count('MaBuoi') >= 5)
