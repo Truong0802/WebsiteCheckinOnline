@@ -112,6 +112,7 @@
                                     ->get();
                                 } elseif (session('ChucVu') == 'AM') {
                                     $AllRole = DB::table('chuc_vu')
+                                            ->where('MaChucVu', '!=', 'AM')
                                             ->where('MaChucVu', '!=', $TeacherToChange->MaChucVu)
                                             ->get();
                                 }
