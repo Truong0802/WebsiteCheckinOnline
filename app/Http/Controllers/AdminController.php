@@ -518,7 +518,8 @@ class AdminController extends Controller
             {
                 if(Carbon::now()->greaterThan(Carbon::parse(session()->get('TimeAddDSTam'))->addMinutes(1)) == true)
                 {
-                    dd('đã xóa');
+                    session()->forget('DanhSachSinhVienTam');
+                    session()->forget('textByScan');
                 }
             }
             return view('admin/student-add-to-class');

@@ -250,7 +250,7 @@ class TeacherController extends Controller
 
            }
             if(session()->exists('teacherid')){
-                // dd($request);
+
                 if($request->lop){
                     $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)->orderby('MaKQSV','ASC')->distinct()->paginate(25);
                     session()->put('danh-sach-sinh-vien-lop',$request->lop);
@@ -868,7 +868,7 @@ class TeacherController extends Controller
                                 if($findlop->Diem16 != null)
                                 {
                                     $result = $latestpoint + $findlop->Diem16;
-                                    // dd($result);
+
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
@@ -876,7 +876,7 @@ class TeacherController extends Controller
                                 else{
 
                                     $result = $latestpoint;
-                                    // dd($result);
+
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
@@ -906,7 +906,7 @@ class TeacherController extends Controller
                                 if($findlop->Diem16 != null)
                                 {
                                     $result = $latestpoint + $findlop->Diem16;
-                                    // dd($result);
+
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
@@ -992,7 +992,7 @@ class TeacherController extends Controller
                                 if($findlop->Diem16 != null)
                                 {
                                     $resultlatest = $result + $findlop->Diem16;
-                                    // dd($result);
+
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $resultlatest]);
@@ -1050,7 +1050,7 @@ class TeacherController extends Controller
                                 if($findlop->Diem16 != null)
                                 {
                                     $resultlatest = $result + $findlop->Diem16;
-                                    dd($result);
+
                                     $DQT = DB::table('ket_qua')
                                                 ->where('MaKQSV',$findlop->MaKQSV)
                                                 ->update(['DiemQT' => $resultlatest]);
@@ -1082,7 +1082,7 @@ class TeacherController extends Controller
 
         public function DiemCot16(Request $request)
         {
-            //  dd(session()->get('row16'));
+
             if($request->row16)
             {
 
@@ -1131,7 +1131,7 @@ class TeacherController extends Controller
 
                             }
 
-                            // dd($resultConvert);
+
                             if(is_numeric($resultConvert) == true && $resultConvert > 0 && $resultConvert <= 7)
                             {
                                 $ThongTinMaDanhSach = str::before($key, '/');
@@ -1184,7 +1184,7 @@ class TeacherController extends Controller
                                     // session()->forget('timeForChange'); //Nếu đã có điểm tồn tại mà sửa điểm thì không cho sửa nữa
                                     //}
                             // }
-                                // dd($MaKQSV);
+
                                     $row16UpDate = DB::table('danh_sach_sinh_vien')
                                     ->where('MaDanhSach',$findrow14->MaDanhSach)
                                     ->where('MSSV',$GetInfoStudent)
@@ -1231,7 +1231,7 @@ class TeacherController extends Controller
 
         public function CheckToPutLeader(Request $request)
         {
-            // dd($request);
+
             if($request->LTnum)
             {
                 $ChooseClassManage = DB::table('danh_sach_sinh_vien')
@@ -1247,7 +1247,7 @@ class TeacherController extends Controller
         }
 
         public function AddnewComment(Request $request){
-            // dd($request);
+
             $messages = [
                 'inputcomments.required' => 'Không được để trống nội dung',
             ];
