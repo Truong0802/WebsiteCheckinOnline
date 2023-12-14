@@ -1174,11 +1174,23 @@ class AdminController extends Controller
         }
     }
 
-    public function FrmThemGV()
+    public function FrmThemGV(Request $request)
     {
         if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
         {
-            return view('admin/teacher-add');
+            if($request->msgv)
+            {
+                $getInfoToChange = DB::table('giang_vien')->where('MSGV',$request->msgv)
+                ->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
+                ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
+                ->first();
+                return view('admin/teacher-add',['TeacherToChange' => $getInfoToChange]);
+            }
+            else
+            {
+                return view('admin/teacher-add');
+            }
+
         }
         else
         {
@@ -1484,4 +1496,110 @@ class AdminController extends Controller
 
     }
 
+    public function GetAllTeacherList()
+    {
+        if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
+        {
+            $getAllTeacher = DB::table('giang_vien')->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
+            ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
+            ->where('giang_vien.MaChucVu','!=','AM')
+            ->paginate(15);
+            return view('admin/teacher-list',['listTeacher' => $getAllTeacher]);
+        }
+        else
+        {
+            return redirect()->to("/");
+        }
+    }
+    public function ResetFindTeacherList()
+    {
+        return redirect()->to('/teacher-list');
+    }
+     public function FindTeacherFromList(Request $request)
+     {
+
+        if (session()->has('teacherid')) {
+            if($request->teachername != null)
+            {
+                $searchlist = DB::table('giang_vien')->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
+                ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
+                ->where('giang_vien.MaChucVu','!=','AM')
+                ->when($request->teachername != null, function ($query) use ($request) {
+                    return $query->where('HoTenGV', 'like', '%' . $request->teachername . '%');
+                }) ->paginate(15);
+            }
+            else if($request->msgv != null)
+            {
+                $searchlist = DB::table('giang_vien')->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
+                ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
+                ->where('giang_vien.MaChucVu','!=','AM')
+                ->when($request->msgv != null, function ($query) use ($request) {
+                    return $query->where('MSGV', 'like', '%' .$request->msgv. '%');
+                }) ->paginate(15);
+            }
+            else if($request->msgv != null && $request->teachername != null)
+            {
+                $searchlist = DB::table('giang_vien')->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
+                ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
+                ->where('giang_vien.MaChucVu','!=','AM')
+                ->when($request->mssv != null, function ($query) use ($request) {
+                    return $query->where('MSGV','like', '%' . $request->msgv. '%');
+                })
+                ->when($request->teachername != null, function ($query) use ($request) {
+                    return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
+                        ->where('HoTenGV', 'like', '%' . $request->teachername . '%');
+                }) ->paginate(15);
+            }
+            else
+            {
+                if($request->teachername == null && $request->msgv != null)
+                {
+                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    ->with('errorClassList1','Lớp không tồn tại đối tượng với mã số '.$request->msgv)->withInput();
+                }
+                elseif($request->teachername != null && $request->msgv == null)
+                {
+                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->teachername)->withInput();
+                }
+                elseif($request->teachername == null && $request->msgv == null)
+                {
+                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    ->with('errorClassList1','Không có đối tượng tìm kiếm!')->withInput();
+                }
+
+            }
+
+            //Kiểm tra tìm kiếm có rỗng không
+
+            $checkTemp = [];
+            foreach( $searchlist as $ResultData)
+            {
+                $checkTemp = $ResultData;
+            }
+            if($checkTemp == null)
+            {
+                if($request->teachername == null && $request->msgv != null)
+                {
+                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    ->with('errorClassList1','Lớp không tồn tại đối tượng với mã số '.$request->msgv)->withInput();
+                }
+                elseif($request->teachername != null && $request->msgv == null)
+                {
+                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->teachername)->withInput();
+                }
+                elseif($request->teachername == null && $request->msgv == null)
+                {
+                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    ->with('errorClassList1','Không có đối tượng tìm kiếm!')->withInput();
+                }
+            }
+            return view('admin/teacher-list',['listTeacher' => $searchlist]);
+        }
+        else{
+            return redirect()->to('/');
+        }
+
+     }
 }

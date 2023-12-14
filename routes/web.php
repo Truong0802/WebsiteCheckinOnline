@@ -149,3 +149,7 @@ Route::post('/Confirmed-change-password-from-mail',[AccountController::class,'Fu
 //Mailer
 Route::get('/mail-sent',[MailerController::class,'sendMail']);
 
+//Danh sách tất cá giảng viên
+Route::get('/teacher-list',[AdminController::class,'GetAllTeacherList']);
+Route::get('/tim-kiem-giang-vien',[AdminController::class,'FindTeacherFromList']);
+Route::get('/xoa-tim-kiem-gv',[AdminController::class,'ResetFindTeacherList']);

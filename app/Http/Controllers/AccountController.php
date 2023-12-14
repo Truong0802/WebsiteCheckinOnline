@@ -137,6 +137,7 @@ class AccountController extends Controller
         session()->forget('row16');
         session()->forget('DanhSachSinhVienTam');
         session()->forget('textByScan');
+        session()->forget('sttOfLast');
         //Tạo session ghi time khóa đăng nhập 7 ngày
         // //Set thời gian bắt đầu cho cd đến khi được đăng nhập lại là 7 ngày
         // $now = Carbon::now();

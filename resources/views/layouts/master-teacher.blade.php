@@ -177,8 +177,17 @@ use Carbon\Carbon;
                         </li>
                         <li class="open">
                             <a href="/quan-ly-gv" title="Giảng viên">
-                                <i class="fa fa-lg fa-fw fa-book"></i>
+                                <i class="fa fa-lg fa-fw fa-user"></i>
                                 <span class="menu-item-parent">Quản lý giảng viên</span>
+                                <b class="collapse-sign">
+                                    <em class="fa fa-minus-square-o"></em>
+                                </b>
+                            </a>
+                        </li>
+                        <li class="open">
+                            <a href="/teacher-list" title="Giảng viên">
+                                <i class="fa fa-lg fa-fw fa-user"></i>
+                                <span class="menu-item-parent">Danh sách giảng viên</span>
                                 <b class="collapse-sign">
                                     <em class="fa fa-minus-square-o"></em>
                                 </b>

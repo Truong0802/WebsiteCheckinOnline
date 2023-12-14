@@ -35,7 +35,12 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="teacher-id">MSGV:</label>
-                            <input type="text" class="form-control" id="teacher-id" name="msgv">
+                            @if(isset($TeacherToChange))
+                                <input type="text" class="form-control" id="teacher-id" name="msgv" value="{{$TeacherToChange->MSGV}}">
+                            @else
+                                <input type="text" class="form-control" id="teacher-id" name="msgv">
+                            @endif
+
                             @error('msgv')
                                 <div class="alert alert-danger">{{ $errors->first('msgv') }}</div>
                             @enderror
@@ -44,7 +49,11 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="teacher-name">Họ tên:</label>
-                            <input type="text" class="form-control" id="teacher-name" name="teachername">
+                            @if(isset($TeacherToChange))
+                                <input type="text" class="form-control" id="teacher-name" name="teachername" value="{{$TeacherToChange->HoTenGV}}">
+                            @else
+                                <input type="text" class="form-control" id="teacher-name" name="teachername">
+                            @endif
                             @error('teachername')
                                 <div class="alert alert-danger">{{ $errors->first('teachername') }}</div>
                             @enderror
@@ -66,13 +75,27 @@
                         <div class="form-group">
                             <label for="student-name">Khoa:</label>
                             <?php
-                            $AllKhoa = DB::table('khoa')->get();
+                            if(isset($TeacherToChange))
+                            {
+                                $AllKhoa = DB::table('khoa')
+                                            ->where('MaKhoa','!=',$TeacherToChange->MaKhoa)->get();
+                            }
+                            else
+                            {
+                                $AllKhoa = DB::table('khoa')->get();
+                            }
+
                             ?>
                             <select class="form-control" id="khoa" name="khoa">
-                                <option value="">---Chọn Thông Tin---</option>
-                                @foreach ($AllKhoa as $khoa)
-                                    <option value="{{ $khoa->MaKhoa }}">{{ $khoa->TenKhoa }}</option>
-                                @endforeach
+                                @if(isset($TeacherToChange))
+                                    <option value="{{$TeacherToChange->MaKhoa }}">{{ $TeacherToChange->TenKhoa }}</option>
+                                @else
+                                    <option value="">---Chọn Thông Tin---</option>
+                                @endif
+                                    @foreach ($AllKhoa as $khoa)
+                                        <option value="{{ $khoa->MaKhoa }}">{{ $khoa->TenKhoa }}</option>
+                                    @endforeach
+
                             </select>
                         </div>
                     </div>
@@ -80,17 +103,38 @@
                         <div class="form-group">
                             <label for="hoc-ky">Chức vụ:</label>
                             <?php
-                            if (session('ChucVu') != 'AM') {
+                            if(isset($TeacherToChange))
+                            {
+                                if (session('ChucVu') != 'AM') {
                                 $AllRole = DB::table('chuc_vu')
                                     ->where('MaChucVu', '!=', session('ChucVu'))
                                     ->where('MaChucVu', '!=', 'AM')
                                     ->get();
-                            } elseif (session('ChucVu') == 'AM') {
-                                $AllRole = DB::table('chuc_vu')->get();
+                                } elseif (session('ChucVu') == 'AM') {
+                                    $AllRole = DB::table('chuc_vu')
+                                            ->where('MaChucVu', '!=', $TeacherToChange->MaChucVu)
+                                            ->get();
+                                }
                             }
+                            else
+                            {
+                                if (session('ChucVu') != 'AM') {
+                                $AllRole = DB::table('chuc_vu')
+                                    ->where('MaChucVu', '!=', session('ChucVu'))
+                                    ->where('MaChucVu', '!=', 'AM')
+                                    ->get();
+                                } elseif (session('ChucVu') == 'AM') {
+                                    $AllRole = DB::table('chuc_vu')->get();
+                                }
+                            }
+
                             ?>
                             <select class="form-control" id="Role" name="role">
-                                <option value="">---Chọn Thông Tin---</option>
+                                @if(isset($TeacherToChange))
+                                    <option value="{{ $TeacherToChange->MaChucVu }}">{{ $TeacherToChange->ChucVu }}</option>
+                                @else
+                                    <option value="">---Chọn Thông Tin---</option>
+                                @endif
                                 @foreach ($AllRole as $role)
                                     <option value="{{ $role->MaChucVu }}">{{ $role->ChucVu }}</option>
                                 @endforeach
@@ -101,7 +145,11 @@
                 <br>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <input type="checkbox" id="" name="reset" value="1">
+                        @if(isset($TeacherToChange))
+                            <input type="checkbox" id="" name="reset" value="1" checked>
+                        @else
+                            <input type="checkbox" id="" name="reset" value="1">
+                        @endif
                         <label for="reset"><b style="font-size: 17px;">Reset password</b></label>
                     </div>
                 </div>

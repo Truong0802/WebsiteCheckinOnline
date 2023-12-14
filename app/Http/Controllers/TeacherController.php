@@ -405,10 +405,7 @@ class TeacherController extends Controller
         }
         public function timkiemsinhvien(Request $request)
         {
-            // $validated = $request->validate([
-            //     'studentname' => 'required',
-            //     'mssv' => 'required',
-            // ]);
+
             if (session()->has('teacherid')) {
                 if($request->studentname != null)
                 {
@@ -430,7 +427,7 @@ class TeacherController extends Controller
                         ->where('danh_sach_sinh_vien.MSSV', 'like', '%' .$request->mssv. '%');
                     }) ->paginate(15);
                 }
-                else if($request->mssv != null && $request->mssv != null)
+                else if($request->mssv != null && $request->studentname != null)
                 {
                     $searchlist = DB::table('danh_sach_sinh_vien')
                     ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
@@ -463,17 +460,6 @@ class TeacherController extends Controller
                     }
 
                 }
-                // $searchlist = DB::table('danh_sach_sinh_vien')
-                // ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
-                // ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
-                // ->when($request->studentname != null, function ($query) use ($request) {
-                //     return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
-                //         ->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
-                // })
-                // ->when($request->mssv != null, function ($query) use ($request) {
-                //     return $query
-                //     ->where('danh_sach_sinh_vien.MSSV', $request->mssv);
-                // })
 
                 //Kiểm tra tìm kiếm có rỗng không
 
