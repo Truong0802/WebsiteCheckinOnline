@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use Google\Service\Classroom\Teacher;
 use App\Http\Controllers\InfoController;
 use Google\Service\AdExchangeBuyer\Account;
+use App\Http\Controllers\MailerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,3 +143,9 @@ Route::post('/comment',[TeacherController::class,'AddnewComment']);
 //Quên mật khẩu
 Route::get('/forgot-password',[AccountController::class,'FrmForgotPassword']);
 Route::post('/Confirmed-change-password',[AccountController::class,'FuncForgotPassword']);
+Route::get('/mail-confirm=change',[AccountController::class,'ReceiveMail'])->name('ConfirmToChange');
+Route::post('/Confirmed-change-password-from-mail',[AccountController::class,'FuncForgotPasswordByMail']);
+
+//Mailer
+Route::get('/mail-sent',[MailerController::class,'sendMail']);
+

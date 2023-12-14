@@ -81,7 +81,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
                         <div class="well no-padding">
-                            <form action="/Confirmed-change-password" method="post"
+                            <form action="/Confirmed-change-password-from-mail" method="post"
                                 class="smart-form client-form ng-dirty ng-touched ng-valid" novalidate="">
 
                                 <header>Xác thực & thay đổi mật khẩu</header>
@@ -95,29 +95,14 @@
                                         <label class="input">
                                             <i class="icon-append fa fa-user"></i>
                                             <input class="form-control login-form ng-dirty ng-valid ng-touched"
-                                                name="username" ngmodel=""
-                                                required="" type="text">
-                                            @error('username')
-                                                <div class="alert alert-danger">{{ $errors->first('username') }}</div>
-                                            @enderror
+                                                name="username" ngmodel="" value="{{ $ChangePassForUser }}"
+                                                required="" type="text" readonly>
                                             <b class="tooltip tooltip-top-right">
                                                 <i class="fa fa-user txt-color-teal"></i> Vui lòng điền tài khoản đăng
                                                 nhập </b>
                                         </label>
                                     </section>
                                     <section>
-                                        <label class="label">Gmail</label>
-                                        <label class="input">
-                                            <i class="icon-append fa-solid fa-envelope"></i>
-                                            <input class="form-control login-form" type="text" name="mail">
-                                            @error('mail')
-                                                <div class="alert alert-danger">{{ $errors->first('mail') }}</div>
-                                            @enderror
-                                            <b class="tooltip tooltip-top-right">
-                                                <i class="fa-solid fa-envelope"></i> Vui lòng điền gmail của bạn </b>
-                                        </label>
-                                    </section>
-                                    {{-- <section>
                                         <label class="label">Mật mã</label>
                                         <label class="input">
                                             <i class="icon-append fa fa-lock"></i>
@@ -143,7 +128,7 @@
                                             <b class="tooltip tooltip-top-right">
                                                 <i class="fa fa-lock txt-color-teal"></i> Nhập mật mã của bạn </b>
                                         </label>
-                                    </section> --}}
+                                    </section>
                                     <section>
                                         <!--<div class="note"> Đăng nhập không được?
                                                 <a href="http://qlcntt.hutech.edu.vn/ho-tro?tieu_de=tai%20khoan">Xem hướng dẫn tại đây</a>
