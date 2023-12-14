@@ -102,6 +102,12 @@ use Carbon\Carbon;
                     <li>
                         <a title="Hồ sơ cá nhân" href="/quan-ly-sinh-vien">
                             <i class="fa fa-lg fa-fw fa-user"></i>
+                            <span class="menu-item-parent">Thêm sinh viên</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a title="Tất cả sinh viên" href="/all-student-list">
+                            <i class="fa fa-lg fa-fw fa-user"></i>
                             <span class="menu-item-parent">Quản lý sinh viên</span>
                         </a>
                     </li>

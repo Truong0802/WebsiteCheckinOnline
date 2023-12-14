@@ -35,7 +35,11 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="student-id">MSSV:</label>
-                            <input type="text" class="form-control" id="student-id" name="mssv">
+                            @if(isset($StudentToChange))
+                                <input type="text" class="form-control" id="student-id" name="mssv" value="{{$StudentToChange->MSSV}}" readonly>
+                            @else
+                                <input type="text" class="form-control" id="student-id" name="mssv">
+                            @endif
                             @error('mssv')
                                 <div class="alert alert-danger">{{ $errors->first('mssv') }}</div>
                             @enderror
@@ -44,7 +48,11 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="student-name">Họ tên:</label>
-                            <input type="text" class="form-control" id="student-name" name="studentname">
+                            @if(isset($StudentToChange))
+                                <input type="text" class="form-control" id="student-name" name="studentname" value="{{$StudentToChange->HoTenSV}}">
+                            @else
+                                <input type="text" class="form-control" id="student-name" name="studentname">
+                            @endif
                             @error('studentname')
                                 <div class="alert alert-danger">{{ $errors->first('studentname') }}</div>
                             @enderror
@@ -57,7 +65,11 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="class-name">Tên lớp:</label>
-                            <input type="text" class="form-control" id="" name="classname">
+                            @if(isset($StudentToChange))
+                                <input type="text" class="form-control" id="" name="classname" value="{{$StudentToChange->MaLop}}">
+                            @else
+                                <input type="text" class="form-control" id="" name="classname">
+                            @endif
                             @error('classname')
                                 <div class="alert alert-danger">{{ $errors->first('classname') }}</div>
                             @enderror
@@ -65,12 +77,14 @@
                     </div>
                 </div>
                 <br>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <input type="checkbox" id="" name="reset" value="1">
-                        <label for="reset"><b style="font-size: 17px;">Reset password</b></label>
+                @if(isset($StudentToChange))
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="checkbox" id="" name="reset" value="1" checked>
+                            <label for="reset"><b style="font-size: 17px;">Reset password</b></label>
+                        </div>
                     </div>
-                </div>
+                @endif
                 <br>
                 <div class="btn-container">
                     <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>

@@ -1,3 +1,6 @@
+<?php
+    use Carbon\Carbon;
+?>
 @extends('layouts.master-admin')
 
 @section('content')
@@ -5,7 +8,7 @@
     <div id="ribbon">
         <ol class="breadcrumb">
             <li class="ng-star-inserted">
-                <a>Danh sách giảng viên</a>
+                <a>Danh sách tất cả sinh viên</a>
             </li>
         </ol>
     </div>
@@ -18,7 +21,7 @@
                 <div class="col-md-6 pr-0">
                     <div>
                         <h1 class="page-title txt-color-blueDark">
-                            <i class="fa-fw fa fa-graduation-cap"></i> Danh sách giảng viên
+                            <i class="fa-fw fa fa-graduation-cap"></i> Danh sách tất cả sinh viên
                         </h1>
                     </div>
                 </div>
@@ -26,32 +29,30 @@
         </div>
 
         <div class="container">
-            <form action='/tim-kiem-giang-vien' method='get'>
+            <form action='/tim-kiem-tat-ca-sinh-vien' method='get'>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="student-name">Họ tên:</label>
-                            <input type="text" class="form-control" id="teacher-name" name="teachername">
-                            @error('teachername')
-                                <div class="alert alert-danger">{{ $errors->first('teachername') }}</div>
+                            <input type="text" class="form-control" id="student-name" name="studentname">
+                            @error('studentname')
+                                <div class="alert alert-danger">{{ $errors->first('studentname') }}</div>
                             @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="student-id">Mã giảng viên:</label>
-                            <input type="text" class="form-control" id="student-id" name="msgv">
-                            @error('msgv')
-                                <div class="alert alert-danger">{{ $errors->first('msgv') }}</div>
+                            <label for="student-id">MSSV:</label>
+                            <input type="text" class="form-control" id="student-id" name="mssv">
+                            @error('mssv')
+                                <div class="alert alert-danger">{{ $errors->first('mssv') }}</div>
                             @enderror
                         </div>
                     </div>
-
                 </div>
-
                 <br>
                 <button type="submit" class="btn btn-primary" onclick="filterData()">Tìm kiếm</button>
-                <a type="button" href="/xoa-tim-kiem-gv" class="btn btn-danger" onclick="removeFilterData()">Xóa tất cả
+                <a type="button" href="/xoa-tim-kiem-tat-ca-sinh-vien" class="btn btn-danger" onclick="removeFilterData()">Xóa tất cả
                     bộ lọc</a>
                 @csrf
             </form>
@@ -67,10 +68,10 @@
                             <thead>
                                 <tr>
                                     <td>STT</td>
-                                    <td>Mã GV</td>
+                                    <td>MSSV</td>
                                     <td>Họ tên</td>
-                                    <td>Chức vụ</td>
-                                    <td>Khoa</td>
+                                    <td>Lớp</td>
+                                    <td>Trạng thái</td>
                                     <td></td>
 
                                 </tr>
@@ -80,14 +81,23 @@
                                     $stt=1;
 
                                 ?>
-                                @foreach($listTeacher as $key)
+                                @foreach($listStudent as $key)
                                     <tr>
                                         <td>{{$stt}}</td>
-                                        <td>{{$key->MSGV}}</td>
-                                        <td>{{$key->HoTenGV}}</td>
-                                        <td>{{$key->ChucVu}}</td>
-                                        <td>{{$key->TenKhoa}}</td>
-                                        <td><a href="/quan-ly-gv?msgv={{$key->MSGV}}">Đặt lại mật khẩu</a></td>
+                                        <td>{{$key->MSSV}}</td>
+                                        <td>{{$key->HoTenSV}}</td>
+                                        <td>{{$key->MaLop}}</td>
+                                       @if( $key->LastActive != null)
+
+                                            @if(Carbon::now()->greaterThan(Carbon::parse($key->LastActive)->addMonths(6)) == true)
+                                                <td>InActive</td>
+                                            @else
+                                                <td>Active</td>
+                                            @endif
+                                        @else
+                                            <td>Active</td>
+                                        @endif
+                                        <td><a href="/quan-ly-sinh-vien?mssv={{$key->MSSV}}">Đặt lại mật khẩu</a></td>
                                         <?php
                                             $stt++;
                                         ?>
@@ -97,7 +107,7 @@
                         </table>
                     </div>
                 </div>
-                {{ $listTeacher->appends(request()->all())->links('pagination::bootstrap-4') }}
+                {{ $listStudent->appends(request()->all())->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

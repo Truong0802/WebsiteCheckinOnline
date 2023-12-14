@@ -153,3 +153,8 @@ Route::get('/mail-sent',[MailerController::class,'sendMail']);
 Route::get('/teacher-list',[AdminController::class,'GetAllTeacherList']);
 Route::get('/tim-kiem-giang-vien',[AdminController::class,'FindTeacherFromList']);
 Route::get('/xoa-tim-kiem-gv',[AdminController::class,'ResetFindTeacherList']);
+
+//Danh sách tất cả sinh viên
+Route::get('/all-student-list',[AdminController::class,'GetAllStudentList']);
+Route::get('/tim-kiem-tat-ca-sinh-vien',[AdminController::class,'FindStudentFromList']);
+Route::get('/xoa-tim-kiem-tat-ca-sinh-vien',[AdminController::class,'ResetFindStudentList']);

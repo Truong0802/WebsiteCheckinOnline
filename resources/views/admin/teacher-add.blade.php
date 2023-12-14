@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label for="teacher-id">MSGV:</label>
                             @if(isset($TeacherToChange))
-                                <input type="text" class="form-control" id="teacher-id" name="msgv" value="{{$TeacherToChange->MSGV}}">
+                                <input type="text" class="form-control" id="teacher-id" name="msgv" value="{{$TeacherToChange->MSGV}}" readonly>
                             @else
                                 <input type="text" class="form-control" id="teacher-id" name="msgv">
                             @endif
@@ -144,16 +144,14 @@
                     </div>
                 </div>
                 <br>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        @if(isset($TeacherToChange))
+                @if(isset($TeacherToChange))
+                    <div class="col-md-4">
+                        <div class="form-group">
                             <input type="checkbox" id="" name="reset" value="1" checked>
-                        @else
-                            <input type="checkbox" id="" name="reset" value="1">
-                        @endif
-                        <label for="reset"><b style="font-size: 17px;">Reset password</b></label>
+                            <label for="reset"><b style="font-size: 17px;">Reset password</b></label>
+                        </div>
                     </div>
-                </div>
+                @endif
                 <br>
                 <div class="btn-container">
                     <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm Giảng Viên</button>

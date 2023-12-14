@@ -166,6 +166,12 @@ use Carbon\Carbon;
                                 <span class="menu-item-parent">Quản lý sinh viên</span>
                             </a>
                         </li>
+                        <li>
+                            <a title="Tất cả sinh viên" href="/all-student-list">
+                                <i class="fa fa-lg fa-fw fa-user"></i>
+                                <span class="menu-item-parent">Quản lý sinh viên</span>
+                            </a>
+                        </li>
                         <li class="open">
                             <a href="/quan-ly-lop-hoc" title="Học tập">
                                 <i class="fa fa-lg fa-fw fa-book"></i>

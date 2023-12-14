@@ -19,11 +19,20 @@ class AdminController extends Controller
             return redirect()->to('/');
     }
 
-    public function frmAddSV()
+    public function frmAddSV(Request $request)
     {
         if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
         {
-            return view('admin/student-add');
+            if($request->mssv)
+            {
+                $showSV = DB::table('sinh_vien')->where('MSSV',$request->mssv)->first();
+                return view('admin/student-add',['StudentToChange' => $showSV]);
+            }
+            else
+            {
+                return view('admin/student-add');
+            }
+
         }
         else
         {
@@ -134,8 +143,16 @@ class AdminController extends Controller
 
                 } catch(Exception $ex)
                 {
+                    $checkUserIsActive = DB::table('sinh_vien')->where('MSSV',$MSSVCut)->first();
                     if($IsResetPassReq != 0)
                     {
+                        if($checkUserIsActive->HoTenSV != $HoTen)
+                            {
+                                $upDateAnotherPass =  DB::table('sinh_vien')->where('MSSV',$MSSVCut)
+                                                        ->update([
+                                                            'HoTenSV' => $HoTen
+                                                        ]);
+                            }
                         $ResetToDefaultPass = DB::table('sinh_vien')->where('MSSV',$MSSVCut)
                                             ->update([
                                                 'Password' => md5($Password),
@@ -150,7 +167,7 @@ class AdminController extends Controller
                         return redirect()->to('/quan-ly-sinh-vien')->with('success-Add','Reset tài khoản '.$MSSVCut.' thành công');
                     }
 
-                    // dd($temp);
+
                     $checkUserIsActive = DB::table('sinh_vien')->where('MSSV',$MSSVCut)->first();
                     //Nếu tồn tại tk và người dùng đã qua 6 tháng chưa quay lại
                     if($checkUserIsActive->MSSV != null && Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == true)
@@ -1278,6 +1295,14 @@ class AdminController extends Controller
                     {
                         if($keyToReset != 0)
                         {
+                            if($checkUserIsActive->HoTenGV != $HoTen)
+                            {
+                                $upDateAnotherPass = DB::table('giang_vien')->where('MSGV',$MSGVCut)
+                                                        ->update([
+                                                            'HoTenGV' => $HoTen
+                                                        ]);
+                            }
+
                             $upDateAnotherPass = DB::table('giang_vien')->where('MSGV',$MSGVCut)
                                                         ->update([
                                                             'LastActive' => Carbon::now()->format('Y-m-d'),
@@ -1288,7 +1313,7 @@ class AdminController extends Controller
                             $position = array_search($temp, $array);
                             unset($array[$position]);
                             session(['DanhSachGVTam' => $array]);
-                            return redirect()->to('/quan-ly-gv')->with('success-Add-T','Reset mật khẩu tài khoản '.$MSGVCut.' thành công');
+                            return redirect()->to('/quan-ly-gv')->with('success-Add-T','Reset dữ liệu tài khoản '.$MSGVCut.' thành công');
                         }
                     }
                     //Nếu tồn tại tk và người dùng đã qua 6 tháng chưa quay lại
@@ -1602,4 +1627,104 @@ class AdminController extends Controller
         }
 
      }
+
+     //Danh sách tất cả sinh viên
+     public function GetAllStudentList()
+     {
+         if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
+         {
+             $getAllStudent = DB::table('sinh_vien')
+             ->paginate(15);
+             return view('admin/all-student-list',['listStudent' => $getAllStudent]);
+         }
+         else
+         {
+             return redirect()->to("/");
+         }
+     }
+    public function ResetFindStudentList()
+     {
+         return redirect()->to('/all-student-list');
+     }
+
+    public function FindStudentFromList(Request $request)
+     {
+        if (session()->has('teacherid')) {
+                if($request->studentname != null)
+                {
+                    $searchlist = DB::table('sinh_vien')
+                    ->when($request->studentname != null, function ($query) use ($request) {
+                        return $query->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
+                    }) ->paginate(15);
+                }
+                else if($request->mssv != null)
+                {
+                    $searchlist =  DB::table('sinh_vien')
+                    ->when($request->mssv != null, function ($query) use ($request) {
+                        return $query->where('MSSV', 'like', '%' .$request->mssv. '%');
+                    }) ->paginate(15);
+                }
+                else if($request->mssv != null && $request->studentname != null)
+                {
+                    $searchlist =  DB::table('sinh_vien')
+                    ->when($request->mssv != null, function ($query) use ($request) {
+                        return $query->where('MSSV','like', '%' . $request->mssv. '%');
+                    })
+                    ->when($request->studentname != null, function ($query) use ($request) {
+                        return $query->where('HoTenSV', 'like', '%' . $request->studentname . '%');
+                    }) ->paginate(15);
+                }
+                else
+                {
+                    if($request->studentname == null && $request->mssv != null)
+                    {
+                        return redirect()->to('/all-student-list')
+                        ->with('errorClassList1','Lớp không tồn tại đối tượng với mã số '.$request->mssv)->withInput();
+                    }
+                    elseif($request->studentname != null && $request->mssv == null)
+                    {
+                        return redirect()->to('/all-student-list')
+                        ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->studentname)->withInput();
+                    }
+                    elseif($request->studentname == null && $request->mssv == null)
+                    {
+                        return redirect()->to('/all-student-list')
+                        ->with('errorClassList1','Không có đối tượng tìm kiếm!')->withInput();
+                    }
+
+                }
+
+                //Kiểm tra tìm kiếm có rỗng không
+
+                $checkTemp = [];
+                foreach( $searchlist as $ResultData)
+                {
+                    $checkTemp = $ResultData;
+                }
+                if($checkTemp == null)
+                {
+                    if($request->studentname == null && $request->mssv != null)
+                    {
+                        return redirect()->to('/all-student-list')
+                        ->with('errorClassList1','Lớp không tồn tại đối tượng với mã số '.$request->mssv)->withInput();
+                    }
+                    elseif($request->studentname != null && $request->mssv == null)
+                    {
+                        return redirect()->to('/all-student-list')
+                        ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->studentname)->withInput();
+                    }
+                    elseif($request->studentname == null && $request->mssv == null)
+                    {
+                        return redirect()->to('/all-student-list')
+                        ->with('errorClassList1','Không có đối tượng tìm kiếm!')->withInput();
+                    }
+                }
+                return view('admin/all-student-list', ['listStudent' => $searchlist]);
+            }
+            else{
+                return redirect()->to('/');
+            }
+     }
+
+
 }
