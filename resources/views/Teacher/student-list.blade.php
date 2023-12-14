@@ -455,11 +455,11 @@
                                 <form action="/nhap-diem" method="post">
                                     @if ($phanloailop == '1' || $phanloailop == '2')
                                         @if (DB::table('diem_danh')->where('MaDanhSach', 'like', $listid . '%')->where('MaBuoi', 9)->exists())
-                                            <button type="submit" class="btn btn-success" onclick="moveData()">Xác nhận điểm</button>
+                                            <button type="submit" class="btn btn-success">Xác nhận điểm</button>
                                         @endif
                                     @elseif($phanloailop == '3')
                                         @if (DB::table('diem_danh')->where('MaDanhSach', 'like', $listid . '%')->where('MaBuoi', 6)->exists())
-                                            <button type="submit" class="btn btn-success" onclick="moveData()">Xác nhận điểm</button>
+                                            <button type="submit" class="btn btn-success">Xác nhận điểm</button>
                                         @endif
                                     @endif
                                 @else
@@ -796,6 +796,7 @@
             var today = new Date();
             var fileName = 'data_' + today.getFullYear() + '_' + (today.getMonth() + 1) + '_' + today.getDate() + '.xlsx';
 
+            // Chuẩn bị dữ liệu để xuất file Excel
             var wopts =
             {
                 bookType: 'xlsx',
@@ -812,19 +813,24 @@
                 return buf;
             }
 
+            // Tạo đối tượng blob từ dữ liệu Excel
             var blob = new Blob([s2ab(wbout)],
             {
                 type: 'application/octet-stream'
             });
 
+            // Tạo URL tạm thời cho blob
             var url = URL.createObjectURL(blob);
 
+            // Tạo một thẻ a ẩn để kích hoạt việc tải xuống
             var a = document.createElement('a');
             a.href = url;
             a.download = fileName;
 
+            // Simulate click để tải xuống file
             a.click();
 
+            // Xóa URL tạm thời
             setTimeout(function()
             {
                 URL.revokeObjectURL(url);
