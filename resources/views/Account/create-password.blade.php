@@ -125,20 +125,21 @@
                                         <label class="input">
                                             <i class="icon-append fa fa-lock"></i>
                                             <input class="form-control login-form ng-dirty ng-valid ng-touched"
-                                                name="password" ngmodel="" required="" type="password">
+                                                name="password" ngmodel="" required="" type="password" id="passwordInput">
                                             @error('password')
                                                 <div class="alert alert-danger">{{ $errors->first('password') }}</div>
                                             @enderror
                                             <b class="tooltip tooltip-top-right">
                                                 <i class="fa fa-lock txt-color-teal"></i> Nhập mật mã của bạn </b>
                                         </label>
+                                        <input id="show-password" type="checkbox" onclick="showPassword()"> Hiện mật khẩu
                                     </section>
                                     <section>
                                         <label class="label">Xác nhận mật mã</label>
                                         <label class="input">
                                             <i class="icon-append fa fa-lock"></i>
                                             <input class="form-control login-form ng-dirty ng-valid ng-touched"
-                                                name="passwordverify" ngmodel="" required="" type="password">
+                                                name="passwordverify" ngmodel="" required="" type="password" id="passwordInput">
                                             @error('passwordverify')
                                                 <div class="alert alert-danger">{{ $errors->first('passwordverify') }}
                                                 </div>
@@ -146,7 +147,23 @@
                                             <b class="tooltip tooltip-top-right">
                                                 <i class="fa fa-lock txt-color-teal"></i> Nhập mật mã của bạn </b>
                                         </label>
+                                        <input id="show-password" type="checkbox" onclick="showPassword()"> Hiện mật khẩu
                                     </section>
+                                    <script>
+                                        function showPassword()
+                                        {
+                                            const passwordField = document.getElementById('passwordInput');
+                                            const showPassword = document.getElementById('show-password');
+                                            if (showPassword.checked)
+                                            {
+                                                passwordField.type = "text";
+                                            }
+                                            else
+                                            {
+                                                passwordField.type = "password";
+                                            }
+                                        }
+                                    </script>
                                     <section>
                                         <!--<div class="note"> Đăng nhập không được?
                                                 <a href="http://qlcntt.hutech.edu.vn/ho-tro?tieu_de=tai%20khoan">Xem hướng dẫn tại đây</a>

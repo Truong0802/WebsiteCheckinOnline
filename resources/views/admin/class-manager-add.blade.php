@@ -54,7 +54,7 @@
                     @if (session('success-AddLeader'))
                         <div class="alert alert-success text-center">{{ session('success-AddLeader') }}</div>
                     @endif
-                    <div class="table">
+                    <div class="table-add">
                         <table class="student-table" id="student-table">
                             <thead>
                                 <tr>

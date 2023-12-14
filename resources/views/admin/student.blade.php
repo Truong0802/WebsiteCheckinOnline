@@ -63,7 +63,7 @@
                 <br>
                 <div class="btn-container">
                     <button type="submit" class="btn btn-primary" onclick="filterData()">Thêm sinh viên</button>
-                    <a type="button" href="/confirmToAddDSSV" class="btn btn-primary" onclick="removeFilterData()">Xác nhận
+                    <a type="button" href="/confirmToAddDSSV" class="btn btn-success" onclick="removeFilterData()">Xác nhận
                         thêm</a>
                 </div>
                 @csrf
