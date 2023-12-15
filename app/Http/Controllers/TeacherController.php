@@ -252,7 +252,7 @@ class TeacherController extends Controller
             if(session()->exists('teacherid')){
 
                 if($request->lop){
-                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)->orderby('MaKQSV','ASC')->distinct()->paginate(25);
+                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)->orderby('MaKQSV','ASC')->distinct()->paginate(150);
                     session()->put('danh-sach-sinh-vien-lop',$request->lop);
                     session()->put('HKid',$request->HK);
                     $datatemp = [];
