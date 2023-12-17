@@ -264,7 +264,8 @@
                             <td>Ban cán sự</td>
                             <td>STT</td>
                             <td>Mã SV</td>
-                            <td>Họ tên</td>
+                            <td>Họ</td>
+                            <td>Tên</td>
                             <td>Tên lớp</td>
 
                             @if (session()->exists('teacherid'))
@@ -515,12 +516,19 @@
                                     {{ $stt }}
                                 </td>
 
-                                <td>{{ $studentname->MSSV }}</td>
-                                <td>
-                                    <?php
 
-                                    echo $studentname->HoTenSV;
-                                    ?>
+                                <td>{{ $studentname->MSSV }}</td>
+                                <?php
+                                    $spacePosition = strrpos($studentname->HoTenSV,' ');
+                                    $Ten = substr($studentname->HoTenSV, $spacePosition + 1);
+                                    $Ho = Str::before($studentname->HoTenSV,$Ten);
+
+                                ?>
+                                <td>
+                                    {{$Ho}}
+                                 </td>
+                                <td>
+                                   {{$Ten}}
                                 </td>
                                 <td><?php echo $studentname->MaLop; ?></td>
 
