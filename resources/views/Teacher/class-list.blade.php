@@ -37,12 +37,12 @@
                                 <input type="text" class="form-control" id="class-Name" name="classname">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group">
                                 <label for="date-picker">Ngày:</label>
                                 <input type="date" class="form-control datetime-local" id="date-picker">
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="school-year">Lớp theo niên khóa:</label>
@@ -65,8 +65,23 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="course-name">Khóa học:</label>
-                                <input type="text" class="form-control" id="course-name" name="coursename">
+                                <label for="course-name">Học kỳ:</label>
+                                {{-- <input type="text" class="form-control" id="course-name" name="coursename"> --}}
+                                <select name="coursename" class="form-control" id="course-name">
+                                    <?php
+                                    $allcoursename = DB::table('hoc_ky')
+                                        ->where('HocKy','1A')
+                                        ->distinct()
+                                        ->limit(6)
+                                        ->latest('NamHoc')
+                                        ->get();
+                                    ?>
+                                    <option value="">--Chọn năm học --</option>
+                                    @foreach ($allcoursename as $coursenamelist)
+                                        <option value="{{$coursenamelist->NamHoc}}">{{ $coursenamelist->NamHoc}}</option>
+                                        {{-- <option value="2022-2023">2022-2023</option> --}}
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">

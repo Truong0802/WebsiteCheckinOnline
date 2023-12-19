@@ -128,7 +128,7 @@ class TeacherController extends Controller
             if(session()->exists('teacherid') && session()->get('ChucVu') == 'GV'){
                 // $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
                 // $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
-                $coursename = DB::table('khoa_hoc')->where('KhoaHoc', $request->coursename)->first();
+                // $coursename = DB::table('hoc_ky')->where('', $request->coursename)->first();
                 $courselist = DB::table('khoa_hoc')->where('KhoaHoc', $request->courselist)->first();
                 if($request->lecturename == null && $request->subjectname == null &&  $request->coursename == null
                     &&$request->courselist == null && $request->classname == null)
@@ -140,9 +140,9 @@ class TeacherController extends Controller
                         return $query->join('mon_hoc', 'mon_hoc.MaTTMH', '=', 'lich_giang_day.MaTTMH')
                         ->where('mon_hoc.TenMH', 'like', '%'.$request->subjectname.'%')->distinct();
                     })
-                    ->when($coursename, function ($query) use ($coursename) {
-                        $class = DB::table('lop')->where('KhoaHoc', $coursename->KhoaHoc)->first();
-                        return $query->where('MaLop', $class->MaLop)->distinct();
+                    ->when($request->coursename, function ($query) use ($request) {
+                        // $class = DB::table('lop')->where('KhoaHoc', $request->coursename)->first();
+                        return $query->where('MaHK','like','%'.$request->coursename)->distinct();
                     })
                     ->when($courselist, function ($query) use ($courselist) {
                         $findclass = DB::table('lop')->where('KhoaHoc', $courselist->KhoaHoc)->first();
