@@ -94,7 +94,7 @@ class AdminController extends Controller
                 $resetkey = $request->reset;
             }
             // $temp[] = session()->get('MSSV').'  '.session()->get('Name').' '.session()->get('ClassName').' '.session()->get('PassWord').' '.session()->get('Phuong').' '.session()->get('Quan').' '.session()->get('TP').' '.session()->get('DiaChi');
-            $temp= session()->get('MSSV').session()->get('Name').'MK'.session()->get('PassWord').'ResetKey'.$resetkey.session()->get('ClassName');
+            $temp= session()->get('MSSV').'HoTen'.session()->get('Name').'MK'.session()->get('PassWord').'ResetKey'.$resetkey.session()->get('ClassName');
             session()->push('DanhSachTam',$temp); //Thêm vào danh sách tạm
             // dd(session()->get('DanhSachTam')); //Cắt chuỗi
             // $MSSVCut = substr($temp,0,10);
@@ -118,13 +118,16 @@ class AdminController extends Controller
         //Xử lý insert
         if(session()->get('DanhSachTam') != null)
         {
+
             foreach(session()->get('DanhSachTam') as $temp)
             {
-                 $MSSVCut = substr($temp,0,10);
-                 $CutClass = substr($temp,-7);
-                 $HoTen = Str::between($temp,$MSSVCut,'MK');
-                 $Password = Str::between($temp,'MK','ResetKey');
-                 $IsResetPassReq = Str::between($temp,'ResetKey',$CutClass);
+                // dd($temp);
+                //  $MSSVCut = substr($temp,0,10);
+                $MSSVCut = Str::before($temp,'HoTen');
+                $CutClass = substr($temp,-7);
+                $HoTen = Str::between($temp,'HoTen','MK');
+                $Password = Str::between($temp,'MK','ResetKey');
+                $IsResetPassReq = Str::between($temp,'ResetKey',$CutClass);
 
 
                 try

@@ -122,9 +122,10 @@
                             @if (session()->has('DanhSachTam'))
                                 @foreach (session()->get('DanhSachTam') as $temp)
                                     <?php
-                                    $MSSVCut = substr($temp, 0, 10);
+                                    // $MSSVCut = substr($temp, 0, 10);
+                                    $MSSVCut = Str::before($temp,'HoTen');
                                     $CutClass = substr($temp, -7);
-                                    $HoTen = Str::between($temp, $MSSVCut, 'MK');
+                                    $HoTen = Str::between($temp, 'HoTen', 'MK');
                                     $Password = Str::between($temp, 'MK', $CutClass);
                                     ?>
                                     <tbody>
