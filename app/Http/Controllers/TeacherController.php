@@ -125,6 +125,7 @@ class TeacherController extends Controller
 
         public function timkiem(Request $request)
         {
+
             if(session()->exists('teacherid') && session()->get('ChucVu') == 'GV'){
                 // $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
                 // $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
@@ -133,7 +134,7 @@ class TeacherController extends Controller
                 if($request->lecturename == null && $request->subjectname == null &&  $request->coursename == null
                     &&$request->courselist == null && $request->classname == null)
                 {
-                    return redirect()->to('/trang-chu')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
+                    return redirect()->to('/danh-sach-lop')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
                 }
                     $allsubject = DB::table('lich_giang_day')->where('MSGV',session()->get('teacherid'))->where('MaBuoi',1)
                     ->when($request->subjectname, function ($query) use ($request) {
@@ -162,7 +163,7 @@ class TeacherController extends Controller
                     }
                     if($checkTemp == null)
                     {
-                        return redirect()->to('/trang-chu')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
+                        return redirect()->to('/danh-sach-lop')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
                     }
                     else
                     {
@@ -170,7 +171,7 @@ class TeacherController extends Controller
                     }
 
             }
-            elseif(session()->exists('teacherid') && session()->get('ChucVu') != 'GV')
+            else if(session()->exists('teacherid') && session()->get('ChucVu') == 'AM')
             {
                 // $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
                 // $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
@@ -179,7 +180,7 @@ class TeacherController extends Controller
                 if($request->lecturename == null && $request->subjectname == null &&  $request->coursename == null
                 &&$request->courselist == null && $request->classname == null)
                 {
-                    return redirect()->to('/trang-chu')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
+                    return redirect()->to('/danh-sach-lop')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
                 }
                     $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)
                     ->when($request->lecturename, function ($query) use ($request) {
@@ -218,7 +219,8 @@ class TeacherController extends Controller
                         return view('Teacher/class-list', ['getallsubject' => $allsubject]);
                     }
             }
-            else{
+            else if(!session()->exists('teacherid'))
+            {
                 return redirect()->to('/');
             }
         }

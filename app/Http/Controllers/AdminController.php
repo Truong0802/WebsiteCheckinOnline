@@ -1579,17 +1579,17 @@ class AdminController extends Controller
             {
                 if($request->teachername == null && $request->msgv != null)
                 {
-                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    return redirect()->back()
                     ->with('errorClassList1','Lớp không tồn tại đối tượng với mã số '.$request->msgv)->withInput();
                 }
                 elseif($request->teachername != null && $request->msgv == null)
                 {
-                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    return redirect()->back()
                     ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->teachername)->withInput();
                 }
                 elseif($request->teachername == null && $request->msgv == null)
                 {
-                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    return redirect()->back()
                     ->with('errorClassList1','Không có đối tượng tìm kiếm!')->withInput();
                 }
 
@@ -1606,17 +1606,17 @@ class AdminController extends Controller
             {
                 if($request->teachername == null && $request->msgv != null)
                 {
-                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    return redirect()->back()
                     ->with('errorClassList1','Lớp không tồn tại đối tượng với mã số '.$request->msgv)->withInput();
                 }
                 elseif($request->teachername != null && $request->msgv == null)
                 {
-                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    return redirect()->back()
                     ->with('errorClassList1','Lớp không tồn tại đối tượng '.$request->teachername)->withInput();
                 }
                 elseif($request->teachername == null && $request->msgv == null)
                 {
-                    return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))
+                    return redirect()->back()
                     ->with('errorClassList1','Không có đối tượng tìm kiếm!')->withInput();
                 }
             }
