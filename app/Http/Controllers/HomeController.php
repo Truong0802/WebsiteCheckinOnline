@@ -91,4 +91,10 @@ class HomeController extends Controller
         session()->put('KetThucTuan',$endDay);
         return redirect()->to('/');
     }
+
+    public function getapi()
+    {
+        $data = DB::table('sinh_vien')->get();
+        return response()->json($data);
+    }
 }

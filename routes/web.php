@@ -158,3 +158,4 @@ Route::get('/xoa-tim-kiem-gv',[AdminController::class,'ResetFindTeacherList']);
 Route::get('/all-student-list',[AdminController::class,'GetAllStudentList']);
 Route::get('/tim-kiem-tat-ca-sinh-vien',[AdminController::class,'FindStudentFromList']);
 Route::get('/xoa-tim-kiem-tat-ca-sinh-vien',[AdminController::class,'ResetFindStudentList']);
+// Route::get('/test-api', [HomeController::class,'getapi']);
