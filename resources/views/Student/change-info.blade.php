@@ -202,14 +202,15 @@ use Carbon\carbon;
                                                                 <input type="date" style="max-width: 250px; height: 38px" class="info form-control" name="birthday">
                                                             @else
                                                                 <input type="date" style="max-width: 250px; height: 38px" class="info form-control" name="birthday"
-                                                                    value="{{ Carbon::parse($dataBefore->NgaySinh)->toDateString() }}">
+                                                                    value="{{ Carbon::createFromFormat('d/m/Y', $dataBefore->NgaySinh)->format('d-m-Y')}}">
                                                             @endif
                                                         @elseif(session()->exists('teacherid'))
                                                             @if ($dataBefore->NgaySinhGV == null)
                                                                 <input type="date" style="max-width: 250px; height: 38px" class="info form-control" name="birthday">
                                                             @else
                                                                 <input type="date" style="max-width: 250px; height: 38px" class="info form-control" name="birthday"
-                                                                    value="{{ Carbon::parse($dataBefore->NgaySinhGV)->toDateString() }}">
+                                                                    {{-- value="{{ Carbon::parse($dataBefore->NgaySinhGV)->toDateString() }}"> --}}
+                                                                    value = "{{ Carbon::createFromFormat('d/m/Y', $dataBefore->NgaySinhGV)->format('d-m-Y') }}" >
                                                             @endif
                                                         @endif
                                                     </div>
