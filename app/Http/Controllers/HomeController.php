@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Http\Controllers\AccountController;
 use App\Models\Schedule;
+use App\Models\StudentModel;
 use App\Models\TKB;
 
 class HomeController extends Controller
@@ -96,7 +97,7 @@ class HomeController extends Controller
 
     public function getapi()
     {
-        $data = DB::table('sinh_vien')->get();
+        $data = StudentModel::get();
         return response()->json($data);
     }
 }

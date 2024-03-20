@@ -17,6 +17,9 @@ Use Exception;
 use hisorange\BrowserDetect\Parser as Browser;
 use Jenssegers\Agent\Facades\Agent;
 use App\Http\Controllers\MailerController;
+use App\Models\StudentModel;
+use App\Models\Teacher;
+
 class AccountController extends Controller
 {
     //
@@ -186,8 +189,7 @@ class AccountController extends Controller
             {
                 return redirect()->to('/xac-nhan-nguoi-dung')->with('error-change','Mật khẩu xác nhận không chính xác!')->withInput();
             }
-            $UpdateHasConfirmed =  DB::table('sinh_vien')
-                                 ->where('MSSV', session()->get('studentid'))
+            $UpdateHasConfirmed =  StudentModel::where('MSSV', session()->get('studentid'))
                                  ->update(['Confirmed' => 1, 'password' => md5($request->password)]);
 
             return redirect()->to('/trang-chu')->with('success1','Xác thực thành công!')->withInput();
@@ -215,8 +217,7 @@ class AccountController extends Controller
             {
                 return redirect()->to('/xac-nhan-nguoi-dung')->with('error-change','Mật khẩu xác nhận không chính xác!')->withInput();
             }
-            $UpdateHasConfirmed =  DB::table('giang_vien')
-                                ->where('MSGV', session()->get('teacherid'))
+            $UpdateHasConfirmed =  Teacher::where('MSGV', session()->get('teacherid'))
                                 ->update(['Confirmed' => 1, 'password' => md5($request->password)]);
             return redirect()->to('/trang-chu')->with('success1','Xác thực thành công!')->withInput();
         }
@@ -248,7 +249,7 @@ class AccountController extends Controller
             ], $messages);
 
             try{
-                $checkAccount = DB::table('sinh_vien')->where('MSSV',$request->username)->first();
+                $checkAccount = StudentModel::where('MSSV',$request->username)->first();
                 if($checkAccount->MSSV != null)
                 {
                     if($checkAccount->Email != null && $checkAccount->Email == $request->mail)
@@ -269,7 +270,7 @@ class AccountController extends Controller
             }
             catch(Exception $ex){
                 try{
-                    $checkAccount = DB::table('giang_vien')->where('MSGV',$request->username)->first();
+                    $checkAccount = Teacher::where('MSGV',$request->username)->first();
                     if($checkAccount->MSGV != null)
                     {
                         if($checkAccount->Email != null && $checkAccount->Email == $request->mail)
@@ -330,7 +331,7 @@ class AccountController extends Controller
             ], $messages);
 
             try{
-                $checkAccount = DB::table('sinh_vien')->where('MSSV',$request->username)->first();
+                $checkAccount = StudentModel::where('MSSV',$request->username)->first();
                 if($checkAccount->MSSV != null)
                 {
 
@@ -338,8 +339,7 @@ class AccountController extends Controller
                     {
                         return redirect()->back()->with('error-change','Mật khẩu xác nhận không chính xác!')->withInput();
                     }
-                    $UpdateAnotherPass =  DB::table('sinh_vien')
-                                 ->where('MSSV', $checkAccount->MSSV)
+                    $UpdateAnotherPass =  StudentModel::where('MSSV', $checkAccount->MSSV)
                                  ->update(['password' => md5($request->password)]);
 
 
@@ -347,7 +347,7 @@ class AccountController extends Controller
             }
             catch(Exception $ex){
                 try{
-                    $checkAccount = DB::table('giang_vien')->where('MSGV',$request->username)->first();
+                    $checkAccount = Teacher::where('MSGV',$request->username)->first();
                     if($checkAccount->MSGV != null)
                     {
 
@@ -355,8 +355,7 @@ class AccountController extends Controller
                         {
                             return redirect()->back()->with('error-change','Mật khẩu xác nhận không chính xác!')->withInput();
                         }
-                        $UpdateAnotherPass =  DB::table('giang_vien')
-                                ->where('MSGV', $checkAccount->MSGV)
+                        $UpdateAnotherPass =  Teacher::where('MSGV', $checkAccount->MSGV)
                                 ->update(['password' => md5($request->password)]);
                     }
                 }
