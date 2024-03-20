@@ -67,6 +67,16 @@ class AccountController extends Controller
                 $username,
                 $password,
             ];
+        // $inputToAuth = [
+        //     'MSSV' => $request->username,
+        //     'password' => $password
+        // ];
+        //     if (Auth::attempt($inputToAuth)) {
+        //         // Xác thực thành công
+        //         dd("thành công");
+        //     } else {
+        //         dd($inputToAuth);
+        //     }
         try{
             $studentLogin= DB::select('select * from sinh_vien where MSSV = ? and password = ?', $params)[0];
             if($studentLogin != null){
