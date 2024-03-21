@@ -2,6 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
+use App\Models\Classroom;
+use App\Models\Course;
+use App\Models\Period;
+use App\Models\Schedule;
+use App\Models\Semester;
+use App\Models\StudentList;
+use App\Models\StudentModel;
+use App\Models\StudyResult;
+use App\Models\Subject;
+use App\Models\Teacher;
+use App\Models\TKB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 Use Exception;
@@ -25,7 +37,7 @@ class AdminController extends Controller
         {
             if($request->mssv)
             {
-                $showSV = DB::table('sinh_vien')->where('MSSV',$request->mssv)->first();
+                $showSV = StudentModel::where('MSSV',$request->mssv)->first();
                 return view('admin/student-add',['StudentToChange' => $showSV]);
             }
             else
@@ -132,10 +144,10 @@ class AdminController extends Controller
 
                 try
                 {
-                    $InsertDSDiaChi = DB::table('dia_chi')->insert([
+                    $InsertDSDiaChi = Address::insert([
                         'MaDiaChi' => $MSSVCut.$CutClass
                     ]);
-                    $InsertSV = DB::table('sinh_vien')->insert([
+                    $InsertSV = StudentModel::insert([
                         'MSSV' => $MSSVCut,
                         'HoTenSV' => $HoTen,
                         'Password' => md5($Password),
@@ -146,17 +158,17 @@ class AdminController extends Controller
 
                 } catch(Exception $ex)
                 {
-                    $checkUserIsActive = DB::table('sinh_vien')->where('MSSV',$MSSVCut)->first();
+                    $checkUserIsActive = StudentModel::where('MSSV',$MSSVCut)->first();
                     if($IsResetPassReq != 0)
                     {
                         if($checkUserIsActive->HoTenSV != $HoTen)
                             {
-                                $upDateAnotherPass =  DB::table('sinh_vien')->where('MSSV',$MSSVCut)
+                                $upDateAnotherPass =  StudentModel::where('MSSV',$MSSVCut)
                                                         ->update([
                                                             'HoTenSV' => $HoTen
                                                         ]);
                             }
-                        $ResetToDefaultPass = DB::table('sinh_vien')->where('MSSV',$MSSVCut)
+                        $ResetToDefaultPass = StudentModel::where('MSSV',$MSSVCut)
                                             ->update([
                                                 'Password' => md5($Password),
                                                 'Confirmed' => 0,
@@ -171,12 +183,12 @@ class AdminController extends Controller
                     }
 
 
-                    $checkUserIsActive = DB::table('sinh_vien')->where('MSSV',$MSSVCut)->first();
+                    $checkUserIsActive = StudentModel::where('MSSV',$MSSVCut)->first();
                     //Nếu tồn tại tk và người dùng đã qua 6 tháng chưa quay lại
                     if($checkUserIsActive->MSSV != null && Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == true)
                     {
                         //Khôi phục người dùng
-                        $upDateLastActiveData = DB::table('sinh_vien')->where('MSSV',$MSSVCut)
+                        $upDateLastActiveData = StudentModel::where('MSSV',$MSSVCut)
                                                                     ->update([
                                                                         'LastActive' => Carbon::now()->format('Y-m-d')
                                                                     ]);
@@ -267,7 +279,7 @@ class AdminController extends Controller
                 try
                 {
                     //Bổ sung thời gian tiết học
-                    $checkclasstime = DB::table('tiet_hoc')->where('MaTietHoc',$request->tiethocid)->first();
+                    $checkclasstime = Period::where('MaTietHoc',$request->tiethocid)->first();
                     //Kiểm tra thời gian bắt đầu có phù hợp
                     $time = Carbon::parse(Carbon::parse($request->timestart.' '.$checkclasstime->ThoiGianBatDau));
                     $formattedTime = $time->format('dmYHi');
@@ -277,7 +289,7 @@ class AdminController extends Controller
                     $formattedTimeEnd = $Anothertime->format('dmYHi');
                     $timeEndForTemp = $Anothertime->format('d-m-Y H:i');
 
-                    $SubjectInfo = DB::table('mon_hoc')->where('MaTTMH',$request->subjectname)->first();
+                    $SubjectInfo = Subject::where('MaTTMH',$request->subjectname)->first();
                     $temp= $timeForTemp.' MaMH'.$request->subjectname.'TenMH '.$SubjectInfo->TenMH.'Lop'.$request->classname.'GV'.$request->teacherid.'TimeEnd'.$timeEndForTemp.'HK'.$request->HKid;
 
                     session()->push('DanhSachLopTam',$temp); //Thêm vào danh sách tạm
@@ -325,7 +337,7 @@ class AdminController extends Controller
                 $CutClass = Str::between($temp,'Lop','GV');
                 $CutMSGV = Str::between($temp,'GV','TimeEnd');
                 $MaTTMH = Str::between($temp,'MaMH','TenMH');
-                $checkLop = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaLop',$CutClass)
+                $checkLop = Schedule::where('MaTTMH',$MaTTMH)->where('MaLop',$CutClass)
                             ->where('MaBuoi',1)->first();
 
                 if($checkLop == null)
@@ -345,26 +357,26 @@ class AdminController extends Controller
 
 
 
-                        $checkHKisAvailable = DB::table('hoc_ky')->where('MaHK',$CutHK)->first();
+                        $checkHKisAvailable = Semester::where('MaHK',$CutHK)->first();
                         $CutNamHoc = substr($temp,-4);
                         $CutHocKy = Str::between($temp,'HK',$CutNamHoc);
                         if($checkHKisAvailable == null)
                         {
                             //Nếu chưa tồn tại học kì đó thì sẽ insert vào trước
-                            $PutHK = DB::table('hoc_ky')->insert([
+                            $PutHK = Semester::insert([
                                 'MaHK' => $CutHK,
                                 'HocKy' => $CutHocKy,
                                 'NamHoc'=>  $CutNamHoc,
                             ]);
                         }
 
-                        $GetTimeForInsert = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)
+                        $GetTimeForInsert = Period::where('ThoiGianBatDau',$formatTime)
                         ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
 
                         // dd($formatTime);
                         try
                         {
-                            $insertTheClassList = DB::table('lich_giang_day')->insert([
+                            $insertTheClassList = Schedule::insert([
                                 'MaNgay' => $stt.$MaTTMH.$formattedTime,
                                 'NgayDay' => $datetimeConvert,
                                 'MaTTMH' => $MaTTMH,
@@ -416,25 +428,25 @@ class AdminController extends Controller
 
 
 
-                            $checkHKisAvailable = DB::table('hoc_ky')->where('MaHK',$CutHK)->first();
+                            $checkHKisAvailable = Semester::where('MaHK',$CutHK)->first();
                             $CutNamHoc = substr($temp,-4);
                             $CutHocKy = Str::between($temp,'HK',$CutNamHoc);
                             if($checkHKisAvailable == null)
                             {
                                 //Nếu chưa tồn tại học kì đó thì sẽ insert vào trước
-                                $PutHK = DB::table('hoc_ky')->insert([
+                                $PutHK = Semester::insert([
                                     'MaHK' => $CutHK,
                                     'HocKy' => $CutHocKy,
                                     'NamHoc'=>  $CutNamHoc,
                                 ]);
                             }
 
-                            $GetTimeForInsert = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)
+                            $GetTimeForInsert = Period::where('ThoiGianBatDau',$formatTime)
                             ->where('ThoiGianKetThuc',$formatTimeEnd)->first();
 
                             try
                             {
-                                $insertTheClassList = DB::table('lich_giang_day')->insert([
+                                $insertTheClassList = Schedule::insert([
                                     'MaNgay' => $stt.$MaTTMH.$formattedTime,
                                     'NgayDay' => $datetimeConvert,
                                     'MaTTMH' => $MaTTMH,
@@ -460,7 +472,7 @@ class AdminController extends Controller
                     else
                     {
                     //Thêm tiếp các buổi 2,3,4,5 theo stt lấy từ db +1
-                        $stt = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaHK',$CutHK)->distinct()->count('MaNgay');
+                        $stt = Schedule::where('MaTTMH',$MaTTMH)->where('MaHK',$CutHK)->distinct()->count('MaNgay');
 
                         $phanloailop = substr($CutClass, 3, 1);
                         if ($phanloailop == '1' || $phanloailop == '2')
@@ -483,13 +495,13 @@ class AdminController extends Controller
                         }
                         // dd($stt);
                         $formatTime = $datetimeConvert->format('H:i');
-                        $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
+                        $checkTypeTime = Period::where('ThoiGianBatDau',$formatTime)->first();
                         if($checkTypeTime != null)
                         {
                             // dd($formatTime);
                             try
                             {
-                                $insertTheClassList = DB::table('lich_giang_day')->insert([
+                                $insertTheClassList = Schedule::insert([
                                     'MaNgay' => $stt.$MaTTMH.$formattedTime,
                                     'NgayDay' => $datetimeConvert,
                                     'MaTTMH' => $MaTTMH,
@@ -660,12 +672,12 @@ class AdminController extends Controller
             }
 
             $HocKyCheck = $hocky.Carbon::now()->year;
-            $CheckHKIsAvailableOrNot = DB::table('hoc_ky')->where('MaHK',$HocKyCheck)->first();
+            $CheckHKIsAvailableOrNot = Semester::where('MaHK',$HocKyCheck)->first();
 
             if($CheckHKIsAvailableOrNot == null )
             {
                 //Thêm học kỳ nếu chưa tồn tại
-               $insertHK = DB::table('hoc_ky')->insert([
+               $insertHK = Semester::insert([
                 'MaHK'=>$HocKyCheck,
                 'HocKy' => $hocky,
                 'NamHoc' => Carbon::now()->year
@@ -677,7 +689,7 @@ class AdminController extends Controller
             }
 
             //Kiểm tra xem lớp (môn + nhóm môn có tồn tại?)
-            $checkSubjectClassIsVailable = DB::table('mon_hoc')->where('MaMH',$MaMH)->where('NhomMH',$NMH)->first();
+            $checkSubjectClassIsVailable = Subject::where('MaMH',$MaMH)->where('NhomMH',$NMH)->first();
             if($checkSubjectClassIsVailable == null)
             {
                 if($request->subjectname)
@@ -686,7 +698,7 @@ class AdminController extends Controller
                     {
                         //Chưa tồn tại lớp, tạo mới
                         try{
-                            $insertSubjectClass = DB::table('mon_hoc')->insert([
+                            $insertSubjectClass = Subject::insert([
                                 'MaTTMH' => $MaTTMH,
                                 'MaMH' => $MaMH,
                                 'NhomMH' => $NMH,
@@ -713,22 +725,22 @@ class AdminController extends Controller
             }
 
             //Kiểm tra xem lớp đã tồn tại chưa
-            $checkClassIsAvailable = DB::table('lop')->where('MaLop',$request->student_info_Class[0])
+            $checkClassIsAvailable = Classroom::where('MaLop',$request->student_info_Class[0])
                 ->first();
             if($checkClassIsAvailable == null)
             {
                 $NamHoc = "20".substr($request->student_info_Class[0],0,2);
                 //Kiểm tra khóa học
-                $CheckKHIsAvailable= DB::table('khoa_hoc')->where('KhoaHoc',$NamHoc)->first();
+                $CheckKHIsAvailable= Course::where('KhoaHoc',$NamHoc)->first();
                 if($CheckKHIsAvailable == null)
                 {
-                    $insertKhoaHOC = DB::table('khoa_hoc')->insert([
+                    $insertKhoaHOC = Course::insert([
                         'KhoaHoc' => $NamHoc,
                         'NamHocDuKien' => $NamHoc.'-'.Carbon::parse($NamHoc)->addYears(3)->year
                     ]);
                 }
                 //Insert
-                $insertClassINDB = DB::table('lop')->insert([
+                $insertClassINDB = Classroom::insert([
                     'MaLop' => $request->student_info_Class[0],
                     'TenLop' => $request->student_info_Class[0],
                     'KhoaHoc' => $NamHoc
@@ -737,7 +749,7 @@ class AdminController extends Controller
 
 
             //Kiểm tra lịch giảng dạy môn A HK B đã tồn tại hay chưa
-            $checkScheduleIsAvailable = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaHK',$HocKyCheck)->first();
+            $checkScheduleIsAvailable = Schedule::where('MaTTMH',$MaTTMH)->where('MaHK',$HocKyCheck)->first();
             if($checkScheduleIsAvailable == null)
             {
                 //Nếu chưa tồn tại tạo lịch buổi 1 cho lớp
@@ -756,8 +768,8 @@ class AdminController extends Controller
                             $TimeToAdd = $TimeToAdd->addWeeks(1);
                         }
                         $formatedTime = $TimeToAdd->format('dmYHi');
-                        $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
-                        $insertTheClassList = DB::table('lich_giang_day')->insert([
+                        $checkTypeTime = Period::where('ThoiGianBatDau',$formatTime)->first();
+                        $insertTheClassList = Schedule::insert([
                             'MaNgay' => $stt.$MaTTMH.$formatedTime,
                             'NgayDay' => $TimeToAdd,
                             'MaTTMH' => $MaTTMH,
@@ -779,8 +791,8 @@ class AdminController extends Controller
                             $TimeToAdd = $TimeToAdd->addWeeks(1);
                         }
                         $formatedTime = $TimeToAdd->format('dmYHi');
-                        $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
-                        $insertTheClassList = DB::table('lich_giang_day')->insert([
+                        $checkTypeTime = Period::where('ThoiGianBatDau',$formatTime)->first();
+                        $insertTheClassList = Schedule::insert([
                             'MaNgay' => $stt.$MaTTMH.$formatedTime,
                             'NgayDay' => $TimeToAdd,
                             'MaTTMH' => $MaTTMH,
@@ -795,10 +807,10 @@ class AdminController extends Controller
             }
             else
             {
-                $getTimeFromClass = DB::table('tiet_hoc')->where('MaTietHoc',$checkScheduleIsAvailable->MaTietHoc)->first();
+                $getTimeFromClass = Period::where('MaTietHoc',$checkScheduleIsAvailable->MaTietHoc)->first();
                 $formatTime = Carbon::parse($getTimeFromClass->ThoiGianBatDau)->format('H:i');
                 $TimeToAdd = Carbon::now();
-                $stt = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->where('MaHK',$HocKyCheck)->distinct()->count('MaNgay');
+                $stt = Schedule::where('MaTTMH',$MaTTMH)->where('MaHK',$HocKyCheck)->distinct()->count('MaNgay');
                         $phanloailop = substr($MaTTMH, 3, 1);
                         if ($phanloailop == '1' || $phanloailop == '2')
                         {
@@ -814,8 +826,8 @@ class AdminController extends Controller
                                         $TimeToAdd = $TimeToAdd->addWeeks(1);
                                     }
                                     $formatedTime = $TimeToAdd->format('dmYHi');
-                                    $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
-                                    $insertTheClassList = DB::table('lich_giang_day')->insert([
+                                    $checkTypeTime = Period::where('ThoiGianBatDau',$formatTime)->first();
+                                    $insertTheClassList = Schedule::insert([
                                         'MaNgay' => $stt.$MaTTMH.$formatedTime,
                                         'NgayDay' => $TimeToAdd,
                                         'MaTTMH' => $MaTTMH,
@@ -842,8 +854,8 @@ class AdminController extends Controller
                                         $TimeToAdd = $TimeToAdd->addWeeks(1);
                                     }
                                     $formatedTime = $TimeToAdd->format('dmYHi');
-                                    $checkTypeTime = DB::table('tiet_hoc')->where('ThoiGianBatDau',$formatTime)->first();
-                                    $insertTheClassList = DB::table('lich_giang_day')->insert([
+                                    $checkTypeTime = Period::where('ThoiGianBatDau',$formatTime)->first();
+                                    $insertTheClassList = Schedule::insert([
                                         'MaNgay' => $stt.$MaTTMH.$formatedTime,
                                         'NgayDay' => $TimeToAdd,
                                         'MaTTMH' => $MaTTMH,
@@ -954,11 +966,11 @@ class AdminController extends Controller
             if($request !=null)
             {
                 $MaTTMH = $request->classid;
-                $checkfindnameTeacher = DB::table('lich_giang_day')->where('MaTTMH',$MaTTMH)->orderBy('MaNgay','DESC')->first();
+                $checkfindnameTeacher = Schedule::where('MaTTMH',$MaTTMH)->orderBy('MaNgay','DESC')->first();
                 $cutHK= substr(session()->get('HKid'), 0, 2);
                 $CutYearOfClass = Str::after(session()->get('HKid'),$cutHK);
 
-                $checkSVisAvailable = DB::table('sinh_vien')->where('MSSV',$request->mssv)->first();
+                $checkSVisAvailable = StudentModel::where('MSSV',$request->mssv)->first();
                 if($checkSVisAvailable == null)
                 {
                     return redirect()->to('/quan-ly-sinh-vien')->with('error-Add','Không tồn tại sinh viên mã'.$request->mssv)->withInput();
@@ -1032,14 +1044,14 @@ class AdminController extends Controller
                     $CutClassId = Str::after($key,'MaLop');
 
                     //Kiểm tra sinh viên đã tồn tại tài khoản hay chưa
-                    $CheckUserIsAvailableOrNot = DB::table('sinh_vien')->where('MSSV',$Mssv)->first();
+                    $CheckUserIsAvailableOrNot = StudentModel::where('MSSV',$Mssv)->first();
                     if($CheckUserIsAvailableOrNot == null)
                     {
-                        $insertDiaChi = DB::table('dia_chi')->insert([
+                        $insertDiaChi = Address::insert([
                             "MaDiaChi" => $Mssv.$CutClassId
                         ]);
 
-                        $CreateNewUser = DB::table('sinh_vien')->insert([
+                        $CreateNewUser = StudentModel::insert([
                             "MSSV" => $Mssv,
                             "password" => md5($Mssv),
                             "HoTenSV" => $findStudentName,
@@ -1053,11 +1065,11 @@ class AdminController extends Controller
                     //Tạo Mã Danh sách
                     //Kiểm tra đã tồn tại danh sách hay chưa
                     $MaDanhSachTam = $CutClass.$MaHK;
-                    $checkDBDSSV = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')
+                    $checkDBDSSV = StudentList::where('MaDanhSach','like',$MaDanhSachTam.'%')
                     ->where('MaTTMH',session()->get('classAddId'))->where('MaHK',session()->get('HKid'))->first();
                     if($checkDBDSSV != null)
                     {
-                        $countValidList = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')
+                        $countValidList = StudentList::where('MaDanhSach','like',$MaDanhSachTam.'%')
                         ->where('MaTTMH',session()->get('classAddId'))->where('MaHK',session()->get('HKid'))->distinct()->count('MaDanhSach');
                         $stt = $countValidList+1;
                     }
@@ -1074,10 +1086,10 @@ class AdminController extends Controller
                     $MaKQSV = $Mssv.$CutClass.$MaHK;
                     try
                     {
-                        $InsertDanhSachKetQua = DB::table('ket_qua')->insert([
+                        $InsertDanhSachKetQua = StudyResult::insert([
                             'MaKQSV' => $MaKQSV
                         ]);
-                        $InsertDanhSachSV = DB::table('danh_sach_sinh_vien')->insert([
+                        $InsertDanhSachSV = StudentList::insert([
                             'MaDanhSach' => $MaDanhSach,
                             'MaTTMH' => $CutClass,
                             'MSSV' => $Mssv,
@@ -1092,10 +1104,10 @@ class AdminController extends Controller
                     }
 
                     //Insert TKB:
-                    $getAllLichGiangDay = DB::table('lich_giang_day')->where('MaTTMH',$CutClass)->where('MaHK',$MaHK)->get();
+                    $getAllLichGiangDay = Schedule::where('MaTTMH',$CutClass)->where('MaHK',$MaHK)->get();
                     foreach($getAllLichGiangDay as $getList)
                     {
-                        $InsertTKB = DB::table('tkb')->insert([
+                        $InsertTKB = TKB::insert([
                             'MaNgay' => $getList->MaNgay,
                             'MSSV' => $Mssv
                         ]);
@@ -1121,12 +1133,12 @@ class AdminController extends Controller
                     $CutHK = Str::between($key,'HocKy','NamHoc');
                     $CutNamHoc = Str::between($key,'NamHoc','MSGV');
                     $MaHK = $CutHK.$CutNamHoc;
-                    $findHK = DB::table('hoc_ky')->where('MaHK',$MaHK)->first();
+                    $findHK = Semester::where('MaHK',$MaHK)->first();
 
                     if($findHK == null)
                     {
                         //Nếu tìm không có thì thêm mới Học kỳ
-                        $InsertNewHK = DB::table('hoc_ky')->insert([
+                        $InsertNewHK = Semester::insert([
                             'MaHK' => $MaHK,
                             'HocKy' => $CutHK,
                             'NamHoc' => $CutNamHoc
@@ -1136,10 +1148,10 @@ class AdminController extends Controller
                     //Tạo Mã Danh sách
                     //Kiểm tra đã tồn tại danh sách hay chưa
                     $MaDanhSachTam = $CutClass.$MaHK;
-                    $checkDBDSSV = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')->first();
+                    $checkDBDSSV = StudentList::where('MaDanhSach','like',$MaDanhSachTam.'%')->first();
                     if($checkDBDSSV != null)
                     {
-                        $countValidList = DB::table('danh_sach_sinh_vien')->where('MaDanhSach','like',$MaDanhSachTam.'%')->distinct()->count('MaDanhSach');
+                        $countValidList = StudentList::where('MaDanhSach','like',$MaDanhSachTam.'%')->distinct()->count('MaDanhSach');
                         $stt = $countValidList+1;
                     }
                     else
@@ -1155,10 +1167,10 @@ class AdminController extends Controller
                     $MaKQSV = $Mssv.$CutClass.$MaHK;
                     try
                     {
-                        $InsertDanhSachKetQua = DB::table('ket_qua')->insert([
+                        $InsertDanhSachKetQua = StudyResult::insert([
                             'MaKQSV' => $MaKQSV
                         ]);
-                        $InsertDanhSachSV = DB::table('danh_sach_sinh_vien')->insert([
+                        $InsertDanhSachSV = StudentList::insert([
                             'MaDanhSach' => $MaDanhSach,
                             'MaTTMH' => $CutClass,
                             'MSSV' => $Mssv,
@@ -1176,7 +1188,7 @@ class AdminController extends Controller
                     $getAllLichGiangDay = DB::table('lich_giang_day')->where('MaTTMH',$CutClass)->where('MaHK',$MaHK)->get();
                     foreach($getAllLichGiangDay as $getList)
                     {
-                        $InsertTKB = DB::table('tkb')->insert([
+                        $InsertTKB = TKB::insert([
                             'MaNgay' => $getList->MaNgay,
                             'MSSV' => $Mssv
                         ]);
@@ -1200,7 +1212,7 @@ class AdminController extends Controller
         {
             if($request->msgv)
             {
-                $getInfoToChange = DB::table('giang_vien')->where('MSGV',$request->msgv)
+                $getInfoToChange = Teacher::where('MSGV',$request->msgv)
                 ->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
                 ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
                 ->first();
@@ -1277,11 +1289,11 @@ class AdminController extends Controller
                     $CutKhoa = Str::after($temp,'KHOA');
                     $keyToReset = Str::between($temp,'ResetKey','MSGV');
                 try{
-                    $InsertDSDiaChi = DB::table('dia_chi')->insert([
+                    $InsertDSDiaChi = Address::insert([
                         'MaDiaChi' =>  $MSGVCut
                     ]);
                     //Insert GV
-                    $InsertGV = DB::table('giang_vien')->insert([
+                    $InsertGV = Teacher::insert([
                         'MSGV' => $MSGVCut,
                         'Password' => md5($Password),
                         'HoTenGV' => $HoTen,
@@ -1293,20 +1305,20 @@ class AdminController extends Controller
                 catch(Exception $ex)
                 {
 
-                    $checkUserIsActive = DB::table('giang_vien')->where('MSGV',$MSGVCut)->first();
+                    $checkUserIsActive = Teacher::where('MSGV',$MSGVCut)->first();
                     if($checkUserIsActive->MSGV != null)
                     {
                         if($keyToReset != 0)
                         {
                             if($checkUserIsActive->HoTenGV != $HoTen)
                             {
-                                $upDateAnotherPass = DB::table('giang_vien')->where('MSGV',$MSGVCut)
+                                $upDateAnotherPass = Teacher::where('MSGV',$MSGVCut)
                                                         ->update([
                                                             'HoTenGV' => $HoTen
                                                         ]);
                             }
 
-                            $upDateAnotherPass = DB::table('giang_vien')->where('MSGV',$MSGVCut)
+                            $upDateAnotherPass = Teacher::where('MSGV',$MSGVCut)
                                                         ->update([
                                                             'LastActive' => Carbon::now()->format('Y-m-d'),
                                                             'Confirmed' => 0,
@@ -1323,7 +1335,7 @@ class AdminController extends Controller
                     if($checkUserIsActive->MSGV != null && Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == true)
                     {
                         //Khôi phục người dùng
-                        $upDateLastActiveData = DB::table('giang_vien')->where('MSGV',$MSGVCut)
+                        $upDateLastActiveData = Teacher::where('MSGV',$MSGVCut)
                                                                     ->update([
                                                                         'LastActive' => Carbon::now()->format('Y-m-d')
                                                                     ]);
@@ -1393,7 +1405,7 @@ class AdminController extends Controller
             }
 
             //Kiểm tra tồn tại lớp hay chưa
-            $checkLopIsAvailable = DB::table('lop')->where('MaLop',$request->classid)->first();
+            $checkLopIsAvailable = Classroom::where('MaLop',$request->classid)->first();
             if($checkLopIsAvailable != null)
             {
                 return redirect()->to('/them-lop-nien-khoa')->with('error-Add-C','Đã tồn tại lớp '.$request->classid)->withInput();
@@ -1433,11 +1445,11 @@ class AdminController extends Controller
                 $CutNamKetThuc = Str::after($temp,'-');
 
                 //Kiểm tra có tồn tại năm học đó chưa
-                $CheckKH = DB::table('khoa_hoc')->where('KhoaHoc',$CutKhoaHoc)->first();
+                $CheckKH = Course::where('KhoaHoc',$CutKhoaHoc)->first();
                 if($CheckKH == null)
                 {
                     //chưa tồn tại năm học => thêm mới
-                    $InsertNewKH = DB::table('khoa_hoc')->insert([
+                    $InsertNewKH = Course::insert([
                         'KhoaHoc' => $CutKhoaHoc,
                         'NamHocDuKien' => $CutNamBatDau.'-'.$CutNamKetThuc
                     ]);
@@ -1445,7 +1457,7 @@ class AdminController extends Controller
 
 
                     //Thêm lớp học
-                    $insertNewLopNK = DB::table('lop')->insert([
+                    $insertNewLopNK = Classroom::insert([
                         'MaLop' => $CutLop,
                         'TenLop' => $CutLop,
                         'KhoaHoc' => $CutKhoaHoc
@@ -1487,16 +1499,16 @@ class AdminController extends Controller
                 {
                     $MaLop = $request->student_info_Class[$i];
                     //Kiểm tra sinh viên có tồn tại hay không
-                    $checkSVIsAvailable = DB::table('sinh_vien')->where('MSSV',$request->student_info_MSSV[$i])->first();
+                    $checkSVIsAvailable = StudentModel::where('MSSV',$request->student_info_MSSV[$i])->first();
                     if($checkSVIsAvailable != null)
                     {
                         //Kiểm tra xem lớp đó đã tồn tại Ban cán sự chưa
-                        $CheckManageOfClassIsAvailable = DB::table('sinh_vien')->where('MaLop', $MaLop )
+                        $CheckManageOfClassIsAvailable = StudentModel::where('MaLop', $MaLop )
                         ->where('BanCanSu',1)->first();
                         if($CheckManageOfClassIsAvailable == null)
                         {
                             //Chưa có ban cán sự => thêm mới
-                            $AddClassManage = DB::table('sinh_vien')->where('MSSV',$request->student_info_MSSV[$i])->where('MaLop', $MaLop )
+                            $AddClassManage = StudentModel::where('MSSV',$request->student_info_MSSV[$i])->where('MaLop', $MaLop )
                                             ->update([
                                                 'BanCanSu' => 1
                                             ]);
@@ -1528,7 +1540,7 @@ class AdminController extends Controller
     {
         if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
         {
-            $getAllTeacher = DB::table('giang_vien')->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
+            $getAllTeacher = Teacher::join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
             ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
             ->where('giang_vien.MaChucVu','!=','AM')
             ->paginate(15);
@@ -1549,7 +1561,7 @@ class AdminController extends Controller
         if (session()->has('teacherid')) {
             if($request->teachername != null)
             {
-                $searchlist = DB::table('giang_vien')->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
+                $searchlist = Teacher::join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
                 ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
                 ->where('giang_vien.MaChucVu','!=','AM')
                 ->when($request->teachername != null, function ($query) use ($request) {
@@ -1558,7 +1570,7 @@ class AdminController extends Controller
             }
             else if($request->msgv != null)
             {
-                $searchlist = DB::table('giang_vien')->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
+                $searchlist = Teacher::join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
                 ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
                 ->where('giang_vien.MaChucVu','!=','AM')
                 ->when($request->msgv != null, function ($query) use ($request) {
@@ -1567,7 +1579,7 @@ class AdminController extends Controller
             }
             else if($request->msgv != null && $request->teachername != null)
             {
-                $searchlist = DB::table('giang_vien')->join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
+                $searchlist = Teacher::join('chuc_vu','chuc_vu.MaChucVu','=','giang_vien.MaChucVu')
                 ->join('khoa','khoa.MaKhoa','=','giang_vien.MaKhoa')
                 ->where('giang_vien.MaChucVu','!=','AM')
                 ->when($request->mssv != null, function ($query) use ($request) {
@@ -1636,8 +1648,7 @@ class AdminController extends Controller
      {
          if(session()->get('ChucVu') == 'AM' || session()->get('ChucVu') == 'QL')
          {
-             $getAllStudent = DB::table('sinh_vien')
-             ->paginate(15);
+             $getAllStudent = StudentModel::paginate(15);
              return view('admin/all-student-list',['listStudent' => $getAllStudent]);
          }
          else
@@ -1655,22 +1666,19 @@ class AdminController extends Controller
         if (session()->has('teacherid')) {
                 if($request->studentname != null)
                 {
-                    $searchlist = DB::table('sinh_vien')
-                    ->when($request->studentname != null, function ($query) use ($request) {
+                    $searchlist = StudentModel::when($request->studentname != null, function ($query) use ($request) {
                         return $query->where('sinh_vien.HoTenSV', 'like', '%' . $request->studentname . '%');
                     }) ->paginate(15);
                 }
                 else if($request->mssv != null)
                 {
-                    $searchlist =  DB::table('sinh_vien')
-                    ->when($request->mssv != null, function ($query) use ($request) {
+                    $searchlist =  StudentModel::when($request->mssv != null, function ($query) use ($request) {
                         return $query->where('MSSV', 'like', '%' .$request->mssv. '%');
                     }) ->paginate(15);
                 }
                 else if($request->mssv != null && $request->studentname != null)
                 {
-                    $searchlist =  DB::table('sinh_vien')
-                    ->when($request->mssv != null, function ($query) use ($request) {
+                    $searchlist =  StudentModel::when($request->mssv != null, function ($query) use ($request) {
                         return $query->where('MSSV','like', '%' . $request->mssv. '%');
                     })
                     ->when($request->studentname != null, function ($query) use ($request) {
