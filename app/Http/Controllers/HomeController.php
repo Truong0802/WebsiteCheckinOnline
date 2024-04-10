@@ -95,7 +95,7 @@ class HomeController extends Controller
         return redirect()->to('/');
     }
 
-    public function getapi()
+    public function getAllStudentapi()
     {
         $data = StudentModel::get();
         return response()->json($data);

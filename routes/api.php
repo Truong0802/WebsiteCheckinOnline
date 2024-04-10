@@ -20,4 +20,4 @@ use App\Http\Controllers\HomeController;
 
 
 // URL to get api route need '/api' at before route http://localhost:8000/api/test-api
-Route::get('/test-api', [HomeController::class,'getapi']);
+Route::get('/v1/getAll', [HomeController::class,'getAllStudentapi']);

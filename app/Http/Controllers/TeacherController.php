@@ -16,6 +16,15 @@ use Illuminate\Support\Str;
 // use Stevebauman\Location\Facades\Location;
 use hisorange\BrowserDetect\Parser as Browser;
 use App\Http\Controllers\HomeController;
+use App\Models\Checkin;
+use App\Models\Classroom;
+use App\Models\Course;
+use App\Models\Schedule;
+use App\Models\StudentList;
+use App\Models\StudentModel;
+use App\Models\Teacher;
+use App\Models\Result;
+
 class TeacherController extends Controller
 {
     //Hồ sơ giảng dạy
@@ -43,8 +52,7 @@ class TeacherController extends Controller
             if(session()->exists('teacherid')){
                 if($request->lop){
                     $teacherid = session()->get('teacherid');
-                    $allsubject = DB::table('lich_giang_day')
-                    ->where('MSGV',$teacherid)
+                    $allsubject = Schedule::where('MSGV',$teacherid)
                     ->where('MaTTMH',$request->lop)
                     ->latest('NgayDay')
                     ->distinct()->paginate(15);
@@ -53,12 +61,12 @@ class TeacherController extends Controller
                     if(session()->get('ChucVu') == 'QL' || session()->get('ChucVu') == 'AM')
                     {
                         $teacherid = session()->get('teacherid');
-                        $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)->latest('NgayDay')->paginate(15);
+                        $allsubject = Schedule::where('MaBuoi',1)->latest('NgayDay')->paginate(15);
                     }
                     else
                     {
                         $teacherid = session()->get('teacherid');
-                        $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaBuoi',1)->latest('NgayDay')->distinct()->paginate(5);
+                        $allsubject = Schedule::where('MSGV',$teacherid)->where('MaBuoi',1)->latest('NgayDay')->distinct()->paginate(5);
                     }
                     //Thêm điều kiện else cho trường hợp quản lý truy cập sẽ lọc ra những lớp thuộc khoa của quản lý đó
                 }
@@ -70,12 +78,11 @@ class TeacherController extends Controller
                 if(session()->exists('studentid'))
                 {
 
-                    $checkLeaderIs = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                    $checkLeaderIs = StudentModel::where('MSSV',session()->get('studentid'))->first();
                     if($checkLeaderIs->BanCanSu != null)
                     {
                         $MaLop = $checkLeaderIs->MaLop;
-                        $allsubject = DB::table('lich_giang_day')
-                            ->select('lich_giang_day.*', DB::raw('CASE WHEN EXISTS (SELECT 1 FROM danh_sach_sinh_vien
+                        $allsubject = Schedule::select('lich_giang_day.*', DB::raw('CASE WHEN EXISTS (SELECT 1 FROM danh_sach_sinh_vien
                                 JOIN sinh_vien ON danh_sach_sinh_vien.MSSV = sinh_vien.MSSV
                                 WHERE sinh_vien.MaLop = "'.$checkLeaderIs->MaLop.'" AND danh_sach_sinh_vien.MaTTMH = lich_giang_day.MaTTMH
                                     AND danh_sach_sinh_vien.MaHK = lich_giang_day.MaHK
@@ -98,8 +105,7 @@ class TeacherController extends Controller
                     }
                     else
                     {
-                        $allsubject = DB::table('danh_sach_sinh_vien')
-                        ->join('lich_giang_day',function ($join){
+                        $allsubject = StudentList::join('lich_giang_day',function ($join){
                             $join->on('danh_sach_sinh_vien.MaTTMH','=','lich_giang_day.MaTTMH')
                                 ->on('danh_sach_sinh_vien.MaHK','=','lich_giang_day.MaHK');
                         })
@@ -130,13 +136,13 @@ class TeacherController extends Controller
                 // $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
                 // $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
                 // $coursename = DB::table('hoc_ky')->where('', $request->coursename)->first();
-                $courselist = DB::table('khoa_hoc')->where('KhoaHoc', $request->courselist)->first();
+                $courselist = Course::where('KhoaHoc', $request->courselist)->first();
                 if($request->lecturename == null && $request->subjectname == null &&  $request->coursename == null
                     &&$request->courselist == null && $request->classname == null)
                 {
                     return redirect()->to('/danh-sach-lop')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
                 }
-                    $allsubject = DB::table('lich_giang_day')->where('MSGV',session()->get('teacherid'))->where('MaBuoi',1)
+                    $allsubject = Schedule::where('MSGV',session()->get('teacherid'))->where('MaBuoi',1)
                     ->when($request->subjectname, function ($query) use ($request) {
                         return $query->join('mon_hoc', 'mon_hoc.MaTTMH', '=', 'lich_giang_day.MaTTMH')
                         ->where('mon_hoc.TenMH', 'like', '%'.$request->subjectname.'%')->distinct();
@@ -175,14 +181,14 @@ class TeacherController extends Controller
             {
                 // $teacherid = DB::table('giang_vien')->where('HoTenGV', $request->lecturename)->first();
                 // $subjectname = DB::table('mon_hoc')->where('TenMH', $request->subjectname)->first();
-                $coursename = DB::table('khoa_hoc')->where('KhoaHoc', $request->coursename)->first();
-                $courselist = DB::table('khoa_hoc')->where('KhoaHoc', $request->courselist)->first();
+                $coursename = Course::where('KhoaHoc', $request->coursename)->first();
+                $courselist = Course::where('KhoaHoc', $request->courselist)->first();
                 if($request->lecturename == null && $request->subjectname == null &&  $request->coursename == null
                 &&$request->courselist == null && $request->classname == null)
                 {
                     return redirect()->to('/danh-sach-lop')->with('errorClass1','Tìm kiếm rỗng!')->withInput();
                 }
-                    $allsubject = DB::table('lich_giang_day')->where('MaBuoi',1)
+                    $allsubject = Schedule::where('MaBuoi',1)
                     ->when($request->lecturename, function ($query) use ($request) {
                         return $query->join('giang_vien', 'giang_vien.MSGV', '=', 'lich_giang_day.MSGV')
                                 ->where('giang_vien.HoTenGV', 'like', '%'.$request->lecturename.'%')->distinct();
@@ -192,11 +198,11 @@ class TeacherController extends Controller
                         ->where('mon_hoc.TenMH', 'like', '%'.$request->subjectname.'%')->distinct();
                     })
                     ->when($coursename, function ($query) use ($coursename) {
-                        $class = DB::table('lop')->where('KhoaHoc', $coursename->KhoaHoc)->first();
+                        $class = Classroom::where('KhoaHoc', $coursename->KhoaHoc)->first();
                         return $query->where('MaLop', $class->MaLop)->distinct();
                     })
                     ->when($courselist, function ($query) use ($courselist) {
-                        $findclass = DB::table('lop')->where('KhoaHoc', $courselist->KhoaHoc)->first();
+                        $findclass = Classroom::where('KhoaHoc', $courselist->KhoaHoc)->first();
                         return $query->where('MaLop', $findclass->MaLop);
                     })
                     ->when($request->classname, function ($query) use ($request) {
@@ -254,7 +260,7 @@ class TeacherController extends Controller
             if(session()->exists('teacherid')){
 
                 if($request->lop){
-                    $classlist = DB::table('danh_sach_sinh_vien')->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)->orderby('MaKQSV','ASC')->distinct()->paginate(150);
+                    $classlist = StudentList::where('MaTTMH',$request->lop)->where('MaHK',$request->HK)->orderby('MaKQSV','ASC')->distinct()->paginate(150);
                     session()->put('danh-sach-sinh-vien-lop',$request->lop);
                     session()->put('HKid',$request->HK);
                     $datatemp = [];
@@ -280,19 +286,17 @@ class TeacherController extends Controller
                 if(session()->exists('studentid'))
                 {
                     //Kiểm tra trong lớp có sinh viên đang truy cập hay không
-                    $getMaLop = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                    $getMaLop = StudentModel::where('MSSV',session()->get('studentid'))->first();
                     if($getMaLop->BanCanSu != null || $getMaLop->BanCanSu != 0)
                     {
-                        $checkLeader = DB::table('danh_sach_sinh_vien')
-                        ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
+                        $checkLeader = StudentList::where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
                         ->where('MSSV',session()->get('studentid'))->first();
                         if($checkLeader != null)
                         {
                             if($checkLeader->BanCanSuLop != null) //Nếu ban cán sự lớp tổng cũng là ban cán sự lớp môn của 1 môn nào đó
                             {
                                 //Cho phép thấy tất cả thành viên trong lớp
-                                $classlist= DB::table('danh_sach_sinh_vien')
-                                ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
+                                $classlist= StudentList::join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
                                 ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
                                 ->where('danh_sach_sinh_vien.MaHK', $request->HK)->orderby('MaKQSV','ASC')->paginate(25);
                                 session()->put('danh-sach-sinh-vien-lop',$request->lop);
@@ -301,8 +305,7 @@ class TeacherController extends Controller
                             else
                             {
                                 //Nếu ban cán sự lớp tổng không phải ban cán sự lớp môn
-                                $classlist= DB::table('danh_sach_sinh_vien')
-                                ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
+                                $classlist= StudentList::join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
                                 // set chỉ có bcs xem sinh viên thuộc lớp mình
                                 ->where('sinh_vien.MaLop', $getMaLop->MaLop)
                                 ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
@@ -314,8 +317,7 @@ class TeacherController extends Controller
                         else //Nếu sinh viên có chức ban cán sự lớp tổng không học trong lớp môn đó
                         {
                             //Thực hiện chức năng thông thường của ban cán sự lớp niên khóa
-                            $classlist= DB::table('danh_sach_sinh_vien')
-                            ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
+                            $classlist= StudentList::join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
                             // set chỉ có bcs xem sinh viên thuộc lớp mình
                             ->where('sinh_vien.MaLop', $getMaLop->MaLop)
                             ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
@@ -340,14 +342,12 @@ class TeacherController extends Controller
                     }
                     else
                     {
-                        $checkLeader = DB::table('danh_sach_sinh_vien')
-                        ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
+                        $checkLeader = StudentList::where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
                         ->where('MSSV',session()->get('studentid'))->first();
                         if($checkLeader->BanCanSuLop != null)
                         {
 
-                            $classlist= DB::table('danh_sach_sinh_vien')
-                            ->join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
+                            $classlist= StudentList::join('sinh_vien', 'danh_sach_sinh_vien.MSSV', '=', 'sinh_vien.MSSV')
                             //set chỉ có bcs xem sinh viên thuộc lớp mình
                             // ->where('sinh_vien.MaLop', $getMaLop->MaLop)
                             ->where('danh_sach_sinh_vien.MaTTMH',$request->lop)
@@ -372,8 +372,7 @@ class TeacherController extends Controller
                         else
                         {
                             //Sinh viên thường -  chỉ xem được bản thân
-                            $classlist = DB::table('danh_sach_sinh_vien')
-                            ->where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
+                            $classlist = StudentList::where('MaTTMH',$request->lop)->where('MaHK',$request->HK)
                             ->where('MSSV',session()->get('studentid'))
                             ->distinct()->orderby('MaKQSV','ASC')->paginate(25);
                             session()->put('danh-sach-sinh-vien-lop',$request->lop);
@@ -411,8 +410,7 @@ class TeacherController extends Controller
             if (session()->has('teacherid')) {
                 if($request->studentname != null)
                 {
-                    $searchlist = DB::table('danh_sach_sinh_vien')
-                    ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
+                    $searchlist = StudentList::where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
                     ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
                     ->when($request->studentname != null, function ($query) use ($request) {
                         return $query->join('sinh_vien', 'sinh_vien.MSSV', 'danh_sach_sinh_vien.MSSV')
@@ -421,8 +419,7 @@ class TeacherController extends Controller
                 }
                 else if($request->mssv != null)
                 {
-                    $searchlist = DB::table('danh_sach_sinh_vien')
-                    ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
+                    $searchlist = StudentList::where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
                     ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
                     ->when($request->mssv != null, function ($query) use ($request) {
                         return $query
@@ -431,8 +428,7 @@ class TeacherController extends Controller
                 }
                 else if($request->mssv != null && $request->studentname != null)
                 {
-                    $searchlist = DB::table('danh_sach_sinh_vien')
-                    ->where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
+                    $searchlist = StudentList::where('danh_sach_sinh_vien.MaTTMH',session('danh-sach-sinh-vien-lop'))
                     ->where('danh_sach_sinh_vien.MaHK',session()->get('HKid'))
                     ->when($request->mssv != null, function ($query) use ($request) {
                         return $query
@@ -538,10 +534,10 @@ class TeacherController extends Controller
             if(session()->get('teacherid'))
             {
 
-                $checkUserIsActive = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+                $checkUserIsActive = Teacher::where('MSGV',session()->get('teacherid'))->first();
                 if($checkUserIsActive->LastActive == null || Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == false)
                 {
-                    $upDateLastActiveData = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))
+                    $upDateLastActiveData = Teacher::where('MSGV',session()->get('teacherid'))
                         ->update([
                             'LastActive' => Carbon::now()->format('Y-m-d')
                         ]);
@@ -594,9 +590,9 @@ class TeacherController extends Controller
                         {
                             return back()->with('error2','Sai đường dẫn')->withInput();
                         }
-                            $findlistidofstudent = DB::table('danh_sach_sinh_vien')
+                            $findlistidofstudent = StudentList::
                             // ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
-                            ->where('MaTTMH',$data["lop"])->where('MaHK',$data["HK"])
+                            where('MaTTMH',$data["lop"])->where('MaHK',$data["HK"])
                             ->where('MSSV',session()->get('studentid'))->first();
 
                             if($findlistidofstudent != null)
@@ -608,8 +604,7 @@ class TeacherController extends Controller
                                     try
                                     {
                                         //Điểm danh
-                                        $checkrequest = DB::table('diem_danh')
-                                        ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
+                                        $checkrequest = Checkin::where('MaDanhSach',$findlistidofstudent->MaDanhSach)
                                         ->where('MaBuoi',$data["buoi"])->first();
 
 
@@ -639,7 +634,7 @@ class TeacherController extends Controller
                                                         {
                                                             session()->forget('checked');
                                                             //Điểm danh
-                                                            $studentchecked = DB::table('diem_danh')->insert([
+                                                            $studentchecked = Checkin::insert([
                                                                 'MaDanhSach' => $findlistidofstudent->MaDanhSach,
                                                                 'MaBuoi' => $data["buoi"],
                                                                 'NgayDiemDanh' => $timecheckin,
@@ -647,10 +642,10 @@ class TeacherController extends Controller
                                                                 "Browser" => Browser::browserName()
                                                             ]);
 
-                                                            $checkUserIsActive = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                                                            $checkUserIsActive = StudentModel::where('MSSV',session()->get('studentid'))->first();
                                                             if($checkUserIsActive->LastActive == null || Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == false)
                                                             {
-                                                                $upDateLastActiveData = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))
+                                                                $upDateLastActiveData = StudentModel::where('MSSV',session()->get('studentid'))
                                                                                         ->update([
                                                                                             'LastActive' => Carbon::now()->format('Y-m-d')
                                                                                         ]);
@@ -665,14 +660,14 @@ class TeacherController extends Controller
                                                     }
                                                     else{
                                                         //Kiểm tra xem thiết bị có từng sử dụng
-                                                        $CheckIsCheating = DB::table('diem_danh')->where('IpAddress',$request->ip())->latest('NgayDiemDanh')->first();
+                                                        $CheckIsCheating = Checkin::where('IpAddress',$request->ip())->latest('NgayDiemDanh')->first();
                                                         if($CheckIsCheating == null)
                                                         {
                                                             //Nếu chưa từng tồn tại
                                                             //Gán vào session thời gian kết thúc buổi điểm danh
                                                             session()->put('checked',Carbon::parse($findPath->TimeOpenLink)->addMinutes(5));
                                                             //Điểm danh
-                                                            $studentchecked = DB::table('diem_danh')->insert([
+                                                            $studentchecked = Checkin::insert([
                                                                 'MaDanhSach' => $findlistidofstudent->MaDanhSach,
                                                                 'MaBuoi' => $data["buoi"],
                                                                 'NgayDiemDanh' => $timecheckin,
@@ -715,7 +710,7 @@ class TeacherController extends Controller
                                                                         {
                                                                             session()->forget('checked');
                                                                             //Điểm danh
-                                                                            $studentchecked = DB::table('diem_danh')->insert([
+                                                                            $studentchecked = Checkin::insert([
                                                                                 'MaDanhSach' => $findlistidofstudent->MaDanhSach,
                                                                                 'MaBuoi' => $data["buoi"],
                                                                                 'NgayDiemDanh' => $timecheckin,
@@ -744,7 +739,7 @@ class TeacherController extends Controller
 
                                                             //Điểm danh
 
-                                                            $studentchecked = DB::table('diem_danh')->insert([
+                                                            $studentchecked = Checkin::insert([
                                                                 'MaDanhSach' => $findlistidofstudent->MaDanhSach,
                                                                 'MaBuoi' => $data["buoi"],
                                                                 'NgayDiemDanh' => $timecheckin,
@@ -821,19 +816,18 @@ class TeacherController extends Controller
             if($request->input('divideall'))
             {
                 $option1 = $request->input('divideall');
-                $findlop = DB::table('danh_sach_sinh_vien')->where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
+                $findlop = StudentList::where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
                     ->where('MaHK',session()->get('HKid'))->distinct()->first();
 
-                $listUpToRow14 = DB::table('danh_sach_sinh_vien')->where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
+                $listUpToRow14 = StudentList::where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
                 ->where('MaHK',session()->get('HKid'))->distinct()->get();
                 // dd($listUpToRow14);
                 foreach($listUpToRow14 as $resultCheck)
                 {
 
-                    $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
+                    $countChecked = Checkin::where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
                     // dd($countChecked);
-                    $TongSoBuoiUpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
+                    $TongSoBuoiUpDate = StudentList::where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['TongSoBuoi' => $countChecked]);
                     //Đối với môn thực hành
@@ -847,12 +841,11 @@ class TeacherController extends Controller
                         // $latestpoint = round($latestpoint + 0.5, 0, PHP_ROUND_HALF_UP);
                         if($countChecked  >= 5)
                         {
-                            $row14UpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
+                            $row14UpDate = StudentList::where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $latestpoint]);
 
-                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$resultCheck->MaKQSV)->first();
+                            $checkDQT = Result::where('MaKQSV',$resultCheck->MaKQSV)->first();
                             if($checkDQT != null)
                             {
 
@@ -860,16 +853,14 @@ class TeacherController extends Controller
                                 {
                                     $result = $latestpoint + $findlop->Diem16;
 
-                                    $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$resultCheck->MaKQSV)
+                                    $DQT = Result::where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
                                 else{
 
                                     $result = $latestpoint;
 
-                                    $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$resultCheck->MaKQSV)
+                                    $DQT = Result::where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
 
@@ -887,27 +878,24 @@ class TeacherController extends Controller
                         if($countChecked  >= 7)
                         {
 
-                            $row14UpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
+                            $row14UpDate = StudentList::where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $latestpoint]);
 
 
-                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$resultCheck->MaKQSV)->first();
+                            $checkDQT = Result::where('MaKQSV',$resultCheck->MaKQSV)->first();
                             if($checkDQT)
                             {
                                 if($findlop->Diem16 != null)
                                 {
                                     $result = $latestpoint + $resultCheck->Diem16;
 
-                                    $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$resultCheck->MaKQSV)
+                                    $DQT = Result::where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
                                 else{
                                     $result = $latestpoint;
-                                    $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$resultCheck->MaKQSV)
+                                    $DQT = Result::where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
 
@@ -933,15 +921,15 @@ class TeacherController extends Controller
             {
                 $option2 = $request->input('divide3');
 
-                $findlop = DB::table('danh_sach_sinh_vien')->where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
+                $findlop = StudentList::where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
                 ->where('MaHK',session()->get('HKid'))->distinct()->first();
-                $listUpToRow14 = DB::table('danh_sach_sinh_vien')->where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
+                $listUpToRow14 = StudentList::where('MaTTMH', session()->get('danh-sach-sinh-vien-lop'))
                 ->where('MaHK',session()->get('HKid'))->distinct()->get();
                 // dd($listUpToRow14);
                 foreach($listUpToRow14 as $resultCheck)
                 {
 
-                    $countChecked = DB::table('diem_danh')->where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
+                    $countChecked = Checkin::where('MaDanhSach',$resultCheck->MaDanhSach)->distinct()->count('MaBuoi');
                     //Đối với môn thực hành
                     $phanloailop = substr($resultCheck->MaDanhSach,3,1);
 
@@ -978,26 +966,23 @@ class TeacherController extends Controller
 
                             }
 
-                            $row14UpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
+                            $row14UpDate = StudentList::where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $result]);
 
-                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$resultCheck->MaKQSV)->first();
+                            $checkDQT = Result::where('MaKQSV',$resultCheck->MaKQSV)->first();
                             if($checkDQT)
                             {
                                 if($findlop->Diem16 != null)
                                 {
                                     $resultlatest = $result + $resultCheck->Diem16;
 
-                                    $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$resultCheck->MaKQSV)
+                                    $DQT = Result::where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $resultlatest]);
                                 }
                                 else{
                                     // $result = $findlop->Diem14;
-                                    $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$resultCheck->MaKQSV)
+                                    $DQT = Result::where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
 
@@ -1038,26 +1023,23 @@ class TeacherController extends Controller
 
                             }
 
-                            $row14UpDate = DB::table('danh_sach_sinh_vien')
-                            ->where('MaDanhSach',$resultCheck->MaDanhSach)
+                            $row14UpDate = StudentList::where('MaDanhSach',$resultCheck->MaDanhSach)
                             ->where('MSSV',$resultCheck->MSSV)
                             ->update(['Diem14' => $result]);
 
-                            $checkDQT = DB::table("ket_qua")->where('MaKQSV',$resultCheck->MaKQSV)->first();
+                            $checkDQT = Result::where('MaKQSV',$resultCheck->MaKQSV)->first();
                             if($checkDQT)
                             {
                                 if($findlop->Diem16 != null)
                                 {
                                     $resultlatest = $result + $resultCheck->Diem16;
 
-                                    $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$resultCheck->MaKQSV)
+                                    $DQT = Result::where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $resultlatest]);
                                 }
                                 else{
                                     // $result = $findlop->Diem14;
-                                    $DQT = DB::table('ket_qua')
-                                                ->where('MaKQSV',$resultCheck->MaKQSV)
+                                    $DQT = Result::where('MaKQSV',$resultCheck->MaKQSV)
                                                 ->update(['DiemQT' => $result]);
                                 }
 
@@ -1135,7 +1117,7 @@ class TeacherController extends Controller
                             {
                                 $ThongTinMaDanhSach = str::before($key, '/');
                                 $GetInfoStudent = str::after($key,'/');
-                                $findrow14 = DB::table('danh_sach_sinh_vien')->where('MaDanhSach',$ThongTinMaDanhSach)->first();
+                                $findrow14 = StudentList::where('MaDanhSach',$ThongTinMaDanhSach)->first();
 
                                 //Mã kết quả của sinh viên trong db bảng điểm
                                 $MaKQSV = $findrow14->MSSV.$findrow14->MaTTMH.$findrow14->MaHK;
@@ -1184,8 +1166,7 @@ class TeacherController extends Controller
                                     //}
                             // }
 
-                                    $row16UpDate = DB::table('danh_sach_sinh_vien')
-                                    ->where('MaDanhSach',$findrow14->MaDanhSach)
+                                    $row16UpDate = StudentList::where('MaDanhSach',$findrow14->MaDanhSach)
                                     ->where('MSSV',$GetInfoStudent)
                                     ->update(['Diem16' => round($resultConvert, 2)]);
 
@@ -1193,8 +1174,7 @@ class TeacherController extends Controller
 
                             //Tính ra điểm Qúa trình
                                 $result = $findrow14->Diem14 + round($resultConvert, 2);
-                                $DQT = DB::table('ket_qua')
-                                ->where('MaKQSV',$MaKQSV)
+                                $DQT = Result::where('MaKQSV',$MaKQSV)
                                 ->update(['DiemQT' => $result]);
 
                                 $array = session('row16');
@@ -1233,8 +1213,7 @@ class TeacherController extends Controller
 
             if($request->LTnum)
             {
-                $ChooseClassManage = DB::table('danh_sach_sinh_vien')
-                                        ->where('MaDanhSach',$request->LTnum)
+                $ChooseClassManage = StudentList::where('MaDanhSach',$request->LTnum)
                                         ->update(['BanCanSuLop' => 1]);
                 return redirect()->to('/danh-sach-sinh-vien?lop='.session()->get('danh-sach-sinh-vien-lop').'&HK='.session()->get('HKid'))->withInput();
             }
