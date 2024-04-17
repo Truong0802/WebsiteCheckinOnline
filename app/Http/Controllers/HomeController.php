@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Http\Controllers\AccountController;
+use App\Models\Schedule;
+use App\Models\StudentModel;
+use App\Models\TKB;
 
 class HomeController extends Controller
 {
@@ -26,7 +29,7 @@ class HomeController extends Controller
                 $startOfWeek = Carbon::now()->startOfWeek();
                 $endOfWeek = Carbon::now()->endOfWeek();
 
-                $allsubject = DB::table('tkb')->where('MSSV',$username)->distinct()->get();
+                $allsubject = TKB::where('MSSV',$username)->distinct()->get();
                 // $classname = DB::table('lop')->where('MaLop',session()->get('malop'))->get();
                 // session()->put('allsubjectname',$subjectname->TenMH);
                 return view('Student/index',['getallsubject' => $allsubject]);
@@ -36,12 +39,12 @@ class HomeController extends Controller
                 $teacherid = session()->get('teacherid');
 
                     $teacherid = session()->get('teacherid');
-                    $findsubjectid = DB::table('lich_giang_day')->where('MSGV',$teacherid)->distinct()->first();
+                    $findsubjectid = Schedule::where('MSGV',$teacherid)->distinct()->first();
                     if($findsubjectid != null)
                     {
 
                         // dd($firstsubjectid);
-                            $allsubject = DB::table('lich_giang_day')->where('MSGV',$teacherid)->where('MaBuoi',1)->latest('NgayDay')->distinct()->paginate(15);
+                            $allsubject = Schedule::where('MSGV',$teacherid)->where('MaBuoi',1)->latest('NgayDay')->distinct()->paginate(15);
                             if($allsubject != null)
                             {
                                 return view('Teacher/class-list',['getallsubject' => $allsubject]);
@@ -92,9 +95,9 @@ class HomeController extends Controller
         return redirect()->to('/');
     }
 
-    public function getapi()
+    public function getAllStudentapi()
     {
-        $data = DB::table('sinh_vien')->get();
+        $data = StudentModel::get();
         return response()->json($data);
     }
 }

@@ -20,4 +20,8 @@ use App\Http\Controllers\HomeController;
 
 
 // URL to get api route need '/api' at before route http://localhost:8000/api/test-api
-Route::get('/test-api', [HomeController::class,'getapi']);
+Route::prefix('v1')->group(function () {
+    // Tất cả các route bên trong nhóm này sẽ có tiền tố '/v1'
+    Route::get('/getAll', [HomeController::class,'getAllStudentapi']);
+});
+

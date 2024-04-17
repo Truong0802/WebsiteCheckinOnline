@@ -38,12 +38,8 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'student_users',
         ],
-        // 'checkinStudent_web' =>  [
-        //     'driver' => 'session',
-        //     'provider' => 'Student_User',
-        // ],
     ],
 
     /*
@@ -64,25 +60,16 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+        // 'users' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\User::class,
+        // ],
+        'student_users' => [
+            'driver' => 'database',
+            'table' => 'sinh_vien',
         ],
     ],
 
-    // 'providers' => [
-    //     'user' => [
-    //         'driver' => 'custom', // Sử dụng driver tùy chỉnh
-    //         'model' => App\User::class,
-    //     ],
-    // ],
-
-    // 'custom' => [
-    //     'provider' => 'user', // Sử dụng provider 'users' đã định nghĩa ở trên
-    //     'table' => 'sinh_vien', // Tên bảng bạn muốn truy vấn
-    //     'id' => 'MSSV', // Trường ID (ví dụ: 'mssv' hoặc 'username')
-    //     // Thêm các cấu hình khác theo nhu cầu
-    // ],
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords
@@ -109,12 +96,6 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-        // 'checkinStudent_web' => [
-        //     'provider' => 'Student_User',
-        //     'table' => 'password_reset_tokens',
-        //     'expire' => 60,
-        //     'throttle' => 60,
-        // ],
     ],
 
     /*

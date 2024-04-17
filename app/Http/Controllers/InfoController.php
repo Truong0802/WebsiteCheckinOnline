@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
+use App\Models\Adress;
+use App\Models\StudentModel;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -13,15 +17,15 @@ class InfoController extends Controller
     {
         if(session()->exists('studentid'))
         {
-            $InfoOfStudent = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+            $InfoOfStudent = StudentModel::where('MSSV',session()->get('studentid'))->first();
             //dd($InfoOfStudent);
-            $InforAddress = DB::table('dia_chi')->where('MaDiaChi', $InfoOfStudent->MSSV. $InfoOfStudent->MaLop)->first();
+            $InforAddress = Address::where('MaDiaChi', $InfoOfStudent->MSSV. $InfoOfStudent->MaLop)->first();
             return view('Student/student-info',['getInfoFromObject' => $InfoOfStudent, 'getInforAddress' => $InforAddress]);
         }
         elseif(session()->exists('teacherid')){
-            $InfoOfteacher = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+            $InfoOfteacher = Teacher::where('MSGV',session()->get('teacherid'))->first();
             //dd( $InfoOfteacher);
-            $InforAddress = DB::table('dia_chi')->where('MaDiaChi',session()->get('teacherid'))->first();
+            $InforAddress = Address::where('MaDiaChi',session()->get('teacherid'))->first();
             return view('Student/student-info',['getInfoFromObject' => $InfoOfteacher ,'getInforAddress' => $InforAddress]);
         }
     }
@@ -32,11 +36,11 @@ class InfoController extends Controller
             if(session()->exists('studentid') || session()->exists('teacherid')){
                 if(session()->exists('studentid'))
                 {
-                    $dataBeforeChange = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                    $dataBeforeChange = StudentModel::where('MSSV',session()->get('studentid'))->first();
                 }
                 else if(session()->exists('teacherid'))
                 {
-                    $dataBeforeChange = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
+                    $dataBeforeChange = Teacher::where('MSGV',session()->get('teacherid'))->first();
                 }
                 return view('Student.change-info',['dataBefore'=> $dataBeforeChange]);
 
@@ -140,14 +144,12 @@ class InfoController extends Controller
             {
                 if(session()->exists('studentid'))
                 {
-                    $checkAccountOf = DB::table('sinh_vien')
-                    ->where('MSSV',session()->get('studentid'))->update($updateData);
+                    $checkAccountOf = StudentModel::where('MSSV',session()->get('studentid'))->update($updateData);
 
                 }
                 else if(session()->exists('teacherid'))
                 {
-                    $checkAccountOf = DB::table('giang_vien')
-                    ->where('MSGV',session()->get('teacherid'))
+                    $checkAccountOf = Teacher::where('MSGV',session()->get('teacherid'))
                     ->update($updateData);
 
                 }
@@ -157,17 +159,15 @@ class InfoController extends Controller
             {
                 if(session()->exists('studentid'))
                 {
-                    $findClassOfStudent = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
+                    $findClassOfStudent = StudentModel::where('MSSV',session()->get('studentid'))->first();
                     $MaDiaChi = $findClassOfStudent->MSSV.$findClassOfStudent->MaLop;
-                    $checkAccountOf = DB::table('dia_chi')
-                    ->where('MaDiaChi',$MaDiaChi)->update($updateAddress);
+                    $checkAccountOf = Address::where('MaDiaChi',$MaDiaChi)->update($updateAddress);
 
                 }
                 else if(session()->exists('teacherid'))
                 {
                     $MaDiaChi = session()->get('teacherid');
-                    $checkAccountOf = DB::table('dia_chi')
-                    ->where('MaDiaChi',$MaDiaChi)->update($updateAddress);
+                    $checkAccountOf = Address::where('MaDiaChi',$MaDiaChi)->update($updateAddress);
 
 
                 }
