@@ -534,10 +534,10 @@ class TeacherController extends Controller
             if(session()->get('teacherid'))
             {
 
-                $checkUserIsActive = Teacher::where('MSGV',session()->get('teacherid'))->first();
+                $checkUserIsActive = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))->first();
                 if($checkUserIsActive->LastActive == null || Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == false)
                 {
-                    $upDateLastActiveData = Teacher::where('MSGV',session()->get('teacherid'))
+                    $upDateLastActiveData = DB::table('giang_vien')->where('MSGV',session()->get('teacherid'))
                         ->update([
                             'LastActive' => Carbon::now()->format('Y-m-d')
                         ]);
@@ -590,9 +590,9 @@ class TeacherController extends Controller
                         {
                             return back()->with('error2','Sai đường dẫn')->withInput();
                         }
-                            $findlistidofstudent = StudentList::
+                            $findlistidofstudent = DB::table('danh_sach_sinh_vien')
                             // ->where('MaTTMH',session()->get('danh-sach-sinh-vien-lop'))
-                            where('MaTTMH',$data["lop"])->where('MaHK',$data["HK"])
+                            ->where('MaTTMH',$data["lop"])->where('MaHK',$data["HK"])
                             ->where('MSSV',session()->get('studentid'))->first();
 
                             if($findlistidofstudent != null)
@@ -604,7 +604,8 @@ class TeacherController extends Controller
                                     try
                                     {
                                         //Điểm danh
-                                        $checkrequest = Checkin::where('MaDanhSach',$findlistidofstudent->MaDanhSach)
+                                        $checkrequest = DB::table('diem_danh')
+                                        ->where('MaDanhSach',$findlistidofstudent->MaDanhSach)
                                         ->where('MaBuoi',$data["buoi"])->first();
 
 
@@ -634,7 +635,7 @@ class TeacherController extends Controller
                                                         {
                                                             session()->forget('checked');
                                                             //Điểm danh
-                                                            $studentchecked = Checkin::insert([
+                                                            $studentchecked = DB::table('diem_danh')->insert([
                                                                 'MaDanhSach' => $findlistidofstudent->MaDanhSach,
                                                                 'MaBuoi' => $data["buoi"],
                                                                 'NgayDiemDanh' => $timecheckin,
@@ -642,10 +643,10 @@ class TeacherController extends Controller
                                                                 "Browser" => Browser::browserName()
                                                             ]);
 
-                                                            $checkUserIsActive = StudentModel::where('MSSV',session()->get('studentid'))->first();
+                                                            $checkUserIsActive = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))->first();
                                                             if($checkUserIsActive->LastActive == null || Carbon::now()->greaterThan(Carbon::parse($checkUserIsActive->LastActive)->addMonths(6)) == false)
                                                             {
-                                                                $upDateLastActiveData = StudentModel::where('MSSV',session()->get('studentid'))
+                                                                $upDateLastActiveData = DB::table('sinh_vien')->where('MSSV',session()->get('studentid'))
                                                                                         ->update([
                                                                                             'LastActive' => Carbon::now()->format('Y-m-d')
                                                                                         ]);
@@ -660,14 +661,14 @@ class TeacherController extends Controller
                                                     }
                                                     else{
                                                         //Kiểm tra xem thiết bị có từng sử dụng
-                                                        $CheckIsCheating = Checkin::where('IpAddress',$request->ip())->latest('NgayDiemDanh')->first();
+                                                        $CheckIsCheating = DB::table('diem_danh')->where('IpAddress',$request->ip())->latest('NgayDiemDanh')->first();
                                                         if($CheckIsCheating == null)
                                                         {
                                                             //Nếu chưa từng tồn tại
                                                             //Gán vào session thời gian kết thúc buổi điểm danh
                                                             session()->put('checked',Carbon::parse($findPath->TimeOpenLink)->addMinutes(5));
                                                             //Điểm danh
-                                                            $studentchecked = Checkin::insert([
+                                                            $studentchecked = DB::table('diem_danh')->insert([
                                                                 'MaDanhSach' => $findlistidofstudent->MaDanhSach,
                                                                 'MaBuoi' => $data["buoi"],
                                                                 'NgayDiemDanh' => $timecheckin,
@@ -710,7 +711,7 @@ class TeacherController extends Controller
                                                                         {
                                                                             session()->forget('checked');
                                                                             //Điểm danh
-                                                                            $studentchecked = Checkin::insert([
+                                                                            $studentchecked = DB::table('diem_danh')->insert([
                                                                                 'MaDanhSach' => $findlistidofstudent->MaDanhSach,
                                                                                 'MaBuoi' => $data["buoi"],
                                                                                 'NgayDiemDanh' => $timecheckin,
@@ -739,7 +740,7 @@ class TeacherController extends Controller
 
                                                             //Điểm danh
 
-                                                            $studentchecked = Checkin::insert([
+                                                            $studentchecked = DB::table('diem_danh')->insert([
                                                                 'MaDanhSach' => $findlistidofstudent->MaDanhSach,
                                                                 'MaBuoi' => $data["buoi"],
                                                                 'NgayDiemDanh' => $timecheckin,
