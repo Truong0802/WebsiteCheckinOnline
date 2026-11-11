@@ -1,27 +1,22 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| API Routes (prefix /api)
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
+| - Public: khai báo trực tiếp (Route::resource(...)->only([...])).
+| - Cần đăng nhập: đặt trong group auth:api (JWT, header Authorization: Bearer {token}).
+| - Lỗi được ApiExceptionHandler chuyển thành JSON {status, message, errors?}.
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::get('/', fn () => throw new NotFoundHttpException);
 
-
-// URL to get api route need '/api' at before route http://localhost:8000/api/test-api
-Route::prefix('v1')->group(function () {
-    // Tất cả các route bên trong nhóm này sẽ có tiền tố '/v1'
-    Route::get('/getAll', [HomeController::class,'getAllStudentapi']);
+Route::middleware(['auth:api'])->group(function () {
+    // Module nghiệp vụ cần đăng nhập, ví dụ:
+    // Route::apiResource('post', App\Http\Controllers\Api\PostController::class);
 });
 
+require __DIR__.'/auth.php';

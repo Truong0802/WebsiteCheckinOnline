@@ -2,22 +2,29 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Contracts\Services\AuthenticationServiceInterface;
+use App\Services\AuthenticationService;
+use Illuminate\Support\ServiceProvider;
 
+/**
+ * Đăng ký service xác thực và các Policy (Gate::policy) của dự án.
+ */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The model to policy mappings for the application.
-     *
-     * @var array<class-string, class-string>
+     * Bind interface -> implementation cho service xác thực API.
      */
-    protected $policies = [
-        //
-    ];
+    public function register(): void
+    {
+        $this->app->bind(
+            AuthenticationServiceInterface::class,
+            AuthenticationService::class
+        );
+    }
 
     /**
-     * Register any authentication / authorization services.
+     * Khai báo policy khi có module nghiệp vụ, ví dụ:
+     * Gate::policy(\App\Models\Post::class, \App\Policies\PostPolicy::class);
      */
     public function boot(): void
     {

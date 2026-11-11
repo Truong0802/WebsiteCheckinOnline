@@ -1,0 +1,32 @@
+# Docker Compose cho môi trường dev: chỉ chạy MySQL trong container, PHP vẫn chạy trên máy (Herd).
+# Compose tự đọc file .env cùng thư mục, nên container và Laravel dùng chung bộ biến DB_*.
+# Laravel kết nối qua DB_HOST=127.0.0.1 và DB_PORT = cổng FORWARD_DB_PORT bên dưới.
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: vtz_mysql
+    restart: unless-stopped
+    ports:
+      # Cổng trên máy:cổng trong container; đổi FORWARD_DB_PORT trong .env nếu 3306 đã bị chiếm
+      - "${FORWARD_DB_PORT:-3306}:3306"
+    environment:
+      # Tạo sẵn database và user ứng dụng khi container khởi động lần đầu (volume còn trống)
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+    command:
+      # Đồng bộ với charset/collation mặc định trong config/database.php
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      # Volume giữ dữ liệu khi xóa/tạo lại container
+      - vtz_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  vtz_mysql_data:

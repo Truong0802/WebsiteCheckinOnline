@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class Controller extends BaseController
+/**
+ * Controller nền cho trang web (Blade): luôn chạy middleware 'is-web' để dùng guard session.
+ */
+abstract class Controller implements HasMiddleware
 {
-    use AuthorizesRequests, ValidatesRequests;
+    public static function middleware(): array
+    {
+        return ['is-web'];
+    }
 }

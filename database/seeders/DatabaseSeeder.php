@@ -2,21 +2,23 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Account;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     /**
-     * Seed the application's database.
+     * Tạo tài khoản mẫu trong bảng accounts: username 'admin' / mật khẩu 'password' (chỉ dùng dev).
+     * firstOrCreate để chạy db:seed nhiều lần không lỗi trùng username.
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        Account::query()->firstOrCreate(
+            ['username' => 'admin'],
+            Account::factory()->raw(['username' => 'admin', 'email' => 'admin@example.com']),
+        );
     }
 }

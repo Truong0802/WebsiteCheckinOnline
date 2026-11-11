@@ -1,0 +1,8 @@
+// Bootstrap 5 + icon; tuỳ biến biến màu trước khi import nếu cần.
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+.app-sidebar {
+    min-height: calc(100vh - 56px);
+    width: 240px;
+}
