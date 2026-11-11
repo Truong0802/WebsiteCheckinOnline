@@ -3,6 +3,10 @@
 // Thông điệp dùng chung cho API (ApiExceptionHandler, AuthenticationService).
 return [
     'logout_success' => 'Đăng xuất thành công.',
+    'supplier' => [
+        'deleted' => 'Xóa nhà cung cấp thành công.',
+        'in_use' => 'Không thể xóa nhà cung cấp đang được sử dụng ở dữ liệu khác.',
+    ],
     'errors' => [
         'bad_request' => 'Yêu cầu không hợp lệ.',
         'unauthorized' => 'Chưa đăng nhập hoặc phiên đăng nhập đã hết hạn.',

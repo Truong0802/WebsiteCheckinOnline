@@ -328,7 +328,7 @@ php artisan serve --port=8080
 
 Kiểm tra nhanh:
 
-- `http://127.0.0.1:8000/` → trang chào
+- `http://127.0.0.1:8000/` → chuyển hướng sang `/docs/api` khi `APP_ENV=local`; môi trường khác hiển thị trang chào
 - `http://127.0.0.1:8000/login` → đăng nhập quản trị
 - `http://127.0.0.1:8000/up` → health check
 - `http://127.0.0.1:8000/docs/api` → tài liệu API, gọi thử (Try It); `http://127.0.0.1:8000/docs/api.json` → OpenAPI JSON

@@ -3,6 +3,10 @@
 // Thông điệp dùng chung cho API (ApiExceptionHandler, AuthenticationService).
 return [
     'logout_success' => 'ログアウトしました。',
+    'supplier' => [
+        'deleted' => 'サプライヤーを削除しました。',
+        'in_use' => '他のデータで使用中のサプライヤーは削除できません。',
+    ],
     'errors' => [
         'bad_request' => '不正なリクエストです。',
         'unauthorized' => '認証されていません。',

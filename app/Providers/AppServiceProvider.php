@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\Services\SupplierServiceInterface;
+use App\Services\SupplierService;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Bind interface -> implementation cho service nghiệp vụ (controller inject interface).
+        $this->app->bind(SupplierServiceInterface::class, SupplierService::class);
     }
 
     /**

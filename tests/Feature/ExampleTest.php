@@ -16,7 +16,16 @@ class ExampleTest extends TestCase
 
     public function test_home_page_returns_ok(): void
     {
+        // APP_ENV=testing (không phải local): vẫn hiển thị trang chào.
         $this->get(route('home'))->assertOk();
+    }
+
+    public function test_home_redirects_to_api_docs_on_local(): void
+    {
+        // Giả lập APP_ENV=local: / chuyển hướng sang tài liệu API.
+        $this->app['env'] = 'local';
+
+        $this->get(route('home'))->assertRedirect('/docs/api');
     }
 
     public function test_login_page_returns_ok(): void

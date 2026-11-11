@@ -3,6 +3,10 @@
 // Thông điệp dùng chung cho API (ApiExceptionHandler, AuthenticationService).
 return [
     'logout_success' => 'Logged out successfully.',
+    'supplier' => [
+        'deleted' => 'Supplier deleted successfully.',
+        'in_use' => 'Cannot delete a supplier that is referenced by other data.',
+    ],
     'errors' => [
         'bad_request' => 'Bad request.',
         'unauthorized' => 'Unauthenticated.',
